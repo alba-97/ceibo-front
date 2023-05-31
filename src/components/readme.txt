@@ -1,0 +1,1 @@
+Esta carpeta contiene los componentes reutilizables de tu aplicación.
