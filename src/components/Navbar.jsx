@@ -1,7 +1,6 @@
-import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-export const Navbar = ({ text }) => {
+export default Navbar = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>EL CLUB DEL FUCKING PLAN</Text>
@@ -13,6 +12,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderBottomWidth: 1,
     borderStyle: "solid",
+    marginTop: 20,
     width: "100%",
     height: "14%",
     justifyContent: "center",

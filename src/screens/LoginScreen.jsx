@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  
-} from "react-native";
-import { GenericInput } from "./GenericInput";
-import { GenericButton } from "./GenericButton";
+import { View, Text, StyleSheet } from "react-native";
+import { GenericInput } from "../components/GenericInput";
+import { GenericButton } from "../components/GenericButton";
 
-export const VistaLogin = () => {
+export const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Nombre de Usuario</Text>
@@ -18,22 +13,20 @@ export const VistaLogin = () => {
 
       <View style={styles.container2}>
         <View style={styles.inputContainer}>
-          <GenericButton text={'Iniciar Sesion'}/>
+          <GenericButton text={"Iniciar Sesion"} />
         </View>
         <View style={styles.inputContainer}>
-        <GenericButton text={'Home'}/>
+          <GenericButton text={"Home"} />
         </View>
       </View>
 
       <Text style={styles.text}>No tienes cuenta? Crea una</Text>
-      <GenericButton text={'Ingresar con Google'}/>
+      <GenericButton text={"Ingresar con Google"} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
-
   container: {
     flex: 1,
     width: "100%",
@@ -42,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container2: {
-    paddingTop:'30%',
+    paddingTop: "30%",
     width: "90%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -51,11 +44,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "center",
     flex: 1,
-
   },
   text: {
     paddingTop: 10,
-    paddingBottom:10,
+    paddingBottom: 10,
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",

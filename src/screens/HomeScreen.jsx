@@ -1,31 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+// React Components
+import React, { useEffect, useState } from "react";
 import { Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../appCss";
-import { GenericInput } from "../components/TextInput";
+// Components
+import Navbar from "../components/Navbar";
+import { GenericInput } from "../components/GenericInput";
+import ProfilePicture from "../components/ProfilePicture";
+import ProfileText from "../components/ProfileText";
 import { ImageContainer } from "../components/ImageContainer";
-import { Navbar } from "../components/Navbar";
-import { TextDeUsuario } from "../components/TextDeUsuario";
-import { FotoDeUsuario } from "../components/FotoDeUsuario";
-// import axios from "axios";
-// import { API_URL, PORT } from "@env";
+import axios from "axios";
+import { API_URL, PORT } from "@env";
 
-export default function App() {
+export default function HomeScreen() {
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   if (API_URL && PORT) {
-  //     axios
-  //       .get(`${API_URL}:${PORT}/api/events`)
-  //       .then((response) => {
-  //         setData(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (API_URL && PORT) {
+      axios
+        .get(`${API_URL}:${PORT}/api/events`)
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
 
   const formatDate = (date) => {
     const months = [
@@ -62,16 +64,14 @@ export default function App() {
           date="28 de mayo de 2023"
           event="Conejo malo"
         />
-        <GenericInput
-        // otras propiedades
-        />
+        <GenericInput />
 
-        <TextDeUsuario text="Leon Stefano" />
+        <ProfileText text="Leon Stefano" />
 
-        <FotoDeUsuario imageSource="https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg" />
+        <ProfilePicture imageSource="https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg" />
 
         {data ? (
-          <Text>
+          <>
             {data.map((item) => {
               return (
                 <ImageContainer
@@ -86,7 +86,7 @@ export default function App() {
                 />
               );
             })}
-          </Text>
+          </>
         ) : (
           <Text>Cargando datos...</Text>
         )}
