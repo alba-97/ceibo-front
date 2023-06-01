@@ -13,7 +13,6 @@ import Calendar from "./components/Calendar";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 
-
 export default function App() {
   const [data, setData] = useState([]);
 
@@ -57,8 +56,7 @@ export default function App() {
       end={[1, 1]}
       style={styles.container}
     >
-
-      <ScrollView style={styles.container}>
+      <ScrollView>
         <Navbar />
 
         <ImageContainer
