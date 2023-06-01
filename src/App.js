@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "./appCss";
+
 import { GenericInput } from "./components/TextInput";
 import { ImageContainer } from "./components/ImageContainer";
 import { Navbar } from "./components/Navbar";
@@ -11,6 +12,7 @@ import { FotoDeUsuario } from "./components/FotoDeUsuario";
 import Calendar from "./components/Calendar";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -55,6 +57,7 @@ export default function App() {
       end={[1, 1]}
       style={styles.container}
     >
+
       <ScrollView style={styles.container}>
         <Navbar />
 
