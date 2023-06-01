@@ -3,11 +3,11 @@ import React from "react";
 import { Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "./appCss";
-// import { GenericInput } from './components/TextInput';
-// import { ImageContainer } from './components/ImageContainer';
-// import { TextDeUsuario } from './components/TextDeUsuario';
-// import { FotoDeUsuario } from './components/FotoDeUsuario';
-// import Calendar from './components/Calendar';
+//import { GenericInput } from "./components/TextInput";
+//import { ImageContainer } from './components/ImageContainer';
+// import { TextDeUsuario } from "./components/TextDeUsuario";
+// import { FotoDeUsuario } from "./components/FotoDeUsuario";
+import Calendar from "./components/Calendar";
 export default function App() {
   return (
     <LinearGradient
@@ -17,6 +17,7 @@ export default function App() {
       style={styles.container}
     >
       <View style={styles.container}>
+        <Calendar></Calendar>
         <StatusBar style="auto" />
       </View>
     </LinearGradient>
