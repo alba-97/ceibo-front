@@ -1,15 +1,12 @@
-import { StatusBar } from "expo-status-bar";
 // React Components
 import React, { useEffect, useState } from "react";
 import { Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles } from "../appCss";
 // Components
-import Navbar from "../components/Navbar";
-import { GenericInput } from "../components/GenericInput";
-import ProfilePicture from "../components/ProfilePicture";
-import ProfileText from "../components/ProfileText";
+import { styles } from "../appCss";
 import { ImageContainer } from "../components/ImageContainer";
+import { Navbar } from "../components/Navbar";
+// Other Imports
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 
@@ -56,20 +53,8 @@ export default function HomeScreen() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView>
-        <Navbar />
-
-        <ImageContainer
-          imageSource="https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
-          date="28 de mayo de 2023"
-          event="Conejo malo"
-        />
-        <GenericInput />
-
-        <ProfileText text="Leon Stefano" />
-
-        <ProfilePicture imageSource="https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg" />
-
         {data ? (
           <>
             {data.map((item) => {
@@ -90,8 +75,6 @@ export default function HomeScreen() {
         ) : (
           <Text>Cargando datos...</Text>
         )}
-
-        <StatusBar style="auto" />
       </ScrollView>
     </LinearGradient>
   );

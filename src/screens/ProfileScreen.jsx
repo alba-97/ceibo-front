@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import ProfilePicture from "../components/ProfilePicture";
 import ProfileText from "../components/ProfileText";
 import { LinearGradient } from "expo-linear-gradient";
+import { Navbar } from "../components/Navbar";
 const ProfileScreen = () => {
   const imageSource =
     "https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg";
@@ -18,6 +19,7 @@ const ProfileScreen = () => {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <View style={styles.container}>
         <ProfilePicture style={styles.foto} imageSource={imageSource} />
         <ProfileText text={`Nombre                           ${name}`} />

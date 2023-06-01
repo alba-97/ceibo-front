@@ -5,6 +5,7 @@ import { GenericInput } from "../components/GenericInput";
 import { ImageContainer } from "../components/ImageContainer";
 import { GenericButton } from "../components/GenericButton";
 import { LinearGradient } from "expo-linear-gradient";
+import { Navbar } from "../components/Navbar";
 
 const AddPlanScreen = ({ imageSource }) => {
   return (
@@ -14,6 +15,7 @@ const AddPlanScreen = ({ imageSource }) => {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <View style={styles.container}>
         <Text style={styles.text}>Nombre</Text>
         <GenericInput />

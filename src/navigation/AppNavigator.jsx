@@ -46,10 +46,8 @@ function BottomNavbar() {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: "black",
-        },
-        tabBarShowLabel: false,
+        headerShown: false,
+
         tabBarStyle: { backgroundColor },
       }}
     >

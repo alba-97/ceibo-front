@@ -1,24 +1,19 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
+import logo from "../assets/logo.png";
 
-export default Navbar = () => {
+export const Navbar = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>EL CLUB DEL FUCKING PLAN</Text>
+      <Image source={logo} />
+      <View style={{ width: 600, height: 2, backgroundColor: "#fff" }}></View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    borderColor: "white",
-    borderBottomWidth: 1,
-    borderStyle: "solid",
     marginTop: 20,
-    width: "100%",
-    height: "14%",
-    justifyContent: "center",
     alignItems: "center",
   },
-
   text: {
     color: "#FFF",
     fontSize: 16,
