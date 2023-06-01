@@ -14,6 +14,7 @@ export const FotoDeUsuario = ({ imageSource }) => {
     borderStyle: 'solid',
     alignItems:"center",
     justifyContent: "center",
+    paddingBottom:18,
      
     },
     image: {

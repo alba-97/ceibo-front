@@ -3,15 +3,21 @@ import { StyleSheet } from "react-native";
 export const genericButtonStyle = StyleSheet.create({
     button: {
       backgroundColor: 'transparent',
-      borderRadius: 25,
-      padding: 10,
+      borderRadius: 20,
+      //padding: 10,
       alignItems: 'center',
-      marginTop: 10,
+      //marginTop: 10,
       borderWidth: 1,
-      borderColor: "black"
+      borderColor: "white",
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      width:'80%',
     },
     buttonText: {
-      color: 'black',
-      fontSize: 16,
+      color: 'white',
+      fontSize: 16,     
+      fontWeight: "bold",
     },
-});
+})
+
+
