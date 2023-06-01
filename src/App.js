@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet } from "react-native";
+import Navigation from "./navigation/AppNavigator";
 // import { GenericInput } from './components/TextInput';
 // import { ImageContainer } from './components/ImageContainer';
 // import { TextDeUsuario } from './components/TextDeUsuario';
@@ -9,17 +9,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <Navigation />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#faf',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
