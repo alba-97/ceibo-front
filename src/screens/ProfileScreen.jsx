@@ -1,5 +1,46 @@
-import { Text } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import ProfilePicture from "../components/ProfilePicture";
+import ProfileText from "../components/ProfileText";
+import { LinearGradient } from "expo-linear-gradient";
+import { Navbar } from "../components/Navbar";
+const ProfileScreen = () => {
+  const imageSource =
+    "https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg";
+  const name = "Leon Stefano";
+  const email = "leonstefano@gmail.com";
+  const number = 1112345678;
+  const userName = "ElLeonel";
+  const address = "Una casa 123";
+  return (
+    <LinearGradient
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+      style={styles.container}
+    >
+      <Navbar />
+      <View style={styles.container}>
+        <ProfilePicture style={styles.foto} imageSource={imageSource} />
+        <ProfileText text={`Nombre                           ${name}`} />
+        <ProfileText text={`Email                ${email}`} />
+        <ProfileText text={`Numero de Teléfono              ${number}`} />
+        <ProfileText text={`Nombre de Usuario                  ${userName}`} />
+        <ProfileText text={`Dirección                           ${address}`} />
+      </View>
+    </LinearGradient>
+  );
+};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+  },
+  // foto: {},
+});
 
-export default function ProfileScreen() {
-  return <Text>Soy un perfil</Text>;
-}
+export default ProfileScreen;

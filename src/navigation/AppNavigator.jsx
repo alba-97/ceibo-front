@@ -5,11 +5,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Screens
-import ProfileScreen from "../screens/ProfileScreen";
 import HomeScreen from "../screens/HomeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import AddPlanScreen from "../screens/AddPlanScreen";
 import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
-import AddPlanScreen from "../screens/AddPlanScreen";
 // Icons
 import {
   Entypo,
@@ -31,7 +31,10 @@ function NavbarStack() {
     >
       <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
-      <HomeStackNavigator.Screen name="AddPlan" component={AddPlanScreen} />
+      <HomeStackNavigator.Screen
+        name="AddPlanScreen"
+        component={AddPlanScreen}
+      />
       <HomeStackNavigator.Screen name="Calendar" component={CalendarScreen} />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
     </HomeStackNavigator.Navigator>
@@ -43,10 +46,8 @@ function BottomNavbar() {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: "black",
-        },
-        tabBarShowLabel: false,
+        headerShown: false,
+
         tabBarStyle: { backgroundColor },
       }}
     >
