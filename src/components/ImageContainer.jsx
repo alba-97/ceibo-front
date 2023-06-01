@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-export const ImageContainer = ({ imageSource, date, price, location, event }) => {
+export const ImageContainer = ({ imageSource, date, event }) => {
     return (
       <View style={styles.container}>
         <Image source={{uri: imageSource}} style={styles.image} />
@@ -15,7 +15,7 @@ export const ImageContainer = ({ imageSource, date, price, location, event }) =>
   const styles = StyleSheet.create({
     container: {
         borderRadius: 30,
-        borderWidth: 1,
+    
         borderColor: 'white',
         borderWidth: 1,
    
