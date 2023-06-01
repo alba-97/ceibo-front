@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const bottomNavigationBarStyle = StyleSheet.create({
-  size: 35,
+  size: 30,
   color: "white",
-  backgroundColor: "transparent",
+  backgroundColor: "black",
 });

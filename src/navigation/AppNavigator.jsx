@@ -24,7 +24,11 @@ const { size, color, backgroundColor } = bottomNavigationBarStyle;
 
 function NavbarStack() {
   return (
-    <HomeStackNavigator.Navigator>
+    <HomeStackNavigator.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
       <HomeStackNavigator.Screen name="AddPlan" component={AddPlanScreen} />
@@ -39,6 +43,9 @@ function BottomNavbar() {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
+        headerStyle: {
+          backgroundColor: "black",
+        },
         tabBarShowLabel: false,
         tabBarStyle: { backgroundColor },
       }}
