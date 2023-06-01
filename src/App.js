@@ -1,24 +1,22 @@
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Navbar } from './components/Navbar';
 import { LinearGradient } from "expo-linear-gradient";
 import { VistaLogin } from './components/VistaLogin';
+import Navigation from "./navigation/AppNavigator";
+
+
+
+
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-    <LinearGradient
-colors={["#000", "#7D0166"]}
-start={[0, 0]}
-end={[1, 1]}
-style={styles.container}
-> 
-<Navbar/>
-
-      <StatusBar style="auto" />
-   </LinearGradient>
-    </View>
+    <>
+      <Navigation />
+    </>
 
   );
 }
@@ -34,6 +32,21 @@ const styles = StyleSheet.create({
   },
 });
 
+//
+//export default function App() {
+ // return (
+ //   <View style={styles.container}>
+  //  <LinearGradient
+//colors={["#000", "#7D0166"]}
+//start={[0, 0]}
+//end={[1, 1]}
+//style={styles.container}
+//> 
+//<Navbar/>
+
+ //     <StatusBar style="auto" />
+ //  </LinearGradient>
+ //   </View>
 
          
 /* <VistaAddEvent imageSource={"https://cdn-p.smehost.net/sites/7f9737f2506941499994d771a29ad47a/wp-content/uploads/2020/10/acdc-2020.png"}/> 
