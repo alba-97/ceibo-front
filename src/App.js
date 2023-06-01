@@ -3,7 +3,13 @@ import React from "react";
 import { Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "./appCss";
+
+import { GenericInput } from "./components/TextInput";
+import { ImageContainer } from "./components/ImageContainer";
+import { TextDeUsuario } from "./components/TextDeUsuario";
+import { FotoDeUsuario } from "./components/FotoDeUsuario";
 import { Navbar } from "./components/Navbar";
+
 
 export default function App() {
   return (
@@ -13,11 +19,13 @@ export default function App() {
       end={[1, 1]}
       style={styles.container}
     >
+
       <View style={styles.container}>
         <Navbar />
 
         <StatusBar style="auto" />
       </View>
     </LinearGradient>
+
   );
 }
