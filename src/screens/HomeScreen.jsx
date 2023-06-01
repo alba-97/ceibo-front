@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Text, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../appCss";
-import { GenericInput } from "../components/TextInput";
+import { GenericInput } from "../components/GenericInput";
 import { ImageContainer } from "../components/ImageContainer";
 import { Navbar } from "../components/Navbar";
 import { TextDeUsuario } from "../components/TextDeUsuario";
@@ -54,22 +54,8 @@ export default function App() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView>
-        <Navbar />
-
-        <ImageContainer
-          imageSource="https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
-          date="28 de mayo de 2023"
-          event="Conejo malo"
-        />
-        <GenericInput
-        // otras propiedades
-        />
-
-        <TextDeUsuario text="Leon Stefano" />
-
-        <FotoDeUsuario imageSource="https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg" />
-
         {data ? (
           <Text>
             {data.map((item) => {
@@ -90,8 +76,6 @@ export default function App() {
         ) : (
           <Text>Cargando datos...</Text>
         )}
-
-        <StatusBar style="auto" />
       </ScrollView>
     </LinearGradient>
   );
