@@ -15,8 +15,8 @@ const windowWidth = Dimensions.get('window').width;
 
   const styles = StyleSheet.create({
     container: {
-    paddingTop:15,
-    paddingBottom:15,
+    paddingTop:18,
+    paddingBottom:18,
     borderBottomWidth: 1,    
     borderBottomColor:'white',
     borderStyle: 'solid', 
