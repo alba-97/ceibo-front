@@ -86,8 +86,8 @@ export default function SearchScreen() {
             <Text>Cargando datos...</Text>
           )}
         </ScrollView>
-        <GenericInput value={query} onChangeText={handleQueryChange} />
       </LinearGradient>
+      <GenericInput value={query} onChangeText={handleQueryChange} />
     </>
   );
 }
