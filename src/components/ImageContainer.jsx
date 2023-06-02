@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 30,
 
-    borderColor: "white",
-    borderWidth: 1,
+    paddingTop:10,
+    paddingBottom:10,
 
     borderStyle: "solid",
     position: "relative",
   },
   image: {
-    width: 300,
+    width: 260,
     height: 150,
     borderRadius: 30,
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "flex-end",
     alignItems: "flex-start",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    
   },
   text: {
     color: "#FFF",
