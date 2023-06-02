@@ -9,13 +9,14 @@ export const GenericInput = ({ ...props }) => {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: "transparent",
+    fontSize: 16,
+    color:'white',
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 8,
-    color: "#000",
     width: "80%", // ajusta el valor según tus necesidades
   },
 });

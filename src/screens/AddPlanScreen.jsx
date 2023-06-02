@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "react-native";
 import { GenericInput } from "../components/GenericInput";
 import { ImageContainer } from "../components/ImageContainer";
@@ -10,13 +10,14 @@ import { Navbar } from "../components/Navbar";
 const AddPlanScreen = ({ imageSource }) => {
   return (
     <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
+    colors={["#000", "#7D0166"]}
+    start={[0, 0]}
+    end={[1, 1]}
+    style={styles.container}
     >
       <Navbar />
       <View style={styles.container}>
+  
         <Text style={styles.text}>Nombre</Text>
         <GenericInput />
 
@@ -34,8 +35,9 @@ const AddPlanScreen = ({ imageSource }) => {
         <Text style={styles.text}>Lugar</Text>
         <GenericInput />
         <Text style={styles.text}>Imagen</Text>
-        <ImageContainer style={styles.foto} imageSource={imageSource} />
+        <ImageContainer style={styles.foto} imageSource={"https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"} />
         <GenericButton text={"Crear Plan"} />
+      
       </View>
     </LinearGradient>
   );
@@ -45,10 +47,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    height: "100%",
     alignItems: "center",
-    justifyContent: "center",
+   
   },
+  
+  containersv: {
+    flex: 1,
+    width: "auto",
+  },
+  
   container2: {
     width: "100%",
     flexDirection: "row",

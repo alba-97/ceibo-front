@@ -17,6 +17,8 @@ import {
   Feather,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -103,8 +105,24 @@ function BottomNavbar() {
 
 export default function Navigation() {
   return (
+        
+  <LinearGradient
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+      style={{
+        flex: 1,
+        
+      }}
+    >
+ 
+    
     <NavigationContainer>
       <BottomNavbar />
     </NavigationContainer>
+      </LinearGradient> 
+    
+ 
+    
   );
 }
