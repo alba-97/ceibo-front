@@ -1,6 +1,6 @@
 // React Components
 import React, { useEffect, useState } from "react";
-import { Text, ScrollView, TextInput } from "react-native";
+import { Text, ScrollView, TextInput, View,  } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 // Components
 import { styles } from "../appCss";
@@ -56,38 +56,37 @@ export default function SearchScreen() {
   };
 
   return (
-    <>
-      <LinearGradient
-        colors={["#000", "#7D0166"]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={styles.container}
-      >
-        <Navbar />
-        <ScrollView>
-          {results ? (
-            <>
-              {results.map((item, index) => {
-                return (
-                  <ImageContainer
-                    key={index}
-                    imageSource={
-                      item.img
-                        ? item.img
-                        : "https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
-                    }
-                    date={item.event_date && formatDate(item.event_date)}
-                    event={item.title}
-                  />
-                );
-              })}
-            </>
-          ) : (
-            <Text>Cargando datos...</Text>
-          )}
-        </ScrollView>
-      </LinearGradient>
+    <View style={styles.container}>
+    <LinearGradient
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+      style={styles.container}
+    >
+      <Navbar/>
+    <View style={styles.searchContainer}>
       <GenericInput value={query} onChangeText={handleQueryChange} />
-    </>
-  );
+    </View>
+    <View style={styles.content}>
+      <ScrollView>
+        {results ? (
+          results.map((item, index) => (
+            <ImageContainer
+              key={index}
+              imageSource={
+                item.img ||
+                "https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
+              }
+              date={item.event_date && formatDate(item.event_date)}
+              event={item.title}
+            />
+          ))
+        ) : (
+          <Text>Cargando datos...</Text>
+        )}
+      </ScrollView>
+    </View>
+    </LinearGradient>
+  </View>
+);
 }
