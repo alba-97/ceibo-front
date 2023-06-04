@@ -8,14 +8,14 @@ export function SwiperComponent({ title, plans }) {
   return (
     <>
       <ProfileText text={title}></ProfileText>
-      <Swiper showsPagination={false} height={200}>
-        {plans.map((p) => {
+      <Swiper loop={false} showsPagination={false} height={200}>
+        {plans.map((p, index) => {
           return (
-            <View style={styles.view}>
+            <View style={styles.view} key={index}>
               <ImageContainer
                 imageSource={p?.img}
                 date={p?.event_date}
-                event={p?.description}
+                event={p?.title}
               />
             </View>
           );

@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
   },
   text: {
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     marginLeft: 20,
   },
