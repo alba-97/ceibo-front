@@ -1,6 +1,6 @@
 // React Components
 import React, { useEffect, useState } from "react";
-import { Text, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 // Components
 import { styles } from "../appCss";
@@ -8,12 +8,15 @@ import { Navbar } from "../components/Navbar";
 // Other Imports
 import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
+import { getUserPlans } from "../services/getUserPlans";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     getAllPlans().then((res) => setData(res));
+    getUserPlans().then((res) => setUserData(res));
   }, []);
 
   return (
@@ -26,7 +29,7 @@ export default function HomeScreen() {
       <Navbar />
       <ScrollView>
         <SwiperComponent plans={data} title="Patrocinado" />
-        <SwiperComponent plans={data} title="Mis Planes" />
+        <SwiperComponent plans={userData} title="Mis Planes" />
         <SwiperComponent plans={data} title="Planes de Amigos" />
       </ScrollView>
     </LinearGradient>

@@ -3,9 +3,7 @@
     "name": "ceiboFront",
     "slug": "ceiboFront",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   },
   "name": "ceiboFront"
 }
