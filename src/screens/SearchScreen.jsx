@@ -86,7 +86,7 @@ export default function SearchScreen() {
                 />
               ))
             ) : (
-              <Text>Cargando datos...</Text>
+              <Text>Cargando datoss...</Text>
             )}
           </ScrollView>
         </View>

@@ -6,6 +6,6 @@ export async function getAllPlans() {
     const allPlans = await axios.get(`${API_URL}:${PORT}/api/events`);
     return allPlans.data;
   } catch (error) {
-    throw Error(error);
+    console.error(error);
   }
 }
