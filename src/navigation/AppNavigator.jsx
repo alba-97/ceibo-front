@@ -14,13 +14,17 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 
 import { LinearGradient } from "expo-linear-gradient";
+import { ContactInfoScreen } from "../screens/ContactInfoScreen";
 // Icons
 import {
   Entypo,
   FontAwesome,
   Feather,
   MaterialIcons,
+  AntDesign,
 } from "@expo/vector-icons";
+
+import { ContactsScreen } from "../screens/ContactsScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -44,6 +48,11 @@ function NavbarStack() {
 
       <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
       <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
+      <HomeStackNavigator.Screen
+        name="ContactInfoScreen"
+        component={ContactInfoScreen}
+      />
+      <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
     </HomeStackNavigator.Navigator>
   );
 }
@@ -85,12 +94,12 @@ function BottomNavbar() {
         }}
       />
       <Tab.Screen
-        name="Calendar"
-        component={CalendarScreen}
+        name="Contacts"
+        component={ContactsScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <Entypo name="calendar" size={size} color={color} />
+            <AntDesign name="contacts" size={size} color={color} />
           ),
         }}
       />

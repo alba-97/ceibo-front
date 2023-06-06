@@ -8,6 +8,7 @@ export async function getUserPlans() {
     );
     return userPlans.data;
   } catch (error) {
-    throw Error(error);
+    
+    console.error(error);
   }
 }
