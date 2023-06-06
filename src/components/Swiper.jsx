@@ -1,17 +1,10 @@
 import Swiper from "react-native-swiper";
 import { ImageContainer } from "./ImageContainer";
-import { Text, View } from "react-native";
-
+import { View } from "react-native";
+import ProfileText from "../components/ProfileText";
 import styles from "../styles/swiperStyles";
 
-export function SwiperComponent({ title, plans, onPress}) {
-  const handlePress = (event) => {
-    // Invocar la función onPress pasada desde el componente padre
-    if (onPress) {
-      onPress(event);
-    }
-  };
-
+export function SwiperComponent({ title, plans }) {
   return (
     <>
       <ProfileText text={title}></ProfileText>
