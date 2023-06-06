@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
 import { useNavigation } from "@react-navigation/native";
@@ -30,9 +24,9 @@ export default function LoginScreen() {
           <GenericButton text={"Iniciar Sesion"} />
           <Text style={styles.text}>
             ¿No tienes cuenta?
-            <TouchableOpacity onPress={handleSignup}>
-              <Text style={styles.text}>Crea una</Text>
-            </TouchableOpacity>
+            <Text onPress={handleSignup}>
+              <Text style={styles.text}> Crea una</Text>
+            </Text>
           </Text>
           <Text></Text>
         </View>
