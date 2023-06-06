@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,17 +14,20 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
+  const navigation = useNavigation();
+
   const handleSubmit = async () => {
     try {
       const res = await axios.post(`${API_URL}:${PORT}/api/users/signup`, {
-        username: username,
-        password: password,
-        email: email,
-        phone: phone,
+        username,
+        password,
+        email,
+        phone,
       });
-      Alert.alert(res.data.status, res.data.message, [{ text: "OK" }]);
+      Alert.alert("Hecho", res.data.message, [{ text: "OK" }]);
+      navigation.navigate("Login");
     } catch (error) {
-      Alert.alert("Error", "Inténtelo más tarde", [{ text: "OK" }]);
+      Alert.alert("Error", error.response.data, [{ text: "OK" }]);
     }
   };
 

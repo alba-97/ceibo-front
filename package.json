@@ -42,7 +42,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "serialize-error": "^11.0.0"
+    "@react-native-async-storage/async-storage": "1.17.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
@@ -53,14 +53,19 @@
     "slug": "ceibofront",
     "version": "1.0.0",
     "sdkVersion": "40.0.0",
-    "platforms": ["android", "ios"],
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "permissions": [
       "READ_CONTACTS",
       "WRITE_CONTACTS"
     ],
     "android": {
-      "permissions": ["android.permission.READ_CONTACTS",
-      "android.permission.WRITE_CONTACTS"]
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS"
+      ]
     },
     "ios": {
       "permissions": []
