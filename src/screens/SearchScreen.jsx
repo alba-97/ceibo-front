@@ -39,26 +39,6 @@ export default function SearchScreen() {
     }
   }, []);
 
-  const formatDate = (date) => {
-    const months = [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "septiembre",
-      "octubre",
-      "diciembre",
-    ];
-    date = date.split("-");
-    const day = parseInt(date[2], 10);
-    const month = months[parseInt(date[1], 10) - 1];
-    const year = date[0];
-    return `${day} de ${month} de ${year}`;
-  };
-
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -81,7 +61,7 @@ export default function SearchScreen() {
                     item.img ||
                     "https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
                   }
-                  date={item.event_date && formatDate(item.event_date)}
+                  date={item.event_date}
                   event={item.title}
                 />
               ))

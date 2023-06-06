@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {  View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { GenericInput } from "../components/GenericInput";
-import { GenericButton } from "../components/GenericButton";
 import * as Contacts from "expo-contacts";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,15 +12,11 @@ export const ContactsScreen = () => {
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigation = useNavigation();
 
-
-
-
   useEffect(() => {
     const fetchContacts = async () => {
       const { status } = await Contacts.requestPermissionsAsync();
 
       if (status !== "granted") {
-        // Manejo de permisos denegados
         return;
       }
 
@@ -41,7 +36,7 @@ export const ContactsScreen = () => {
 
   const handleQueryChange = (text) => {
     setQuery(text);
-    filterContacts(text)
+    filterContacts(text);
   };
   const filterContacts = (text) => {
     const filtered = contacts.filter((contact) =>
@@ -51,38 +46,42 @@ export const ContactsScreen = () => {
   };
   const handleContactPress = (contact) => {
     navigation.navigate("ContactInfoScreen", { contact });
-  
   };
-console.log('ordenado', contacts);
   return (
-  <LinearGradient
-    colors={["#000", "#7D0166"]}
-    start={[0, 0]}
-    end={[1, 1]}
-    style={styles.containerr}
-  >
-    <Navbar />
-    <View style={styles.container}>
-    <View style={styles.container3}>
-      <GenericInput value={query} onChangeText={handleQueryChange}placeholder={"Buscar"} />
-    </View>
-    <Text style={styles.text1}>Contactos</Text>
-    
-      <ScrollView>
-    <View style={styles.container2}>
-        {filteredContacts?.map((contact,i) => (
-          <Text style={styles.text2} key={i} onPress={() => handleContactPress(contact)} >
-            {contact.name}
-          </Text>
-        ))}
-    </View>
-      </ScrollView>
-  </View>
-  
-  </LinearGradient>
+    <LinearGradient
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+      style={styles.containerr}
+    >
+      <Navbar />
+      <View style={styles.container}>
+        <View style={styles.container3}>
+          <GenericInput
+            value={query}
+            onChangeText={handleQueryChange}
+            placeholder={"Buscar"}
+          />
+        </View>
+        <Text style={styles.text1}>Contactos</Text>
+
+        <ScrollView>
+          <View style={styles.container2}>
+            {filteredContacts?.map((contact, i) => (
+              <Text
+                style={styles.text2}
+                key={i}
+                onPress={() => handleContactPress(contact)}
+              >
+                {contact.name}
+              </Text>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 };
-
 
 const styles = StyleSheet.create({
   containerr: {
@@ -92,27 +91,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "white",
-  },  
+  },
   container: {
     flex: 1,
     width: "100%",
-   
-  },  
+  },
 
   container3: {
     paddingTop: "5%",
     paddingBottom: "4%",
 
     alignItems: "center",
-  },  
+  },
 
   container2: {
     width: "95%",
-   paddingLeft:"5%",
+    paddingLeft: "5%",
   },
   text1: {
     paddingBottom: "1%",
-    paddingLeft:"5%",
+    paddingLeft: "5%",
     color: "#FFF",
     fontSize: 30,
     fontWeight: "bold",
@@ -128,6 +126,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     borderBottomWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
-    
   },
 });
