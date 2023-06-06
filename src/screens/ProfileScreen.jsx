@@ -2,8 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
+  const user = useSelector((state) => state.user);
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
