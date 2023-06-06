@@ -17,9 +17,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ContactInfoScreen } from "../screens/ContactInfoScreen";
 // Icons
 
-import {Entypo,FontAwesome,Feather,MaterialIcons,AntDesign} from "@expo/vector-icons";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import {
+  Entypo,
+  FontAwesome,
+  Feather,
+  MaterialIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import { ContactsScreen } from "../screens/ContactsScreen";
+import PlanDetailScreen from "../screens/PlanDetailScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -30,17 +36,26 @@ function NavbarStack() {
     <HomeStackNavigator.Navigator
       screenOptions={{
         headerShown: false,
-        
       }}
     >
       <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
-      <HomeStackNavigator.Screen name="AddPlanScreen"component={AddPlanScreen}/>
+      <HomeStackNavigator.Screen
+        name="AddPlanScreen"
+        component={AddPlanScreen}
+      />
       <HomeStackNavigator.Screen name="Calendar" component={CalendarScreen} />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
-      <HomeStackNavigator.Screen name="ContactInfoScreen" component={ContactInfoScreen}/>
-      <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen}/>
-      </HomeStackNavigator.Navigator>
+      <HomeStackNavigator.Screen
+        name="PlanDetail"
+        component={PlanDetailScreen}
+      />
+      <HomeStackNavigator.Screen
+        name="ContactInfoScreen"
+        component={ContactInfoScreen}
+      />
+      <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
+    </HomeStackNavigator.Navigator>
   );
 }
 
@@ -50,19 +65,13 @@ function BottomNavbar() {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-       
-         tabBarStyle: { backgroundColor ,height:"8%",
-         borderTopWidth: 1.5
-        },
-        
-         
+
+        tabBarStyle: { backgroundColor, height: "8%", borderTopWidth: 1.5 },
+
         tabBarHideOnKeyboard: true,
 
-        tabBarIconStyle: { alignItems: 'center', justifyContent: 'center' },
-     
-      }} 
-    
-     
+        tabBarIconStyle: { alignItems: "center", justifyContent: "center" },
+      }}
     >
       <Tab.Screen
         name="Home"
@@ -114,11 +123,10 @@ function BottomNavbar() {
   );
 }
 
-
 export default function Navigation() {
   return (
     <NavigationContainer>
       <BottomNavbar />
-    </NavigationContainer> 
+    </NavigationContainer>
   );
 }
