@@ -10,7 +10,7 @@ export const ImageContainer = ({ plan }) => {
   const handlePress = () => {
     navigation.navigate("PlanDetail", { plan });
   };
-
+  
   return (
     <TouchableOpacity style={styles.container} onPress={() => handlePress()}>
       <Image source={{ uri: plan?.img }} style={styles.image} />
@@ -21,5 +21,6 @@ export const ImageContainer = ({ plan }) => {
         </Text>
       </View>
     </TouchableOpacity>
+
   );
 };

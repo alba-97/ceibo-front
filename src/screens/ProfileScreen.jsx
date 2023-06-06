@@ -1,19 +1,14 @@
 import React from "react";
+
 import { View, StyleSheet } from "react-native";
-import ProfilePicture from "../components/ProfilePicture";
-import ProfileText from "../components/ProfileText";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { Navbar } from "../components/Navbar";
-import {LoginScreen} from './LoginScreen'
+import LoginScreen from "./LoginScreen";
 import {RegisterScreen} from './RegisterScreen'
-const ProfileScreen = () => {
-  const imageSource =
-    "https://st2.depositphotos.com/1017732/9796/i/450/depositphotos_97968600-stock-photo-pensive-man-looking-at-the.jpg";
-  const name = "Leon Stefano";
-  const email = "leonstefano@gmail.com";
-  const number = 1112345678;
-  const userName = "ElLeonel";
-  const address = "Una casa 123";
+
+export default function ProfileScreen() {
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -21,11 +16,11 @@ const ProfileScreen = () => {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
-      <RegisterScreen/>
+      <LoginScreen />
     </LinearGradient>
   );
-};
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,7 +30,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "white",
   },
-  // foto: {},
 });
-
-export default ProfileScreen;

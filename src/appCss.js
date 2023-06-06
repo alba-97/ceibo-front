@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   searchContainer: {
     width:'100%',
     paddingTop:'5%',
+    
     alignItems: "center",
     
   },

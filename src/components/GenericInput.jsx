@@ -10,7 +10,7 @@ export const GenericInput = ({ ...props }) => {
 const styles = StyleSheet.create({
   input: {
     fontSize: 16,
-    color:'white',
+    color: "white",
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: 20,
     borderWidth: 1,
