@@ -1,9 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+
+import { View, StyleSheet } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
+import { Navbar } from "../components/Navbar";
 import LoginScreen from "./LoginScreen";
+import {RegisterScreen} from './RegisterScreen'
 
 export default function ProfileScreen() {
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}

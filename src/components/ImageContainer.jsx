@@ -1,16 +1,23 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import styles from "../styles/ImageContainerStyles";
 import { formatDate } from "../services/formatDate";
 
-export const ImageContainer = ({ imageSource, date, event }) => {
+export const ImageContainer = ({ imageSource, date, event, onPress }) => {
+  const handlePress = () => {
+    if (onPress) {
+      onPress(event);
+    }
+  };
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
-      <View style={styles.overlay}>
-        <Text style={styles.text}>{event}</Text>
-        <Text style={styles.textFecha}>{date && formatDate(date)}</Text>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
+      <View style={styles.container}>
+        <Image source={{ uri: imageSource }} style={styles.image} />
+        <View style={styles.overlay}>
+          <Text style={styles.text}>{event}</Text>
+          <Text style={styles.textFecha}>{date && formatDate(date)}</Text>
+        </View>
       </View>
-    </View>
+      </TouchableOpacity>  
   );
 };
