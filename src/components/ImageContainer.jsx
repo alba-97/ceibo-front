@@ -1,16 +1,25 @@
 import React from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import styles from "../styles/ImageContainerStyles";
 import { formatDate } from "../services/formatDate";
+import { useNavigation } from "@react-navigation/core";
 
-export const ImageContainer = ({ imageSource, date, event }) => {
+export const ImageContainer = ({ plan }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("PlanDetail", { plan });
+  };
+
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
+    <TouchableOpacity style={styles.container} onPress={() => handlePress()}>
+      <Image source={{ uri: plan?.img }} style={styles.image} />
       <View style={styles.overlay}>
-        <Text style={styles.text}>{event}</Text>
-        <Text style={styles.textFecha}>{date && formatDate(date)}</Text>
+        <Text style={styles.text}>{plan?.title}</Text>
+        <Text style={styles.textFecha}>
+          {plan?.event_date && formatDate(plan?.event_date)}
+        </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
