@@ -21,7 +21,6 @@ export default function RegisterScreen() {
         email: email,
         phone: phone,
       });
-      console.log(1, res.data.message);
       Alert.alert(res.data.status, res.data.message, [{ text: "OK" }]);
     } catch (error) {
       Alert.alert("Error", "Inténtelo más tarde", [{ text: "OK" }]);
