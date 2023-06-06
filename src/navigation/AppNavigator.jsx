@@ -10,9 +10,13 @@ import ProfileScreen from "../screens/ProfileScreen";
 import AddPlanScreen from "../screens/AddPlanScreen";
 import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { ContactInfoScreen } from "../screens/ContactInfoScreen";
 // Icons
+
 import {Entypo,FontAwesome,Feather,MaterialIcons,AntDesign} from "@expo/vector-icons";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { ContactsScreen } from "../screens/ContactsScreen";
@@ -106,7 +110,6 @@ function BottomNavbar() {
           ),
         }}
       />
-   
     </Tab.Navigator>
   );
 }
@@ -114,16 +117,8 @@ function BottomNavbar() {
 
 export default function Navigation() {
   return (
-       
- 
-    
     <NavigationContainer>
- 
       <BottomNavbar />
-     
-    </NavigationContainer>
-  
- 
-    
+    </NavigationContainer> 
   );
 }
