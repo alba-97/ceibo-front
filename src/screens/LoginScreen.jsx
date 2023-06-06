@@ -1,52 +1,65 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
+import { useNavigation } from "@react-navigation/native";
+import { Navbar } from "../components/Navbar";
 
-export const LoginScreen = () => {
+export default function LoginScreen() {
+  const navigation = useNavigation();
+  const handleSignup = () => {
+    navigation.navigate("Register");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Nombre de Usuario</Text>
-      <GenericInput />
-      <Text style={styles.text}>Contraseña</Text>
-      <GenericInput />
+    <ScrollView style={styles.scroll}>
+      <Navbar />
+      <View style={styles.container}>
+        <Text style={styles.text}>Nombre de Usuario</Text>
+        <GenericInput />
+        <Text style={styles.text}>Contraseña</Text>
+        <GenericInput secureTextEntry={true} />
 
-      <View style={styles.container2}>
         <View style={styles.inputContainer}>
           <GenericButton text={"Iniciar Sesion"} />
+          <Text style={styles.text}>
+            ¿No tienes cuenta?
+            <TouchableOpacity onPress={handleSignup}>
+              <Text style={styles.text}>Crea una</Text>
+            </TouchableOpacity>
+          </Text>
+          <Text></Text>
         </View>
         <View style={styles.inputContainer}>
-          <GenericButton text={"Home"} />
+          <GenericButton text={"Ingresar con Google"} />
         </View>
       </View>
-
-      <Text style={styles.text}>No tienes cuenta? Crea una</Text>
-      <GenericButton text={"Ingresar con Google"} />
-    </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    
-    alignItems: "center",
-   
-    
-  },  
-
-
-  container2: {
-    paddingTop: "30%",
-    width: "90%",
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
   },
   inputContainer: {
     alignItems: "center",
     flex: 1,
+    paddingTop: "10%",
+    width: "70%",
+  },
+  scroll: {
+    flex: 1,
+    width: "100%",
+    paddingTop: "10%",
   },
   text: {
     paddingTop: 10,
@@ -56,5 +69,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 4,
+  },
+  text2: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

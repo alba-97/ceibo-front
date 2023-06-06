@@ -10,6 +10,10 @@ import ProfileScreen from "../screens/ProfileScreen";
 import AddPlanScreen from "../screens/AddPlanScreen";
 import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+
+import { LinearGradient } from "expo-linear-gradient";
 // Icons
 import {
   Entypo,
@@ -17,8 +21,6 @@ import {
   Feather,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { KeyboardAvoidingView, Platform } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -39,6 +41,9 @@ function NavbarStack() {
       />
       <HomeStackNavigator.Screen name="Calendar" component={CalendarScreen} />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
+
+      <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
+      <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
     </HomeStackNavigator.Navigator>
   );
 }
@@ -105,24 +110,17 @@ function BottomNavbar() {
 
 export default function Navigation() {
   return (
-        
-  <LinearGradient
+    <LinearGradient
       colors={["#000", "#7D0166"]}
       start={[0, 0]}
       end={[1, 1]}
       style={{
         flex: 1,
-        
       }}
     >
- 
-    
-    <NavigationContainer>
-      <BottomNavbar />
-    </NavigationContainer>
-      </LinearGradient> 
-    
- 
-    
+      <NavigationContainer>
+        <BottomNavbar />
+      </NavigationContainer>
+    </LinearGradient>
   );
 }

@@ -39,26 +39,6 @@ export default function SearchScreen() {
     }
   }, []);
 
-  const formatDate = (date) => {
-    const months = [
-      "enero",
-      "febrero",
-      "marzo",
-      "abril",
-      "mayo",
-      "junio",
-      "julio",
-      "septiembre",
-      "octubre",
-      "diciembre",
-    ];
-    date = date.split("-");
-    const day = parseInt(date[2], 10);
-    const month = months[parseInt(date[1], 10) - 1];
-    const year = date[0];
-    return `${day} de ${month} de ${year}`;
-  };
-
   return (
     <View style={styles.container}>
       <LinearGradient

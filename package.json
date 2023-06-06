@@ -35,7 +35,8 @@
     "react-script": "^2.0.5",
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "serialize-error": "^11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
