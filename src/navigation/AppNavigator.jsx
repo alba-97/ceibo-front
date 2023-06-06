@@ -8,15 +8,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AddPlanScreen from "../screens/AddPlanScreen";
-import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
-import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
-
-import { LinearGradient } from "expo-linear-gradient";
-import { ContactInfoScreen } from "../screens/ContactInfoScreen";
+import PlanDetailScreen from "../screens/PlanDetailScreen";
+import ContactInfoScreen from "../screens/ContactInfoScreen";
+import ContactsScreen from "../screens/ContactsScreen";
 // Icons
-
 import {
   Entypo,
   FontAwesome,
@@ -24,8 +20,6 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import { ContactsScreen } from "../screens/ContactsScreen";
-import PlanDetailScreen from "../screens/PlanDetailScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -44,7 +38,6 @@ function NavbarStack() {
         name="AddPlanScreen"
         component={AddPlanScreen}
       />
-      <HomeStackNavigator.Screen name="Calendar" component={CalendarScreen} />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
       <HomeStackNavigator.Screen
         name="PlanDetail"
