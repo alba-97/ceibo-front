@@ -6,6 +6,7 @@ import * as Contacts from "expo-contacts";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Navbar } from "../components/Navbar";
+import styles from "../styles/stylesContact";
 
 export const ContactsScreen = () => {
   const [contacts, setContacts] = useState([]);
@@ -53,7 +54,7 @@ export const ContactsScreen = () => {
     navigation.navigate("ContactInfoScreen", { contact });
   
   };
-console.log('ordenado', contacts);
+
   return (
   <LinearGradient
     colors={["#000", "#7D0166"]}
@@ -83,51 +84,3 @@ console.log('ordenado', contacts);
   );
 };
 
-
-const styles = StyleSheet.create({
-  containerr: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-  },  
-  container: {
-    flex: 1,
-    width: "100%",
-   
-  },  
-
-  container3: {
-    paddingTop: "5%",
-    paddingBottom: "4%",
-
-    alignItems: "center",
-  },  
-
-  container2: {
-    width: "95%",
-   paddingLeft:"5%",
-  },
-  text1: {
-    paddingBottom: "1%",
-    paddingLeft:"5%",
-    color: "#FFF",
-    fontSize: 30,
-    fontWeight: "bold",
-    borderBottomWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-  },
-  text2: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-    borderBottomWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-    
-  },
-});

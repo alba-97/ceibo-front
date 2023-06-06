@@ -1,10 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import ProfilePicture from "../components/ProfilePicture";
-import ProfileText from "../components/ProfileText";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { Navbar } from "../components/Navbar";
-import {LoginScreen} from './LoginScreen'
+
 import {RegisterScreen} from './RegisterScreen'
 const ProfileScreen = () => {
   const imageSource =

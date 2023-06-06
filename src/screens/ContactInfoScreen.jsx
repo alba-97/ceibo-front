@@ -1,22 +1,37 @@
 
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { Navbar } from "../components/Navbar";
 import { LinearGradient } from "expo-linear-gradient";
 import { GenericButton } from "../components/GenericButton";
 import { SwiperComponent } from "../components/Swiper";
-import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
+import styles from "../styles/stylesContactInfo";
+import { Linking } from 'react-native';
+import Mailer from 'react-native-mail';
 
 export const ContactInfoScreen = ({ route }) => {
     const { contact } = route.params;
-    //const [data, setData] = useState([]);
     const [userData, setUserData] = useState([]);
-  
+    const [selectedPlan, setSelectedPlan] = useState(null);
+    const [isEventShared, setIsEventShared] = useState(false);
+
     useEffect(() => {
-        //getAllPlans().then((res) => setData(res));
         getUserPlans().then((res) => setUserData(res));
       }, []);
+     
+      const handlePress = (plan) => {
+        setSelectedPlan(plan);
+        setIsEventShared(false);
+      };
+      const handleShareEvent = () => {
+        if (selectedPlan) {
+          // Lógica para compartir el evento
+          console.log("Evento compartido:", selectedPlan);
+          setIsEventShared(true);
+          setSelectedPlan(null);
+        }
+      };
     return (      
         <LinearGradient
             colors={["#000", "#7D0166"]}
@@ -35,61 +50,56 @@ export const ContactInfoScreen = ({ route }) => {
         <Text style={styles.text2}>Telefono:</Text>
         <Text style={styles.text3}>{contact.phoneNumbers[0]?.number}</Text>
         <ScrollView>
-        <SwiperComponent plans={userData} title="Mis Planes" />
-        {/* <SwiperComponent plans={data} title="Planes de Amigos" /> */}
-        <View style={styles.inputContainer}>
-          <GenericButton text={"Compartir Evento"} />
-        </View>
+        <SwiperComponent plans={userData} title="Mis Planes" onPress={handlePress}/>
+        {selectedPlan && (
+            <View style={styles.inputContainer}>
+              <GenericButton text={"Compartir Plan"} onPress={handleShareEvent} />
+            </View>
+          )}<View style={styles.container2}>
+          {isEventShared &&(
+            <View style={styles.container2}>
+              <Text style={styles.shareMessage}>¡Plan compartido!</Text>
+              <GenericButton text={"Aceptar"} onPress={() => setIsEventShared(false)} />
+            </View>
+          )}
+      </View>  
       </ScrollView>
       </View>
-      </LinearGradient> 
+    </LinearGradient>
     );
   };
   
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      width: "100%",
-     // alignItems: "center",
-    },  
-    container2: {
-        alignItems: "center",
-      },  
-    inputContainer: {
-       paddingBottom: "10%",
-        alignItems: "center",
-        flex: 1,
-      },
-   
-    text1: {
-      justifyContent:"center",
-   //   alignItems: "center",
-      paddingBottom: "1%",
-      paddingLeft:"5%",
-      color: "#FFF",
-      fontSize: 30,
-      fontWeight: "bold",
-    
-    },
-
-    text2: {
-        
-        paddingLeft:"5%",
-        color: "#FFF",
-        fontSize: 15,
-        fontWeight: "bold",
-        
-      },
-
-    text3: {
-        paddingBottom: "1%",
-        paddingLeft:"5%",
-        color: "#FFF",
-        fontSize: 20,
-        fontWeight: "bold",
-        borderBottomWidth: 1,
-        borderColor: "white",
-      },
-  });
+//  const handleShareEvent = () => {
+//     if (selectedPlan) {
+//      // const { title, event_date } = selectedPlan;
+//       const subject = '¡Te invito a un evento en nuestra app!';
+//       const body = `Hola,\n\nTe invito a un evento llamado "remplazar por el titulo" que tendrá lugar el remplazar por la fecha. ¡No te lo pierdas!\n\nPuedes ver más detalles y unirte al evento en nuestra app haciendo clic en el siguiente enlace:\n\n<ENLACE DE TU APP>`;
+      
+//       Mailer.mail({
+//         subject,
+//         recipients: [],
+//         body,
+//         isHTML: true,
+//       }, (error, event) => {
+//         if (error) {
+//           console.error(error);
+//         }
+//       });
+      
+//       setIsEventShared(true);
+//       setSelectedPlan(null);
+//     }
+//   };
+  
+//   useEffect(() => {
+//     Linking.addEventListener('url', handleOpenURL);
+//     return () => {
+//       Linking.removeEventListener('url', handleOpenURL);
+//     };
+//   }, []);
+  
+//   const handleOpenURL = (event) => {
+//     // Aquí puedes manejar la lógica cuando se abre el enlace en tu aplicación
+//     console.log('Enlace abierto:', event.url);
+//   };
   
