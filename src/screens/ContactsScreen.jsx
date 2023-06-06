@@ -7,7 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Navbar } from "../components/Navbar";
 import styles from "../styles/stylesContact";
 
-export const ContactsScreen = () => {
+export default ContactsScreen = () => {
   const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);

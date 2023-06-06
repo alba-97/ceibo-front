@@ -4,11 +4,15 @@ import styles from "../styles/ImageContainerStyles";
 import { formatDate } from "../services/formatDate";
 import { useNavigation } from "@react-navigation/core";
 
-export const ImageContainer = ({ plan }) => {
+export const ImageContainer = ({ plan, onPress }) => {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate("PlanDetail", { plan });
+    if (onPress) {
+      onPress();
+    } else {
+      navigation.navigate("PlanDetail", { plan });
+    }
   };
 
   return (
