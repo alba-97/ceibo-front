@@ -14,21 +14,17 @@ export function SwiperComponent({ title, plans, onPress}) {
 
   return (
     <>
-      <View style={styles.container}>
-      <Text style={styles.text}>{title}</Text>
-     </View>
-
-
-      <Swiper loop={false} showsPagination={false}   containerStyle={styles.swiperContainer}>
+      <ProfileText text={title}></ProfileText>
+      <Swiper
+        loop={false}
+        showsButtons={true}
+        showsPagination={false}
+        height={200}
+      >
         {plans.map((p, index) => {
           return (
             <View style={styles.view} key={index}>
-              <ImageContainer
-                imageSource={p?.img}
-                date={p?.event_date}
-                event={p?.title}
-                onPress={() => handlePress(p)} // Agrega el evento onPress aquí
-              />
+              <ImageContainer plan={p} />
             </View>
           );
         })}
