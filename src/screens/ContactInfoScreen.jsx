@@ -25,7 +25,6 @@ export default ContactInfoScreen = ({ route }) => {
   };
   const handleShareEvent = () => {
     if (selectedPlan) {
-      // Lógica para compartir el evento
       console.log("Evento compartido:", selectedPlan);
       setIsEventShared(true);
       setSelectedPlan(null);
