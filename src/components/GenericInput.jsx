@@ -1,7 +1,7 @@
-import React from "react";
-import { TextInput, StyleSheet } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
+import { TextInput, StyleSheet } from "react-native";
 import moment from "moment";
+import React from "react";
 
 export const GenericInput = ({ type, ...props }) => {
   if (type === "date") {

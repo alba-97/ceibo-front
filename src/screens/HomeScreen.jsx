@@ -1,14 +1,13 @@
 // React Components
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 // Components
-import { styles } from "../appCss";
-import { Navbar } from "../components/Navbar";
-// Other Imports
+import { getUserPlans } from "../services/getUserPlans";
 import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
-import { getUserPlans } from "../services/getUserPlans";
+import { Navbar } from "../components/Navbar";
+import { styles } from "../appCss";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);

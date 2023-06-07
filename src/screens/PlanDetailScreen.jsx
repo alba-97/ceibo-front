@@ -1,5 +1,5 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { PlanDetailCard } from "../components/PlanDetailCard";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function PlanDetailScreen() {
   return (

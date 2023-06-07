@@ -1,12 +1,15 @@
-import React from "react";
-import { Image, ScrollView, StyleSheet } from "react-native";
-import { Text, TextInput, View } from "react-native";
-import { GenericInput } from "../components/GenericInput";
-import { GenericButton } from "../components/GenericButton";
+// Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Navbar } from "../components/Navbar";
+import { Text, TextInput, View } from "react-native";
+import { Image } from "react-native";
+import React from "react";
+// Components
+import { GenericButton } from "../components/GenericButton";
+import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
+import { Navbar } from "../components/Navbar";
 // import noPlan from "../assets/noPlan.png";
+
 export default function AddPlanScreen({ imageSource }) {
   const imgSrc = imageSource;
   //  || noPlan;

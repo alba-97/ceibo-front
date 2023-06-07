@@ -1,16 +1,19 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+//Native
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector, useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
-import { useSelector, useDispatch } from "react-redux";
-import { GenericButton } from "../components/GenericButton";
-import axios from "axios";
-import { API_URL, PORT } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { clearUser } from "../state/user";
-import ProfileText from "../components/ProfileText";
-import ProfilePicture from "../components/ProfilePicture";
+import { View } from "react-native";
 import moment from "moment";
+import React from "react";
+import axios from "axios";
+// Components
+import { ProfilePicture } from "../components/ProfilePicture";
+import { GenericButton } from "../components/GenericButton";
+import { ProfileText } from "../components/ProfileText";
+import { styles } from "../styles/profileScreenStyles";
+import { clearUser } from "../state/user";
+import { API_URL, PORT } from "@env";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
@@ -32,13 +35,13 @@ export default function ProfileScreen() {
     >
       {user._id ? (
         <View style={styles.container}>
-          {/* <ProfilePicture imageSource={"profile_img"}/> */}
+          <ProfilePicture imageSource={"profile_img"} />
           <ProfileText style={styles.text} text={user?.username} />
           <ProfileText style={styles.text} text={fullName} />
           <ProfileText style={styles.text} text={formattedBirthdate} />
-          <ProfileText style={styles.text} text={user.phone} />
-          <ProfileText style={styles.text} text={user.email} />
-          <ProfileText style={styles.text} text={user.address} />
+          <ProfileText style={styles.text} text={user?.phone} />
+          <ProfileText style={styles.text} text={user?.email} />
+          <ProfileText style={styles.text} text={user?.address} />
           <GenericButton onPress={handleLogout} text="Logout" />
         </View>
       ) : (
@@ -47,23 +50,3 @@ export default function ProfileScreen() {
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-  },
-  text: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-});
