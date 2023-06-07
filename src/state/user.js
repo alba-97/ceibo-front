@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-const setUser = createAction("SET_USER");
+export const setUser = createAction("SET_USER");
 
 const initialState = {
   id: null,

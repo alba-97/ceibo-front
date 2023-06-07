@@ -34,16 +34,9 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   addButton: {
-    marginTop: 150,
-    backgroundColor: "#7D0166",
+    marginTop: "10%",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
     alignItems: "center",
-  },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
