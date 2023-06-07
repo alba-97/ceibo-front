@@ -1,7 +1,28 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
+import { TextInputMask } from "react-native-masked-text";
+import moment from "moment";
 
-export const GenericInput = ({ ...props }) => {
+export const GenericInput = ({ type, ...props }) => {
+  if (type === "date") {
+    const validateDate = (value, settings) => {
+      return moment(value, "DD/MM/YYYY").isValid();
+    };
+
+    return (
+      <TextInputMask
+        type={"datetime"}
+        options={{
+          format: "DD/MM/YYYY",
+          validator: validateDate,
+        }}
+        {...props}
+        style={styles.input}
+        placeholderTextColor="#999"
+      />
+    );
+  }
+
   return (
     <TextInput {...props} style={styles.input} placeholderTextColor="#999" />
   );
@@ -17,6 +38,6 @@ const styles = StyleSheet.create({
     borderColor: "white",
     paddingHorizontal: 10,
     paddingVertical: 8,
-    width: "80%", // ajusta el valor según tus necesidades
+    width: "80%",
   },
 });

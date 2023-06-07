@@ -54,8 +54,9 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView style={styles.scroll}>
-        <Navbar />
+        
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
@@ -68,13 +69,12 @@ export default function LoginScreen() {
 
           <View style={styles.inputContainer}>
             <GenericButton onPress={handleLogin} text={"Iniciar Sesion"} />
-            <Text style={styles.text}>
-              ¿No tienes cuenta?
-              <Text onPress={handleSignup}>
-                <Text style={styles.text}> Crea una</Text>
-              </Text>
+
+            <Text style={styles.text} onPress={handleSignup}>
+              ¿No tienes cuenta? Crea una
             </Text>
-            <Text></Text>
+
+           
           </View>
           <View style={styles.inputContainer}>
             <GenericButton text={"Ingresar con Google"} />
