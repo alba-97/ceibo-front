@@ -1,4 +1,5 @@
 export const formatDate = (date) => {
+  date = date.slice(0, 10);
   const months = [
     "Enero",
     "Febrero",
