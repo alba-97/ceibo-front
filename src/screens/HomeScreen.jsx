@@ -4,17 +4,17 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 // Components
 import { getUserPlans } from "../services/getUserPlans";
-import { SwiperComponent } from "../components/Swiper";
-import { getAllPlans } from "../services/getAllPlans";
 import { setSelectedPlan } from "../state/selectedPlan";
+import { SwiperComponent } from "../components/Swiper";
+import { useNavigation } from "@react-navigation/core";
+import { getAllPlans } from "../services/getAllPlans";
 import { Navbar } from "../components/Navbar";
 import { styles } from "../appCss";
-import { useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 
 export default function HomeScreen() {
-  const [data, setData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [data, setData] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 

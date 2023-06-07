@@ -9,11 +9,21 @@ import { Navbar } from "../components/Navbar";
 import { API_URL, PORT } from "@env";
 import { styles } from "../appCss";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/core";
+import { useDispatch } from "react-redux";
+import { setSelectedPlan } from "../state/selectedPlan";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handlePress = (plan) => {
+    dispatch(setSelectedPlan(plan));
+    navigation.navigate("PlanDetail");
+  };
 
   const handleQueryChange = (text) => {
     setQuery(text);
@@ -54,7 +64,7 @@ export default function SearchScreen() {
           <ScrollView>
             {results ? (
               results.map((item, index) => (
-                <ImageContainer key={index} plan={item} />
+                <ImageContainer key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
               <Text>Cargando datoss...</Text>
