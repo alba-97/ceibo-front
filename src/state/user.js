@@ -1,4 +1,24 @@
+/*
 import { createAction, createReducer } from "@reduxjs/toolkit";
+
+const initialState = ;
+
+export const setUser = createAction("SET_USER");
+export const clearUser = createAction("CLEAR_USER");
+
+const reducer = createReducer(initialState, {
+  [setUser]: (state, action) => {
+    return action.payload;
+  },
+  [clearUser]: (state, action) => {
+    return initialState;
+  },
+});
+
+export default reducer;
+*/
+
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   _id: null,
@@ -11,12 +31,15 @@ const initialState = {
   profile_img: null,
 };
 
-export const setUser = createAction("SET_USER");
-
-const reducer = createReducer(initialState, {
-  [setUser]: (state, action) => {
-    return action.payload;
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    setUser: (state, action) => action.payload,
+    clearUser: () => initialState,
   },
 });
 
-export default reducer;
+export const { setUser, clearUser } = userSlice.actions;
+
+export default userSlice.reducer;
