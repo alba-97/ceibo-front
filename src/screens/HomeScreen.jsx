@@ -6,12 +6,22 @@ import { ScrollView } from "react-native";
 import { getUserPlans } from "../services/getUserPlans";
 import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
+import { setSelectedPlan } from "../state/selectedPlan";
 import { Navbar } from "../components/Navbar";
 import { styles } from "../appCss";
+import { useNavigation } from "@react-navigation/core";
+import { useDispatch } from "react-redux";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handlePress = (plan) => {
+    dispatch(setSelectedPlan(plan));
+    navigation.navigate("PlanDetail");
+  };
 
   useEffect(() => {
     getAllPlans()
@@ -21,7 +31,7 @@ export default function HomeScreen() {
       .then((res) => setUserData(res))
       .catch((err) => console.log(err));
   }, []);
-  console.log("data plans", data);
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -31,9 +41,21 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <SwiperComponent plans={data} title="Patrocinado" />
-        <SwiperComponent plans={userData} title="Mis Planes" />
-        <SwiperComponent plans={data} title="Planes de Amigos" />
+        <SwiperComponent
+          plans={data}
+          title="Patrocinado"
+          onPress={handlePress}
+        />
+        <SwiperComponent
+          plans={userData}
+          title="Mis Planes"
+          onPress={handlePress}
+        />
+        <SwiperComponent
+          plans={data}
+          title="Planes de Amigos"
+          onPress={handlePress}
+        />
       </ScrollView>
     </LinearGradient>
   );

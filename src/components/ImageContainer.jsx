@@ -1,25 +1,20 @@
 // Native
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/core";
-import { useDispatch } from "react-redux";
 import React from "react";
 // Components
-import { setSelectedPlan } from "../state/selectedPlan";
 import { formatDate } from "../services/formatDate";
 import styles from "../styles/ImageContainerStyles";
 
-export const ImageContainer = ({ plan }) => {
-  const navigation = useNavigation();
-  console.log("plan", plan);
-  const dispatch = useDispatch();
-
-  const handlePress = () => {
-    dispatch(setSelectedPlan(plan));
-    navigation.navigate("PlanDetail");
+export const ImageContainer = ({ plan, onPress }) => {
+  const handlePress = (prop) => {
+    onPress(prop);
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => handlePress()}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => handlePress(plan)}
+    >
       <Image source={{ uri: plan?.img }} style={styles.image} />
       <View style={styles.overlay}>
         <Text style={styles.text}>{plan?.title}</Text>
