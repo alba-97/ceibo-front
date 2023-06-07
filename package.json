@@ -43,7 +43,7 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "serialize-error": "^11.0.0"
+    "@react-native-async-storage/async-storage": "1.17.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
