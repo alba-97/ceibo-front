@@ -68,13 +68,12 @@ export default function LoginScreen() {
 
           <View style={styles.inputContainer}>
             <GenericButton onPress={handleLogin} text={"Iniciar Sesion"} />
-            <Text style={styles.text}>
-              ¿No tienes cuenta?
-              <Text onPress={handleSignup}>
-                <Text style={styles.text}> Crea una</Text>
-              </Text>
+
+            <Text style={styles.text} onPress={handleSignup}>
+              ¿No tienes cuenta? Crea una
             </Text>
-            <Text></Text>
+
+           
           </View>
           <View style={styles.inputContainer}>
             <GenericButton text={"Ingresar con Google"} />

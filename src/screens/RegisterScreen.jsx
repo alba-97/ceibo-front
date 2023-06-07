@@ -62,9 +62,7 @@ export default function RegisterScreen() {
             <View style={styles.inputContainer}>
               <GenericButton onPress={handleSubmit} text={"Crear Cuenta"} />
             </View>
-            <View style={styles.inputContainer}>
-              <GenericButton text={"Home"} />
-            </View>
+            
           </View>
         </View>
       </ScrollView>
