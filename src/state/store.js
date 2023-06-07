@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer } from "./user";
+import logger from "redux-logger";
+import userReducer from "./user";
 
-export const store = configureStore({
+const store = configureStore({
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   reducer: {
     user: userReducer,
   },
 });
+
+export default store;

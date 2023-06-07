@@ -1,11 +1,16 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
-import { useSelector } from "react-redux";
+import formatDate from "../services/formatDate";
+import { setUser } from "../state/user";
+import axios from "axios";
+import { API_URL, PORT } from "@env";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -13,7 +18,17 @@ export default function ProfileScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <LoginScreen />
+      {user._id ? (
+        <View style={styles.container}>
+          <Text style={styles.text}>{user?.username}</Text>
+          <Text style={styles.text}>
+            {user.first_name} {user?.last_name}
+          </Text>
+          <Text style={styles.text}>{user.email}</Text>
+        </View>
+      ) : (
+        <LoginScreen />
+      )}
     </LinearGradient>
   );
 }
@@ -26,5 +41,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "white",
+  },
+  text: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 4,
   },
 });

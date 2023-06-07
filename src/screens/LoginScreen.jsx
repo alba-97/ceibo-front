@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { GenericInput } from "../components/GenericInput";
@@ -8,14 +8,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+import { useDispatch } from "react-redux";
+import { setUser } from "../state/user";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [user, setUser] = useState({});
 
   const handleSignup = () => {
     navigation.navigate("Register");
@@ -28,14 +29,18 @@ export default function LoginScreen() {
       });
       if (res.data.token) {
         await AsyncStorage.setItem("token", res.data.token);
-        const user = await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
+        await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
           headers: {
             Authorization: `Bearer ${res.data.token}`,
           },
         });
-        if (user.status == 200) {
-          setUser(user.data);
-        }
+        const user = await axios.get(`${API_URL}:${PORT}/api/users/me`, {
+          headers: {
+            Authorization: `Bearer ${res.data.token}`,
+          },
+        });
+        dispatch(setUser(user.data));
+        navigation.navigate("Home");
       }
     } catch (error) {
       Alert.alert("Error", error.response.data, [{ text: "OK" }]);
@@ -51,9 +56,6 @@ export default function LoginScreen() {
     >
       <ScrollView style={styles.scroll}>
         <Navbar />
-        <Text style={styles.text}>
-          {user.username && "Estas logueado como " + user.username}
-        </Text>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />

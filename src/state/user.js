@@ -1,12 +1,9 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-const setUser = createAction("SET_USER");
-
 const initialState = {
-  id: null,
+  _id: null,
+  email: null,
   username: null,
-  password: null,
-  first_name: null,
   last_name: null,
   email: null,
   birthdate: null,
@@ -14,6 +11,12 @@ const initialState = {
   profile_img: null,
 };
 
-export const userReducer = createReducer(initialState, {
-  [setUser]: (state, action) => action.payload,
+export const setUser = createAction("SET_USER");
+
+const reducer = createReducer(initialState, {
+  [setUser]: (state, action) => {
+    return action.payload;
+  },
 });
+
+export default reducer;
