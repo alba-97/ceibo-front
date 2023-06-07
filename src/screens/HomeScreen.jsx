@@ -5,22 +5,37 @@ import { LinearGradient } from "expo-linear-gradient";
 // Components
 import { styles } from "../appCss";
 import { Navbar } from "../components/Navbar";
-// Other Imports
 import { SwiperComponent } from "../components/Swiper";
+// Other Imports
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
+import { getUser } from "../services/getUser";
+
+import { useDispatch } from "react-redux";
+import { setUser } from "../state/user";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
   const [userData, setUserData] = useState([]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getAllPlans()
-      .then((res) => setData(res))
-      .catch((err) => console.log(err));
-    getUserPlans()
-      .then((res) => setUserData(res))
-      .catch((err) => console.log(err));
+    const fetchInfo = async () => {
+      try {
+        const user = await getUser();
+        if (user) {
+          dispatch(setUser(user));
+          const userPlans = await getUserPlans();
+          setUserData(userPlans);
+        }
+        const plans = await getAllPlans();
+        setData(plans);
+      } catch (error) {
+        console.log(123, error);
+      }
+    };
+    fetchInfo();
   }, []);
 
   return (
@@ -33,8 +48,12 @@ export default function HomeScreen() {
       <Navbar />
       <ScrollView>
         <SwiperComponent plans={data} title="Patrocinado" />
-        <SwiperComponent plans={userData} title="Mis Planes" />
-        <SwiperComponent plans={data} title="Planes de Amigos" />
+        {userData[0] && (
+          <>
+            <SwiperComponent plans={userData} title="Mis Planes" />
+            <SwiperComponent plans={data} title="Planes de Amigos" />
+          </>
+        )}
       </ScrollView>
     </LinearGradient>
   );

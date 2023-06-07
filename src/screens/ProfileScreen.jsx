@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import { useSelector, useDispatch } from "react-redux";
@@ -29,10 +29,20 @@ export default function ProfileScreen() {
     >
       {user._id ? (
         <View style={styles.container}>
+          {user.profile_img && (
+            <Image
+              source={{ uri: user.profile_img }}
+              style={{ width: 100, height: 100 }}
+            />
+          )}
+
           <Text style={styles.text}>{user?.username}</Text>
-          <Text style={styles.text}>
-            {user.first_name} {user?.last_name}
-          </Text>
+          {user.first_name && user.last_name && (
+            <Text style={styles.text}>
+              {user.first_name} {user.last_name}
+            </Text>
+          )}
+
           <Text style={styles.text}>{user.email}</Text>
           <GenericButton onPress={handleLogout} text="Logout" />
         </View>

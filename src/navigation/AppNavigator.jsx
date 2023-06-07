@@ -12,6 +12,8 @@ import SearchScreen from "../screens/SearchScreen";
 import PlanDetailScreen from "../screens/PlanDetailScreen";
 import ContactInfoScreen from "../screens/ContactInfoScreen";
 import ContactsScreen from "../screens/ContactsScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 // Icons
 import {
   Entypo,
@@ -47,6 +49,8 @@ function NavbarStack() {
         name="ContactInfoScreen"
         component={ContactInfoScreen}
       />
+      <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
+      <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
       <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
     </HomeStackNavigator.Navigator>
   );

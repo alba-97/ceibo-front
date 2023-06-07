@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { PlanDetailCard } from "../components/PlanDetailCard";
+import { Navbar } from "../components/Navbar";
 
 export default function PlanDetailScreen({ route }) {
   const { plan } = route.params;
@@ -10,6 +11,7 @@ export default function PlanDetailScreen({ route }) {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <PlanDetailCard plan={plan} />
     </LinearGradient>
   );
