@@ -22,7 +22,7 @@ export default function HomeScreen() {
       .then((res) => setUserData(res))
       .catch((err) => console.log(err));
   }, []);
-
+  console.log("data plans", data);
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}

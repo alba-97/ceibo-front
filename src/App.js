@@ -1,5 +1,6 @@
 import React from "react";
 import Navigation from "./navigation/AppNavigator";
+import { Provider } from "react-redux";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import store from "./state/store";
 import { Provider } from "react-redux";

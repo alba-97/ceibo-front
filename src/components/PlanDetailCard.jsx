@@ -1,9 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView } from "react-native";
 import { formatDate } from "../services/formatDate";
 import { styles } from "../styles/PlanDetails";
+import { useSelector } from "react-redux";
+import { GenericButton } from "./GenericButton";
 
-export const PlanDetailCard = ({ plan }) => {
+export const PlanDetailCard = () => {
+  const plan = useSelector((state) => state.selectedPlan);
   const date = plan?.event_date;
   return (
     <View style={styles.card}>
@@ -17,9 +20,9 @@ export const PlanDetailCard = ({ plan }) => {
           <Text style={styles.text}>{plan.description}</Text>
           <Text style={styles.subTitle}>Fecha</Text>
           <Text style={styles.text}>{formatDate(date)}</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addButtonText}>Invitar Personas</Text>
-          </TouchableOpacity>
+          <View style={styles.addButton}>
+            <GenericButton text="Invitar Personas" />
+          </View>
         </View>
       </ScrollView>
     </View>

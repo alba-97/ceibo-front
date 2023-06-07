@@ -1,8 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { PlanDetailCard } from "../components/PlanDetailCard";
 
-export default function PlanDetailScreen({ route }) {
-  const { plan } = route.params;
+export default function PlanDetailScreen() {
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -10,7 +9,7 @@ export default function PlanDetailScreen({ route }) {
       end={[1, 1]}
       style={styles.container}
     >
-      <PlanDetailCard plan={plan} />
+      <PlanDetailCard />
     </LinearGradient>
   );
 }
