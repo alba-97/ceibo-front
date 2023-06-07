@@ -8,8 +8,10 @@ export const formatDate = (date) => {
     "Mayo",
     "Junio",
     "Julio",
+    "Agosto",
     "Septiembre",
     "Octubre",
+    "Noviembre",
     "Diciembre",
   ];
   date = date.split("-");

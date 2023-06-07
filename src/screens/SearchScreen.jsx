@@ -55,15 +55,8 @@ export default function SearchScreen() {
           <ScrollView>
             {results ? (
               results.map((item, index) => (
-                <ImageContainer
-                  key={index}
-                  imageSource={
-                    item.img ||
-                    "https://www.billboard.com/wp-content/uploads/2022/09/bad-bunny-press-credit-eric-rojas-2022-billboard-2-1548.jpg?w=942&h=623&crop=1"
-                  }
-                  date={item.event_date}
-                  event={item.title}
-                />
+                <ImageContainer key={index} plan={item} />
+
               ))
             ) : (
               <Text>Cargando datoss...</Text>

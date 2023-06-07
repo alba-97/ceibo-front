@@ -8,13 +8,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AddPlanScreen from "../screens/AddPlanScreen";
-import CalendarScreen from "../screens/CalendarScreen";
 import SearchScreen from "../screens/SearchScreen";
-import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
-
-import { LinearGradient } from "expo-linear-gradient";
-import { ContactInfoScreen } from "../screens/ContactInfoScreen";
+import PlanDetailScreen from "../screens/PlanDetailScreen";
+import ContactInfoScreen from "../screens/ContactInfoScreen";
+import ContactsScreen from "../screens/ContactsScreen";
 // Icons
 import {
   Entypo,
@@ -23,8 +20,6 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-
-import { ContactsScreen } from "../screens/ContactsScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -43,11 +38,11 @@ function NavbarStack() {
         name="AddPlanScreen"
         component={AddPlanScreen}
       />
-      <HomeStackNavigator.Screen name="Calendar" component={CalendarScreen} />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
-
-      <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
-      <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
+      <HomeStackNavigator.Screen
+        name="PlanDetail"
+        component={PlanDetailScreen}
+      />
       <HomeStackNavigator.Screen
         name="ContactInfoScreen"
         component={ContactInfoScreen}
@@ -64,7 +59,11 @@ function BottomNavbar() {
       screenOptions={{
         headerShown: false,
 
-        tabBarStyle: { backgroundColor },
+        tabBarStyle: { backgroundColor, height: "8%", borderTopWidth: 1.5 },
+
+        tabBarHideOnKeyboard: true,
+
+        tabBarIconStyle: { alignItems: "center", justifyContent: "center" },
       }}
     >
       <Tab.Screen
@@ -119,17 +118,8 @@ function BottomNavbar() {
 
 export default function Navigation() {
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={{
-        flex: 1,
-      }}
-    >
-      <NavigationContainer>
-        <BottomNavbar />
-      </NavigationContainer>
-    </LinearGradient>
+    <NavigationContainer>
+      <BottomNavbar />
+    </NavigationContainer>
   );
 }

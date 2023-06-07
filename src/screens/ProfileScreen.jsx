@@ -1,12 +1,8 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
-import formatDate from "../services/formatDate";
-import { setUser } from "../state/user";
-import axios from "axios";
-import { API_URL, PORT } from "@env";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);

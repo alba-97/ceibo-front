@@ -15,8 +15,12 @@ export default function HomeScreen() {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-    getAllPlans().then((res) => setData(res));
-    getUserPlans().then((res) => setUserData(res));
+    getAllPlans()
+      .then((res) => setData(res))
+      .catch((err) => console.log(err));
+    getUserPlans()
+      .then((res) => setUserData(res))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
