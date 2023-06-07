@@ -1,6 +1,4 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-
-export const setSelectedPlan = createAction("SET_SELECTED_PLAN");
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   id: null,
@@ -20,6 +18,13 @@ const initialState = {
   end_time: null,
 };
 
-export const selectedPlanReducer = createReducer(initialState, {
-  [setSelectedPlan]: (state, action) => action.payload,
+const selectedPlanSlice = createSlice({
+  name: "selectedPlan",
+  initialState,
+  reducers: {
+    setSelectedPlan: (state, action) => action.payload,
+  },
 });
+
+export const { setSelectedPlan } = selectedPlanSlice.actions;
+export default selectedPlanSlice.reducer;
