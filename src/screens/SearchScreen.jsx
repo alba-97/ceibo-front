@@ -1,15 +1,14 @@
 // React Components
-import React, { useEffect, useState } from "react";
 import { Text, ScrollView, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
 // Components
-import { styles } from "../appCss";
 import { ImageContainer } from "../components/ImageContainer";
-import { Navbar } from "../components/Navbar";
 import { GenericInput } from "../components/GenericInput";
-// Other Imports
-import axios from "axios";
+import { Navbar } from "../components/Navbar";
 import { API_URL, PORT } from "@env";
+import { styles } from "../appCss";
+import axios from "axios";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
@@ -56,7 +55,6 @@ export default function SearchScreen() {
             {results ? (
               results.map((item, index) => (
                 <ImageContainer key={index} plan={item} />
-
               ))
             ) : (
               <Text>Cargando datoss...</Text>

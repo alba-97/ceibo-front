@@ -1,12 +1,11 @@
 // Native
-import React from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
+import { useDispatch } from "react-redux";
+import React from "react";
 // Components
-import { formatDate } from "../services/formatDate";
 import { setSelectedPlan } from "../state/selectedPlan";
-// Styles
+import { formatDate } from "../services/formatDate";
 import styles from "../styles/ImageContainerStyles";
 
 export const ImageContainer = ({ plan }) => {

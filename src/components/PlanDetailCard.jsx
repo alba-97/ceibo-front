@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image, ScrollView } from "react-native";
 import { formatDate } from "../services/formatDate";
+import { GenericButton } from "./GenericButton";
 import { styles } from "../styles/PlanDetails";
 import { useSelector } from "react-redux";
-import { GenericButton } from "./GenericButton";
 
 export const PlanDetailCard = () => {
   const plan = useSelector((state) => state.selectedPlan);

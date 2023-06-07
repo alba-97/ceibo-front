@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { GenericInput } from "../components/GenericInput";
-import * as Contacts from "expo-contacts";
+// Native
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import * as Contacts from "expo-contacts";
+// Components
+import { GenericInput } from "../components/GenericInput";
+import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
-import styles from "../styles/stylesContact";
 
 export default ContactsScreen = () => {
   const [contacts, setContacts] = useState([]);
