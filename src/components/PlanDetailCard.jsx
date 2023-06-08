@@ -46,9 +46,16 @@ export const PlanDetailCard = () => {
           <Text style={styles.text}>{plan.description}</Text>
           {user._id && (
             <View>
-              <TouchableOpacity style={styles.addButton} onPress={handleEnroll}>
-                <Text style={styles.addButtonText}>Participar</Text>
-              </TouchableOpacity>
+              {user.plans &&
+                !user.plans.some((userPlan) => userPlan._id == plan._id) && (
+                  <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={handleEnroll}
+                  >
+                    <Text style={styles.addButtonText}>Participar</Text>
+                  </TouchableOpacity>
+                )}
+
               <TouchableOpacity style={styles.addButton}>
                 <Text style={styles.addButtonText}>Invitar Personas</Text>
               </TouchableOpacity>
