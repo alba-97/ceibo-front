@@ -1,22 +1,31 @@
-// React Components
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ScrollView } from "react-native";
+
 // Components
-import { getUserPlans } from "../services/getUserPlans";
-import { setSelectedPlan } from "../state/selectedPlan";
-import { SwiperComponent } from "../components/Swiper";
-import { useNavigation } from "@react-navigation/core";
-import { getAllPlans } from "../services/getAllPlans";
-import { Navbar } from "../components/Navbar";
 import { styles } from "../appCss";
-import { useDispatch } from "react-redux";
+import { Navbar } from "../components/Navbar";
+import { SwiperComponent } from "../components/Swiper";
+import { MainEvent } from "../components/MainEvent";
+
+// Other Imports
+import { getAllPlans } from "../services/getAllPlans";
+import { getUserPlans } from "../services/getUserPlans";
+import { getUser } from "../services/getUser";
+
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
+
+import { setSelectedPlan } from "../state/selectedPlan";
+import { setUser, setUserPlans } from "../state/user";
+import { setPlans } from "../state/plans";
 
 export default function HomeScreen() {
-  const [userData, setUserData] = useState([]);
-  const [data, setData] = useState([]);
-  const navigation = useNavigation();
+  const user = useSelector((state) => state.user);
+  const plans = useSelector((state) => state.plans);
+
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const handlePress = (plan) => {
     dispatch(setSelectedPlan(plan));
@@ -24,12 +33,19 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    getAllPlans()
-      .then((res) => setData(res))
-      .catch((err) => console.log(err));
-    getUserPlans()
-      .then((res) => setUserData(res))
-      .catch((err) => console.log(err));
+    const fetchInfo = async () => {
+      try {
+        const userData = await getUser();
+        if (userData) {
+          dispatch(setUser(userData));
+          const userPlans = await getUserPlans();
+          dispatch(setUserPlans(userPlans));
+        }
+        const plans = await getAllPlans();
+        dispatch(setPlans(plans));
+      } catch (error) {}
+    };
+    fetchInfo();
   }, []);
 
   return (
@@ -41,21 +57,25 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
+        {plans[0] && (
+          <MainEvent
+            plan={plans[0]}
+            title="Patrocinado"
+            onPress={handlePress}
+          />
+        )}
         <SwiperComponent
-          plans={data}
-          title="Patrocinado"
+          plans={plans}
+          text="Nuestras recomendaciones"
           onPress={handlePress}
         />
-        <SwiperComponent
-          plans={userData}
-          title="Mis Planes"
-          onPress={handlePress}
-        />
-        <SwiperComponent
-          plans={data}
-          title="Planes de Amigos"
-          onPress={handlePress}
-        />
+        {user && user.plans && (
+          <SwiperComponent
+            plans={user.plans}
+            text="Tus Planes"
+            onPress={handlePress}
+          />
+        )}
       </ScrollView>
     </LinearGradient>
   );

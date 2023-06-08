@@ -11,7 +11,7 @@ import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/stylesContactInfo";
 import { Navbar } from "../components/Navbar";
 
-export default ContactInfoScreen = ({ route }) => {
+export default function ContactInfoScreen({ route }) {
   const { contact } = route.params;
   const [userData, setUserData] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -77,7 +77,7 @@ export default ContactInfoScreen = ({ route }) => {
       </View>
     </LinearGradient>
   );
-};
+}
 
 //  const handleShareEvent = () => {
 //     if (selectedPlan) {

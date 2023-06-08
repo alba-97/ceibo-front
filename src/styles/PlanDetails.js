@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   card: {
-    paddingTop: 180,
+    paddingTop: 50,
     backgroundColor: "transparent",
     borderRadius: 10,
     marginBottom: 20,
@@ -13,14 +13,12 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
-    padding: 10,
     textAlign: "center",
   },
   subTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#fff",
-    padding: 10,
     textAlign: "center",
   },
   text: {
@@ -34,7 +32,8 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   addButton: {
-    marginTop: "10%",
+    margin: 10,
+    backgroundColor: "#7D0166",
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: "center",
