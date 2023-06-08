@@ -13,7 +13,7 @@ export function SwiperComponent({ plans, text, onPress }) {
         renderItem={({ item }) => {
           return (
             <View style={styles.view}>
-              <ImageContainer plan={item} />
+              <ImageContainer plan={item} onPress={() => onPress(item)} />
             </View>
           );
         }}

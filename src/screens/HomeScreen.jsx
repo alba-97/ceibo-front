@@ -11,12 +11,7 @@ import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
 import { MainEvent } from "../components/MainEvent";
-
-import { getUser } from "../services/getUser";
-
-import { useSelector, useDispatch } from "react-redux";
-import { setUser, setUserPlans } from "../state/user";
-import { setPlans } from "../state/plans";
+import { useDispatch } from "react-redux";
 import { setSelectedPlan } from "../state/selectedPlan";
 import { useNavigation } from "@react-navigation/core";
 
