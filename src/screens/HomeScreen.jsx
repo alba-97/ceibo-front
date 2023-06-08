@@ -51,13 +51,13 @@ export default function HomeScreen() {
         <MainEvent plan={data[0]} title="Patrocinado" onPress={handlePress} />
         <SwiperComponent
           plans={data}
-          text="Planes de Amigos"
+          text="Nuestras recomendaciones"
           onPress={handlePress}
         />
 
         <SwiperComponent
           plans={userData}
-          text="Mis Planes"
+          text="Tus Planes"
           onPress={handlePress}
         />
       </ScrollView>
