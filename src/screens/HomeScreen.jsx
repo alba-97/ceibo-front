@@ -21,8 +21,8 @@ import { setSelectedPlan } from "../state/selectedPlan";
 import { useNavigation } from "@react-navigation/core";
 
 export default function HomeScreen() {
-  const user = useSelector((state) => state.user);
-  const plans = useSelector((state) => state.plans);
+  const [userData, setUserData] = useState([]);
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -32,20 +32,12 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        const userData = await getUser();
-        if (userData) {
-          dispatch(setUser(userData));
-          const userPlans = await getUserPlans();
-          dispatch(setUserPlans(userPlans));
-        }
-        const plans = await getAllPlans();
-        dispatch(setPlans(plans));
-      } catch (error) {}
-    };
-    fetchInfo();
-
+    getAllPlans()
+      .then((res) => setData(res))
+      .catch((err) => console.log(err));
+    getUserPlans()
+      .then((res) => setUserData(res))
+      .catch((err) => console.log(err));
   }, []);
   return (
     <LinearGradient
@@ -56,18 +48,18 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <MainEvent plan={plans[0]} />
+        <MainEvent plan={data[0]} title="Patrocinado" onPress={handlePress} />
         <SwiperComponent
-          plans={plans}
-          text="Planes Sugeridos"
-          direction={false}
+          plans={data}
+          text="Planes de Amigos"
           onPress={handlePress}
-        /> {user.plans && user.plans[0]  (
-          <>
-            <SwiperComponent plans={user.plans} text="Tus Planes" direction={true} onPress={handlePress} />
-            />
-          </>: ""
-        )}
+        />
+
+        <SwiperComponent
+          plans={userData}
+          text="Mis Planes"
+          onPress={handlePress}
+        />
       </ScrollView>
     </LinearGradient>
   );
