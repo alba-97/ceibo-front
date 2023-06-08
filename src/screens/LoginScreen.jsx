@@ -6,12 +6,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 import axios from "axios";
+import { getUser } from "../services/getUser";
+import { getUserPlans } from "../services/getUserPlans";
 // Components
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { Navbar } from "../components/Navbar";
-import { setUser } from "../state/user";
+import { setUser, setUserPlans } from "../state/user";
 import { API_URL, PORT } from "@env";
 
 export default function LoginScreen() {
@@ -37,12 +39,10 @@ export default function LoginScreen() {
             Authorization: `Bearer ${res.data.token}`,
           },
         });
-        const user = await axios.get(`${API_URL}:${PORT}/api/users/me`, {
-          headers: {
-            Authorization: `Bearer ${res.data.token}`,
-          },
-        });
-        dispatch(setUser(user.data));
+        const userData = await getUser();
+        dispatch(setUser(userData));
+        const userPlans = await getUserPlans();
+        dispatch(setUserPlans(userPlans));
         navigation.navigate("HomeScreen");
       }
     } catch (error) {
