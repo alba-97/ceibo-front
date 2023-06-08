@@ -1,23 +1,3 @@
-/*
-import { createAction, createReducer } from "@reduxjs/toolkit";
-
-const initialState = ;
-
-export const setUser = createAction("SET_USER");
-export const clearUser = createAction("CLEAR_USER");
-
-const reducer = createReducer(initialState, {
-  [setUser]: (state, action) => {
-    return action.payload;
-  },
-  [clearUser]: (state, action) => {
-    return initialState;
-  },
-});
-
-export default reducer;
-*/
-
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -29,6 +9,7 @@ const initialState = {
   birthdate: null,
   phone: null,
   profile_img: null,
+  plans: [],
 };
 
 const userSlice = createSlice({
@@ -37,9 +18,13 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => action.payload,
     clearUser: () => initialState,
+    setUserPlans: (state, action) => {
+      const newState = { ...state };
+      newState.plans = action.payload;
+      return newState;
+    },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
-
+export const { setUser, clearUser, setUserPlans } = userSlice.actions;
 export default userSlice.reducer;

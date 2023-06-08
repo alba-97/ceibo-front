@@ -1,9 +1,14 @@
+
+// Native
 import { ImageContainer } from "./ImageContainer";
+// Components
+import { ProfileText } from "../components/ProfileText";
+
 import styles from "../styles/swiperStyles";
 import React from "react";
 import { View, FlatList, Text } from "react-native";
+export function SwiperComponent({ plans, text,  onPress }) {
 
-export function SwiperComponent({ plans, text }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
@@ -12,7 +17,7 @@ export function SwiperComponent({ plans, text }) {
         renderItem={({ item }) => {
           return (
             <View style={styles.view}>
-              <ImageContainer plan={item} />
+              <ImageContainer plan={item} onPress={onPress} />
             </View>
           );
         }}

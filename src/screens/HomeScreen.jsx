@@ -1,31 +1,51 @@
-// React Components
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
 // Components
 import { styles } from "../appCss";
 import { Navbar } from "../components/Navbar";
-// Other Imports
 import { SwiperComponent } from "../components/Swiper";
+
+// Other Imports
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
 import { MainEvent } from "../components/MainEvent";
 
+import { getUser } from "../services/getUser";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, setUserPlans } from "../state/user";
+import { setPlans } from "../state/plans";
+import { setSelectedPlan } from "../state/selectedPlan";
+import { useNavigation } from "@react-navigation/core";
+
 export default function HomeScreen() {
-  const [data, setData] = useState([]);
-  const [main, setMain] = useState({});
-  const [userData, setUserData] = useState([]);
+  const user = useSelector((state) => state.user);
+  const plans = useSelector((state) => state.plans);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handlePress = (plan) => {
+    dispatch(setSelectedPlan(plan));
+    navigation.navigate("PlanDetail");
+  };
 
   useEffect(() => {
-    getAllPlans()
-      .then((res) => {
-        setMain(res.shift());
-        setData(res);
-      })
-      .catch((err) => console.log(err));
-    getUserPlans()
-      .then((res) => setUserData(res))
-      .catch((err) => console.log(err));
+    const fetchInfo = async () => {
+      try {
+        const userData = await getUser();
+        if (userData) {
+          dispatch(setUser(userData));
+          const userPlans = await getUserPlans();
+          dispatch(setUserPlans(userPlans));
+        }
+        const plans = await getAllPlans();
+        dispatch(setPlans(plans));
+      } catch (error) {}
+    };
+    fetchInfo();
+
   }, []);
   return (
     <LinearGradient
@@ -36,14 +56,18 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <MainEvent plan={main} />
-
+        <MainEvent plan={plans[0]} />
         <SwiperComponent
-          plans={data}
+          plans={plans}
           text="Planes Sugeridos"
           direction={false}
-        />
-        <SwiperComponent plans={userData} text="Tus Planes" direction={true} />
+          onPress={handlePress}
+        /> {user.plans && user.plans[0]  (
+          <>
+            <SwiperComponent plans={user.plans} text="Tus Planes" direction={true} onPress={handlePress} />
+            />
+          </>: ""
+        )}
       </ScrollView>
     </LinearGradient>
   );

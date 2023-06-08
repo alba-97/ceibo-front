@@ -1,8 +1,8 @@
 import React from "react";
 import Navigation from "./navigation/AppNavigator";
 import { KeyboardAvoidingView, Platform } from "react-native";
-import store from "./state/store";
 import { Provider } from "react-redux";
+import store from "./state/store";
 
 export default function App() {
   return (

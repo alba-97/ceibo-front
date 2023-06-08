@@ -1,22 +1,20 @@
-import React from "react";
+// Native
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import styles from "../styles/ImageContainerStyles";
+import React from "react";
+// Components
 import { formatDate } from "../services/formatDate";
-import { useNavigation } from "@react-navigation/core";
+import styles from "../styles/ImageContainerStyles";
 
 export const ImageContainer = ({ plan, onPress }) => {
-  const navigation = useNavigation();
-
   const handlePress = () => {
-    if (onPress) {
-      onPress();
-    } else {
-      navigation.navigate("PlanDetail", { plan });
-    }
+    onPress(plan);
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => handlePress()}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => handlePress(plan)}
+    >
       <Image source={{ uri: plan?.img }} style={styles.image} />
       <View style={styles.overlay}>
         <Text style={styles.text}>{plan?.title}</Text>
