@@ -7,11 +7,9 @@ import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
-// import noPlan from "../assets/noPlan.png";
 
 export default function AddPlanScreen({ imageSource }) {
   const imgSrc = imageSource;
-  //  || noPlan;
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}

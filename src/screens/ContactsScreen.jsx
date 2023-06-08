@@ -9,7 +9,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
 
-export default ContactsScreen = () => {
+export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
@@ -30,7 +30,6 @@ export default ContactsScreen = () => {
       if (data.length > 0) {
         setContacts(data);
         setFilteredContacts(data);
-        console.log(data[0]);
       }
     };
 
@@ -84,4 +83,4 @@ export default ContactsScreen = () => {
       </View>
     </LinearGradient>
   );
-};
+}

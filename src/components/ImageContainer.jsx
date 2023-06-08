@@ -6,8 +6,8 @@ import { formatDate } from "../services/formatDate";
 import styles from "../styles/ImageContainerStyles";
 
 export const ImageContainer = ({ plan, onPress }) => {
-  const handlePress = (prop) => {
-    onPress(prop);
+  const handlePress = () => {
+    onPress(plan);
   };
 
   return (

@@ -1,18 +1,19 @@
-//Native
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector, useDispatch } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
-import LoginScreen from "./LoginScreen";
-import { View } from "react-native";
-import moment from "moment";
 import React from "react";
-import axios from "axios";
+import moment from "moment";
+import { View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+
+import LoginScreen from "./LoginScreen";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
 import { clearUser } from "../state/user";
+
+import axios from "axios";
 import { API_URL, PORT } from "@env";
 
 export default function ProfileScreen() {

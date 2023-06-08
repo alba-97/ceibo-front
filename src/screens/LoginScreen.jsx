@@ -43,7 +43,7 @@ export default function LoginScreen() {
           },
         });
         dispatch(setUser(user.data));
-        navigation.navigate("Home");
+        navigation.navigate("HomeScreen");
       }
     } catch (error) {
       Alert.alert("Error", error.response.data, [{ text: "OK" }]);

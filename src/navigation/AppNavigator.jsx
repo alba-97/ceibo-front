@@ -12,8 +12,10 @@ import SearchScreen from "../screens/SearchScreen";
 import PlanDetailScreen from "../screens/PlanDetailScreen";
 import ContactInfoScreen from "../screens/ContactInfoScreen";
 import ContactsScreen from "../screens/ContactsScreen";
-import RegisterScreen from "../screens/RegisterScreen"
-// Icons
+
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+
 import {
   Entypo,
   FontAwesome,
@@ -21,7 +23,6 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import LoginScreen from "../screens/LoginScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -49,9 +50,9 @@ function NavbarStack() {
         name="ContactInfoScreen"
         component={ContactInfoScreen}
       />
-      <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
-      <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
       <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
+      <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
+      <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
     </HomeStackNavigator.Navigator>
   );
 }
