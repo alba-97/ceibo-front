@@ -4,7 +4,6 @@ import { View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-
 import LoginScreen from "./LoginScreen";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";

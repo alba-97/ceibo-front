@@ -1,8 +1,15 @@
 // Native
-import { View, Text, StyleSheet, ScrollView, Alert, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 //Components
 import { GenericInput } from "../components/GenericInput";
@@ -10,32 +17,39 @@ import { GenericButton } from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
 import { API_URL, PORT } from "@env";
 import { styles } from "../styles/registerScreenStyles";
+import { DatePicker } from "../components/DatePicker";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [birthdate, setBirthdate] = useState(null);
   const [address, setAddress] = useState("");
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
 
   const navigation = useNavigation();
 
-  const handleSubmit = async () => {
-    try {
-      // const formattedBirthdate = moment(birthdate, "DD/MM/YYYY").format("YYYY-MM-DD");
+  useEffect(() => {
+    setBirthdate(birthdate);
+  }, [birthdate]);
 
+  const handleSubmit = async () => {
+    let formattedBirthdate = null;
+    if (birthdate instanceof Date) {
+      formattedBirthdate = birthdate.toISOString();
+    }
+    try {
       const res = await axios.post(`${API_URL}:${PORT}/api/users/signup`, {
         username,
         password,
         email,
         phone,
-        birthdate,
+        birthdate: formattedBirthdate,
         first_name,
         last_name,
-        address, //hay que poner address en el back
+        address,
       });
       Alert.alert("Hecho", res.data.message, [{ text: "OK" }]);
       navigation.navigate("Login");
@@ -64,18 +78,25 @@ export default function RegisterScreen() {
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
-         
- 
-        <View style={styles.container2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Nombre</Text>
-            <TextInput value={first_name}style={styles.input2} onChangeText={setFirst_name}/>
+
+          <View style={styles.container2}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Nombre</Text>
+              <TextInput
+                value={first_name}
+                style={styles.input2}
+                onChangeText={setFirst_name}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}> Apellido</Text>
+              <TextInput
+                value={last_name}
+                onChangeText={setLast_name}
+                style={styles.input2}
+              />
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}> Apellido</Text>
-            <TextInput value={last_name} onChangeText={setLast_name}style={styles.input2} />
-          </View>
-        </View> 
 
           <Text style={styles.text}>Contraseña</Text>
           <GenericInput
@@ -90,13 +111,14 @@ export default function RegisterScreen() {
             keyboardType="email-address"
           />
           <Text style={styles.text}>Fecha de nacimiento</Text>
-          <GenericInput
+          <DatePicker
             type="date"
             value={birthdate}
-            onChangeText={setBirthdate}
+            onChange={(date) => setBirthdate(new Date(date))}
             placeholder="DD/MM/YYYY"
             customStyle={styles.birthdate}
           />
+
           <Text style={styles.text}>Direccion</Text>
           <GenericInput value={address} onChangeText={setAddress} />
           <Text style={styles.text}>Numero de telefono</Text>
@@ -104,7 +126,7 @@ export default function RegisterScreen() {
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>
-              <GenericButton  onPress={handleSubmit} text={"Crear Cuenta"} />
+              <GenericButton onPress={handleSubmit} text={"Crear Cuenta"} />
             </View>
           </View>
         </View>
