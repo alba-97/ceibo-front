@@ -1,7 +1,6 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, TextInput, View } from "react-native";
-import { Image } from "react-native";
+import { Text, TextInput, View, Image } from "react-native";
 import React from "react";
 // Components
 import { GenericButton } from "../components/GenericButton";

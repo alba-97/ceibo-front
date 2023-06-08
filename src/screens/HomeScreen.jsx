@@ -15,11 +15,19 @@ import { getUser } from "../services/getUser";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
+import { setSelectedPlan } from "../state/selectedPlan";
+import { useNavigation } from "@react-navigation/core";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handlePress = (plan) => {
+    dispatch(setSelectedPlan(plan));
+    navigation.navigate("PlanDetail");
+  };
 
   useEffect(() => {
     const fetchInfo = async () => {
@@ -46,11 +54,20 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <SwiperComponent plans={plans} title="Patrocinado" />
+        <SwiperComponent
+          plans={plans}
+          title="Patrocinado"
+          onPress={handlePress}
+        />
         {user.plans && user.plans[0] && (
           <>
-            <SwiperComponent plans={user.plans} title="Mis Planes" />
-            <SwiperComponent plans={plans} title="Planes de Amigos" />
+            <SwiperComponent
+              plans={user.plans}
+              title="Mis Planes"
+              onPress={handlePress}
+            />
+            {/*<SwiperComponent plans={plans} title="Planes de Amigos"
+          onPress={handlePress} />*/}
           </>
         )}
       </ScrollView>

@@ -6,7 +6,7 @@ import { View } from "react-native";
 import { ProfileText } from "../components/ProfileText";
 import styles from "../styles/swiperStyles";
 
-export function SwiperComponent({ title, plans }) {
+export function SwiperComponent({ title, plans, onPress }) {
   return (
     <>
       <ProfileText text={title}></ProfileText>
@@ -19,7 +19,7 @@ export function SwiperComponent({ title, plans }) {
         {plans.map((p, index) => {
           return (
             <View style={styles.view} key={index}>
-              <ImageContainer plan={p} />
+              <ImageContainer plan={p} onPress={onPress} />
             </View>
           );
         })}
