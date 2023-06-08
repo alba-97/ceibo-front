@@ -24,7 +24,7 @@ export function ContactSwiper({ title, plans, onPress }) {
             <View style={styles.view} key={index}>
               <ImageContainer
                 plan={p}
-                onPress={() => handlePress(p)} // Agrega el evento onPress aquí
+                onPress={handlePress} // Agrega el evento onPress aquí
               />
             </View>
           );

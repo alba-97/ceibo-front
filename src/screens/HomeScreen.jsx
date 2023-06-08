@@ -11,12 +11,7 @@ import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
 import { MainEvent } from "../components/MainEvent";
-
-import { getUser } from "../services/getUser";
-
-import { useSelector, useDispatch } from "react-redux";
-import { setUser, setUserPlans } from "../state/user";
-import { setPlans } from "../state/plans";
+import { useDispatch } from "react-redux";
 import { setSelectedPlan } from "../state/selectedPlan";
 import { useNavigation } from "@react-navigation/core";
 
@@ -51,13 +46,13 @@ export default function HomeScreen() {
         <MainEvent plan={data[0]} title="Patrocinado" onPress={handlePress} />
         <SwiperComponent
           plans={data}
-          text="Planes de Amigos"
+          text="Nuestras recomendaciones"
           onPress={handlePress}
         />
 
         <SwiperComponent
           plans={userData}
-          text="Mis Planes"
+          text="Tus Planes"
           onPress={handlePress}
         />
       </ScrollView>
