@@ -10,6 +10,8 @@ import { SwiperComponent } from "../components/Swiper";
 // Other Imports
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
+import { MainEvent } from "../components/MainEvent";
+
 import { getUser } from "../services/getUser";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -43,8 +45,8 @@ export default function HomeScreen() {
       } catch (error) {}
     };
     fetchInfo();
-  }, []);
 
+  }, []);
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -54,21 +56,17 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
+        <MainEvent plan={plans[0]} />
         <SwiperComponent
           plans={plans}
-          title="Patrocinado"
+          text="Planes Sugeridos"
+          direction={false}
           onPress={handlePress}
-        />
-        {user.plans && user.plans[0] && (
+        /> {user.plans && user.plans[0]  (
           <>
-            <SwiperComponent
-              plans={user.plans}
-              title="Mis Planes"
-              onPress={handlePress}
+            <SwiperComponent plans={user.plans} text="Tus Planes" direction={true} onPress={handlePress} />
             />
-            {/*<SwiperComponent plans={plans} title="Planes de Amigos"
-          onPress={handlePress} />*/}
-          </>
+          </>: ""
         )}
       </ScrollView>
     </LinearGradient>

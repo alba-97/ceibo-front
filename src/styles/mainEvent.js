@@ -2,16 +2,20 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     position: "relative",
+    alignItems: "center",
   },
   image: {
-    width: 250,
-    height: 110,
+    margin: 20,
+    width: 370,
+    height: 150,
   },
   overlay: {
+    margin: 20,
     position: "absolute",
-    height: "100%",
-    width: "100%",
+    height: 150,
+    width: 370,
     justifyContent: "flex-end",
     backgroundColor: "#0004",
   },
