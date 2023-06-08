@@ -5,23 +5,34 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
-
-  containersv: {
-    flex: 1,
-    width: "auto",
-  },
-
-  container2: {
+  content: {
+    // borderWidth: 5,
+    // borderColor: "green",
     width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "center",
+  },
+  container2: {
+  // borderWidth: 5,
+  //   borderColor: "pink",
+    width: "100%",
+  flexDirection: "row",
+  alignItems: "center",
+     justifyContent: "space-evenly",
   },
   inputContainer: {
     alignItems: "center",
     flex: 1,
-    marginRight: 8,
+  },
+  crearPlan: {
+    alignItems: "center",
+    flex: 1, 
+    width: "65%",
+    marginBottom: 15,
+    marginTop: 15,
   },
   label: {
     paddingTop: 10,
@@ -32,8 +43,8 @@ export const styles = StyleSheet.create({
   },
   input2: {
     width: "65%",
-    backgroundColor: "transparent",
-    height: 40,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    height: 45,
     borderWidth: 1,
     borderColor: "white",
     borderRadius: 20,

@@ -1,5 +1,5 @@
 // Native
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
@@ -64,10 +64,19 @@ export default function RegisterScreen() {
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
-          <Text style={styles.text}>Nombre</Text>
-          <GenericInput value={first_name} onChangeText={setFirst_name} />
-          <Text style={styles.text}>Apellido</Text>
-          <GenericInput value={last_name} onChangeText={setLast_name} />
+         
+ 
+        <View style={styles.container2}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Nombre</Text>
+            <TextInput value={first_name}style={styles.input2} onChangeText={setFirst_name}/>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}> Apellido</Text>
+            <TextInput value={last_name} onChangeText={setLast_name}style={styles.input2} />
+          </View>
+        </View> 
+
           <Text style={styles.text}>Contraseña</Text>
           <GenericInput
             value={password}
@@ -86,6 +95,7 @@ export default function RegisterScreen() {
             value={birthdate}
             onChangeText={setBirthdate}
             placeholder="DD/MM/YYYY"
+            customStyle={styles.birthdate}
           />
           <Text style={styles.text}>Direccion</Text>
           <GenericInput value={address} onChangeText={setAddress} />
@@ -93,8 +103,8 @@ export default function RegisterScreen() {
           <GenericInput value={phone} onChangeText={setPhone} />
 
           <View style={styles.container2}>
-            <View style={styles.inputContainer}>
-              <GenericButton onPress={handleSubmit} text={"Crear Cuenta"} />
+            <View style={styles.crearCuenta}>
+              <GenericButton  onPress={handleSubmit} text={"Crear Cuenta"} />
             </View>
           </View>
         </View>

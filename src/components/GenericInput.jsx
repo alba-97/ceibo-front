@@ -3,7 +3,7 @@ import { TextInput, StyleSheet } from "react-native";
 import moment from "moment";
 import React from "react";
 
-export const GenericInput = ({ type, ...props }) => {
+export const GenericInput = ({ type,customStyle, ...props }) => {
   if (type === "date") {
     const validateDate = (value, settings) => {
       return moment(value, "DD/MM/YYYY").isValid();
@@ -17,14 +17,14 @@ export const GenericInput = ({ type, ...props }) => {
           validator: validateDate,
         }}
         {...props}
-        style={styles.input}
+        style={[styles.input, customStyle]}
         placeholderTextColor="#999"
       />
     );
   }
 
   return (
-    <TextInput {...props} style={styles.input} placeholderTextColor="#999" />
+    <TextInput {...props} style={[styles.input, customStyle]} placeholderTextColor="#999" />
   );
 };
 
