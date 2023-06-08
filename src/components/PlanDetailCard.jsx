@@ -1,13 +1,21 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { formatDate } from "../services/formatDate";
+import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { setUserPlans } from "../state/user";
+
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 
-export const PlanDetailCard = ({ plan }) => {
+export const PlanDetailCard = () => {
+  const dispatch = useDispatch();
+
+  const plan = useSelector((state) => state.selectedPlan);
   const date = plan?.event_date;
   const user = useSelector((state) => state.user);
 
@@ -22,6 +30,8 @@ export const PlanDetailCard = ({ plan }) => {
         },
       }
     );
+    const newPlans = await getUserPlans();
+    dispatch(setUserPlans(newPlans));
   };
 
   return (
@@ -44,6 +54,8 @@ export const PlanDetailCard = ({ plan }) => {
               </TouchableOpacity>
             </View>
           )}
+          <Text style={styles.subTitle}>Fecha</Text>
+          <Text style={styles.text}>{formatDate(date)}</Text>
         </View>
       </ScrollView>
     </View>

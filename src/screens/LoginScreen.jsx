@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+//Native
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
-import { GenericInput } from "../components/GenericInput";
-import { GenericButton } from "../components/GenericButton";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Navbar } from "../components/Navbar";
-import axios from "axios";
-import { API_URL, PORT } from "@env";
 import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import axios from "axios";
+// Components
+import { GenericButton } from "../components/GenericButton";
+import { GenericInput } from "../components/GenericInput";
+import { styles } from "../styles/loginScreenStyles";
+import { Navbar } from "../components/Navbar";
 import { setUser } from "../state/user";
+import { API_URL, PORT } from "@env";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -54,8 +57,8 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView style={styles.scroll}>
-        <Navbar />
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
@@ -68,13 +71,10 @@ export default function LoginScreen() {
 
           <View style={styles.inputContainer}>
             <GenericButton onPress={handleLogin} text={"Iniciar Sesion"} />
-            <Text style={styles.text}>
-              ¿No tienes cuenta?
-              <Text onPress={handleSignup}>
-                <Text style={styles.text}> Crea una</Text>
-              </Text>
+
+            <Text style={styles.text} onPress={handleSignup}>
+              ¿No tienes cuenta? Crea una
             </Text>
-            <Text></Text>
           </View>
           <View style={styles.inputContainer}>
             <GenericButton text={"Ingresar con Google"} />
@@ -84,36 +84,3 @@ export default function LoginScreen() {
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-  },
-  inputContainer: {
-    alignItems: "center",
-    flex: 1,
-    paddingTop: "10%",
-    width: "70%",
-  },
-  scroll: {
-    flex: 1,
-    width: "100%",
-    paddingTop: "10%",
-  },
-  text: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  text2: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});

@@ -1,6 +1,6 @@
+import { ImageContainer } from "./ImageContainer";
 import { Text, View } from "react-native";
 import Swiper from "react-native-swiper";
-import { ImageContainer } from "./ImageContainer";
 
 export function ContactSwiper({ title, plans, onPress }) {
   const handlePress = (event) => {

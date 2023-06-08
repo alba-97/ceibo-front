@@ -1,39 +1,38 @@
-// React Components
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
 // Components
 import { styles } from "../appCss";
 import { Navbar } from "../components/Navbar";
 import { SwiperComponent } from "../components/Swiper";
+
 // Other Imports
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
 import { getUser } from "../services/getUser";
 
-import { useDispatch } from "react-redux";
-import { setUser } from "../state/user";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, setUserPlans } from "../state/user";
+import { setPlans } from "../state/plans";
 
 export default function HomeScreen() {
-  const [data, setData] = useState([]);
-  const [userData, setUserData] = useState([]);
-
+  const user = useSelector((state) => state.user);
+  const plans = useSelector((state) => state.plans);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchInfo = async () => {
       try {
-        const user = await getUser();
-        if (user) {
-          dispatch(setUser(user));
+        const userData = await getUser();
+        if (userData) {
+          dispatch(setUser(userData));
           const userPlans = await getUserPlans();
-          setUserData(userPlans);
+          dispatch(setUserPlans(userPlans));
         }
         const plans = await getAllPlans();
-        setData(plans);
-      } catch (error) {
-        console.log(123, error);
-      }
+        dispatch(setPlans(plans));
+      } catch (error) {}
     };
     fetchInfo();
   }, []);
@@ -47,11 +46,11 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <SwiperComponent plans={data} title="Patrocinado" />
-        {userData[0] && (
+        <SwiperComponent plans={plans} title="Patrocinado" />
+        {user.plans && user.plans[0] && (
           <>
-            <SwiperComponent plans={userData} title="Mis Planes" />
-            <SwiperComponent plans={data} title="Planes de Amigos" />
+            <SwiperComponent plans={user.plans} title="Mis Planes" />
+            <SwiperComponent plans={plans} title="Planes de Amigos" />
           </>
         )}
       </ScrollView>

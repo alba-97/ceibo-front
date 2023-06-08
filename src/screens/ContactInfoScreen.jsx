@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
-import { Navbar } from "../components/Navbar";
+// Native
 import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+// import { Linking } from 'react-native';
+// import Mailer from 'react-native-mail';
+// Components
 import { GenericButton } from "../components/GenericButton";
 import { ContactSwiper } from "../components/ContactSwiper";
 import { getUserPlans } from "../services/getUserPlans";
-import styles from "../styles/stylesContactInfo";
-// import { Linking } from 'react-native';
-// import Mailer from 'react-native-mail';
+import { styles } from "../styles/stylesContactInfo";
+import { Navbar } from "../components/Navbar";
 
-export default ContactInfoScreen = ({ route }) => {
+export default function ContactInfoScreen({ route }) {
   const { contact } = route.params;
   const [userData, setUserData] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -75,7 +77,7 @@ export default ContactInfoScreen = ({ route }) => {
       </View>
     </LinearGradient>
   );
-};
+}
 
 //  const handleShareEvent = () => {
 //     if (selectedPlan) {

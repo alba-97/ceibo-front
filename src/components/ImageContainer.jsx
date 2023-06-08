@@ -1,18 +1,20 @@
-import React from "react";
+// Native
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import styles from "../styles/ImageContainerStyles";
-import { formatDate } from "../services/formatDate";
 import { useNavigation } from "@react-navigation/core";
+import { useDispatch } from "react-redux";
+import React from "react";
+// Components
+import { setSelectedPlan } from "../state/selectedPlan";
+import { formatDate } from "../services/formatDate";
+import styles from "../styles/ImageContainerStyles";
 
-export const ImageContainer = ({ plan, onPress }) => {
+export const ImageContainer = ({ plan }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handlePress = () => {
-    if (onPress) {
-      onPress();
-    } else {
-      navigation.navigate("PlanDetail", { plan });
-    }
+    dispatch(setSelectedPlan(plan));
+    navigation.navigate("PlanDetail");
   };
 
   return (

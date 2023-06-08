@@ -12,9 +12,10 @@ import SearchScreen from "../screens/SearchScreen";
 import PlanDetailScreen from "../screens/PlanDetailScreen";
 import ContactInfoScreen from "../screens/ContactInfoScreen";
 import ContactsScreen from "../screens/ContactsScreen";
+
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-// Icons
+
 import {
   Entypo,
   FontAwesome,

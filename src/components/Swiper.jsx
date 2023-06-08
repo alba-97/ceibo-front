@@ -1,7 +1,9 @@
-import Swiper from "react-native-swiper";
+// Native
 import { ImageContainer } from "./ImageContainer";
+import Swiper from "react-native-swiper";
 import { View } from "react-native";
-import ProfileText from "../components/ProfileText";
+// Components
+import { ProfileText } from "../components/ProfileText";
 import styles from "../styles/swiperStyles";
 
 export function SwiperComponent({ title, plans }) {
