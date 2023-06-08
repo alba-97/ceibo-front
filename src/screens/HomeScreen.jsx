@@ -9,20 +9,24 @@ import { Navbar } from "../components/Navbar";
 import { SwiperComponent } from "../components/Swiper";
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
+import { MainEvent } from "../components/MainEvent";
 
 export default function HomeScreen() {
   const [data, setData] = useState([]);
+  const [main, setMain] = useState({});
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     getAllPlans()
-      .then((res) => setData(res))
+      .then((res) => {
+        setMain(res.shift());
+        setData(res);
+      })
       .catch((err) => console.log(err));
     getUserPlans()
       .then((res) => setUserData(res))
       .catch((err) => console.log(err));
   }, []);
-
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -32,9 +36,14 @@ export default function HomeScreen() {
     >
       <Navbar />
       <ScrollView>
-        <SwiperComponent plans={data} title="Patrocinado" />
-        <SwiperComponent plans={userData} title="Mis Planes" />
-        <SwiperComponent plans={data} title="Planes de Amigos" />
+        <MainEvent plan={main} />
+
+        <SwiperComponent
+          plans={data}
+          text="Planes Sugeridos"
+          direction={false}
+        />
+        <SwiperComponent plans={userData} text="Tus Planes" direction={true} />
       </ScrollView>
     </LinearGradient>
   );

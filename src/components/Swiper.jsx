@@ -1,27 +1,25 @@
-import Swiper from "react-native-swiper";
 import { ImageContainer } from "./ImageContainer";
-import { View } from "react-native";
-import ProfileText from "../components/ProfileText";
 import styles from "../styles/swiperStyles";
+import React from "react";
+import { View, FlatList, Text } from "react-native";
 
-export function SwiperComponent({ title, plans }) {
+export function SwiperComponent({ plans, text }) {
   return (
-    <>
-      <ProfileText text={title}></ProfileText>
-      <Swiper
-        loop={false}
-        showsButtons={true}
-        showsPagination={false}
-        height={200}
-      >
-        {plans.map((p, index) => {
+    <View style={styles.container}>
+      <Text style={styles.text}>{text}</Text>
+      <FlatList
+        data={plans}
+        renderItem={({ item }) => {
           return (
-            <View style={styles.view} key={index}>
-              <ImageContainer plan={p} />
+            <View style={styles.view}>
+              <ImageContainer plan={item} />
             </View>
           );
-        })}
-      </Swiper>
-    </>
+        }}
+        horizontal={true}
+        ItemSeparatorComponent={<View style={{ margin: 10 }}></View>}
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
   );
 }
