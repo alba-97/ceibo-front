@@ -3,11 +3,13 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import * as Contacts from "expo-contacts";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
+// Services
+import { fetchContacts } from "../services/fetchContacts";
+import { SingleContact } from "../components/SingleContact";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
@@ -15,40 +17,35 @@ export default function ContactsScreen() {
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigation = useNavigation();
 
+  const bringMeTheContacts = async () => {
+    try {
+      setContacts(await fetchContacts());
+      setFilteredContacts(await fetchContacts());
+    } catch (error) {
+      console.log("error useEffect contactsScreen", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchContacts = async () => {
-      const { status } = await Contacts.requestPermissionsAsync();
-
-      if (status !== "granted") {
-        return;
-      }
-
-      const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.PhoneNumbers],
-      });
-
-      if (data.length > 0) {
-        setContacts(data);
-        setFilteredContacts(data);
-      }
-    };
-
-    fetchContacts();
+    bringMeTheContacts();
   }, []);
 
   const handleQueryChange = (text) => {
     setQuery(text);
     filterContacts(text);
   };
+
   const filterContacts = (text) => {
-    const filtered = contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(text.toLowerCase())
+    const filtered = contacts?.filter((contact) =>
+      contact.first_name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredContacts(filtered);
   };
+
   const handleContactPress = (contact) => {
     navigation.navigate("ContactInfoScreen", { contact });
   };
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -75,7 +72,7 @@ export default function ContactsScreen() {
                 key={i}
                 onPress={() => handleContactPress(contact)}
               >
-                {contact.name}
+                <SingleContact {...contact} />
               </Text>
             ))}
           </View>
