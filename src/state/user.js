@@ -10,6 +10,7 @@ const initialState = {
   phone: null,
   profile_img: null,
   plans: [],
+  preferences: [],
 };
 
 const userSlice = createSlice({

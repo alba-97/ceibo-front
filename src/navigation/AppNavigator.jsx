@@ -23,6 +23,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
+import PreferencesScreen from "../screens/PreferencesScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -36,6 +37,12 @@ function NavbarStack() {
       }}
     >
       <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen} />
+
+      <HomeStackNavigator.Screen
+        name="Preferences"
+        component={PreferencesScreen}
+      />
+
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
       <HomeStackNavigator.Screen
         name="AddPlanScreen"
@@ -81,7 +88,7 @@ function BottomNavbar() {
       />
       <Tab.Screen
         name="Search"
-        component={SearchScreen}
+        component={PreferencesScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Feather name="search" size={size} color={color} />,
