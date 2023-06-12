@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan } from "../state/selectedPlan";
+import { SearchImg } from "../components/searchImage";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
@@ -64,7 +65,7 @@ export default function SearchScreen() {
           <ScrollView>
             {results ? (
               results.map((item, index) => (
-                <ImageContainer key={index} plan={item} onPress={handlePress} />
+                <SearchImg key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
               <Text>Cargando datoss...</Text>

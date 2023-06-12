@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
-    width:'100%',
+    width: "100%",
     flex: 1,
     alignItems: "center",
  },
@@ -11,11 +11,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   searchContainer: {
-    width:'100%',
-    paddingTop:'5%',
-    
+    width: "100%",
+    paddingTop: "5%",
+
     alignItems: "center",
-    
   },
   header: {
     height: 100,

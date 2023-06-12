@@ -1,6 +1,7 @@
 import { PlanDetailCard } from "../components/PlanDetailCard";
 import { Navbar } from "../components/Navbar";
 import { LinearGradient } from "expo-linear-gradient";
+import { styles } from "../appCss";
 
 export default function PlanDetailScreen() {
   return (
