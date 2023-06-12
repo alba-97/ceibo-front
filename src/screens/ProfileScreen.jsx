@@ -14,6 +14,7 @@ import { clearUser } from "../state/user";
 
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+import Configuration from "./configuration";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
@@ -33,7 +34,7 @@ export default function ProfileScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      {user._id ? (
+      {!user._id ? (
         <View style={styles.container}>
           <ProfilePicture imageSource={"profile_img"} />
           <ProfileText style={styles.text} text={user?.username} />
@@ -45,7 +46,8 @@ export default function ProfileScreen() {
           <GenericButton onPress={handleLogout} text="Logout" />
         </View>
       ) : (
-        <LoginScreen />
+        // <LoginScreen />
+        <Configuration/>
       )}
     </LinearGradient>
   );
