@@ -12,7 +12,7 @@ import SearchScreen from "../screens/SearchScreen";
 import PlanDetailScreen from "../screens/PlanDetailScreen";
 import ContactInfoScreen from "../screens/ContactInfoScreen";
 import ContactsScreen from "../screens/ContactsScreen";
-
+import EditProfile from "../screens/EditProfile";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 
@@ -60,6 +60,7 @@ function NavbarStack() {
       <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
       <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
       <HomeStackNavigator.Screen name="Contacts" component={ContactsScreen} />
+      <HomeStackNavigator.Screen name="EditProfile" component={EditProfile} />
     </HomeStackNavigator.Navigator>
   );
 }
