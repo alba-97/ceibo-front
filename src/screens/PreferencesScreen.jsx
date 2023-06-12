@@ -1,39 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, ScrollView, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles/preferencesStyles";
-import axios from "axios";
-import { API_URL, PORT } from "@env";
 import { Navbar } from "../components/Navbar";
 import MultipleDropdown from "../components/MultipleDropdown";
 import { GenericButton } from "../components/GenericButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getCategories } from "../services/getCategories";
+import { addPreferences } from "../services/addPreferences";
+import { useNavigation } from "@react-navigation/core";
+
+import { SharedRefetchContext } from "../sharedRefetchContext";
+import { updateUser } from "../services/updateUser";
 
 export default function PreferencesScreen() {
   const [selected, setSelected] = useState("");
   const [categories, setCategories] = useState([]);
+
+  const navigation = useNavigation();
+  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+
   useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        const res = await axios.get(`${API_URL}:${PORT}/api/categories/`);
-        setCategories(
-          res.data.map((item, index) => ({ key: index, value: item.name }))
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchInfo();
+    getCategories().then((data) => setCategories(data));
   }, []);
 
   const handleSubmit = async () => {
-    try {
-      const token = AsyncStorage.getItem("token");
-      if (token) {
-        await axios.post(`${API_URL}:${PORT}/api/users/preferences/`);
-      }
-    } catch (error) {
-      console.log(111, error);
+    const status = await addPreferences(selected);
+    if (status == 200) {
+      triggerRefetch();
+      updateUser({ new_user: false });
+      navigation.navigate("HomeScreen");
     }
   };
 
@@ -46,7 +41,7 @@ export default function PreferencesScreen() {
     >
       <Navbar />
       <ScrollView style={styles.scroll}>
-        <Text style={styles.text}>
+        <Text style={styles.subtitle}>
           Mostraremos eventos que sean acordes a tus preferencias
         </Text>
         <View style={styles.container}>
@@ -54,16 +49,20 @@ export default function PreferencesScreen() {
             setSelected={(val) => setSelected(val)}
             data={categories}
             save="value"
-            onSelect={() => {
-              console.log(selected);
-            }}
+            onSelect={() => {}}
             label="Preferencias"
             placeholder="Preferencias"
             search={false}
-            boxStyles={{ backgroundColor: "white", maxWidth: "70%" }}
-            dropdownStyles={{ backgroundColor: "white", maxWidth: "70%" }}
+            textStyles={styles.text}
+            boxStyles={styles.inputContainer}
+            dropdownStyles={styles.inputContainer}
+            badgeStyles={styles.badge}
           />
-          <GenericButton onPress={handleSubmit} text={"Actualizar"} />
+          <GenericButton
+            style={styles.button}
+            onPress={handleSubmit}
+            text={"Actualizar"}
+          />
         </View>
       </ScrollView>
     </LinearGradient>

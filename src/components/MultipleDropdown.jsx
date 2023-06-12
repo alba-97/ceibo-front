@@ -22,10 +22,8 @@ const MultipleDropdown = ({
   setSelected,
   placeholder,
   boxStyles,
-  inputStyles,
   dropdownStyles,
   dropdownItemStyles,
-  dropdownTextStyles,
   maxHeight,
   data,
   searchicon = false,
@@ -37,12 +35,8 @@ const MultipleDropdown = ({
   label,
   notFoundText = "No se encontraron datos",
   disabledItemStyles,
-  disabledTextStyles,
-  disabledCheckBoxStyles,
-  labelStyles,
+  textStyles,
   badgeStyles,
-  badgeTextStyles,
-  checkBoxStyles,
   save = "key",
   dropdownShown = false,
 }) => {
@@ -120,7 +114,7 @@ const MultipleDropdown = ({
               }}
               style={[
                 { padding: 0, height: 20, flex: 1, fontFamily },
-                inputStyles,
+                textStyles,
               ]}
             />
             <TouchableOpacity
@@ -153,7 +147,7 @@ const MultipleDropdown = ({
           }}
         >
           <View>
-            <Text style={[{ fontWeight: "600", fontFamily }, labelStyles]}>
+            <Text style={[{ fontWeight: "600", fontFamily }, textStyles]}>
               {label}
             </Text>
             <View
@@ -169,22 +163,16 @@ const MultipleDropdown = ({
                     key={index}
                     style={[
                       {
-                        backgroundColor: "gray",
-                        paddingHorizontal: 20,
+                        paddingHorizontal: 10,
                         paddingVertical: 5,
                         borderRadius: 50,
-                        marginRight: 10,
+                        marginRight: 5,
                         marginTop: 10,
                       },
                       badgeStyles,
                     ]}
                   >
-                    <Text
-                      style={[
-                        { color: "white", fontSize: 12, fontFamily },
-                        badgeTextStyles,
-                      ]}
-                    >
+                    <Text style={[textStyles, { fontSize: 12, fontFamily }]}>
                       {item}
                     </Text>
                   </View>
@@ -204,7 +192,7 @@ const MultipleDropdown = ({
             }
           }}
         >
-          <Text style={[{ fontFamily }, inputStyles]}>
+          <Text style={[{ fontFamily }, textStyles]}>
             {selectedval == ""
               ? placeholder
                 ? placeholder
@@ -258,7 +246,7 @@ const MultipleDropdown = ({
                               alignItems: "center",
                               backgroundColor: "#c4c5c6",
                             },
-                            disabledCheckBoxStyles,
+                            textStyles,
                           ]}
                         >
                           {selectedval?.includes(value) ? (
@@ -271,10 +259,7 @@ const MultipleDropdown = ({
                           ) : null}
                         </View>
                         <Text
-                          style={[
-                            { fontFamily, color: "#c4c5c6" },
-                            disabledTextStyles,
-                          ]}
+                          style={[{ fontFamily, color: "#c4c5c6" }, textStyles]}
                         >
                           {value}
                         </Text>
@@ -287,8 +272,6 @@ const MultipleDropdown = ({
                         key={index}
                         onPress={() => {
                           let existing = selectedval?.indexOf(value);
-
-                          // console.log(existing);
 
                           if (existing != -1 && existing != undefined) {
                             let sv = [...selectedval];
@@ -331,12 +314,12 @@ const MultipleDropdown = ({
                               height: 15,
                               borderWidth: 1,
                               marginRight: 10,
-                              borderColor: "gray",
+                              borderColor: "white",
                               borderRadius: 3,
                               justifyContent: "center",
                               alignItems: "center",
                             },
-                            checkBoxStyles,
+                            textStyles,
                           ]}
                         >
                           {selectedval?.includes(value) ? (
@@ -348,7 +331,7 @@ const MultipleDropdown = ({
                             />
                           ) : null}
                         </View>
-                        <Text style={[{ fontFamily }, dropdownTextStyles]}>
+                        <Text style={[{ fontFamily }, textStyles]}>
                           {value}
                         </Text>
                       </TouchableOpacity>
@@ -365,68 +348,10 @@ const MultipleDropdown = ({
                     setTimeout(() => setFilteredData(data), 800);
                   }}
                 >
-                  <Text style={dropdownTextStyles}>{notFoundText}</Text>
+                  <Text style={textStyles}>{notFoundText}</Text>
                 </TouchableOpacity>
               )}
             </ScrollView>
-
-            {selectedval?.length > 0 ? (
-              <Pressable>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingLeft: 20,
-                  }}
-                >
-                  <Text
-                    style={{ marginRight: 20, fontWeight: "600", fontFamily }}
-                  >
-                    Seleccionado
-                  </Text>
-                  <View
-                    style={{ height: 1, flex: 1, backgroundColor: "gray" }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingHorizontal: 20,
-                    marginBottom: 20,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {selectedval?.map((item, index) => {
-                    return (
-                      <View
-                        key={index}
-                        style={[
-                          {
-                            backgroundColor: "gray",
-                            paddingHorizontal: 20,
-                            paddingVertical: 5,
-                            borderRadius: 50,
-                            marginRight: 10,
-                            marginTop: 10,
-                          },
-                          badgeStyles,
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            { color: "white", fontSize: 12, fontFamily },
-                            badgeTextStyles,
-                          ]}
-                        >
-                          {item}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </View>
-              </Pressable>
-            ) : null}
           </View>
         </Animated.View>
       ) : null}
@@ -439,10 +364,10 @@ export default MultipleDropdown;
 const styles = StyleSheet.create({
   wrapper: {
     borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "gray",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    borderRadius: 15,
+    borderColor: "rgba(10, 7, 7, 0.2)",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
@@ -450,7 +375,7 @@ const styles = StyleSheet.create({
   dropdown: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "gray",
+    borderColor: "rgba(10, 7, 7, 0.2)",
     overflow: "hidden",
   },
   option: {

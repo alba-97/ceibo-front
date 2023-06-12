@@ -88,7 +88,7 @@ function BottomNavbar() {
       />
       <Tab.Screen
         name="Search"
-        component={PreferencesScreen}
+        component={SearchScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Feather name="search" size={size} color={color} />,

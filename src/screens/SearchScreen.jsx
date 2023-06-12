@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan } from "../state/selectedPlan";
+import { getPlan } from "../services/getPlan";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
@@ -20,8 +21,9 @@ export default function SearchScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const handlePress = (plan) => {
-    dispatch(setSelectedPlan(plan));
+  const handlePress = async (plan) => {
+    const updatedPlan = await getPlan(plan._id);
+    dispatch(setSelectedPlan(updatedPlan));
     navigation.navigate("PlanDetail");
   };
 

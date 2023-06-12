@@ -7,10 +7,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
-    alignItems: "center",
-    flex: 1,
-    paddingTop: "10%",
-    width: "70%",
+    color: "white",
+    backgroundColor: "rgba(225, 200, 200, 0.2)",
+    maxWidth: "80%",
+  },
+  button: {
+    marginTop: 30,
+  },
+  badge: {
+    backgroundColor: "rgba(25, 20, 20, 0.3)",
   },
   scroll: {
     flex: 1,
@@ -18,17 +23,17 @@ export const styles = StyleSheet.create({
     paddingTop: "10%",
   },
   text: {
-    paddingTop: 10,
-    paddingBottom: 10,
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 4,
   },
-  text2: {
+  subtitle: {
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 40,
   },
 });
