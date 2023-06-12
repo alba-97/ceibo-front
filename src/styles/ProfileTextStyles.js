@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 
-export default styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     paddingTop: 15,
     paddingBottom: 15,

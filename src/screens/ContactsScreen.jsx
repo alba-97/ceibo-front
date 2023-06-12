@@ -1,8 +1,9 @@
 // Native
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
@@ -10,12 +11,15 @@ import { Navbar } from "../components/Navbar";
 // Services
 import { fetchContacts } from "../services/fetchContacts";
 import { SingleContact } from "../components/SingleContact";
+import { setSelectedContact } from "../state/selectedContact";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const selectedContact = useSelector((state) => state.selectedContact);
 
   const bringMeTheContacts = async () => {
     try {
@@ -36,14 +40,18 @@ export default function ContactsScreen() {
   };
 
   const filterContacts = (text) => {
-    const filtered = contacts?.filter((contact) =>
-      contact.first_name.toLowerCase().includes(text.toLowerCase())
+    const filtered = contacts?.filter(
+      (contact) =>
+        contact.first_name &&
+        contact.first_name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredContacts(filtered);
   };
 
   const handleContactPress = (contact) => {
-    navigation.navigate("ContactInfoScreen", { contact });
+    console.log("contact", contact);
+    dispatch(setSelectedContact(contact));
+    navigation.navigate("ContactInfoScreen", { selectedContact });
   };
 
   return (
@@ -65,7 +73,7 @@ export default function ContactsScreen() {
         <Text style={styles.text1}>Contactos</Text>
 
         <ScrollView>
-          <View style={styles.container2}>
+          <View>
             {filteredContacts?.map((contact, i) => (
               <Text
                 style={styles.text2}
