@@ -43,6 +43,17 @@ export default function ContactInfoScreen() {
   //   }
   // };
 
+  const handlePress = (plan) => {
+    setSelectedPlan(plan);
+    setIsEventShared(false);
+  };
+  const handleShareEvent = () => {
+    if (selectedPlan) {
+      setIsEventShared(true);
+      setSelectedPlan(null);
+    }
+  };
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}

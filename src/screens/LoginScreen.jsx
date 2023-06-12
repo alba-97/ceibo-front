@@ -26,6 +26,7 @@ export default function LoginScreen() {
   const handleSignup = () => {
     navigation.navigate("Register");
   };
+
   const handleLogin = async () => {
     try {
       const res = await axios.post(`${API_URL}:${PORT}/api/users/login`, {
@@ -43,7 +44,7 @@ export default function LoginScreen() {
         dispatch(setUser(userData));
         const userPlans = await getUserPlans();
         dispatch(setUserPlans(userPlans));
-        navigation.navigate("HomeScreen");
+        navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
       }
     } catch (error) {
       Alert.alert("Error", error.response.data, [{ text: "OK" }]);

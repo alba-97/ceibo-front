@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
-  subTitle: {
+  subtitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#fff",
@@ -28,6 +28,21 @@ export const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
   },
+  input: {
+    alignItems: "center",
+  },
+  username: {
+    fontSize: 18,
+    color: "#fff",
+    paddingHorizontal: 10,
+    margin: 10,
+  },
+  comment: {
+    fontSize: 14,
+    color: "#fff",
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+  },
   detailsContainer: {
     padding: 20,
   },
@@ -36,6 +51,12 @@ export const styles = StyleSheet.create({
     backgroundColor: "#7D0166",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "#fff",
+    paddingHorizontal: 10,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

@@ -10,9 +10,10 @@ export const MainEvent = ({ plan, onPress }) => {
         <Image source={{ uri: plan?.img }} style={styles.image} />
         <View style={styles.overlay}>
           <Text style={styles.text}>{plan?.title}</Text>
-          <Text style={styles.textFecha}>
+          <Text style={styles.subtitle}>
             {plan?.event_date && formatDate(plan?.event_date)}
           </Text>
+          <Text style={styles.subtitle}>{plan?.category?.name}</Text>
         </View>
       </View>
     </TouchableOpacity>

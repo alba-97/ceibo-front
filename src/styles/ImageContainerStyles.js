@@ -21,7 +21,7 @@ export default styles = StyleSheet.create({
     fontWeight: 600,
     marginLeft: 7,
   },
-  textFecha: {
+  subtitle: {
     marginLeft: 7,
     marginBottom: 10,
     color: "#FFF",

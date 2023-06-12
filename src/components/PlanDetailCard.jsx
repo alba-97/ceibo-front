@@ -1,7 +1,14 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  Dimensions,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Navbar } from "../components/Navbar";
 import { formatDate } from "../services/formatDate";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
@@ -11,13 +18,15 @@ import { setUserPlans } from "../state/user";
 
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+import Comments from "./Comments";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
 
   const plan = useSelector((state) => state.selectedPlan);
-  const date = plan?.event_date;
+
   const user = useSelector((state) => state.user);
+  const screenHeight = Dimensions.get("window").height;
 
   const handleEnroll = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -35,14 +44,13 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <View style={styles.card}>
-      <ScrollView>
+    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
+      <Navbar />
+      <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
         {plan.img && <Image source={{ uri: plan.img }} />}
         <View style={styles.detailsContainer}>
-          <Text style={styles.subTitle}>Fecha</Text>
-          <Text style={styles.text}>{formatDate(date)}</Text>
-          <Text style={styles.subTitle}>Descripcion</Text>
+          <Text style={styles.subtitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
           {user._id && (
             <View>
@@ -52,19 +60,22 @@ export const PlanDetailCard = () => {
                     style={styles.addButton}
                     onPress={handleEnroll}
                   >
-                    <Text style={styles.addButtonText}>Participar</Text>
+                    <Text style={styles.buttonText}>Participar</Text>
                   </TouchableOpacity>
                 )}
 
               <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.addButtonText}>Invitar Personas</Text>
+                <Text style={styles.buttonText}>Invitar Personas</Text>
               </TouchableOpacity>
             </View>
           )}
-          <Text style={styles.subTitle}>Fecha</Text>
-          <Text style={styles.text}>{formatDate(date)}</Text>
+          <Text style={styles.subtitle}>Fecha</Text>
+          <Text style={styles.text}>
+            {plan.event_date && formatDate(plan.event_date)}
+          </Text>
         </View>
-      </ScrollView>
-    </View>
+        {user._id && <Comments />}
+      </View>
+    </ScrollView>
   );
 };
