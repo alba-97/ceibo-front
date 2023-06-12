@@ -64,7 +64,7 @@ export default function SearchScreen() {
           <GenericInput value={query} onChangeText={handleQueryChange} />
         </View>
         <View style={styles.content}>
-          <ScrollView>
+          <ScrollView style={{ width: "100%" }}>
             {results ? (
               results.map((item, index) => (
                 <SearchImg key={index} plan={item} onPress={handlePress} />

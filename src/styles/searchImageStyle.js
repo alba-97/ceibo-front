@@ -2,12 +2,10 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexShrink: 1,
     width: 500,
     height: 100,
     margin: 5,
-    position: "relative",
+    left: 50,
   },
   image: {
     width: 100,
