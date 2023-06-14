@@ -13,12 +13,12 @@ import { formatDate } from "../services/formatDate";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
-
 import { setUserPlans } from "../state/user";
 
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 import Comments from "./Comments";
+import Rating from "./Rating";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -52,27 +52,46 @@ export const PlanDetailCard = () => {
         <View style={styles.detailsContainer}>
           <Text style={styles.subtitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
-          {user._id && (
+          {plan.ended ? (
             <View>
-              {user.plans &&
-                !user.plans.some((userPlan) => userPlan._id == plan._id) && (
-                  <TouchableOpacity
-                    style={styles.addButton}
-                    onPress={handleEnroll}
-                  >
-                    <Text style={styles.buttonText}>Participar</Text>
-                  </TouchableOpacity>
-                )}
+              <Text style={styles.subtitle}>
+                El evento finalizó el{" "}
+                {plan.event_date.split("T")[0].split("-").reverse().join("/")}
+              </Text>
 
-              <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.buttonText}>Invitar Personas</Text>
-              </TouchableOpacity>
+              {user._id &&
+                user.plans &&
+                user.plans.some((userPlan) => userPlan._id == plan._id) &&
+                plan.organizer &&
+                plan.ended && <Rating plan={plan} />}
+            </View>
+          ) : (
+            <View>
+              {user._id && (
+                <View>
+                  {user.plans &&
+                    !user.plans.some(
+                      (userPlan) => userPlan._id == plan._id
+                    ) && (
+                      <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={handleEnroll}
+                      >
+                        <Text style={styles.buttonText}>Participar</Text>
+                      </TouchableOpacity>
+                    )}
+
+                  <TouchableOpacity style={styles.addButton}>
+                    <Text style={styles.buttonText}>Invitar Personas</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              <Text style={styles.subtitle}>Fecha</Text>
+              <Text style={styles.text}>
+                {plan.event_date && formatDate(plan.event_date)}
+              </Text>
             </View>
           )}
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>
-            {plan.event_date && formatDate(plan.event_date)}
-          </Text>
         </View>
         {user._id && <Comments />}
       </View>

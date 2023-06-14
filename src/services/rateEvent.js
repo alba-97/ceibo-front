@@ -2,18 +2,20 @@ import axios from "axios";
 import { API_URL, PORT } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function getFilteredPlans() {
+export async function rateEvent(rating, planId) {
   try {
     const token = await AsyncStorage.getItem("token");
-    if (token) {
-      const res = await axios.get(`${API_URL}:${PORT}/api/events/filter`, {
+    const res = await axios.post(
+      `${API_URL}:${PORT}/api/events/${planId}/rate`,
+      { rating },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      return res.data;
-    }
+      }
+    );
+    return res.data;
   } catch (error) {
-    return [];
+    console.error(error);
   }
 }

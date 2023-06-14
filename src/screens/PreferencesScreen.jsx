@@ -21,7 +21,7 @@ export default function PreferencesScreen() {
 
   useEffect(() => {
     getCategories().then((data) => setCategories(data));
-  }, []);
+  }, [refetch]);
 
   const handleSubmit = async () => {
     const status = await addPreferences(selected);

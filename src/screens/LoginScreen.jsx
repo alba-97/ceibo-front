@@ -44,6 +44,7 @@ export default function LoginScreen() {
         dispatch(setUser(userData));
         const userPlans = await getUserPlans();
         dispatch(setUserPlans(userPlans));
+        console.log(userPlans);
         navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
       }
     } catch (error) {

@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
+    marginTop: 40,
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
@@ -26,6 +27,11 @@ export const styles = StyleSheet.create({
     color: "#fff",
     padding: 10,
     margin: 10,
+    textAlign: "center",
+  },
+  p: {
+    fontSize: 18,
+    color: "#fff",
     textAlign: "center",
   },
   input: {
