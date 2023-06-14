@@ -59,7 +59,7 @@ export default function PreferencesScreen() {
             badgeStyles={styles.badge}
           />
           <GenericButton
-            style={styles.button}
+            customStyle={styles.button}
             onPress={handleSubmit}
             text={"Actualizar"}
           />

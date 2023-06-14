@@ -6,7 +6,7 @@ export const GenericInput = ({ customStyle, ...props }) => {
   return (
     <TextInput
       {...props}
-      style={[styles.input, customStyle]}
+      style={[styles.input, customStyle, { flexDirection: "row" }]}
       placeholderTextColor="#999"
     />
   );
