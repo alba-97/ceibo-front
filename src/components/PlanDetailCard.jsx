@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-  Dimensions,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from "react-native";
+import { Dimensions, View, Text, Image, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Navbar } from "../components/Navbar";
-import { formatDate } from "../services/formatDate";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
-
 import { setUserPlans } from "../state/user";
-
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 import Comments from "./Comments";
@@ -24,10 +14,12 @@ import { GenericButton } from "./GenericButton";
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
   const plan = useSelector((state) => state.selectedPlan);
-
   const user = useSelector((state) => state.user);
+  console.log("user", user);
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
+  const formattingDate = plan.event_date.split("T")[0].replaceAll("-", " / ");
+  console.log("date", formattingDate);
 
   const handleEnroll = async () => {
     try {
@@ -77,11 +69,18 @@ export const PlanDetailCard = () => {
       <Navbar />
       <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
-        {plan.img && <Image source={{ uri: plan.img }} />}
+        <Image
+          source={{ uri: plan?.img }}
+          style={{
+            marginTop: "5%",
+            width: "100%",
+            height: "20%",
+          }}
+        />
         <View style={styles.detailsContainer}>
-          <Text style={styles.subTitle}>Fecha</Text>
-          <Text style={styles.text}>{formatDate(date)}</Text>
-          <Text style={styles.subTitle}>Descripcion</Text>
+          <Text style={styles.subtitle}>Fecha</Text>
+          <Text style={styles.text}>{formattingDate}</Text>
+          <Text style={styles.subtitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
           {user._id && (
             <View style={styles.buttonContainer}>
@@ -114,12 +113,9 @@ export const PlanDetailCard = () => {
               <GenericButton text={"Invitar Personas"} />
             </View>
           )}
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>
-            {plan.event_date && formatDate(plan.event_date)}
-          </Text>
         </View>
-        {user._id && <Comments />}
+        <Text style={styles.subtitle}>Agrega un comentario del evento!</Text>
+        <View style={{ marginTop: "5%" }}>{user._id && <Comments />}</View>
       </View>
     </ScrollView>
   );

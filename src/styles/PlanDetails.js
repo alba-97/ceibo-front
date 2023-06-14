@@ -46,4 +46,11 @@ export const styles = StyleSheet.create({
   detailsContainer: {
     padding: 20,
   },
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  img: {
+    width: "100%",
+  },
 });
