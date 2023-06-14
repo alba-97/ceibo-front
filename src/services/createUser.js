@@ -3,12 +3,9 @@ import { API_URL, PORT } from "@env";
 
 export async function createNewUser(user) {
   try {
-    const NewUser = await axios.post(
-      `${API_URL}:${PORT}/api/users/signup`,
-      user
-    );
-    return NewUser.data;
+    const res = await axios.post(`${API_URL}:${PORT}/api/users/signup`, user);
+    return res.data;
   } catch (error) {
-    throw Error(error);
+    console.error(error);
   }
 }

@@ -4,10 +4,11 @@ export const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     alignItems: "center",
- },
+  },
 
   content: {
     flex: 1,
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   searchContainer: {

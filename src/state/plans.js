@@ -6,7 +6,13 @@ const plansSlice = createSlice({
   name: "plans",
   initialState,
   reducers: {
-    setPlans: (state, action) => action.payload,
+    setPlans: (state, action) => {
+      let newState = action.payload;
+      if (action.payload.category) {
+        newState.category = action.payload.category.name;
+      }
+      return newState;
+    },
   },
 });
 

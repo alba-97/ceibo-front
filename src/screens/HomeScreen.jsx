@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { ScrollView } from "react-native";
 
 // Components
@@ -11,7 +11,9 @@ import { MainEvent } from "../components/MainEvent";
 // Other Imports
 import { getAllPlans } from "../services/getAllPlans";
 import { getUserPlans } from "../services/getUserPlans";
+import { getFilteredPlans } from "../services/getFilteredPlans";
 import { getUser } from "../services/getUser";
+import { getPlan } from "../services/getPlan";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
@@ -20,35 +22,38 @@ import { setSelectedPlan } from "../state/selectedPlan";
 import { setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
+import { SharedRefetchContext } from "../sharedRefetchContext";
+
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
 
+  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handlePress = (plan) => {
-    dispatch(setSelectedPlan(plan));
+  const handlePress = async (plan) => {
+    const updatedPlan = await getPlan(plan._id);
+    dispatch(setSelectedPlan(updatedPlan));
     navigation.navigate("PlanDetail");
   };
 
   useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        const userData = await getUser();
-        if (userData) {
-          dispatch(setUser(userData));
-          const userPlans = await getUserPlans();
-          dispatch(setUserPlans(userPlans));
+    getUser().then((userData) => {
+      if (userData._id) {
+        dispatch(setUser(userData));
+        getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
+        if (userData.preferences && userData.preferences[0]) {
+          getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
+        } else {
+          getAllPlans().then((plans) => dispatch(setPlans(plans)));
         }
-        const plans = await getAllPlans();
-        dispatch(setPlans(plans));
-      } catch (error) {
-        console.log("fetchInfo error", error);
+      } else {
+        getAllPlans().then((plans) => dispatch(setPlans(plans)));
       }
-    };
-    fetchInfo();
-  }, []);
+    });
+  }, [refetch]);
 
   return (
     <LinearGradient

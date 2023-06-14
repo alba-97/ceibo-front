@@ -16,6 +16,7 @@ const initialState = {
   category: null,
   start_time: null,
   end_time: null,
+  comments: [],
 };
 
 const selectedPlanSlice = createSlice({

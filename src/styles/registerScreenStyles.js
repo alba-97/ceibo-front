@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input2: {
+    paddingLeft:10,
     fontSize: 16,
     width: "80%",
     backgroundColor: "rgba(0, 0, 0, 0.3)",

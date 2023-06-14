@@ -2,20 +2,20 @@ import axios from "axios";
 import { API_URL, PORT } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function getUser() {
+export async function addComment(text, planId) {
   try {
     const token = await AsyncStorage.getItem("token");
-    if (token) {
-      const res = await axios.get(`${API_URL}:${PORT}/api/users/me`, {
+    const res = await axios.post(
+      `${API_URL}:${PORT}/api/comments/${planId}`,
+      { text },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      return res.data;
-    } else {
-      return { _id: null };
-    }
+      }
+    );
+    return res.data;
   } catch (error) {
-    return { _id: null };
+    console.error(123, error);
   }
 }

@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan } from "../state/selectedPlan";
+import { getPlan } from "../services/getPlan";
 import { SearchImg } from "../components/searchImage";
 
 export default function SearchScreen() {
@@ -21,8 +22,9 @@ export default function SearchScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const handlePress = (plan) => {
-    dispatch(setSelectedPlan(plan));
+  const handlePress = async (plan) => {
+    const updatedPlan = await getPlan(plan._id);
+    dispatch(setSelectedPlan(updatedPlan));
     navigation.navigate("PlanDetail");
   };
 
@@ -62,7 +64,7 @@ export default function SearchScreen() {
           <GenericInput value={query} onChangeText={handleQueryChange} />
         </View>
         <View style={styles.content}>
-          <ScrollView>
+          <ScrollView style={{ width: "100%" }}>
             {results ? (
               results.map((item, index) => (
                 <SearchImg key={index} plan={item} onPress={handlePress} />

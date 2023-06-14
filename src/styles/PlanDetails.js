@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
-  subTitle: {
+  subtitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#fff",
@@ -27,6 +27,21 @@ export const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     textAlign: "center",
+  },
+  input: {
+    alignItems: "center",
+  },
+  username: {
+    fontSize: 18,
+    color: "#fff",
+    paddingHorizontal: 10,
+    margin: 10,
+  },
+  comment: {
+    fontSize: 14,
+    color: "#fff",
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
   },
   detailsContainer: {
     padding: 20,

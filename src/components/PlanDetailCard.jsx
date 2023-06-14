@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  Dimensions,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Navbar } from "../components/Navbar";
 import { formatDate } from "../services/formatDate";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
@@ -11,13 +18,15 @@ import { setUserPlans } from "../state/user";
 
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+import Comments from "./Comments";
 import { GenericButton } from "./GenericButton";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
   const plan = useSelector((state) => state.selectedPlan);
-  const date = plan?.event_date;
+
   const user = useSelector((state) => state.user);
+  const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
 
   const handleEnroll = async () => {
@@ -64,8 +73,9 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <View style={styles.card}>
-      <ScrollView>
+    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
+      <Navbar />
+      <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
         {plan.img && <Image source={{ uri: plan.img }} />}
         <View style={styles.detailsContainer}>
@@ -73,8 +83,6 @@ export const PlanDetailCard = () => {
           <Text style={styles.text}>{formatDate(date)}</Text>
           <Text style={styles.subTitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
-          <Text style={styles.subTitle}>Fecha</Text>
-          <Text style={styles.text}>{formatDate(date)}</Text>
           {user._id && (
             <View style={styles.buttonContainer}>
               {!user.plans?.some((userPlan) => userPlan._id === plan._id) ? (
@@ -106,8 +114,13 @@ export const PlanDetailCard = () => {
               <GenericButton text={"Invitar Personas"} />
             </View>
           )}
+          <Text style={styles.subtitle}>Fecha</Text>
+          <Text style={styles.text}>
+            {plan.event_date && formatDate(plan.event_date)}
+          </Text>
         </View>
-      </ScrollView>
-    </View>
+        {user._id && <Comments />}
+      </View>
+    </ScrollView>
   );
 };
