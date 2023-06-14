@@ -43,7 +43,9 @@ export default function HomeScreen() {
         }
         const plans = await getAllPlans();
         dispatch(setPlans(plans));
-      } catch (error) {}
+      } catch (error) {
+        console.log("fetchInfo error", error);
+      }
     };
     fetchInfo();
   }, []);

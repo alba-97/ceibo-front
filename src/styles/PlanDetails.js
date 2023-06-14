@@ -31,11 +31,4 @@ export const styles = StyleSheet.create({
   detailsContainer: {
     padding: 20,
   },
-  addButton: {
-    margin: 10,
-    backgroundColor: "#7D0166",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-  },
 });
