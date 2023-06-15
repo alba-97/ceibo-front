@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     maxWidth: "80%",
   },
   button: {
+    marginBottom: 50,
     marginTop: 30,
   },
   badge: {

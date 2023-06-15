@@ -148,9 +148,9 @@ export default function AddPlanScreen() {
             <Text style={styles.text}>Imagen</Text>
             <ImageContainer
               style={styles.foto}
-              imageSource={
-                "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fotos-editar-tiktok-1620329179.jpg?crop=1xw:0.6004447739065975xh;center,top&resize=1200:*"
-              }
+              plan={{
+                img: "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+              }}
             />
             <View style={styles.crearPlan}>
               <GenericButton onPress={handleSubmit} text={"Crear Plan"} />

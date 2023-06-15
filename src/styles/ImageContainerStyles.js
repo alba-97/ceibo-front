@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
   overlay: {
     position: "absolute",
     height: "100%",
-    width: "100%",
+    width: 250,
     justifyContent: "flex-end",
     backgroundColor: "#0004",
   },
@@ -23,7 +23,6 @@ export default styles = StyleSheet.create({
   },
   subtitle: {
     marginLeft: 7,
-
     color: "#FFF",
     fontSize: 16,
     fontWeight: 500,
