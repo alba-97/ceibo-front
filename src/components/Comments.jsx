@@ -9,14 +9,15 @@ import { setComments } from "../state/selectedPlan";
 
 const Comments = () => {
   const plan = useSelector((state) => state.selectedPlan);
-  const user = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
 
   const handleComment = async () => {
-    let newComment = await addComment(comment, plan._id);
-    dispatch(setComments(newComment));
+    if (comment.length > 0) {
+      let newComment = await addComment(comment, plan._id);
+      dispatch(setComments(newComment));
+    }
   };
 
   return (
