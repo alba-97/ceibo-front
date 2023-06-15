@@ -20,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DatePicker } from "../components/DatePicker";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
@@ -35,6 +36,8 @@ export default function AddPlanScreen() {
   const [category, setCategory] = useState("");
   const [link_to_pay, setLink_to_pay] = useState("");
   const [path, setPath] = useState("");
+
+  const navigation = useNavigation();
 
   const selectImage = async () => {
     try {
@@ -63,18 +66,21 @@ export default function AddPlanScreen() {
       }
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const formData = new FormData();
+        let imageUrl;
 
-        formData.append("image", {
-          uri: path, // La URI del archivo en el dispositivo
-          type: "image/jpeg", // El tipo de archivo (puede variar según el formato)
-          name: "image.jpg", // El nombre del archivo
-        });
-
-        const res = await axios.post(`${API_URL}:${PORT}/api/upload`, formData);
-        const result = res.data;
-
-        const { imageUrl } = result;
+        if (path !== "") {
+          const formData = new FormData();
+          formData.append("image", {
+            uri: path,
+            type: "image/jpeg",
+            name: "image.jpg",
+          });
+          const res = await axios.post(
+            `${API_URL}:${PORT}/api/upload`,
+            formData
+          );
+          imageUrl = res.data.imageUrl;
+        }
 
         await axios.post(
           `${API_URL}:${PORT}/api/events/`,
@@ -100,10 +106,17 @@ export default function AddPlanScreen() {
           }
         );
         Alert.alert("Exito", "Evento agregado");
+        navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert("Error", "Ingresá sesión para publicar un evento");
       }
     } catch (error) {
-      console.log(error.response.data);
-      Alert.alert("Error", error.response.data);
+      console.log(error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data);
+      } else {
+        Alert.alert("Error", "Error de red");
+      }
     }
   };
 
