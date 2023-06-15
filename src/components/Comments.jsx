@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import { GenericInput } from "./GenericInput";
 import { useSelector } from "react-redux";
 import { styles } from "../styles/PlanDetails";
