@@ -1,6 +1,44 @@
-import { StyleSheet } from "react-native";
+ 
+import { Dimensions, StyleSheet } from "react-native";
+
+const windowWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
+  
+  containerChange: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    borderStyle: "solid",
+    width: windowWidth,
+  },
+  container3: {
+ //   paddingTop: 15,
+  //   paddingBottom: 15,
+  
+  // borderStyle: "solid",
+     width: windowWidth,
+  flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:"center",
+
+  }, 
+   pencilIconContainer: {
+
+    position: 'absolute',
+    left:"90%", // Ajusta este valor para controlar la posición horizontal
+    bottom: "25%", // Ajusta este valor para controlar la posición vertical
+  },
+
+  text3: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 20,
+    textAlign: "center",
+  },
+  
   container: {
     flex: 1,
     width: "100%",
@@ -46,5 +84,9 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 4,
+  },
+  logout: {
+    marginTop:20,
+    marginBottom:20,
   },
 });

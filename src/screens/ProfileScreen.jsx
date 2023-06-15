@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { View } from "react-native";
+import {ScrollView, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,8 +14,8 @@ import { clearUser } from "../state/user";
 
 import axios from "axios";
 import { API_URL, PORT } from "@env";
-import Configuration from "./configuration";
-
+import ChangeData from "../components/ChangeData";
+import { Navbar } from "../components/Navbar";
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -27,6 +27,9 @@ export default function ProfileScreen() {
     AsyncStorage.removeItem("token");
     dispatch(clearUser());
   };
+
+  
+
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -34,21 +37,28 @@ export default function ProfileScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      {!user._id ? (
+      <Navbar/>
+      <ScrollView>
+      {user._id ? (
         <View style={styles.container}>
-          <ProfilePicture imageSource={"profile_img"} />
-          <ProfileText style={styles.text} text={user?.username} />
-          <ProfileText style={styles.text} text={fullName} />
+          {/* <ProfilePicture imageSource={"profile_img"} /> */}
+          <ChangeData  keyboardType='default' type='text' baseData={user?.username} propName={'username'} />
+          <ChangeData  keyboardType='default' type='text' baseData={user?.first_name} propName={'first_name'} />
+          <ChangeData  keyboardType='default' type='text' baseData={user?.last_name} propName={'last_name'} />
+          <ChangeData  keyboardType='default' type='text' baseData={user?.address} propName={'address'} />
+          <ChangeData  keyboardType='email-address' type='email'baseData={user?.email} propName={'email'} />
+          <ChangeData  keyboardType='numeric' type='text' baseData={user?.phone} propName={'phone'} />
+          <ChangeData  keyboardType='default' type='date' baseData={user?.birthdate} propName={'birthdate'} />
+          
           <ProfileText style={styles.text} text={formattedBirthdate} />
-          <ProfileText style={styles.text} text={user?.phone} />
-          <ProfileText style={styles.text} text={user?.email} />
-          <ProfileText style={styles.text} text={user?.address} />
-          <GenericButton onPress={handleLogout} text="Logout" />
+
+          <GenericButton style={styles.logout}onPress={handleLogout} text="Logout" />
         </View>
       ) : (
-        // <LoginScreen />
-        <Configuration/>
+        <LoginScreen />
+        // <Configuration/>
       )}
+      </ScrollView>
     </LinearGradient>
   );
 }
