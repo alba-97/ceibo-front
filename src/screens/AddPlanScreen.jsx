@@ -1,7 +1,7 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, TextInput, View, Image, Alert, ScrollView } from "react-native";
-import React, { useState } from "react";
+import { Text, View, Alert, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
 // Components
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
@@ -12,13 +12,13 @@ import { API_URL, PORT } from "@env";
 
 import { ImageContainer } from "../components/ImageContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import noPlan from "../assets/noPlan.png";
+import { DatePicker } from "../components/DatePicker";
 
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
+  const [event_date, setEvent_date] = useState(null);
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
   const [min_age, setMin_age] = useState("");
@@ -28,16 +28,25 @@ export default function AddPlanScreen() {
   const [category, setCategory] = useState("");
   const [link_to_pay, setLink_to_pay] = useState("");
 
+  useEffect(() => {
+    setEvent_date(event_date);
+  }, [event_date]);
+
   const handleSubmit = async () => {
     try {
+      let formattedDate = event_date;
+      if (formattedDate instanceof Date) {
+        formattedDate = formattedDate.toISOString().split("T")[0];
+      }
       const token = await AsyncStorage.getItem("token");
+      console.log(formattedDate);
       await axios.post(
         `${API_URL}:${PORT}/api/events/`,
         {
           title,
           description,
           location,
-          date,
+          event_date: formattedDate,
           start_time,
           end_time,
           min_age,
@@ -55,7 +64,8 @@ export default function AddPlanScreen() {
       );
       Alert.alert("Exito", "Evento agregado");
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      Alert.alert("Error", error.response.data);
     }
   };
 
@@ -79,17 +89,19 @@ export default function AddPlanScreen() {
             <View style={styles.container2}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Fecha</Text>
-                <TextInput
-                  value={date}
-                  onChangeText={setDate}
-                  style={styles.input2}
+                <DatePicker
+                  type="date"
+                  value={event_date}
+                  onChange={(date) => setEvent_date(new Date(date))}
+                  placeholder="DD/MM/YYYY"
+                  customStyle={styles.birthdate}
                 />
               </View>
             </View>
             <View style={styles.container2}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Minima Edad</Text>
-                <TextInput
+                <GenericInput
                   value={min_age}
                   onChangeText={setMin_age}
                   style={styles.input2}
@@ -97,7 +109,7 @@ export default function AddPlanScreen() {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Maxima Edad</Text>
-                <TextInput
+                <GenericInput
                   value={max_age}
                   onChangeText={setMax_age}
                   style={styles.input2}
@@ -107,7 +119,7 @@ export default function AddPlanScreen() {
             <View style={styles.container2}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Pago Minimo</Text>
-                <TextInput
+                <GenericInput
                   value={min_to_pay}
                   onChangeText={setMin_to_pay}
                   style={styles.input2}
@@ -115,7 +127,7 @@ export default function AddPlanScreen() {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Pago Total</Text>
-                <TextInput
+                <GenericInput
                   value={total_to_pay}
                   onChangeText={setTotal_to_pay}
                   style={styles.input2}
@@ -126,7 +138,7 @@ export default function AddPlanScreen() {
             <View style={styles.container2}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Hora de Inicio</Text>
-                <TextInput
+                <GenericInput
                   value={start_time}
                   onChangeText={setStart_time}
                   style={styles.input2}
@@ -134,7 +146,7 @@ export default function AddPlanScreen() {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Hora de Cierre</Text>
-                <TextInput
+                <GenericInput
                   value={end_time}
                   onChangeText={setEnd_time}
                   style={styles.input2}
