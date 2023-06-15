@@ -17,6 +17,8 @@ const initialState = {
   start_time: null,
   end_time: null,
   comments: [],
+  organizer: {},
+  ended: false,
 };
 
 const selectedPlanSlice = createSlice({
@@ -24,8 +26,13 @@ const selectedPlanSlice = createSlice({
   initialState,
   reducers: {
     setSelectedPlan: (state, action) => action.payload,
+    setOrganizer: (state, action) => {
+      let newState = { ...state };
+      newState.organizer = action.payload;
+      return newState;
+    },
   },
 });
 
-export const { setSelectedPlan } = selectedPlanSlice.actions;
+export const { setSelectedPlan, setOrganizer } = selectedPlanSlice.actions;
 export default selectedPlanSlice.reducer;

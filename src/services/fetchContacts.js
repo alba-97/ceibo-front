@@ -38,6 +38,6 @@ export async function fetchContacts() {
       return filteredContacts;
     }
   } catch (error) {
-    console.log("service fetchContacts", error);
+    console.error(error);
   }
 }

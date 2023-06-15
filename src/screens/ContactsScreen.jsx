@@ -27,7 +27,7 @@ export default function ContactsScreen() {
       setContacts(await fetchContacts());
       setFilteredContacts(await fetchContacts());
     } catch (error) {
-      console.log("error useEffect contactsScreen", error);
+      console.error(error);
     }
   };
 
@@ -50,7 +50,6 @@ export default function ContactsScreen() {
   };
 
   const handleContactPress = (contact) => {
-    console.log("contact", contact);
     dispatch(setSelectedContact(contact));
     navigation.navigate("ContactInfoScreen", { selectedContact });
   };

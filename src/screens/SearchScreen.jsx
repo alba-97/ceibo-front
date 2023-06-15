@@ -1,9 +1,8 @@
 // React Components
 import { Text, ScrollView, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 // Components
-import { ImageContainer } from "../components/ImageContainer";
 import { GenericInput } from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { API_URL, PORT } from "@env";
@@ -11,9 +10,11 @@ import { styles } from "../appCss";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
-import { setSelectedPlan } from "../state/selectedPlan";
+import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { getPlan } from "../services/getPlan";
 import { SearchImg } from "../components/searchImage";
+import { getOrganizer } from "../services/getOrganizer";
+import { SharedRefetchContext } from "../sharedRefetchContext";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
@@ -22,9 +23,13 @@ export default function SearchScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+
   const handlePress = async (plan) => {
     const updatedPlan = await getPlan(plan._id);
     dispatch(setSelectedPlan(updatedPlan));
+    const organizer = await getOrganizer(plan._id);
+    dispatch(setOrganizer(organizer));
     navigation.navigate("PlanDetail");
   };
 
@@ -49,7 +54,7 @@ export default function SearchScreen() {
           console.error(error);
         });
     }
-  }, []);
+  }, [refetch]);
 
   return (
     <View style={styles.container}>
