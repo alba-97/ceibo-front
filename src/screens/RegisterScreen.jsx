@@ -1,12 +1,5 @@
 // Native
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  TextInput,
-} from "react-native";
+import { View, Text, ScrollView, Alert, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
