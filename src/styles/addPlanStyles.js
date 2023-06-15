@@ -11,6 +11,10 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  image: {
+    width: 250,
+    height: 110,
+  },
   date: {
     paddingTop: 10,
     paddingBottom: 10,

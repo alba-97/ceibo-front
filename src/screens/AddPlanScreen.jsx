@@ -1,6 +1,13 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View, Alert, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 // Components
 import { GenericButton } from "../components/GenericButton";
@@ -9,10 +16,11 @@ import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
+import * as ImagePicker from "expo-image-picker";
 
-import { ImageContainer } from "../components/ImageContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DatePicker } from "../components/DatePicker";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
@@ -27,6 +35,24 @@ export default function AddPlanScreen() {
   const [total_to_pay, setTotal_to_pay] = useState("");
   const [category, setCategory] = useState("");
   const [link_to_pay, setLink_to_pay] = useState("");
+  const [path, setPath] = useState("");
+
+  const navigation = useNavigation();
+
+  const selectImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      setPath(result.assets[0].uri);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     setEvent_date(event_date);
@@ -39,33 +65,58 @@ export default function AddPlanScreen() {
         formattedDate = formattedDate.toISOString().split("T")[0];
       }
       const token = await AsyncStorage.getItem("token");
-      console.log(formattedDate);
-      await axios.post(
-        `${API_URL}:${PORT}/api/events/`,
-        {
-          title,
-          description,
-          location,
-          event_date: formattedDate,
-          start_time,
-          end_time,
-          min_age,
-          max_age,
-          min_to_pay,
-          total_to_pay,
-          category,
-          link_to_pay,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      if (token) {
+        let imageUrl;
+
+        if (path !== "") {
+          const formData = new FormData();
+          formData.append("image", {
+            uri: path,
+            type: "image/jpeg",
+            name: "image.jpg",
+          });
+          const res = await axios.post(
+            `${API_URL}:${PORT}/api/upload`,
+            formData
+          );
+          imageUrl = res.data.imageUrl;
         }
-      );
-      Alert.alert("Exito", "Evento agregado");
+
+        await axios.post(
+          `${API_URL}:${PORT}/api/events/`,
+          {
+            title,
+            description,
+            location,
+            img: imageUrl,
+            event_date: formattedDate,
+            start_time,
+            end_time,
+            min_age,
+            max_age,
+            min_to_pay,
+            total_to_pay,
+            category,
+            link_to_pay,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        Alert.alert("Exito", "Evento agregado");
+        navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert("Error", "Ingresá sesión para publicar un evento");
+      }
     } catch (error) {
       console.log(error);
-      Alert.alert("Error", error.response.data);
+      if (error.response) {
+        Alert.alert("Error", error.response.data);
+      } else {
+        Alert.alert("Error", "Error de red");
+      }
     }
   };
 
@@ -158,12 +209,14 @@ export default function AddPlanScreen() {
             <Text style={styles.text}>Link para pagar</Text>
             <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
             <Text style={styles.text}>Imagen</Text>
-            <ImageContainer
-              style={styles.foto}
-              plan={{
-                img: "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
-              }}
-            />
+            <TouchableOpacity style={styles.container} onPress={selectImage}>
+              <Image
+                source={{
+                  uri: "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+                }}
+                style={styles.image}
+              />
+            </TouchableOpacity>
             <View style={styles.crearPlan}>
               <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
             </View>
