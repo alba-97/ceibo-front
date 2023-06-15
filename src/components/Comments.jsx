@@ -8,7 +8,6 @@ import { GenericButton } from "./GenericButton";
 
 const Comments = () => {
   const plan = useSelector((state) => state.selectedPlan);
-  console.log("plan comments", plan);
   const [comment, setComment] = useState("");
 
   const handleComment = async () => {
@@ -16,16 +15,18 @@ const Comments = () => {
   };
 
   return (
-    <View>
+    <View style={{ marginTop: "5%" }}>
+      <Text style={styles.subtitle}>¡Agrega un comentario al evento!</Text>
       <View style={styles.input}>
         <GenericInput value={comment} onChangeText={setComment} />
-        <TouchableOpacity style={styles.addButton} onPress={handleComment}>
-          <GenericButton text={"Enviar"} customStyle={{ marginTop: "5%" }} />
-        </TouchableOpacity>
+        <GenericButton
+          onPress={handleComment}
+          text={"Enviar"}
+          customStyle={{ marginTop: "5%" }}
+        />
       </View>
       {plan.comments &&
         plan.comments.map((item, index) => {
-          console.log("comment", item);
           return (
             <View key={index}>
               <Text style={styles.username}>{item.user.username}</Text>

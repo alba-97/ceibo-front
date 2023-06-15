@@ -18,11 +18,15 @@ export const PlanDetailCard = () => {
   const user = useSelector((state) => state.user);
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
-  const formattingDate = plan.event_date.split("T")[0].replaceAll("-", " / ");
+  const formattingDate = plan.event_date
+    .split("T")[0]
+    .split("-")
+    .reverse()
+    .join("/");
 
   const handleEnroll = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const token = await AsyncStorage.getItem("token");
       await axios.post(
         `${API_URL}:${PORT}/api/events/enroll`,
@@ -35,16 +39,15 @@ export const PlanDetailCard = () => {
       );
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
-      setLoading(false);
     } catch (error) {
-      setLoading(true);
-      console.log("handle roll error", error);
+      console.error(error);
     }
+    setLoading(false);
   };
 
   const handleStopParticipating = async (id) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const token = await AsyncStorage.getItem("token");
       await axios.delete(
         `${API_URL}:${PORT}/api/events/stop-participating/${id}`,
@@ -56,15 +59,14 @@ export const PlanDetailCard = () => {
       );
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
-      setLoading(false);
     } catch (error) {
-      console.log("stop participating handler error", error);
-      setLoading(false);
+      console.error(error);
     }
+    setLoading(false);
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
+    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
       <Navbar />
       <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
@@ -135,9 +137,8 @@ export const PlanDetailCard = () => {
             </View>
           )}
         </View>
+        {user._id && <Comments />}
       </View>
-      <Text style={styles.subtitle}>Agrega un comentario del evento!</Text>
-      <View style={{ marginTop: "5%" }}>{user._id && <Comments />}</View>
     </ScrollView>
   );
 };

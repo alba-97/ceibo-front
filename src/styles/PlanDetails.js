@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     overflow: "hidden",
     height: "100%",
+    flex: 1,
   },
   title: {
     fontSize: 24,
@@ -17,7 +18,6 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
-    marginTop: 40,
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
