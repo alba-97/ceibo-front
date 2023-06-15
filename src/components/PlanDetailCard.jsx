@@ -67,17 +67,15 @@ export const PlanDetailCard = () => {
 
   return (
     <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
-      <Navbar />
       <View style={styles.card}>
-        <Text style={styles.title}>{plan?.title}</Text>
         <Image
           source={{ uri: plan?.img }}
           style={{
-            marginTop: "5%",
             width: "100%",
-            height: "20%",
+            height: "15%",
           }}
         />
+        <Text style={styles.title}>{plan?.title}</Text>
         <View style={styles.detailsContainer}>
           <Text style={styles.subtitle}>Fecha</Text>
           <Text style={styles.text}>{formattingDate}</Text>

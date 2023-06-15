@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { GenericInput } from "./GenericInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../styles/PlanDetails";
 import { addComment } from "../services/addComment";
 import { GenericButton } from "./GenericButton";
+import { setComments } from "../state/selectedPlan";
 
 const Comments = () => {
   const plan = useSelector((state) => state.selectedPlan);
   const [comment, setComment] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleComment = async () => {
-    await addComment(comment, plan._id);
+    if (comment.length > 0) {
+      let newComment = await addComment(comment, plan._id);
+      dispatch(setComments(newComment));
+    }
   };
 
   return (

@@ -4,6 +4,7 @@ const initialState = {
   id: null,
   title: null,
   description: null,
+  location: null,
   img: null,
   event_date: null,
   created_at: null,
@@ -31,8 +32,14 @@ const selectedPlanSlice = createSlice({
       newState.organizer = action.payload;
       return newState;
     },
+    setComments: (state, action) => {
+      let newState = { ...state };
+      newState.comments = newState.comments.concat([action.payload]);
+      return newState;
+    },
   },
 });
 
-export const { setSelectedPlan, setOrganizer } = selectedPlanSlice.actions;
+export const { setSelectedPlan, setOrganizer, setComments } =
+  selectedPlanSlice.actions;
 export default selectedPlanSlice.reducer;
