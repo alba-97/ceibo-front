@@ -1,6 +1,6 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, TextInput, View, Image, ScrollView } from "react-native";
+import { Text, TextInput, View, Image, Alert, ScrollView } from "react-native";
 import React, { useState } from "react";
 // Components
 import { GenericButton } from "../components/GenericButton";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { API_URL, PORT } from "@env";
 
 import { ImageContainer } from "../components/ImageContainer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import noPlan from "../assets/noPlan.png";
 
 export default function AddPlanScreen() {
@@ -18,16 +19,45 @@ export default function AddPlanScreen() {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [minAge, setMinAge] = useState("");
-  const [maxAge, setMaxAge] = useState("");
-  const [minToPay, setMinToPay] = useState("");
-  const [totalToPay, setTotalToPay] = useState("");
+  const [start_time, setStart_time] = useState("");
+  const [end_time, setEnd_time] = useState("");
+  const [min_age, setMin_age] = useState("");
+  const [max_age, setMax_age] = useState("");
+  const [min_to_pay, setMin_to_pay] = useState("");
+  const [total_to_pay, setTotal_to_pay] = useState("");
   const [category, setCategory] = useState("");
-  const [linkToPay, setLinkToPay] = useState("");
+  const [link_to_pay, setLink_to_pay] = useState("");
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      await axios.post(
+        `${API_URL}:${PORT}/api/events/`,
+        {
+          title,
+          description,
+          location,
+          date,
+          start_time,
+          end_time,
+          min_age,
+          max_age,
+          min_to_pay,
+          total_to_pay,
+          category,
+          link_to_pay,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Alert.alert("Exito", "Evento agregado");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -60,16 +90,16 @@ export default function AddPlanScreen() {
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Minima Edad</Text>
                 <TextInput
-                  value={minAge}
-                  onChangeText={setMinAge}
+                  value={min_age}
+                  onChangeText={setMin_age}
                   style={styles.input2}
                 />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Maxima Edad</Text>
                 <TextInput
-                  value={maxAge}
-                  onChangeText={setMaxAge}
+                  value={max_age}
+                  onChangeText={setMax_age}
                   style={styles.input2}
                 />
               </View>
@@ -78,16 +108,16 @@ export default function AddPlanScreen() {
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Pago Minimo</Text>
                 <TextInput
-                  value={minToPay}
-                  onChangeText={setMinToPay}
+                  value={min_to_pay}
+                  onChangeText={setMin_to_pay}
                   style={styles.input2}
                 />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Pago Total</Text>
                 <TextInput
-                  value={totalToPay}
-                  onChangeText={setTotalToPay}
+                  value={total_to_pay}
+                  onChangeText={setTotal_to_pay}
                   style={styles.input2}
                 />
               </View>
@@ -97,16 +127,16 @@ export default function AddPlanScreen() {
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Hora de Inicio</Text>
                 <TextInput
-                  value={startTime}
-                  onChangeText={setStartTime}
+                  value={start_time}
+                  onChangeText={setStart_time}
                   style={styles.input2}
                 />
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Hora de Cierre</Text>
                 <TextInput
-                  value={endTime}
-                  onChangeText={setEndTime}
+                  value={end_time}
+                  onChangeText={setEnd_time}
                   style={styles.input2}
                 />
               </View>
@@ -114,7 +144,7 @@ export default function AddPlanScreen() {
             <Text style={styles.text}>Categoria</Text>
             <GenericInput value={category} onChangeText={setCategory} />
             <Text style={styles.text}>Link para pagar</Text>
-            <GenericInput value={linkToPay} onChangeText={setLinkToPay} />
+            <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
             <Text style={styles.text}>Imagen</Text>
             <ImageContainer
               style={styles.foto}
