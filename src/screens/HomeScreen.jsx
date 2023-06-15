@@ -18,11 +18,12 @@ import { getPlan } from "../services/getPlan";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
-import { setSelectedPlan } from "../state/selectedPlan";
+import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
 import { SharedRefetchContext } from "../sharedRefetchContext";
+import { getOrganizer } from "../services/getOrganizer";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
@@ -36,6 +37,8 @@ export default function HomeScreen() {
   const handlePress = async (plan) => {
     const updatedPlan = await getPlan(plan._id);
     dispatch(setSelectedPlan(updatedPlan));
+    const organizer = await getOrganizer(plan._id);
+    dispatch(setOrganizer(organizer));
     navigation.navigate("PlanDetail");
   };
 

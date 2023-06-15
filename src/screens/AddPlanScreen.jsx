@@ -1,96 +1,163 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, TextInput, View, Image, ScrollView } from "react-native";
-import React from "react";
+import { Text, TextInput, View, Image, Alert, ScrollView } from "react-native";
+import React, { useState } from "react";
 // Components
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
+import axios from "axios";
+import { API_URL, PORT } from "@env";
 
 import { ImageContainer } from "../components/ImageContainer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import noPlan from "../assets/noPlan.png";
 
+export default function AddPlanScreen() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [start_time, setStart_time] = useState("");
+  const [end_time, setEnd_time] = useState("");
+  const [min_age, setMin_age] = useState("");
+  const [max_age, setMax_age] = useState("");
+  const [min_to_pay, setMin_to_pay] = useState("");
+  const [total_to_pay, setTotal_to_pay] = useState("");
+  const [category, setCategory] = useState("");
+  const [link_to_pay, setLink_to_pay] = useState("");
 
-export default function AddPlanScreen({ imageSource }) {
-  const imgSrc = imageSource;
+  const handleSubmit = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      await axios.post(
+        `${API_URL}:${PORT}/api/events/`,
+        {
+          title,
+          description,
+          location,
+          date,
+          start_time,
+          end_time,
+          min_age,
+          max_age,
+          min_to_pay,
+          total_to_pay,
+          category,
+          link_to_pay,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Alert.alert("Exito", "Evento agregado");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-
       <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
-    >
-      <Navbar />
-   <ScrollView>
-      <View style={styles.content}>
-     
-        <Text style={styles.text}>Titulo</Text>
-        <GenericInput />
-        <Text style={styles.text}>Descripcion</Text>
-        <GenericInput />
-        <Text style={styles.text}>Lugar</Text>
-        <GenericInput />
-        <View style={styles.container2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Fecha</Text>
-            <TextInput style={styles.input2} />
+        colors={["#000", "#7D0166"]}
+        start={[0, 0]}
+        end={[1, 1]}
+        style={styles.container}
+      >
+        <Navbar />
+        <ScrollView>
+          <View style={styles.content}>
+            <Text style={styles.text}>Titulo</Text>
+            <GenericInput value={title} onChangeText={setTitle} />
+            <Text style={styles.text}>Descripcion</Text>
+            <GenericInput value={description} onChangeText={setDescription} />
+            <Text style={styles.text}>Lugar</Text>
+            <GenericInput value={location} onChangeText={setLocation} />
+            <View style={styles.container2}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Fecha</Text>
+                <TextInput
+                  value={date}
+                  onChangeText={setDate}
+                  style={styles.input2}
+                />
+              </View>
+            </View>
+            <View style={styles.container2}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Minima Edad</Text>
+                <TextInput
+                  value={min_age}
+                  onChangeText={setMin_age}
+                  style={styles.input2}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Maxima Edad</Text>
+                <TextInput
+                  value={max_age}
+                  onChangeText={setMax_age}
+                  style={styles.input2}
+                />
+              </View>
+            </View>
+            <View style={styles.container2}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Pago Minimo</Text>
+                <TextInput
+                  value={min_to_pay}
+                  onChangeText={setMin_to_pay}
+                  style={styles.input2}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Pago Total</Text>
+                <TextInput
+                  value={total_to_pay}
+                  onChangeText={setTotal_to_pay}
+                  style={styles.input2}
+                />
+              </View>
+            </View>
+
+            <View style={styles.container2}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Hora de Inicio</Text>
+                <TextInput
+                  value={start_time}
+                  onChangeText={setStart_time}
+                  style={styles.input2}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Hora de Cierre</Text>
+                <TextInput
+                  value={end_time}
+                  onChangeText={setEnd_time}
+                  style={styles.input2}
+                />
+              </View>
+            </View>
+            <Text style={styles.text}>Categoria</Text>
+            <GenericInput value={category} onChangeText={setCategory} />
+            <Text style={styles.text}>Link para pagar</Text>
+            <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
+            <Text style={styles.text}>Imagen</Text>
+            <ImageContainer
+              style={styles.foto}
+              imageSource={
+                "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fotos-editar-tiktok-1620329179.jpg?crop=1xw:0.6004447739065975xh;center,top&resize=1200:*"
+              }
+            />
+            <View style={styles.crearPlan}>
+              <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hora</Text>
-            <TextInput style={styles.input2} />
-          </View>
-        </View>
-        <View style={styles.container2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Minima Edad</Text>
-            <TextInput style={styles.input2} />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Maxima Edad</Text>
-            <TextInput style={styles.input2} />
-          </View>
-        </View>
-        <View style={styles.container2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Pago Minimo</Text>
-            <TextInput style={styles.input2} />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Pago Total</Text>
-            <TextInput style={styles.input2} />
-          </View>
-        </View>
-    
-        <View style={styles.container2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hora de Inicio</Text>
-            <TextInput style={styles.input2} />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hora de Cierre</Text>
-            <TextInput style={styles.input2} />
-          </View>
-        </View> 
-           <Text style={styles.text}>Categoria</Text>
-        <GenericInput />
-        <Text style={styles.text}>Link para pagar</Text>
-        <GenericInput />
-        <Text style={styles.text}>Imagen</Text>
-        <ImageContainer
-          style={styles.foto}
-          imageSource={
-            "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fotos-editar-tiktok-1620329179.jpg?crop=1xw:0.6004447739065975xh;center,top&resize=1200:*"
-          }
-        />
-         <View style={styles.crearPlan}>
-        <GenericButton text={"Crear Plan"} />
-        </View> 
-    </View> 
-    </ScrollView>
-    </LinearGradient>
+        </ScrollView>
+      </LinearGradient>
     </View>
   );
 }

@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     overflow: "hidden",
     height: "100%",
+    flex: 1,
   },
   title: {
     fontSize: 24,
@@ -26,6 +27,11 @@ export const styles = StyleSheet.create({
     color: "#fff",
     padding: 10,
     margin: 10,
+    textAlign: "center",
+  },
+  p: {
+    fontSize: 18,
+    color: "#fff",
     textAlign: "center",
   },
   input: {

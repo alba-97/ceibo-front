@@ -9,21 +9,24 @@ import { setUserPlans } from "../state/user";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 import Comments from "./Comments";
+import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
   const plan = useSelector((state) => state.selectedPlan);
   const user = useSelector((state) => state.user);
-  console.log("user", user);
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
-  const formattingDate = plan.event_date.split("T")[0].replaceAll("-", " / ");
-  console.log("date", formattingDate);
+  const formattingDate = plan.event_date
+    .split("T")[0]
+    .split("-")
+    .reverse()
+    .join("/");
 
   const handleEnroll = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const token = await AsyncStorage.getItem("token");
       await axios.post(
         `${API_URL}:${PORT}/api/events/enroll`,
@@ -36,16 +39,15 @@ export const PlanDetailCard = () => {
       );
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
-      setLoading(false);
     } catch (error) {
-      setLoading(true);
-      console.log("handle roll error", error);
+      console.error(error);
     }
+    setLoading(false);
   };
 
   const handleStopParticipating = async (id) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const token = await AsyncStorage.getItem("token");
       await axios.delete(
         `${API_URL}:${PORT}/api/events/stop-participating/${id}`,
@@ -57,15 +59,14 @@ export const PlanDetailCard = () => {
       );
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
-      setLoading(false);
     } catch (error) {
-      console.log("stop participating handler error", error);
-      setLoading(false);
+      console.error(error);
     }
+    setLoading(false);
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
+    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
       <Navbar />
       <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
@@ -82,40 +83,61 @@ export const PlanDetailCard = () => {
           <Text style={styles.text}>{formattingDate}</Text>
           <Text style={styles.subtitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
-          {user._id && (
-            <View style={styles.buttonContainer}>
-              {!user.plans?.some((userPlan) => userPlan._id === plan._id) ? (
-                <>
-                  {!loading ? (
-                    <GenericButton text={"Participar"} onPress={handleEnroll} />
+
+          {plan.ended ? (
+            <View>
+              <Text style={styles.subtitle}>
+                El evento finalizó el {formattingDate}
+              </Text>
+
+              {user._id &&
+                user.plans &&
+                user.plans.some((userPlan) => userPlan._id == plan._id) &&
+                plan.organizer &&
+                plan.ended && <Rating plan={plan} />}
+            </View>
+          ) : (
+            <View>
+              {user._id && (
+                <View style={styles.buttonContainer}>
+                  {!user.plans?.some(
+                    (userPlan) => userPlan._id === plan._id
+                  ) ? (
+                    <View>
+                      {!loading ? (
+                        <GenericButton
+                          text={"Participar"}
+                          onPress={handleEnroll}
+                        />
+                      ) : (
+                        <GenericButton
+                          text={"Cargando..."}
+                          customStyle={{ backgroundColor: "#7D0166" }}
+                        />
+                      )}
+                    </View>
                   ) : (
-                    <GenericButton
-                      text={"Cargando..."}
-                      customStyle={{ backgroundColor: "#7D0166" }}
-                    />
+                    <>
+                      {!loading ? (
+                        <GenericButton
+                          text={"Dejar de participar"}
+                          onPress={() => handleStopParticipating(plan._id)}
+                        />
+                      ) : (
+                        <GenericButton
+                          text={"Cargando..."}
+                          customStyle={{ backgroundColor: "#7D0166" }}
+                        />
+                      )}
+                    </>
                   )}
-                </>
-              ) : (
-                <>
-                  {!loading ? (
-                    <GenericButton
-                      text={"Dejar de participar"}
-                      onPress={() => handleStopParticipating(plan._id)}
-                    />
-                  ) : (
-                    <GenericButton
-                      text={"Cargando..."}
-                      customStyle={{ backgroundColor: "#7D0166" }}
-                    />
-                  )}
-                </>
+                  <GenericButton text={"Invitar Personas"} />
+                </View>
               )}
-              <GenericButton text={"Invitar Personas"} />
             </View>
           )}
         </View>
-        <Text style={styles.subtitle}>Agrega un comentario del evento!</Text>
-        <View style={{ marginTop: "5%" }}>{user._id && <Comments />}</View>
+        {user._id && <Comments />}
       </View>
     </ScrollView>
   );

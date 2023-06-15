@@ -16,6 +16,6 @@ export async function addComment(text, planId) {
     );
     return res.data;
   } catch (error) {
-    console.error(123, error);
+    console.error(error);
   }
 }

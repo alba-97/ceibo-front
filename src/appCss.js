@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 20,
+    marginLeft: 30,
   },
   searchContainer: {
     width: "100%",
