@@ -23,7 +23,7 @@ export default styles = StyleSheet.create({
   },
   subtitle: {
     marginLeft: 7,
-    marginBottom: 10,
+
     color: "#FFF",
     fontSize: 16,
     fontWeight: 500,
