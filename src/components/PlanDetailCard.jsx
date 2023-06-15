@@ -1,46 +1,68 @@
-import React from "react";
-import {
-  Dimensions,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from "react-native";
+import React, { useState } from "react";
+import { Dimensions, View, Text, Image, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Navbar } from "../components/Navbar";
-import { formatDate } from "../services/formatDate";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserPlans } from "../state/user";
-
 import axios from "axios";
 import { API_URL, PORT } from "@env";
 import Comments from "./Comments";
 import Rating from "./Rating";
+import { GenericButton } from "./GenericButton";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
-
   const plan = useSelector((state) => state.selectedPlan);
-
   const user = useSelector((state) => state.user);
+  console.log("user", user);
   const screenHeight = Dimensions.get("window").height;
+  const [loading, setLoading] = useState(false);
+  const formattingDate = plan.event_date.split("T")[0].replaceAll("-", " / ");
+  console.log("date", formattingDate);
 
   const handleEnroll = async () => {
-    const token = await AsyncStorage.getItem("token");
-    await axios.post(
-      `${API_URL}:${PORT}/api/events/enroll`,
-      { eventId: plan._id },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const newPlans = await getUserPlans();
-    dispatch(setUserPlans(newPlans));
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("token");
+      await axios.post(
+        `${API_URL}:${PORT}/api/events/enroll`,
+        { eventId: plan._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const newPlans = await getUserPlans();
+      dispatch(setUserPlans(newPlans));
+      setLoading(false);
+    } catch (error) {
+      setLoading(true);
+      console.log("handle roll error", error);
+    }
+  };
+
+  const handleStopParticipating = async (id) => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem("token");
+      await axios.delete(
+        `${API_URL}:${PORT}/api/events/stop-participating/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const newPlans = await getUserPlans();
+      dispatch(setUserPlans(newPlans));
+      setLoading(false);
+    } catch (error) {
+      console.log("stop participating handler error", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,10 +70,20 @@ export const PlanDetailCard = () => {
       <Navbar />
       <View style={styles.card}>
         <Text style={styles.title}>{plan?.title}</Text>
-        {plan.img && <Image source={{ uri: plan.img }} />}
+        <Image
+          source={{ uri: plan?.img }}
+          style={{
+            marginTop: "5%",
+            width: "100%",
+            height: "20%",
+          }}
+        />
         <View style={styles.detailsContainer}>
+          <Text style={styles.subtitle}>Fecha</Text>
+          <Text style={styles.text}>{formattingDate}</Text>
           <Text style={styles.subtitle}>Descripcion</Text>
           <Text style={styles.text}>{plan.description}</Text>
+
           {plan.ended ? (
             <View>
               <Text style={styles.subtitle}>
@@ -68,22 +100,40 @@ export const PlanDetailCard = () => {
           ) : (
             <View>
               {user._id && (
-                <View>
-                  {user.plans &&
-                    !user.plans.some(
-                      (userPlan) => userPlan._id == plan._id
-                    ) && (
-                      <TouchableOpacity
-                        style={styles.addButton}
-                        onPress={handleEnroll}
-                      >
-                        <Text style={styles.buttonText}>Participar</Text>
-                      </TouchableOpacity>
-                    )}
+                <View style={styles.buttonContainer}>
+                  {!user.plans?.some(
+                    (userPlan) => userPlan._id === plan._id
+                  ) ? (
+                    <View>
+                      {!loading ? (
+                        <GenericButton
+                          text={"Participar"}
+                          onPress={handleEnroll}
+                        />
+                      ) : (
+                        <GenericButton
+                          text={"Cargando..."}
+                          customStyle={{ backgroundColor: "#7D0166" }}
+                        />
+                      )}
+                    </View>
+                  ) : (
+                    <View>
+                      {!loading ? (
+                        <GenericButton
+                          text={"Dejar de participar"}
+                          onPress={() => handleStopParticipating(plan._id)}
+                        />
+                      ) : (
+                        <GenericButton
+                          text={"Cargando..."}
+                          customStyle={{ backgroundColor: "#7D0166" }}
+                        />
+                      )}
+                    </View>
+                  )}
 
-                  <TouchableOpacity style={styles.addButton}>
-                    <Text style={styles.buttonText}>Invitar Personas</Text>
-                  </TouchableOpacity>
+                  <GenericButton text={"Invitar Personas"} />
                 </View>
               )}
               <Text style={styles.subtitle}>Fecha</Text>
@@ -93,8 +143,9 @@ export const PlanDetailCard = () => {
             </View>
           )}
         </View>
-        {user._id && <Comments />}
       </View>
+      <Text style={styles.subtitle}>Agrega un comentario del evento!</Text>
+      <View style={{ marginTop: "5%" }}>{user._id && <Comments />}</View>
     </ScrollView>
   );
 };

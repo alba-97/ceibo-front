@@ -4,10 +4,11 @@ import { GenericInput } from "./GenericInput";
 import { useSelector } from "react-redux";
 import { styles } from "../styles/PlanDetails";
 import { addComment } from "../services/addComment";
+import { GenericButton } from "./GenericButton";
 
 const Comments = () => {
   const plan = useSelector((state) => state.selectedPlan);
-
+  console.log("plan comments", plan);
   const [comment, setComment] = useState("");
 
   const handleComment = async () => {
@@ -19,11 +20,12 @@ const Comments = () => {
       <View style={styles.input}>
         <GenericInput value={comment} onChangeText={setComment} />
         <TouchableOpacity style={styles.addButton} onPress={handleComment}>
-          <Text style={styles.buttonText}>Enviar</Text>
+          <GenericButton text={"Enviar"} customStyle={{ marginTop: "5%" }} />
         </TouchableOpacity>
       </View>
       {plan.comments &&
         plan.comments.map((item, index) => {
+          console.log("comment", item);
           return (
             <View key={index}>
               <Text style={styles.username}>{item.user.username}</Text>

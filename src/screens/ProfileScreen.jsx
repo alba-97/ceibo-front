@@ -4,7 +4,6 @@ import { View, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-import LoginScreen from "./LoginScreen";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
@@ -16,6 +15,7 @@ import axios from "axios";
 import { API_URL, PORT } from "@env";
 import { SharedRefetchContext } from "../sharedRefetchContext";
 import { useNavigation } from "@react-navigation/core";
+import Configuration from "./configuration";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
@@ -49,17 +49,11 @@ export default function ProfileScreen() {
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
             <ProfileText style={styles.text} text={user?.username} />
-            {fullName && <ProfileText style={styles.text} text={fullName} />}
-            {formattedBirthdate && (
-              <ProfileText style={styles.text} text={formattedBirthdate} />
-            )}
-            {user.phone && (
-              <ProfileText style={styles.text} text={user?.phone} />
-            )}
+            <ProfileText style={styles.text} text={fullName} />
+            <ProfileText style={styles.text} text={formattedBirthdate} />
+            <ProfileText style={styles.text} text={user?.phone} />
             <ProfileText style={styles.text} text={user?.email} />
-            {user.address && (
-              <ProfileText style={styles.text} text={user.address} />
-            )}
+            <ProfileText style={styles.text} text={user?.address} />
             <GenericButton
               onPress={handlePreferences}
               text="Editar preferencias"
@@ -68,7 +62,7 @@ export default function ProfileScreen() {
           </View>
         </ScrollView>
       ) : (
-        <LoginScreen />
+        <Configuration />
       )}
     </LinearGradient>
   );

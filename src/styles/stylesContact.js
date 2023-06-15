@@ -17,14 +17,15 @@ export const styles = StyleSheet.create({
   container3: {
     paddingTop: "5%",
     paddingBottom: "4%",
-
     alignItems: "center",
+    flexDirection: "row",
   },
 
   container2: {
     width: "95%",
     paddingLeft: "5%",
   },
+
   text1: {
     paddingBottom: "1%",
     paddingLeft: "5%",
@@ -34,6 +35,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
   },
+
   text2: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -43,5 +45,11 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     borderBottomWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
+  },
+  input: {
+    marginLeft: "5%",
+  },
+  reload: {
+    marginLeft: "15%",
   },
 });

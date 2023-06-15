@@ -1,13 +1,14 @@
 // Native
 import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
+import { AntDesign } from "@expo/vector-icons";
 // Services
 import { fetchContacts } from "../services/fetchContacts";
 import { SingleContact } from "../components/SingleContact";
@@ -68,7 +69,16 @@ export default function ContactsScreen() {
             value={query}
             onChangeText={handleQueryChange}
             placeholder={"Buscar"}
+            customStyle={styles.input}
           />
+          <TouchableOpacity onPress={() => bringMeTheContacts()}>
+            <AntDesign
+              name="reload1"
+              size={30}
+              color="white"
+              style={styles.reload}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={styles.text1}>Contactos</Text>
 
