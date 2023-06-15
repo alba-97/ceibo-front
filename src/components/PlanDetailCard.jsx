@@ -16,11 +16,9 @@ export const PlanDetailCard = () => {
   const dispatch = useDispatch();
   const plan = useSelector((state) => state.selectedPlan);
   const user = useSelector((state) => state.user);
-  console.log("user", user);
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
   const formattingDate = plan.event_date.split("T")[0].replaceAll("-", " / ");
-  console.log("date", formattingDate);
 
   const handleEnroll = async () => {
     try {
@@ -87,8 +85,7 @@ export const PlanDetailCard = () => {
           {plan.ended ? (
             <View>
               <Text style={styles.subtitle}>
-                El evento finalizó el{" "}
-                {plan.event_date.split("T")[0].split("-").reverse().join("/")}
+                El evento finalizó el {formattingDate}
               </Text>
 
               {user._id &&
@@ -118,7 +115,7 @@ export const PlanDetailCard = () => {
                       )}
                     </View>
                   ) : (
-                    <View>
+                    <>
                       {!loading ? (
                         <GenericButton
                           text={"Dejar de participar"}
@@ -130,16 +127,11 @@ export const PlanDetailCard = () => {
                           customStyle={{ backgroundColor: "#7D0166" }}
                         />
                       )}
-                    </View>
+                    </>
                   )}
-
                   <GenericButton text={"Invitar Personas"} />
                 </View>
               )}
-              <Text style={styles.subtitle}>Fecha</Text>
-              <Text style={styles.text}>
-                {plan.event_date && formatDate(plan.event_date)}
-              </Text>
             </View>
           )}
         </View>
