@@ -2,8 +2,21 @@
   "expo": {
     "name": "ceiboFront",
     "slug": "ceiboFront",
+    "scheme": "com.auth.ElClubDelPlan",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "extra": {
+      "eas": {
+        "projectId": "92aab027-2598-49ec-83aa-71529daad89b"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "package": "com.auth.ElClubDelPlan"
+    },
+    "android": {
+      "package": "com.auth.ElClubDelPlan"
+    }
   },
   "name": "ceiboFront"
 }
