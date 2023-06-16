@@ -11,6 +11,7 @@ import Comments from "./Comments";
 import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
+import { useNavigation } from "@react-navigation/core";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,33 @@ export const PlanDetailCard = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [invited, setInvited] = useState("");
+  const navigation = useNavigation();
+  const [canEdit, setCanEdit] = useState(false);
+
+  useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        let res = await axios.get(`${API_URL}:${PORT}/api/users`);
+        setUsers(
+          res.data.map((item) => ({ label: item.email, value: item.email }))
+        );
+        const token = await AsyncStorage.getItem("token");
+        res = await axios.get(
+          `${API_URL}:${PORT}/api/events/${plan._id}/can-update`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCanEdit(res.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchInfo();
+  }, []);
+
   const formattingDate = plan.event_date
     .split("T")[0]
     .split("-")
@@ -43,16 +71,6 @@ export const PlanDetailCard = () => {
     Alert.alert("OK", "Invitaciones enviadas");
   };
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const res = await axios.get(`${API_URL}:${PORT}/api/users`);
-      setUsers(
-        res.data.map((item) => ({ label: item.email, value: item.email }))
-      );
-    };
-    getUsers();
-  }, []);
-
   const handleEnroll = async () => {
     setLoading(true);
     try {
@@ -69,7 +87,7 @@ export const PlanDetailCard = () => {
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -89,7 +107,7 @@ export const PlanDetailCard = () => {
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -130,7 +148,7 @@ export const PlanDetailCard = () => {
                   {!user.plans?.some(
                     (userPlan) => userPlan._id === plan._id
                   ) ? (
-                    <>
+                    <View>
                       {!loading ? (
                         <GenericButton
                           text={"Participar"}
@@ -142,9 +160,9 @@ export const PlanDetailCard = () => {
                           customStyle={{ backgroundColor: "#7D0166" }}
                         />
                       )}
-                    </>
+                    </View>
                   ) : (
-                    <>
+                    <View>
                       {!loading ? (
                         <GenericButton
                           text={"Dejar de participar"}
@@ -156,7 +174,7 @@ export const PlanDetailCard = () => {
                           customStyle={{ backgroundColor: "#7D0166" }}
                         />
                       )}
-                    </>
+                    </View>
                   )}
                   <View style={styles.input}>
                     <MultipleDropdown
@@ -181,6 +199,14 @@ export const PlanDetailCard = () => {
             </View>
           )}
         </View>
+        {canEdit && (
+          <GenericButton
+            text={"Editar evento"}
+            onPress={() => {
+              navigation.navigate("EditPlan");
+            }}
+          />
+        )}
         {user._id && <Comments />}
       </View>
     </ScrollView>
