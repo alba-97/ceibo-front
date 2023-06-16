@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+// Native
 import { Alert, TextInput, TouchableOpacity, View } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { EvilIcons, Feather } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { DatePicker } from "./DatePicker";
+import React, { useState } from "react";
+import moment from "moment";
+import axios from "axios";
+// Components
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
-import axios from "axios";
-import { API_URL, PORT } from "@env";
-import { EvilIcons, Feather } from "@expo/vector-icons";
 import { setUser } from "../state/user";
-import { DatePicker } from "./DatePicker";
-import moment from "moment";
+import { API_URL, PORT } from "@env";
 
 export const ChangeData = ({ baseData, propName, keyboardType }) => {
   const user = useSelector((state) => state.user);
