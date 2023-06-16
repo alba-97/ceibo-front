@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { Dimensions, View, Text, Image, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, View, Text, Image, ScrollView, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Navbar } from "../components/Navbar";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +10,7 @@ import { API_URL, PORT } from "@env";
 import Comments from "./Comments";
 import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
+import MultipleDropdown from "./MultipleDropdown";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,40 @@ export const PlanDetailCard = () => {
   const user = useSelector((state) => state.user);
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [invited, setInvited] = useState("");
   const formattingDate = plan.event_date
     .split("T")[0]
     .split("-")
     .reverse()
     .join("/");
+
+  const handleInvite = async () => {
+    const token = await AsyncStorage.getItem("token");
+    await axios.post(
+      `${API_URL}:${PORT}/api/users/invite`,
+      {
+        users: invited,
+        plan,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    Alert.alert("OK", "Invitaciones enviadas");
+  };
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const res = await axios.get(`${API_URL}:${PORT}/api/users`);
+      setUsers(
+        res.data.map((item) => ({ label: item.email, value: item.email }))
+      );
+    };
+    getUsers();
+  }, []);
 
   const handleEnroll = async () => {
     setLoading(true);
@@ -129,7 +158,24 @@ export const PlanDetailCard = () => {
                       )}
                     </>
                   )}
-                  <GenericButton text={"Invitar Personas"} />
+                  <View style={styles.input}>
+                    <MultipleDropdown
+                      setSelected={(val) => setInvited(val)}
+                      data={users}
+                      save="value"
+                      onSelect={() => {}}
+                      label="Invitar personas"
+                      placeholder="Invitar personas"
+                      search={false}
+                      textStyles={styles.item}
+                      boxStyles={styles.dropdown}
+                      dropdownStyles={styles.dropdown}
+                      badgeStyles={styles.item}
+                    />
+                    {invited.length > 0 && (
+                      <GenericButton text={"Invitar"} onPress={handleInvite} />
+                    )}
+                  </View>
                 </View>
               )}
             </View>
