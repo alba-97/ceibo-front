@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Dimensions, View, Text, Image, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Navbar } from "../components/Navbar";
 import { getUserPlans } from "../services/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
@@ -66,75 +65,87 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
+    <ScrollView style={{ minHeight: screenHeight }}>
       <View style={styles.card}>
+        <Text style={styles.title}>{plan?.title}</Text>
         <Image
           source={{ uri: plan?.img }}
           style={{
             width: "100%",
-            height: "15%",
+            height: 200,
           }}
         />
-        <Text style={styles.title}>{plan?.title}</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>{formattingDate}</Text>
-          <Text style={styles.subtitle}>Descripcion</Text>
-          <Text style={styles.text}>{plan.description}</Text>
-
-          {plan.ended ? (
-            <View>
-              <Text style={styles.subtitle}>
-                El evento finalizó el {formattingDate}
-              </Text>
-
-              {user._id &&
-                user.plans &&
-                user.plans.some((userPlan) => userPlan._id == plan._id) &&
-                plan.organizer &&
-                plan.ended && <Rating plan={plan} />}
-            </View>
-          ) : (
-            <View>
-              {user._id && (
-                <View style={styles.buttonContainer}>
-                  {!user.plans?.some(
-                    (userPlan) => userPlan._id === plan._id
-                  ) ? (
-                    <View>
-                      {!loading ? (
-                        <GenericButton
-                          text={"Participar"}
-                          onPress={handleEnroll}
-                        />
-                      ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
-                      )}
-                    </View>
+        <View style={{ justifyContent: "center", marginTop: 5 }}>
+          <View style={styles.date}>
+            <Text style={styles.subtitle}>Fecha:</Text>
+            <Text style={styles.text}>{formattingDate}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            {!plan.ended ? (
+              !user.plans?.some((userPlan) => userPlan._id === plan._id) ? (
+                <>
+                  {!loading ? (
+                    <GenericButton
+                      customStyle={styles.button}
+                      textStyle={{ fontSize: 12 }}
+                      text={"+"}
+                      onPress={handleEnroll}
+                    />
                   ) : (
-                    <>
-                      {!loading ? (
-                        <GenericButton
-                          text={"Dejar de participar"}
-                          onPress={() => handleStopParticipating(plan._id)}
-                        />
-                      ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
-                      )}
-                    </>
+                    <GenericButton
+                      textStyle={{ fontSize: 12 }}
+                      text={"Cargando..."}
+                      customStyle={styles.button}
+                    />
                   )}
-                  <GenericButton text={"Invitar Personas"} />
-                </View>
-              )}
-            </View>
-          )}
+                </>
+              ) : (
+                <>
+                  {!loading ? (
+                    <GenericButton
+                      text={"x"}
+                      textStyle={{ fontSize: 12 }}
+                      customStyle={styles.button}
+                      onPress={() => handleStopParticipating(plan._id)}
+                    />
+                  ) : (
+                    <GenericButton
+                      text={"Cargando..."}
+                      textStyle={{ fontSize: 12 }}
+                      customStyle={styles.button}
+                    />
+                  )}
+                </>
+              )
+            ) : (
+              ""
+            )}
+
+            <GenericButton
+              text={"Compartir"}
+              textStyle={{ fontSize: 12 }}
+              customStyle={styles.button2}
+            />
+          </View>
         </View>
+
+        <Text style={styles.subtitle}>Descripcion:</Text>
+        <Text style={styles.text}>{plan.description}</Text>
+        {plan.ended ? (
+          <View>
+            <Text style={styles.subtitle}>
+              El evento finalizó el {formattingDate}
+            </Text>
+
+            {user._id &&
+              user.plans &&
+              user.plans.some((userPlan) => userPlan._id == plan._id) &&
+              plan.organizer &&
+              plan.ended && <Rating plan={plan} />}
+          </View>
+        ) : (
+          ""
+        )}
         {user._id && <Comments />}
       </View>
     </ScrollView>

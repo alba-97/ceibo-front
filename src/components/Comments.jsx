@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView, KeyboardAvoidingView } from "react-native";
 import { GenericInput } from "./GenericInput";
 import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../styles/PlanDetails";
@@ -20,25 +20,41 @@ const Comments = () => {
   };
 
   return (
-    <View style={{ marginTop: "5%" }}>
-      <Text style={styles.subtitle}>¡Agrega un comentario al evento!</Text>
-      <View style={styles.input}>
-        <GenericInput value={comment} onChangeText={setComment} />
+    <View style={{ marginTop: "0%" }}>
+      <Text style={styles.subtitle}>Comentarios:</Text>
+      <ScrollView
+        style={{
+          height: 280,
+          borderColor: "#000",
+          borderWidth: 1,
+          margin: 5,
+          padding: 15,
+        }}
+      >
+        {plan.comments &&
+          plan.comments.map((item, index) => {
+            return (
+              <View key={index}>
+                <Text style={styles.username}>{item.user.username}:</Text>
+                <Text style={styles.comment}>{item.text}</Text>
+              </View>
+            );
+          })}
+        <View style={{ marginBottom: 30 }}></View>
+      </ScrollView>
+      <View style={styles.inputCont} behavior="padding">
+        <GenericInput
+          placeholder="agrega un comentario"
+          value={comment}
+          onChangeText={setComment}
+          customStyle={{ borderRadius: 5 }}
+        />
         <GenericButton
           onPress={handleComment}
           text={"Enviar"}
-          customStyle={{ marginTop: "5%" }}
+          customStyle={styles.btn}
         />
       </View>
-      {plan.comments &&
-        plan.comments.map((item, index) => {
-          return (
-            <View key={index}>
-              <Text style={styles.username}>{item.user.username}</Text>
-              <Text style={styles.comment}>{item.text}</Text>
-            </View>
-          );
-        })}
     </View>
   );
 };
