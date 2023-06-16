@@ -35,11 +35,15 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   const handlePress = async (plan) => {
-    const updatedPlan = await getPlan(plan._id);
-    dispatch(setSelectedPlan(updatedPlan));
-    const organizer = await getOrganizer(plan._id);
-    dispatch(setOrganizer(organizer));
-    navigation.navigate("PlanDetail");
+    try {
+      const updatedPlan = await getPlan(plan._id);
+      dispatch(setSelectedPlan(updatedPlan));
+      const organizer = await getOrganizer(plan._id);
+      dispatch(setOrganizer(organizer));
+      navigation.navigate("PlanDetail");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

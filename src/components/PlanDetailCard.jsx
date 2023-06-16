@@ -56,19 +56,23 @@ export const PlanDetailCard = () => {
 
   const handleInvite = async () => {
     const token = await AsyncStorage.getItem("token");
-    await axios.post(
-      `${API_URL}:${PORT}/api/users/invite`,
-      {
-        users: invited,
-        plan,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    try {
+      await axios.post(
+        `${API_URL}:${PORT}/api/users/invite`,
+        {
+          users: invited,
+          plan,
         },
-      }
-    );
-    Alert.alert("OK", "Invitaciones enviadas");
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Alert.alert("OK", "Invitaciones enviadas");
+    } catch (error) {
+      Alert.alert("Error", "Hubo un problema al enviar invitaciones");
+    }
   };
 
   const handleEnroll = async () => {
