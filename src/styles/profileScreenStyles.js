@@ -78,8 +78,4 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 4,
   },
-  logout: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
 });

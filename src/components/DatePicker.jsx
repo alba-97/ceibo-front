@@ -8,8 +8,6 @@ export const DatePicker = ({ value, onChange }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log("date picker value", value);
-
   const handleDateChange = (event, date) => {
     setShowPicker(false);
     if (date) {
@@ -26,7 +24,6 @@ export const DatePicker = ({ value, onChange }) => {
   };
 
   const formatDate = (date) => {
-    console.log("type of date", typeof date);
     return date.toLocaleDateString("es-ES", {
       day: "2-digit",
       month: "2-digit",

@@ -40,7 +40,6 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
             }
           );
           const newUser = await res.data;
-          console.log("new user", newUser);
           dispatch(setUser(createEditedUser(propName, newValue)));
         }
       } catch (error) {

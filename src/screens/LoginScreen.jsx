@@ -58,7 +58,6 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
@@ -69,10 +68,8 @@ export default function LoginScreen() {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-
           <View style={styles.inputContainer}>
             <GenericButton onPress={handleLogin} text={"Iniciar Sesion"} />
-
             <Text style={styles.text} onPress={handleSignup}>
               ¿No tienes cuenta? Crea una
             </Text>

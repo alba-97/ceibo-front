@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import moment from "moment";
 import { API_URL, PORT } from "@env";
 import { ScrollView, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +9,6 @@ import LoginScreen from "./LoginScreen";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
-import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
 import { clearUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
@@ -40,8 +38,8 @@ export default function ProfileScreen() {
       style={styles.container}
     >
       <Navbar />
-      <ScrollView>
-        {user._id ? (
+      {user._id ? (
+        <ScrollView>
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
             <ChangeData
@@ -79,23 +77,15 @@ export default function ProfileScreen() {
               baseData={user?.birthdate}
               propName={"birthdate"}
             />
-
-            <GenericButton
-              style={styles.logout}
-              onPress={handlePreferences}
-              text="Preferencias"
-            />
-
-            <GenericButton
-              style={styles.logout}
-              onPress={handleLogout}
-              text="Logout"
-            />
+            <View style={{ marginBottom: "5%" }} />
+            <GenericButton onPress={handlePreferences} text="Preferencias" />
+            <View style={{ marginBottom: "2%" }} />
+            <GenericButton onPress={handleLogout} text="Logout" />
           </View>
-        ) : (
-          <LoginScreen />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <LoginScreen />
+      )}
     </LinearGradient>
   );
 }
