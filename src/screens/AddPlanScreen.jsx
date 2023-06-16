@@ -111,7 +111,7 @@ export default function AddPlanScreen() {
         Alert.alert("Error", "Ingresá sesión para publicar un evento");
       }
     } catch (error) {
-      console.log(error);
+      console.log("add plan error", error);
       if (error.response) {
         Alert.alert("Error", error.response.data);
       } else {

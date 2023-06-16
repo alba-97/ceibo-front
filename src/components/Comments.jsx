@@ -17,6 +17,7 @@ const Comments = () => {
     if (comment.length > 0) {
       let newComment = await addComment(comment, plan._id);
       dispatch(setComments(newComment));
+      setComment("");
     }
   };
 

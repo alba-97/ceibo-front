@@ -130,7 +130,7 @@ export const PlanDetailCard = () => {
                   {!user.plans?.some(
                     (userPlan) => userPlan._id === plan._id
                   ) ? (
-                    <View>
+                    <>
                       {!loading ? (
                         <GenericButton
                           text={"Participar"}
@@ -142,7 +142,7 @@ export const PlanDetailCard = () => {
                           customStyle={{ backgroundColor: "#7D0166" }}
                         />
                       )}
-                    </View>
+                    </>
                   ) : (
                     <>
                       {!loading ? (
