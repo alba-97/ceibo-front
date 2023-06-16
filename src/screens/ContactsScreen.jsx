@@ -5,6 +5,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
+import { FloatingButton } from "../components/FloatingButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
@@ -13,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { fetchContacts } from "../services/fetchContacts";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
+import { GenericButton } from "../components/GenericButton";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
@@ -21,6 +23,8 @@ export default function ContactsScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selectedContact = useSelector((state) => state.selectedContact);
+  const user = useSelector((state) => state.user);
+  console.log("user", user);
 
   const bringMeTheContacts = async () => {
     try {
@@ -62,39 +66,54 @@ export default function ContactsScreen() {
       style={styles.containerr}
     >
       <Navbar />
-      <View style={styles.container}>
-        <View style={styles.container3}>
-          <GenericInput
-            value={query}
-            onChangeText={handleQueryChange}
-            placeholder={"Buscar"}
-            customStyle={styles.input}
-          />
-          <TouchableOpacity onPress={() => bringMeTheContacts()}>
-            <AntDesign
-              name="reload1"
-              size={30}
-              color="white"
-              style={styles.reload}
+      {user?.username ? (
+        <View style={styles.container}>
+          <View style={styles.container3}>
+            <GenericInput
+              value={query}
+              onChangeText={handleQueryChange}
+              placeholder={"Buscar"}
+              customStyle={styles.input}
             />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.text1}>Contactos</Text>
-
-        <ScrollView>
-          <View>
-            {filteredContacts?.map((contact, i) => (
-              <Text
-                style={styles.text2}
-                key={i}
-                onPress={() => handleContactPress(contact)}
-              >
-                <SingleContact {...contact} />
-              </Text>
-            ))}
+            <TouchableOpacity onPress={() => bringMeTheContacts()}>
+              <AntDesign
+                name="reload1"
+                size={30}
+                color="white"
+                style={styles.reload}
+              />
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </View>
+          <Text style={styles.text1}>Contactos</Text>
+
+          <ScrollView>
+            <View>
+              {filteredContacts?.map((contact, i) => (
+                <Text
+                  style={styles.text2}
+                  key={i}
+                  onPress={() => handleContactPress(contact)}
+                >
+                  <SingleContact {...contact} />
+                </Text>
+              ))}
+            </View>
+          </ScrollView>
+          <FloatingButton />
+        </View>
+      ) : (
+        <View style={[styles.container, { flex: 1, justifyContent: "center" }]}>
+          <Text style={styles.loginText}>
+            Para ver contactos, inicie sesión
+          </Text>
+          <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
+            <GenericButton
+              text="Iniciar Sesión"
+              onPress={() => navigation.navigate("Login")}
+            />
+          </View>
+        </View>
+      )}
     </LinearGradient>
   );
 }

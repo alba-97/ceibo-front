@@ -44,7 +44,8 @@ export default function LoginScreen() {
         dispatch(setUser(userData));
         const userPlans = await getUserPlans();
         dispatch(setUserPlans(userPlans));
-        navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
+        // navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
+        navigation.navigate("HomeScreen");
       }
     } catch (error) {
       Alert.alert("Error", error.response.data, [{ text: "OK" }]);
@@ -58,6 +59,7 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>

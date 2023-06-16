@@ -24,6 +24,7 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import PreferencesScreen from "../screens/PreferencesScreen";
+import AddContactScreen from "../screens/AddContactScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -56,6 +57,10 @@ function NavbarStack() {
       <HomeStackNavigator.Screen
         name="ContactInfoScreen"
         component={ContactInfoScreen}
+      />
+      <HomeStackNavigator.Screen
+        name="AddContact"
+        component={AddContactScreen}
       />
       <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
       <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />

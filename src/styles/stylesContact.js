@@ -52,4 +52,12 @@ export const styles = StyleSheet.create({
   reload: {
     marginLeft: "15%",
   },
+  loginText: {
+    paddingBottom: "1%",
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: "5%",
+    textAlign: "center",
+  },
 });

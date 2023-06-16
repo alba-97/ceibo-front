@@ -66,7 +66,11 @@ export default function SearchScreen() {
       >
         <Navbar />
         <View style={styles.searchContainer}>
-          <GenericInput value={query} onChangeText={handleQueryChange} />
+          <GenericInput
+            value={query}
+            onChangeText={handleQueryChange}
+            placeholder="Buscar plan"
+          />
         </View>
         <View style={styles.content}>
           <ScrollView style={{ width: "100%" }}>
@@ -75,7 +79,7 @@ export default function SearchScreen() {
                 <SearchImg key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
-              <Text>Cargando datoss...</Text>
+              <Text>Cargando datos...</Text>
             )}
           </ScrollView>
         </View>
