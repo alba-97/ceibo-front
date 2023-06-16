@@ -111,11 +111,10 @@ export default function RegisterScreen() {
             placeholder="DD/MM/YYYY"
             customStyle={styles.birthdate}
           />
-
           <Text style={styles.text}>Direccion</Text>
           <GenericInput value={address} onChangeText={setAddress} />
           <Text style={styles.text}>Numero de telefono</Text>
-          <GenericInput value={phone} onChangeText={setPhone} />
+          <GenericInput keyboardType={'numeric'} value={phone} onChangeText={setPhone} />
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>
