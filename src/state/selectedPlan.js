@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: null,
+  _id: null,
   title: null,
   description: null,
+  location: null,
   img: null,
   event_date: null,
   created_at: null,
@@ -25,14 +26,25 @@ const selectedPlanSlice = createSlice({
   name: "selectedPlan",
   initialState,
   reducers: {
-    setSelectedPlan: (state, action) => action.payload,
+    setSelectedPlan: (state, action) => {
+      return action.payload;
+    },
     setOrganizer: (state, action) => {
       let newState = { ...state };
       newState.organizer = action.payload;
       return newState;
     },
+    clearSelectedPlan: (state, action) => {
+      return initialState;
+    },
+    setComments: (state, action) => {
+      let newState = { ...state };
+      newState.comments = newState.comments.concat([action.payload]);
+      return newState;
+    },
   },
 });
 
-export const { setSelectedPlan, setOrganizer } = selectedPlanSlice.actions;
+export const { setSelectedPlan, setOrganizer, setComments, clearSelectedPlan } =
+  selectedPlanSlice.actions;
 export default selectedPlanSlice.reducer;

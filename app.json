@@ -2,7 +2,7 @@
   "expo": {
     "name": "ceiboFront",
     "slug": "ceiboFront",
-    "scheme": "com.auth.ElClubDelPlan",
+    "scheme": "clubdelplan",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "extra": {
@@ -16,7 +16,15 @@
     },
     "android": {
       "package": "com.auth.ElClubDelPlan"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   },
   "name": "ceiboFront"
 }

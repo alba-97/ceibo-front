@@ -10,6 +10,7 @@ export const genericButtonStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     width: "80%",
+
   },
   buttonText: {
     color: "white",

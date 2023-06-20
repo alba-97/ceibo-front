@@ -1,1 +1,0 @@
-Aquí se encuentran las diferentes pantallas de tu aplicación.

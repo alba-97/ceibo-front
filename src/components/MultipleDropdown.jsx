@@ -14,7 +14,6 @@ import {
   ScrollView,
   Animated,
   TextInput,
-  Pressable,
 } from "react-native";
 
 const MultipleDropdown = ({
@@ -36,7 +35,6 @@ const MultipleDropdown = ({
   notFoundText = "No se encontraron datos",
   disabledItemStyles,
   textStyles,
-  badgeStyles,
   save = "key",
   dropdownShown = false,
 }) => {
@@ -150,35 +148,6 @@ const MultipleDropdown = ({
             <Text style={[{ fontWeight: "600", fontFamily }, textStyles]}>
               {label}
             </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 8,
-                flexWrap: "wrap",
-              }}
-            >
-              {selectedval?.map((item, index) => {
-                return (
-                  <View
-                    key={index}
-                    style={[
-                      {
-                        paddingHorizontal: 10,
-                        paddingVertical: 5,
-                        borderRadius: 50,
-                        marginRight: 5,
-                        marginTop: 10,
-                      },
-                      badgeStyles,
-                    ]}
-                  >
-                    <Text style={[textStyles, { fontSize: 12, fontFamily }]}>
-                      {item}
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
           </View>
         </TouchableOpacity>
       ) : (
@@ -227,7 +196,7 @@ const MultipleDropdown = ({
               {filtereddata.length >= 1 ? (
                 filtereddata.map((item, index) => {
                   let key = item.key ?? item.value ?? item;
-                  let value = item.value ?? item;
+                  let value = item.label ?? item.value ?? item;
                   let disabled = item.disabled ?? false;
                   if (disabled) {
                     return (
