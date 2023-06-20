@@ -15,6 +15,7 @@ import ContactsScreen from "../screens/ContactsScreen";
 import EditProfile from "../screens/EditProfile";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import EditPlanScreen from "../screens/EditPlanScreen";
 
 import {
   Entypo,
@@ -42,6 +43,8 @@ function NavbarStack() {
         name="Preferences"
         component={PreferencesScreen}
       />
+
+      <HomeStackNavigator.Screen name="EditPlan" component={EditPlanScreen} />
 
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
       <HomeStackNavigator.Screen
