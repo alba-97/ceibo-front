@@ -1,35 +1,52 @@
 import { useEffect, useState } from "react";
-import { GenericInput } from "./GenericInput";
+import { styles } from "../styles/loginScreenStyles";
+import { createNewUser } from "../services/createUser";
+import { GenericButton } from "./GenericButton";
+import { getUserPlans } from "../services/getUserPlans";
+import { getUser } from "../services/getUser";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { setUser, setUserPlans } from "../state/user";
+import { API_URL, PORT } from "@env";
+
 import * as ReactNative from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const GoogleSignInButton = () => {
-  //Form Data
-  const [username, setUsername] = useState("");
-  const [address, setAdress] = useState("");
-  // const [apellido, setApellido] = useState("");
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const [isUserInfoReady, setIsUserInfoReady] = useState(false);
 
   //Google
   const [token, setToken] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
-      "974579600414-1v01l7mpr0mmq55o4as5od0j6d3tp4p3.apps.googleusercontent.com",
+      "974579600414-23gn2jc5sb1hd1ul2bs0ujlplnbp0834.apps.googleusercontent.com",
     androidClientId:
-      "974579600414-sv5uj31p852u9cv4hd713drs99ct3s5t.apps.googleusercontent.com",
+      "974579600414-hdnoq57bclnqp9mackeqsnr3vs1hpga7.apps.googleusercontent.com",
     iosClientId:
-      "974579600414-eqmbi1ffe3tk6kmqdvvic91aa74dslm2.apps.googleusercontent.com",
+      "974579600414-av4876t7gv6hfq2n9285unnnbmgohmi5.apps.googleusercontent.com",
   });
 
   useEffect(() => {
     if (response?.type === "success") {
       setToken(response.authentication.accessToken);
+      console.log("vengo del ius efec", token);
     }
   }, [response, token]);
+
+  useEffect(() => {
+    if (userInfo) {
+      handleLogin();
+    }
+  }, [userInfo]);
 
   const getUserInfo = async () => {
     try {
@@ -39,12 +56,57 @@ const GoogleSignInButton = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       const user = await response.json();
-      // console.log("vengo de get user info", user);
-      setUserInfo(user);
+      if (token && user) {
+        await handleSignup(user);
+        setUserInfo(user);
+        setIsUserInfoReady(true);
+      }
     } catch (error) {
       console.log("get user info error", error);
+    }
+  };
+
+  const handleSignup = async (user) => {
+    try {
+      const { email, given_name, family_name, picture, name } = user;
+      const userData = {
+        username: name,
+        password: token,
+        email: email,
+        first_name: given_name,
+        last_name: family_name,
+        profile_img: picture,
+      };
+      await createNewUser(userData);
+      await handleLogin(name, token.toUpperCase().substring(0, 9));
+    } catch (error) {
+      console.log("Error al hacer la petición:", error);
+    }
+  };
+
+  const handleLogin = async (username, password) => {
+    try {
+      await axios.post(`${API_URL}:${PORT}/api/users/login`, {
+        username: username,
+        password: password,
+      });
+      if (token) {
+        await AsyncStorage.setItem("token", token);
+        await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = await getUser();
+        dispatch(setUser(userData));
+        const userPlans = await getUserPlans();
+        dispatch(setUserPlans(userPlans));
+        navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
+      }
+    } catch (error) {
+      console.error("handle login error", error);
+      // ReactNative.Alert.alert("Error", error.response.data, [{ text: "OK" }]);
     }
   };
 
@@ -54,26 +116,6 @@ const GoogleSignInButton = () => {
       setUserInfo(null);
     } catch (error) {
       console.error(error);
-    }
-  };
-  const handleSubmit = async () => {
-    try {
-      const { email, given_name, family_name, picture } = userInfo;
-      const userData = {
-        username: username,
-        password: token,
-        email: email,
-        first_name: given_name,
-        last_name: family_name,
-        profile_img: picture,
-        address: address,
-      };
-
-      const url = "http://localhost:3001/api/users/signup";
-      const response = await axios.post(url, userData);
-      console.log("Respuesta del servidor:", response.data);
-    } catch (error) {
-      console.log("Error al hacer la petición:", error);
     }
   };
 
@@ -92,75 +134,16 @@ const GoogleSignInButton = () => {
   console.log("soy user info", userInfo);
 
   return (
-    <ReactNative.SafeAreaView style={styles.container}>
-      {!userInfo ? (
-        <ReactNative.TouchableOpacity
-          style={styles.button}
-          onPress={onPressButton}
+    <ReactNative.SafeAreaView>
+      <ReactNative.View style={styles.inputContainer}>
+        <GenericButton
           disabled={!request}
-        >
-          <ReactNative.Text style={styles.buttonText}>
-            {token ? "Login with Google" : "Sign Up with Google"}
-          </ReactNative.Text>
-        </ReactNative.TouchableOpacity>
-      ) : (
-        <>
-          <ReactNative.Text>
-            Por Favor ingrese los datos faltantes para acceder al home
-          </ReactNative.Text>
-
-          <GenericInput
-            placeholder="Username"
-            onChangeText={(text) => setUsername(text)}
-            value={username}
-          />
-          <GenericInput
-            placeholder="Direccion"
-            onChangeText={(text) => setAdress(text)}
-            value={address}
-          />
-
-          <ReactNative.Button title="Logout" onPress={handleLogout} />
-          <ReactNative.Button title="Confirmar Datos" onPress={handleSubmit} />
-        </>
-      )}
+          onPress={onPressButton}
+          text={token ? "login con google" : "signup con google"}
+        />
+      </ReactNative.View>
     </ReactNative.SafeAreaView>
   );
 };
 
-const styles = ReactNative.StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  button: {
-    backgroundColor: "#DB4437",
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
-
 export default GoogleSignInButton;
-
-/* LOG  soy user info {"email": "correa.ivanivan24@gmail.com",
-         "family_name": "Correa", 
-          "given_name": "Ivan", "id": "108162154590075096655",
-         "locale": "es-419", "name": "Ivan Correa",
-          "picture": "https://lh3.googleusercontent.com/a/AAcHTteMe00iDB_l0LqFvfbO3awpSy-VrT_8PzKLWPgIwg=s96-c", 
-          "verified_email": true}
-         */
