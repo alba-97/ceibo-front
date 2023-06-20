@@ -12,9 +12,9 @@ import { getUserPlans } from "../services/getUserPlans";
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
-import { Navbar } from "../components/Navbar";
 import { setUser, setUserPlans } from "../state/user";
 import { API_URL } from "../services/urls";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -74,9 +74,7 @@ export default function LoginScreen() {
               ¿No tienes cuenta? Crea una
             </Text>
           </View>
-          <View style={styles.inputContainer}>
-            <GenericButton text={"Ingresar con Google"} />
-          </View>
+          <GoogleSignInButton />
         </View>
       </ScrollView>
     </LinearGradient>
