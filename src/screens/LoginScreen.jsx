@@ -12,7 +12,6 @@ import { getUserPlans } from "../services/getUserPlans";
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
-import { Navbar } from "../components/Navbar";
 import { setUser, setUserPlans } from "../state/user";
 import { API_URL, PORT } from "@env";
 import GoogleSignInButton from "../components/GoogleSignInButton";
