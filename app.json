@@ -5,17 +5,12 @@
     "scheme": "clubdelplan",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
-    "extra": {
-      "eas": {
-        "projectId": "92aab027-2598-49ec-83aa-71529daad89b"
-      }
-    },
     "ios": {
       "supportsTablet": true,
-      "package": "com.auth.ElClubDelPlan"
+      "package": "com.auth.ceiboFront"
     },
     "android": {
-      "package": "com.auth.ElClubDelPlan"
+      "package": "com.auth.ceiboFront"
     },
     "plugins": [
       [
@@ -24,7 +19,12 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "92aab027-2598-49ec-83aa-71529daad89b"
+      }
+    }
   },
   "name": "ceiboFront"
 }
