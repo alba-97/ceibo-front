@@ -1,4 +1,4 @@
-import { API_URL } from "@env";
+import { API_URL } from "./urls";
 import axios from "axios";
 
 export async function getAllUsers() {

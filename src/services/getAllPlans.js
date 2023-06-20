@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "./urls";
 
 export async function getAllPlans() {
   try {

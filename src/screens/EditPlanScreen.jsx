@@ -24,7 +24,7 @@ import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
 
 export default function ProfileScreen() {

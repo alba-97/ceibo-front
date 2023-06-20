@@ -15,7 +15,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import * as ImagePicker from "expo-image-picker";
 import ChevronImg from "../assets/images/chevron.png";
 

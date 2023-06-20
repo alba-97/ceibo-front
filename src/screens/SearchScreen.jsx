@@ -5,7 +5,7 @@ import React, { useEffect, useState, useContext } from "react";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import { styles } from "../appCss";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
@@ -15,11 +15,19 @@ import { getPlan } from "../services/getPlan";
 import { SearchImg } from "../components/searchImage";
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
+import RadioButton from "../components/RadioButton";
 
 export default function SearchScreen() {
-  const [data, setData] = useState([]);
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
+
+  const options = [
+    { label: "Texto", value: "text" },
+    { label: "Categoría", value: "category" },
+    { label: "Usuario", value: "user" },
+  ];
+  const [option, setOption] = useState(options[0]);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -35,18 +43,43 @@ export default function SearchScreen() {
 
   const handleQueryChange = (text) => {
     setQuery(text);
-    setResults(
-      data.filter((item) =>
-        item.title.toLowerCase().includes(text.toLowerCase())
-      )
-    );
+  };
+
+  const handleSearch = () => {
+    if (option == "text") {
+      axios
+        .get(`${API_URL}/api/events/search?query=${query}`)
+        .then((response) => {
+          setResults(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else if (option == "category") {
+      axios
+        .get(`${API_URL}/api/events/search/category?query=${query}`)
+        .then((response) => {
+          setResults(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else if (option == "user") {
+      axios
+        .get(`${API_URL}/api/events/search/user?query=${query}`)
+        .then((response) => {
+          setResults(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   useEffect(() => {
     axios
       .get(`${API_URL}/api/events`)
       .then((response) => {
-        setData(response.data);
         setResults(response.data);
       })
       .catch((error) => {
@@ -64,8 +97,13 @@ export default function SearchScreen() {
       >
         <Navbar />
         <View style={styles.searchContainer}>
-          <GenericInput value={query} onChangeText={handleQueryChange} />
+          <GenericInput
+            value={query}
+            onSubmitEditing={handleSearch}
+            onChangeText={handleQueryChange}
+          />
         </View>
+        <RadioButton options={options} onSelect={setOption} />
         <View style={styles.content}>
           <ScrollView style={{ width: "100%" }}>
             {results ? (
@@ -73,7 +111,7 @@ export default function SearchScreen() {
                 <SearchImg key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
-              <Text>Cargando datoss...</Text>
+              <Text>Cargando datos...</Text>
             )}
           </ScrollView>
         </View>

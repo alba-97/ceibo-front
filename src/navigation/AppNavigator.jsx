@@ -32,6 +32,7 @@ import PreferencesScreen from "../screens/PreferencesScreen";
 import { setOrganizer, setSelectedPlan } from "../state/selectedPlan";
 import { getOrganizer } from "../services/getOrganizer";
 import { getPlan } from "../services/getPlan";
+import { useDispatch } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -76,6 +77,7 @@ function NavbarStack() {
 }
 
 function BottomNavbar() {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleDeepLink = async (event) => {
     const { url } = event;
@@ -83,12 +85,17 @@ function BottomNavbar() {
     if (urlParts.length === 2) {
       const [scheme, route] = urlParts;
       if (scheme === "clubdelplan:" && route) {
-        Alert.alert("msg", route);
-        const updatedPlan = await getPlan(route);
-        dispatch(setSelectedPlan(updatedPlan));
-        const organizer = await getOrganizer(route);
-        dispatch(setOrganizer(organizer));
-        navigation.navigate("PlanDetail");
+        try {
+          const updatedPlan = await getPlan(route);
+          dispatch(setSelectedPlan(updatedPlan));
+          const organizer = await getOrganizer(route);
+          dispatch(setOrganizer(organizer));
+          navigation.navigate("PlanDetail");
+        } catch (error) {
+          if (error?.response?.data) {
+            Alert.alert("msg", error.response.data);
+          }
+        }
       }
     }
   };

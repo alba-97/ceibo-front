@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "./urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function getUser() {

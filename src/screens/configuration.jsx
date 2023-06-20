@@ -10,7 +10,7 @@ import { styles } from "../styles/configurationStyles";
 import { clearUser } from "../state/user";
 
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/native";
 

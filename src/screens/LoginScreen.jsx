@@ -14,7 +14,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { Navbar } from "../components/Navbar";
 import { setUser, setUserPlans } from "../state/user";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 
 export default function LoginScreen() {
   const navigation = useNavigation();

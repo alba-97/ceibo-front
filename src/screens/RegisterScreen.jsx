@@ -8,7 +8,7 @@ import axios from "axios";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
 

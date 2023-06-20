@@ -6,7 +6,7 @@ import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserPlans } from "../state/user";
 import axios from "axios";
-import { API_URL } from "@env";
+import { API_URL } from "../services/urls";
 import Comments from "./Comments";
 import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
