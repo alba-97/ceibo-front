@@ -11,7 +11,7 @@ import axios from "axios";
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
 import { setUser } from "../state/user";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 
 export const ChangeData = ({ baseData, propName, keyboardType }) => {
   const user = useSelector((state) => state.user);
@@ -31,7 +31,7 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           await axios.put(
-            `${API_URL}:${PORT}/api/users/`,
+            `${API_URL}/api/users/`,
             {
               [propName]: newValue,
             },

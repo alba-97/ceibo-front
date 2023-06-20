@@ -24,7 +24,7 @@ import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
 
 export default function ProfileScreen() {
@@ -62,12 +62,9 @@ export default function ProfileScreen() {
             type: "image/jpeg",
             name: "image.jpg",
           });
-          const res = await axios.post(
-            `${API_URL}:${PORT}/api/upload`,
-            formData
-          );
+          const res = await axios.post(`${API_URL}/api/upload`, formData);
           await axios.put(
-            `${API_URL}:${PORT}/api/events/${plan._id}`,
+            `${API_URL}/api/events/${plan._id}`,
             {
               img: res.data.imageUrl,
             },
@@ -162,7 +159,7 @@ export default function ProfileScreen() {
                 const token = await AsyncStorage.getItem("token");
                 if (token) {
                   await axios.put(
-                    `${API_URL}:${PORT}/api/events/${plan._id}`,
+                    `${API_URL}/api/events/${plan._id}`,
                     {
                       category: option.label,
                     },

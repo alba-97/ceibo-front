@@ -6,7 +6,7 @@ import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserPlans } from "../state/user";
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import Comments from "./Comments";
 import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
@@ -38,7 +38,7 @@ export const PlanDetailCard = () => {
     const fetchInfo = async () => {
       try {
         setInvited([]);
-        let res = await axios.get(`${API_URL}:${PORT}/api/users`);
+        let res = await axios.get(`${API_URL}/api/users`);
         let invitedUsers = res.data.filter((item) => user._id !== item._id);
         invitedUsers = invitedUsers.filter((item) => item[sendMethod]);
         invitedUsers = invitedUsers.map((item) => ({
@@ -47,17 +47,14 @@ export const PlanDetailCard = () => {
         }));
         setUsers(invitedUsers);
         const token = await AsyncStorage.getItem("token");
-        res = await axios.get(
-          `${API_URL}:${PORT}/api/events/${plan._id}/can-update`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setCanEdit(res.data);
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
       }
     };
     fetchInfo();
@@ -71,11 +68,10 @@ export const PlanDetailCard = () => {
 
   const handleInvite = async () => {
     try {
-      console.log(sendMethod);
       const token = await AsyncStorage.getItem("token");
       if (token) {
         await axios.post(
-          `${API_URL}:${PORT}/api/users/invite`,
+          `${API_URL}/api/users/invite`,
           {
             users: invited,
             plan,
@@ -103,7 +99,7 @@ export const PlanDetailCard = () => {
 
       if (token) {
         await axios.post(
-          `${API_URL}:${PORT}/api/events/enroll`,
+          `${API_URL}/api/events/enroll`,
           { eventId: plan._id },
           {
             headers: {
@@ -124,14 +120,11 @@ export const PlanDetailCard = () => {
     setLoading(true);
     try {
       const token = await AsyncStorage.getItem("token");
-      await axios.delete(
-        `${API_URL}:${PORT}/api/events/stop-participating/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${API_URL}/api/events/stop-participating/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const newPlans = await getUserPlans();
       dispatch(setUserPlans(newPlans));
     } catch (error) {
@@ -144,7 +137,7 @@ export const PlanDetailCard = () => {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        await axios.delete(`${API_URL}:${PORT}/api/events/${plan._id}`, {
+        await axios.delete(`${API_URL}/api/events/${plan._id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

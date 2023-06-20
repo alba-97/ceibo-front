@@ -3,13 +3,27 @@
     "name": "ceiboFront",
     "slug": "ceiboFront",
     "scheme": "clubdelplan",
+    "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "clubdelplan",
+              "host": "*",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "package": "com.auth.ceiboFront"
+    },
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "package": "com.auth.ceiboFront"
-    },
-    "android": {
       "package": "com.auth.ceiboFront"
     },
     "plugins": [
