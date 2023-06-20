@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Alert } from "react-native";
 import { bottomNavigationBarStyle } from "../styles/navigationBarStyles";
 // Navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/core";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -17,6 +19,8 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EditPlanScreen from "../screens/EditPlanScreen";
 
+import * as Linking from "expo-linking";
+
 import {
   Entypo,
   FontAwesome,
@@ -25,6 +29,9 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import PreferencesScreen from "../screens/PreferencesScreen";
+import { setOrganizer, setSelectedPlan } from "../state/selectedPlan";
+import { getOrganizer } from "../services/getOrganizer";
+import { getPlan } from "../services/getPlan";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -69,6 +76,28 @@ function NavbarStack() {
 }
 
 function BottomNavbar() {
+  const navigation = useNavigation();
+  const handleDeepLink = async (event) => {
+    const { url } = event;
+    const urlParts = url.split("//");
+    if (urlParts.length === 2) {
+      const [scheme, route] = urlParts;
+      if (scheme === "clubdelplan:" && route) {
+        Alert.alert("msg", route);
+        const updatedPlan = await getPlan(route);
+        dispatch(setSelectedPlan(updatedPlan));
+        const organizer = await getOrganizer(route);
+        dispatch(setOrganizer(organizer));
+        navigation.navigate("PlanDetail");
+      }
+    }
+  };
+
+  useEffect(() => {
+    Linking.addEventListener("url", handleDeepLink);
+    return () => Linking.removeEventListener("url");
+  }, []);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -133,8 +162,18 @@ function BottomNavbar() {
 }
 
 export default function Navigation() {
+  const prefix = Linking.createURL("/");
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        PlanDetail: "PlanDetail",
+      },
+    },
+  };
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <BottomNavbar />
     </NavigationContainer>
   );

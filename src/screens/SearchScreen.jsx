@@ -5,7 +5,7 @@ import React, { useEffect, useState, useContext } from "react";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "@env";
 import { styles } from "../appCss";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
@@ -43,17 +43,15 @@ export default function SearchScreen() {
   };
 
   useEffect(() => {
-    if (API_URL && PORT) {
-      axios
-        .get(`${API_URL}:${PORT}/api/events`)
-        .then((response) => {
-          setData(response.data);
-          setResults(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    axios
+      .get(`${API_URL}/api/events`)
+      .then((response) => {
+        setData(response.data);
+        setResults(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [refetch]);
 
   return (

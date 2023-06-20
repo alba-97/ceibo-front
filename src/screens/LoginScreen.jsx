@@ -14,7 +14,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { Navbar } from "../components/Navbar";
 import { setUser, setUserPlans } from "../state/user";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "@env";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -29,13 +29,13 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`${API_URL}:${PORT}/api/users/login`, {
+      const res = await axios.post(`${API_URL}/api/users/login`, {
         username,
         password,
       });
       if (res.data.token) {
         await AsyncStorage.setItem("token", res.data.token);
-        await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
+        await axios.get(`${API_URL}/api/users/secret`, {
           headers: {
             Authorization: `Bearer ${res.data.token}`,
           },

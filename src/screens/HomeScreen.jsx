@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { Linking, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -45,23 +45,6 @@ export default function HomeScreen() {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    const handleDeepLink = async (event) => {
-      const { url } = event;
-      const urlParts = url.split("//");
-      if (urlParts.length === 2) {
-        const [scheme, route] = urlParts;
-        if (scheme === "clubdelplan:" && route) {
-          console.log(route);
-          const updatedPlan = await getPlan(route);
-          dispatch(setSelectedPlan(updatedPlan));
-          navigation.navigate("PlanDetail");
-        }
-      }
-    };
-    Linking.addEventListener("url", handleDeepLink);
-  }, []);
 
   useEffect(() => {
     getUser().then((userData) => {

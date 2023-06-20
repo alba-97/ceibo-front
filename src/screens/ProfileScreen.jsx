@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "@env";
 import { ScrollView, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,7 +21,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    axios.post(`${API_URL}:${PORT}/api/users/logout`);
+    axios.post(`${API_URL}/api/users/logout`);
     AsyncStorage.removeItem("token");
     dispatch(clearUser());
   };

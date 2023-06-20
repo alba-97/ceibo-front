@@ -11,7 +11,7 @@ import axios from "axios";
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
 import { setSelectedPlan } from "../state/selectedPlan";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "@env";
 
 export const ChangeEventData = ({ baseData, propName, keyboardType }) => {
   const plan = useSelector((state) => state.selectedPlan);
@@ -31,7 +31,7 @@ export const ChangeEventData = ({ baseData, propName, keyboardType }) => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           await axios.put(
-            `${API_URL}:${PORT}/api/events/${plan._id}`,
+            `${API_URL}/api/events/${plan._id}`,
             {
               [propName]: newValue,
             },
