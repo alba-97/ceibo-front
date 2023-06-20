@@ -38,7 +38,6 @@ const GoogleSignInButton = () => {
   useEffect(() => {
     if (response?.type === "success") {
       setToken(response.authentication.accessToken);
-      console.log("vengo del ius efec", token);
     }
   }, [response, token]);
 
@@ -130,8 +129,6 @@ const GoogleSignInButton = () => {
       console.log("fallo onPress", error);
     }
   };
-
-  console.log("soy user info", userInfo);
 
   return (
     <ReactNative.SafeAreaView>
