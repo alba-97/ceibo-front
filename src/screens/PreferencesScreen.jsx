@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles/preferencesStyles";
@@ -8,8 +8,8 @@ import { GenericButton } from "../components/GenericButton";
 import { getCategories } from "../services/getCategories";
 import { addPreferences } from "../services/addPreferences";
 import { useNavigation } from "@react-navigation/core";
+import refetchData from "../services/refetchData";
 
-import { SharedRefetchContext } from "../sharedRefetchContext";
 import { updateUser } from "../services/updateUser";
 
 export default function PreferencesScreen() {
@@ -17,10 +17,14 @@ export default function PreferencesScreen() {
   const [categories, setCategories] = useState([]);
 
   const navigation = useNavigation();
-  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+  const { refetch, triggerRefetch } = refetchData();
 
   useEffect(() => {
-    getCategories().then((data) => setCategories(data));
+    getCategories().then((data) =>
+      setCategories(
+        data.map((item, index) => ({ key: index, value: item.name }))
+      )
+    );
   }, [refetch]);
 
   const handleSubmit = async () => {

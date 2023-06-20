@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useContext } from "react";
-import { ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { Linking, ScrollView } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -22,14 +22,14 @@ import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
-import { SharedRefetchContext } from "../sharedRefetchContext";
 import { getOrganizer } from "../services/getOrganizer";
+import refetchData from "../services/refetchData";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
 
-  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+  const { refetch } = refetchData();
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -45,6 +45,23 @@ export default function HomeScreen() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const handleDeepLink = async (event) => {
+      const { url } = event;
+      const urlParts = url.split("//");
+      if (urlParts.length === 2) {
+        const [scheme, route] = urlParts;
+        if (scheme === "clubdelplan:" && route) {
+          console.log(route);
+          const updatedPlan = await getPlan(route);
+          dispatch(setSelectedPlan(updatedPlan));
+          navigation.navigate("PlanDetail");
+        }
+      }
+    };
+    Linking.addEventListener("url", handleDeepLink);
+  }, []);
 
   useEffect(() => {
     getUser().then((userData) => {

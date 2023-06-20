@@ -14,7 +14,7 @@ import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { getPlan } from "../services/getPlan";
 import { SearchImg } from "../components/searchImage";
 import { getOrganizer } from "../services/getOrganizer";
-import { SharedRefetchContext } from "../sharedRefetchContext";
+import refetchData from "../services/refetchData";
 
 export default function SearchScreen() {
   const [data, setData] = useState([]);
@@ -23,7 +23,7 @@ export default function SearchScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+  const { refetch } = refetchData();
 
   const handlePress = async (plan) => {
     const updatedPlan = await getPlan(plan._id);

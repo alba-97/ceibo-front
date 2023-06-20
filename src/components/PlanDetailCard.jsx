@@ -12,6 +12,8 @@ import Rating from "./Rating";
 import { GenericButton } from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
 import { useNavigation } from "@react-navigation/core";
+import refetchData from "../services/refetchData";
+import RadioButton from "./RadioButton";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -20,17 +22,30 @@ export const PlanDetailCard = () => {
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
-  const [invited, setInvited] = useState("");
+  const [invited, setInvited] = useState([]);
   const navigation = useNavigation();
   const [canEdit, setCanEdit] = useState(false);
+  const { triggerRefetch } = refetchData();
+
+  const sendMethods = [
+    { label: "Email", value: "email" },
+    { label: "WhatsApp", value: "phone" },
+  ];
+
+  const [sendMethod, setSendMethod] = useState(sendMethods[0].value);
 
   useEffect(() => {
     const fetchInfo = async () => {
       try {
+        setInvited([]);
         let res = await axios.get(`${API_URL}:${PORT}/api/users`);
-        setUsers(
-          res.data.map((item) => ({ label: item.email, value: item.email }))
-        );
+        let invitedUsers = res.data.filter((item) => user._id !== item._id);
+        invitedUsers = invitedUsers.filter((item) => item[sendMethod]);
+        invitedUsers = invitedUsers.map((item) => ({
+          label: item.username,
+          value: item[sendMethod],
+        }));
+        setUsers(invitedUsers);
         const token = await AsyncStorage.getItem("token");
         res = await axios.get(
           `${API_URL}:${PORT}/api/events/${plan._id}/can-update`,
@@ -42,11 +57,11 @@ export const PlanDetailCard = () => {
         );
         setCanEdit(res.data);
       } catch (error) {
-        console.log(error.message);
+        console.log(error.response.data);
       }
     };
     fetchInfo();
-  }, []);
+  }, [sendMethod]);
 
   const formattingDate = plan.event_date
     .split("T")[0]
@@ -55,21 +70,27 @@ export const PlanDetailCard = () => {
     .join("/");
 
   const handleInvite = async () => {
-    const token = await AsyncStorage.getItem("token");
     try {
-      await axios.post(
-        `${API_URL}:${PORT}/api/users/invite`,
-        {
-          users: invited,
-          plan,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      console.log(sendMethod);
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          `${API_URL}:${PORT}/api/users/invite`,
+          {
+            users: invited,
+            plan,
+            method: sendMethod,
           },
-        }
-      );
-      Alert.alert("OK", "Invitaciones enviadas");
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        Alert.alert("OK", "Invitaciones enviadas");
+      } else {
+        Alert.alert("Error", "Error de autenticación");
+      }
     } catch (error) {
       Alert.alert("Error", "Hubo un problema al enviar invitaciones");
     }
@@ -79,17 +100,20 @@ export const PlanDetailCard = () => {
     setLoading(true);
     try {
       const token = await AsyncStorage.getItem("token");
-      await axios.post(
-        `${API_URL}:${PORT}/api/events/enroll`,
-        { eventId: plan._id },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const newPlans = await getUserPlans();
-      dispatch(setUserPlans(newPlans));
+
+      if (token) {
+        await axios.post(
+          `${API_URL}:${PORT}/api/events/enroll`,
+          { eventId: plan._id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const newPlans = await getUserPlans();
+        dispatch(setUserPlans(newPlans));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -114,6 +138,23 @@ export const PlanDetailCard = () => {
       console.log(error);
     }
     setLoading(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await axios.delete(`${API_URL}:${PORT}/api/events/${plan._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        triggerRefetch();
+        navigation.navigate("HomeScreen");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -194,6 +235,10 @@ export const PlanDetailCard = () => {
                       dropdownStyles={styles.dropdown}
                       badgeStyles={styles.item}
                     />
+                    <RadioButton
+                      options={sendMethods}
+                      onSelect={setSendMethod}
+                    />
                     {invited.length > 0 && (
                       <GenericButton text={"Invitar"} onPress={handleInvite} />
                     )}
@@ -204,12 +249,15 @@ export const PlanDetailCard = () => {
           )}
         </View>
         {canEdit && (
-          <GenericButton
-            text={"Editar evento"}
-            onPress={() => {
-              navigation.navigate("EditPlan");
-            }}
-          />
+          <View style={styles.input}>
+            <GenericButton
+              text={"Editar evento"}
+              onPress={() => {
+                navigation.navigate("EditPlan");
+              }}
+            />
+            <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+          </View>
         )}
         {user._id && <Comments />}
       </View>

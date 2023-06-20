@@ -14,7 +14,6 @@ import {
   ScrollView,
   Animated,
   TextInput,
-  Pressable,
 } from "react-native";
 
 const MultipleDropdown = ({
@@ -36,7 +35,6 @@ const MultipleDropdown = ({
   notFoundText = "No se encontraron datos",
   disabledItemStyles,
   textStyles,
-  badgeStyles,
   save = "key",
   dropdownShown = false,
 }) => {
@@ -198,7 +196,7 @@ const MultipleDropdown = ({
               {filtereddata.length >= 1 ? (
                 filtereddata.map((item, index) => {
                   let key = item.key ?? item.value ?? item;
-                  let value = item.value ?? item;
+                  let value = item.label ?? item.value ?? item;
                   let disabled = item.disabled ?? false;
                   if (disabled) {
                     return (
