@@ -101,6 +101,7 @@ export default function SearchScreen() {
             value={query}
             onSubmitEditing={handleSearch}
             onChangeText={handleQueryChange}
+            placeholder="Buscar plan"
           />
         </View>
         <RadioButton options={options} onSelect={setOption} />
@@ -111,7 +112,7 @@ export default function SearchScreen() {
                 <SearchImg key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
-              <Text>Cargando datos...</Text>
+              <Text>Cargando datoss...</Text>
             )}
           </ScrollView>
         </View>
