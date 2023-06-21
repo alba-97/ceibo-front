@@ -1,19 +1,19 @@
-import React from "react";
-import axios from "axios";
-import { API_URL } from "../services/urls";
-import { ScrollView, View } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector, useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
+import { ScrollView, View } from "react-native";
+import { API_URL } from "../services/urls";
 import LoginScreen from "./LoginScreen";
+import axios from "axios";
+import React from "react";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
 import { styles } from "../styles/profileScreenStyles";
-import { clearUser } from "../state/user";
+import { useNavigation } from "@react-navigation/core";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
-import { useNavigation } from "@react-navigation/core";
+import { clearUser } from "../state/user";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
