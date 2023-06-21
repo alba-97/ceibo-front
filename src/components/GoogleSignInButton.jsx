@@ -16,7 +16,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
-
+//npm i -g eas-cli
+//eas login
 const GoogleSignInButton = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -38,13 +39,15 @@ const GoogleSignInButton = () => {
   useEffect(() => {
     if (response?.type === "success") {
       setToken(response.authentication.accessToken);
-      console.log("vengo del ius efec", token);
     }
   }, [response, token]);
 
   useEffect(() => {
-    if (userInfo) {
-      handleLogin();
+    if (userInfo !== null) {
+      console.log("soy user info password", userInfo.password);
+      console.log("soy user info username", userInfo.username);
+
+      handleLogin(userInfo.username, userInfo.password);
     }
   }, [userInfo]);
 
@@ -57,9 +60,9 @@ const GoogleSignInButton = () => {
         }
       );
       const user = await response.json();
-      if (token && user) {
+      if (token) {
         await handleSignup(user);
-        setUserInfo(user);
+        // setUserInfo(user);
         setIsUserInfoReady(true);
       }
     } catch (error) {
@@ -69,17 +72,21 @@ const GoogleSignInButton = () => {
 
   const handleSignup = async (user) => {
     try {
+      console.log("soy user de handle signup", user);
+      const userPassword = token.toUpperCase().substring(0, 9);
       const { email, given_name, family_name, picture, name } = user;
       const userData = {
         username: name,
-        password: token,
+        password: userPassword,
         email: email,
         first_name: given_name,
         last_name: family_name,
         profile_img: picture,
       };
+      console.log("vengo de handle signup , soy userdata", userData);
       await createNewUser(userData);
-      await handleLogin(name, token.toUpperCase().substring(0, 9));
+      setUserInfo({ username: name, password: userPassword });
+      // await handleLogin(name, userPassword);
     } catch (error) {
       console.log("Error al hacer la petición:", error);
     }
@@ -87,15 +94,17 @@ const GoogleSignInButton = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      await axios.post(`${API_URL}:${PORT}/api/users/login`, {
+      console.log("vengo de handle login", username, password);
+      const jwtToken = await axios.post(`${API_URL}:${PORT}/api/users/login`, {
         username: username,
         password: password,
       });
-      if (token) {
-        await AsyncStorage.setItem("token", token);
+      console.log("jwt token", jwtToken);
+      if (jwtToken.data.token) {
+        await AsyncStorage.setItem("token", jwtToken.data.token);
         await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${jwtToken.data.token}`,
           },
         });
         const userData = await getUser();
@@ -119,30 +128,43 @@ const GoogleSignInButton = () => {
     }
   };
 
-  const onPressButton = async () => {
-    try {
-      if (token) {
-        await getUserInfo();
-      } else {
-        await promptAsync();
-      }
-    } catch (error) {
-      console.log("fallo onPress", error);
-    }
+  // const onPressButton = async () => {
+  //   try {
+  //     if (token) {
+  //       await getUserInfo();
+  //     } else {
+  //       await promptAsync();
+  //     }
+  //   } catch (error) {
+  //     console.log("fallo onPress", error);
+  //   }
+  // };
+
+  const handlePrompt = async () => {
+    await promptAsync();
+    await getUserInfo();
+  };
+  const handleInfo = async () => {
+    await handleLogin();
   };
 
-  console.log("soy user info", userInfo);
-
   return (
-    <ReactNative.SafeAreaView>
-      <ReactNative.View style={styles.inputContainer}>
+    <>
+      <ReactNative.View>
         <GenericButton
           disabled={!request}
-          onPress={onPressButton}
-          text={token ? "login con google" : "signup con google"}
+          onPress={handlePrompt}
+          text={"signIn with google"}
         />
       </ReactNative.View>
-    </ReactNative.SafeAreaView>
+      <ReactNative.View>
+        <GenericButton
+          disabled={!request}
+          onPress={handleInfo}
+          text={"login with google"}
+        />
+      </ReactNative.View>
+    </>
   );
 };
 
