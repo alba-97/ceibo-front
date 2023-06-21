@@ -16,13 +16,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
-//npm i -g eas-cli
-//eas login
+
 const GoogleSignInButton = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const [isUserInfoReady, setIsUserInfoReady] = useState(false);
 
   //Google
   const [token, setToken] = useState("");
@@ -42,15 +39,6 @@ const GoogleSignInButton = () => {
     }
   }, [response, token]);
 
-  useEffect(() => {
-    if (userInfo !== null) {
-      console.log("soy user info password", userInfo.password);
-      console.log("soy user info username", userInfo.username);
-
-      handleLogin(userInfo.username, userInfo.password);
-    }
-  }, [userInfo]);
-
   const getUserInfo = async () => {
     try {
       const response = await fetch(
@@ -60,10 +48,9 @@ const GoogleSignInButton = () => {
         }
       );
       const user = await response.json();
-      if (token) {
+      if (token && user) {
         await handleSignup(user);
-        // setUserInfo(user);
-        setIsUserInfoReady(true);
+        setUserInfo(user);
       }
     } catch (error) {
       console.log("get user info error", error);
@@ -72,9 +59,8 @@ const GoogleSignInButton = () => {
 
   const handleSignup = async (user) => {
     try {
-      console.log("soy user de handle signup", user);
-      const userPassword = token.toUpperCase().substring(0, 9);
       const { email, given_name, family_name, picture, name } = user;
+      const userPassword = token.toUpperCase().substring(0, 13);
       const userData = {
         username: name,
         password: userPassword,
@@ -83,10 +69,8 @@ const GoogleSignInButton = () => {
         last_name: family_name,
         profile_img: picture,
       };
-      console.log("vengo de handle signup , soy userdata", userData);
       await createNewUser(userData);
-      setUserInfo({ username: name, password: userPassword });
-      // await handleLogin(name, userPassword);
+      await handleLogin(name, userPassword);
     } catch (error) {
       console.log("Error al hacer la petición:", error);
     }
@@ -94,12 +78,10 @@ const GoogleSignInButton = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      console.log("vengo de handle login", username, password);
       const jwtToken = await axios.post(`${API_URL}:${PORT}/api/users/login`, {
         username: username,
         password: password,
       });
-      console.log("jwt token", jwtToken);
       if (jwtToken.data.token) {
         await AsyncStorage.setItem("token", jwtToken.data.token);
         await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
@@ -115,56 +97,31 @@ const GoogleSignInButton = () => {
       }
     } catch (error) {
       console.error("handle login error", error);
-      // ReactNative.Alert.alert("Error", error.response.data, [{ text: "OK" }]);
     }
   };
 
-  const handleLogout = () => {
+  const onPressButton = async () => {
     try {
-      setToken("");
-      setUserInfo(null);
+      if (token) {
+        await getUserInfo();
+      } else {
+        await promptAsync();
+      }
     } catch (error) {
-      console.error(error);
+      console.log("fallo onPress", error);
     }
-  };
-
-  // const onPressButton = async () => {
-  //   try {
-  //     if (token) {
-  //       await getUserInfo();
-  //     } else {
-  //       await promptAsync();
-  //     }
-  //   } catch (error) {
-  //     console.log("fallo onPress", error);
-  //   }
-  // };
-
-  const handlePrompt = async () => {
-    await promptAsync();
-    await getUserInfo();
-  };
-  const handleInfo = async () => {
-    await handleLogin();
   };
 
   return (
-    <>
-      <ReactNative.View>
+    <ReactNative.SafeAreaView>
+      <ReactNative.View style={styles.inputContainer}>
         <GenericButton
           disabled={!request}
-          onPress={handlePrompt}
-          text={"signIn with google"}
+          onPress={onPressButton}
+          text={token ? "login con google" : "signup con google"}
         />
       </ReactNative.View>
-      <ReactNative.View>
-        <GenericButton
-          disabled={!request}
-          onPress={handleInfo}
-          text={"login with google"}
-        />
-      </ReactNative.View>
-    </>
+    </ReactNative.SafeAreaView>
   );
 };
 
