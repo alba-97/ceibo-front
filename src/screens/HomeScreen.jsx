@@ -108,9 +108,7 @@ export default function HomeScreen() {
                 onPress={handlePress}
               />
             ) : (
-              <Text style={[styles.text, { textAlign: "center" }]}>
-                Nada que mostrar
-              </Text>
+              <Text></Text>
             )}
           </View>
         )}

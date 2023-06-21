@@ -24,6 +24,7 @@ export const PlanDetailCard = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [invited, setInvited] = useState([]);
+  const [contactList, setContactList] = useState([]);
   const navigation = useNavigation();
   const [canEdit, setCanEdit] = useState(false);
   const { triggerRefetch } = refetchData();
@@ -35,31 +36,49 @@ export const PlanDetailCard = () => {
 
   const [sendMethod, setSendMethod] = useState(sendMethods[0].value);
 
-  useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        setInvited([]);
-        let res = await axios.get(`${API_URL}/api/users`);
-        let invitedUsers = res.data.filter((item) => user._id !== item._id);
-        invitedUsers = invitedUsers.filter((item) => item[sendMethod]);
-        invitedUsers = invitedUsers.map((item) => ({
-          label: item.username,
-          value: item[sendMethod],
-        }));
-        setUsers(invitedUsers);
-        const token = await AsyncStorage.getItem("token");
+  const fetchInfo = async () => {
+    try {
+      let res = await axios.get(`${API_URL}/api/users`);
+      let contacts = res.data.filter((item) => user._id !== item._id);
+      contacts = contacts.map((item) => ({
+        username: item.username,
+        email: item.email,
+        phone: item.phone,
+      }));
+      setUsers(contacts);
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
         res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setCanEdit(res.data);
-      } catch (error) {
-        console.log(error);
+      } else {
+        Alert.alert("Error", "No autorizado");
       }
-    };
+    } catch (error) {
+      Alert.alert("Error", error.response.data);
+    }
+  };
+
+  useEffect(() => {
     fetchInfo();
-  }, [sendMethod]);
+  }, []);
+
+  const handleChange = (e) => {
+    setSendMethod(e);
+    try {
+      let info = users.filter((item) => item[e]);
+      info = info.map((item) => ({
+        label: item.username,
+        value: item[sendMethod],
+      }));
+      setContactList(info);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formattingDate = plan.event_date
     .split("T")[0]
@@ -191,43 +210,50 @@ export const PlanDetailCard = () => {
               </View>
             ) : (
               <View>
-                {user._id && !canEdit && (
-                  <View style={styles.buttonContainer}>
-                    {!user.plans?.some(
-                      (userPlan) => userPlan._id === plan._id
-                    ) ? (
-                      <View>
-                        {!loading ? (
-                          <GenericButton
-                            text={"Participar"}
-                            onPress={handleEnroll}
-                          />
+                {user._id && (
+                  <View>
+                    {!canEdit && (
+                      <View style={styles.buttonContainer}>
+                        {!user.plans?.some(
+                          (userPlan) => userPlan._id === plan._id
+                        ) ? (
+                          <View>
+                            {!loading ? (
+                              <GenericButton
+                                text={"Participar"}
+                                onPress={handleEnroll}
+                              />
+                            ) : (
+                              <GenericButton
+                                text={"Cargando..."}
+                                customStyle={{ backgroundColor: "#7D0166" }}
+                              />
+                            )}
+                          </View>
                         ) : (
-                          <GenericButton
-                            text={"Cargando..."}
-                            customStyle={{ backgroundColor: "#7D0166" }}
-                          />
-                        )}
-                      </View>
-                    ) : (
-                      <View>
-                        {!loading ? (
-                          <GenericButton
-                            text={"Dejar de participar"}
-                            onPress={() => handleStopParticipating(plan._id)}
-                          />
-                        ) : (
-                          <GenericButton
-                            text={"Cargando..."}
-                            customStyle={{ backgroundColor: "#7D0166" }}
-                          />
+                          <View>
+                            {!loading ? (
+                              <GenericButton
+                                text={"Dejar de participar"}
+                                onPress={() =>
+                                  handleStopParticipating(plan._id)
+                                }
+                              />
+                            ) : (
+                              <GenericButton
+                                text={"Cargando..."}
+                                customStyle={{ backgroundColor: "#7D0166" }}
+                              />
+                            )}
+                          </View>
                         )}
                       </View>
                     )}
+
                     <View style={styles.input}>
                       <MultipleDropdown
                         setSelected={(val) => setInvited(val)}
-                        data={users}
+                        data={contactList}
                         save="value"
                         onSelect={() => {}}
                         label="Invitar personas"
@@ -240,7 +266,8 @@ export const PlanDetailCard = () => {
                       />
                       <RadioButton
                         options={sendMethods}
-                        onSelect={setSendMethod}
+                        onSelect={handleChange}
+                        defaultValue={sendMethod}
                       />
                       {invited.length > 0 && (
                         <GenericButton
