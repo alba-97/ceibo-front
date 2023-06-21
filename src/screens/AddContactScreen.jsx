@@ -1,74 +1,102 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+// Native
+import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+// Components
 import { GenericInput } from "../components/GenericInput";
-import { Navbar } from "../components/Navbar";
-import { API_URL, PORT } from "@env";
-import axios from "axios";
-import { SingleContact } from "../components/SingleContact";
 import { styles } from "../styles/stylesContact";
+import { Navbar } from "../components/Navbar";
+import { Feather } from "@expo/vector-icons";
+// Services
+import { SingleContact } from "../components/SingleContact";
+import { setSelectedContact } from "../state/selectedContact";
+import { GenericButton } from "../components/GenericButton";
+import { getAllUsers } from "../services/getAllUsers";
 
-export default function SearchScreen() {
-  const [data, setData] = useState([]);
-  const [results, setResults] = useState([]);
+export default function ContactsScreen() {
+  const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const selectedContact = useSelector((state) => state.selectedContact);
+  const user = useSelector((state) => state.user);
 
   const handleQueryChange = (text) => {
     setQuery(text);
-    setResults(
-      data.filter((item) =>
-        item.username.toLowerCase().includes(text.toLowerCase())
-      )
-    );
+  };
+
+  const filterContacts = () => {
+    if (query) {
+      setFilteredContacts(
+        contacts.filter(
+          (contact) =>
+            contact.username &&
+            contact.username.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    } else if (query === "") {
+      setFilteredContacts([]);
+    }
+  };
+
+  const handleContactPress = (contact) => {
+    dispatch(setSelectedContact(contact));
+    navigation.navigate("ContactInfoScreen", { selectedContact });
   };
 
   useEffect(() => {
-    if (API_URL && PORT) {
-      axios
-        .get(`${API_URL}:${PORT}/api/users`)
-        .then((response) => {
-          setData(response.data);
-          setResults(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    getAllUsers().then((users) => {
+      setContacts(users);
+    });
   }, []);
 
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={["#000", "#7D0166"]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={styles.container}
-      >
-        <Navbar />
-        <View
-          style={[
-            styles.container3,
-            { flexDirection: "row", justifyContent: "center" },
-          ]}
-        >
+    <LinearGradient
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+      style={styles.containerr}
+    >
+      <Navbar />
+      <View style={styles.container}>
+        <View style={styles.container3}>
           <GenericInput
             value={query}
             onChangeText={handleQueryChange}
-            placeholder="Buscar usuario"
+            placeholder={"Buscar"}
+            customStyle={styles.input}
           />
+          <TouchableOpacity onPress={() => filterContacts()}>
+            <Feather
+              name="arrow-right"
+              size={30}
+              color="white"
+              style={styles.reload}
+            />
+          </TouchableOpacity>
         </View>
-        <ScrollView style={{ width: "100%" }}>
-          {results ? (
-            results.map((item) => (
-              <View style={styles.text1} key={item.username}>
-                <SingleContact username={item.username} phone={item.phone} />
-              </View>
-            ))
-          ) : (
-            <Text>Cargando datos...</Text>
-          )}
-        </ScrollView>
-      </LinearGradient>
-    </View>
+        <Text style={styles.text1}>Agregar Contactos</Text>
+        {filteredContacts[0] ? (
+          <ScrollView>
+            <View>
+              {filteredContacts.map((contact, i) => (
+                <Text
+                  style={styles.text2}
+                  key={i}
+                  onPress={() => handleContactPress(contact)}
+                >
+                  <SingleContact {...contact} />
+                </Text>
+              ))}
+            </View>
+          </ScrollView>
+        ) : (
+          <Text>Para buscar un contacto, use el buscador</Text>
+        )}
+      </View>
+    </LinearGradient>
   );
 }

@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useContext } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, Text } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -24,6 +24,7 @@ import { setPlans } from "../state/plans";
 
 import { SharedRefetchContext } from "../sharedRefetchContext";
 import { getOrganizer } from "../services/getOrganizer";
+import { ProfileText } from "../components/ProfileText";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
@@ -79,12 +80,19 @@ export default function HomeScreen() {
           text="Nuestras recomendaciones"
           onPress={handlePress}
         />
-        {user && user.plans && (
+        {user && user.plans && user.plans[0] ? (
           <SwiperComponent
             plans={user.plans}
             text="Tus Planes"
             onPress={handlePress}
           />
+        ) : (
+          <>
+            <Text style={styles.text}>Tus planes</Text>
+            <Text style={[styles.text, { textAlign: "center" }]}>
+              Aún no tienes planes
+            </Text>
+          </>
         )}
       </ScrollView>
     </LinearGradient>

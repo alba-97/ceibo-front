@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { API_URL, PORT } from "@env";
-import { ScrollView, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";

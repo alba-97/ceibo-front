@@ -24,12 +24,12 @@ export default function ContactsScreen() {
   const dispatch = useDispatch();
   const selectedContact = useSelector((state) => state.selectedContact);
   const user = useSelector((state) => state.user);
-  console.log("user", user);
 
   const bringMeTheContacts = async () => {
     try {
-      setContacts(await fetchContacts());
-      setFilteredContacts(await fetchContacts());
+      const fetchedContacts = await fetchContacts();
+      setContacts(fetchedContacts);
+      setFilteredContacts(fetchedContacts);
     } catch (error) {
       console.error(error);
     }
