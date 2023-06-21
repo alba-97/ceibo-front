@@ -46,36 +46,43 @@ export default function ProfileScreen() {
               keyboardType="default"
               baseData={user?.username}
               propName={"username"}
+              dataUser={"Usuario"}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.first_name}
               propName={"first_name"}
+              dataUser={"Nombre"}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.last_name}
               propName={"last_name"}
+              dataUser={"Apellido"}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.address}
               propName={"address"}
+              dataUser={"Direccion"}
             />
             <ChangeData
               keyboardType="email-address"
               baseData={user?.email}
               propName={"email"}
+              dataUser={"Email"}
             />
             <ChangeData
               keyboardType="numeric"
               baseData={user?.phone}
               propName={"phone"}
+              dataUser={"Telefono"}
             />
             <ChangeData
               keyboardType="date"
               baseData={user?.birthdate}
               propName={"birthdate"}
+              dataUser={"Nacimiento"}
             />
             <View style={{ marginBottom: "5%" }} />
             <GenericButton onPress={handlePreferences} text="Preferencias" />

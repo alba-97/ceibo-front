@@ -3,34 +3,6 @@ import { Dimensions, StyleSheet } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  containerChange: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
-    borderStyle: "solid",
-    width: windowWidth,
-  },
-  container3: {
-    width: windowWidth,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pencilIconContainer: {
-    position: "absolute",
-    left: "90%",
-    bottom: "25%",
-  },
-
-  text3: {
-    color: "#FFF",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 20,
-    textAlign: "center",
-  },
-
   container: {
     flex: 1,
     width: "100%",
@@ -48,13 +20,58 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: "center",
-    flex: 1,
   },
+  containerChange: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    borderStyle: "solid",
+    width: windowWidth,
+  },
+  container3: {
+    width: windowWidth,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dataUserContainer: {
+    position: "absolute",
+    left: "0.01%",
+    bottom: "35%",
+  },
+  dataUserContainer2: {
+    position: "absolute",
+    left: "0.01%",
+    bottom: "65%",
+  },
+  pencilIconContainer: {
+    position: "absolute",
+    left: "90%",
+    bottom: "25%",
+  },
+
+  text3: {
+    color: "#FFF",
+    fontSize: 17,
+    fontWeight: "bold",
+    marginLeft: 20,
+    textAlign: "center",
+  },
+
+  textData: {
+    color: "#FFF",
+    fontSize: 13,
+
+    marginLeft: 20,
+    textAlign: "center",
+  },
+
   label: {
     paddingTop: 10,
     paddingBottom: 10,
     marginBottom: 4,
-    color: "#FFF",
+    color: "red",
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -65,7 +82,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     height: 45,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: "green",
     borderRadius: 18,
     color: "white",
   },
