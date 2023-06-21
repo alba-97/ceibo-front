@@ -151,21 +151,21 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
+    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
       <View style={styles.card}>
+        <Text style={styles.title}>{plan?.title}</Text>
         <Image
           source={{ uri: plan?.img }}
           style={{
             width: "100%",
-            height: "15%",
+            height: "30%",
           }}
         />
-        <Text style={styles.title}>{plan?.title}</Text>
         <View style={styles.detailsContainer}>
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>{formattingDate}</Text>
-          <Text style={styles.subtitle}>Descripcion</Text>
-          <Text style={styles.text}>{plan.description}</Text>
+          <View style={styles.date}>
+            <Text style={styles.subtitle}>Fecha: </Text>
+            <Text style={styles.text}>{formattingDate}</Text>
+          </View>
 
           {plan.ended ? (
             <View>
@@ -188,10 +188,7 @@ export const PlanDetailCard = () => {
                   ) ? (
                     <View>
                       {!loading ? (
-                        <GenericButton
-                          text={"Participar"}
-                          onPress={handleEnroll}
-                        />
+                        <GenericButton text={"+"} onPress={handleEnroll} />
                       ) : (
                         <GenericButton
                           text={"Cargando..."}
@@ -203,7 +200,7 @@ export const PlanDetailCard = () => {
                     <View>
                       {!loading ? (
                         <GenericButton
-                          text={"Dejar de participar"}
+                          text={"x"}
                           onPress={() => handleStopParticipating(plan._id)}
                         />
                       ) : (
@@ -241,6 +238,8 @@ export const PlanDetailCard = () => {
             </View>
           )}
         </View>
+        <Text style={styles.subtitle}>Descripcion</Text>
+        <Text style={styles.text}>{plan.description}</Text>
         {canEdit && (
           <View style={styles.input}>
             <GenericButton

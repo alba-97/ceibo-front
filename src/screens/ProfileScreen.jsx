@@ -39,7 +39,6 @@ export default function ProfileScreen() {
     >
       {user._id ? (
         <>
-          <Navbar />
           <ScrollView>
             <View style={styles.container}>
               <ProfilePicture imageSource={"profile_img"} />

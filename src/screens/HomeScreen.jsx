@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -24,10 +24,13 @@ import { setPlans } from "../state/plans";
 
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
+import { getHistory } from "../services/getHistory";
+import { setHistory } from "../state/history";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
+  const history = useSelector((state) => state.history);
 
   const { refetch } = refetchData();
 
@@ -50,6 +53,7 @@ export default function HomeScreen() {
     getUser().then((userData) => {
       if (userData._id) {
         dispatch(setUser(userData));
+        getHistory().then((history) => dispatch(setHistory(history)));
         getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
         if (userData.preferences && userData.preferences[0]) {
           getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
@@ -69,7 +73,7 @@ export default function HomeScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
+      <Navbar></Navbar>
       <ScrollView>
         {plans[0] && (
           <MainEvent
@@ -97,6 +101,25 @@ export default function HomeScreen() {
             </Text>
           </>
         )}
+        {user._id ? (
+          history[0] ? (
+            <SwiperComponent
+              plans={history}
+              text="Planes Finalizados"
+              onPress={handlePress}
+            />
+          ) : (
+            <>
+              <Text style={styles.text}>Planes finalizados</Text>
+              <Text style={[styles.text, { textAlign: "center" }]}>
+                no tienes planes en tu historial
+              </Text>
+            </>
+          )
+        ) : (
+          ""
+        )}
+        <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
     </LinearGradient>
   );
