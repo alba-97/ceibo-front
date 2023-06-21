@@ -151,107 +151,94 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
-      <View style={styles.card}>
-        <Text style={styles.title}>{plan?.title}</Text>
-        <Image
-          source={{ uri: plan?.img }}
-          style={{
-            width: "100%",
-            height: "30%",
-          }}
-        />
-        <View style={styles.detailsContainer}>
-          <View style={styles.date}>
-            <Text style={styles.subtitle}>Fecha: </Text>
-            <Text style={styles.text}>{formattingDate}</Text>
-          </View>
-
-          {plan.ended ? (
-            <View>
-              <Text style={styles.subtitle}>
-                El evento finalizó el {formattingDate}
-              </Text>
-
-              {user._id &&
-                user.plans &&
-                user.plans.some((userPlan) => userPlan._id == plan._id) &&
-                plan.organizer &&
-                plan.ended && <Rating plan={plan} />}
+    <ScrollView>
+      <View style={{ minHeight: screenHeight }}>
+        <View style={styles.card}>
+          <Text style={styles.title}>{plan?.title}</Text>
+          <Image
+            source={{ uri: plan?.img }}
+            style={{
+              width: "100%",
+              height: 200,
+            }}
+          />
+          <View style={styles.detailsContainer}>
+            <View style={styles.date}>
+              <Text style={styles.subtitle}>Fecha: </Text>
+              <Text style={styles.text}>{formattingDate}</Text>
             </View>
-          ) : (
-            <View>
-              {user._id && (
-                <View style={styles.buttonContainer}>
-                  {!user.plans?.some(
-                    (userPlan) => userPlan._id === plan._id
-                  ) ? (
-                    <View>
-                      {!loading ? (
-                        <GenericButton text={"+"} onPress={handleEnroll} />
-                      ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
-                      )}
-                    </View>
-                  ) : (
-                    <View>
-                      {!loading ? (
-                        <GenericButton
-                          text={"x"}
-                          onPress={() => handleStopParticipating(plan._id)}
-                        />
-                      ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
-                      )}
-                    </View>
-                  )}
-                  <View style={styles.input}>
-                    <MultipleDropdown
-                      setSelected={(val) => setInvited(val)}
-                      data={users}
-                      save="value"
-                      onSelect={() => {}}
-                      label="Invitar personas"
-                      placeholder="Invitar personas"
-                      search={false}
-                      textStyles={styles.item}
-                      boxStyles={styles.dropdown}
-                      dropdownStyles={styles.dropdown}
-                      badgeStyles={styles.item}
-                    />
-                    <RadioButton
-                      options={sendMethods}
-                      onSelect={setSendMethod}
-                    />
-                    {invited.length > 0 && (
-                      <GenericButton text={"Invitar"} onPress={handleInvite} />
+
+            {plan.ended ? (
+              <View>
+                <Text style={styles.subtitle}>
+                  El evento finalizó el {formattingDate}
+                </Text>
+
+                {user._id &&
+                  user.plans &&
+                  user.plans.some((userPlan) => userPlan._id == plan._id) &&
+                  plan.organizer &&
+                  plan.ended && <Rating plan={plan} />}
+              </View>
+            ) : (
+              <View>
+                {user._id && (
+                  <View style={styles.buttonContainer}>
+                    {!user.plans?.some(
+                      (userPlan) => userPlan._id === plan._id
+                    ) ? (
+                      <>
+                        {!loading ? (
+                          <GenericButton
+                            text={"+"}
+                            onPress={handleEnroll}
+                            customStyle={styles.btn}
+                          />
+                        ) : (
+                          <GenericButton
+                            text={"..."}
+                            customStyle={styles.btn}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {!loading ? (
+                          <GenericButton
+                            text={"x"}
+                            customStyle={styles.btn}
+                            onPress={() => handleStopParticipating(plan._id)}
+                          />
+                        ) : (
+                          <GenericButton
+                            text={"..."}
+                            customStyle={styles.btn}
+                          />
+                        )}
+                      </>
                     )}
                   </View>
-                </View>
-              )}
+                )}
+              </View>
+            )}
+          </View>
+
+          <Text style={styles.subtitle}>Descripcion</Text>
+          <Text style={styles.text}>{plan.description}</Text>
+          {canEdit && (
+            <View style={styles.input}>
+              <GenericButton
+                text={"Editar evento"}
+                onPress={() => {
+                  navigation.navigate("EditPlan");
+                }}
+              />
+              <GenericButton text={"Borrar evento"} onPress={handleDelete} />
             </View>
           )}
+          {user._id && <Comments />}
+          <View style={{ marginBottom: 10 }}></View>
         </View>
-        <Text style={styles.subtitle}>Descripcion</Text>
-        <Text style={styles.text}>{plan.description}</Text>
-        {canEdit && (
-          <View style={styles.input}>
-            <GenericButton
-              text={"Editar evento"}
-              onPress={() => {
-                navigation.navigate("EditPlan");
-              }}
-            />
-            <GenericButton text={"Borrar evento"} onPress={handleDelete} />
-          </View>
-        )}
-        {user._id && <Comments />}
       </View>
     </ScrollView>
   );

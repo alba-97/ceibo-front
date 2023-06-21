@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
-    padding: 20,
+    padding: 10,
     color: "#fff",
   },
   detailsContainer: { justifyContent: "center", marginTop: 5 },
@@ -55,8 +55,9 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     position: "absolute",
+    width: 80,
     right: 0,
-    top: -20,
+    top: -35,
   },
   inputCont: {
     width: "100%",
