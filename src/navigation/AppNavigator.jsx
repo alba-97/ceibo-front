@@ -33,6 +33,7 @@ import { setOrganizer, setSelectedPlan } from "../state/selectedPlan";
 import { getOrganizer } from "../services/getOrganizer";
 import { getPlan } from "../services/getPlan";
 import { useDispatch } from "react-redux";
+import AddContactScreen from "../screens/AddContactScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -67,6 +68,10 @@ function NavbarStack() {
       <HomeStackNavigator.Screen
         name="ContactInfoScreen"
         component={ContactInfoScreen}
+      />
+      <HomeStackNavigator.Screen
+        name="AddContact"
+        component={AddContactScreen}
       />
       <HomeStackNavigator.Screen name="Login" component={LoginScreen} />
       <HomeStackNavigator.Screen name="Register" component={RegisterScreen} />
