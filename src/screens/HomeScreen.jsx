@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text } from "react-native";
 
 // Components
@@ -22,25 +22,28 @@ import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
-import { SharedRefetchContext } from "../sharedRefetchContext";
 import { getOrganizer } from "../services/getOrganizer";
-import { ProfileText } from "../components/ProfileText";
+import refetchData from "../services/refetchData";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
 
-  const { refetch, triggerRefetch } = useContext(SharedRefetchContext);
+  const { refetch } = refetchData();
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handlePress = async (plan) => {
-    const updatedPlan = await getPlan(plan._id);
-    dispatch(setSelectedPlan(updatedPlan));
-    const organizer = await getOrganizer(plan._id);
-    dispatch(setOrganizer(organizer));
-    navigation.navigate("PlanDetail");
+    try {
+      const updatedPlan = await getPlan(plan._id);
+      dispatch(setSelectedPlan(updatedPlan));
+      const organizer = await getOrganizer(plan._id);
+      dispatch(setOrganizer(organizer));
+      navigation.navigate("PlanDetail");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

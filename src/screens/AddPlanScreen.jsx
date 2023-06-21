@@ -15,12 +15,15 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import * as ImagePicker from "expo-image-picker";
+import ChevronImg from "../assets/images/chevron.png";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DatePicker } from "../components/DatePicker";
 import { useNavigation } from "@react-navigation/native";
+import { getCategories } from "../services/getCategories";
+import ModalSelector from "react-native-modal-selector";
 
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
@@ -33,9 +36,10 @@ export default function AddPlanScreen() {
   const [max_age, setMax_age] = useState("");
   const [min_to_pay, setMin_to_pay] = useState("");
   const [total_to_pay, setTotal_to_pay] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Categoría");
   const [link_to_pay, setLink_to_pay] = useState("");
   const [path, setPath] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const navigation = useNavigation();
 
@@ -53,6 +57,14 @@ export default function AddPlanScreen() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    getCategories().then((data) => {
+      setCategories(
+        data.map((item, index) => ({ key: index, label: item.name }))
+      );
+    });
+  }, []);
 
   useEffect(() => {
     setEvent_date(event_date);
@@ -75,15 +87,12 @@ export default function AddPlanScreen() {
             type: "image/jpeg",
             name: "image.jpg",
           });
-          const res = await axios.post(
-            `${API_URL}:${PORT}/api/upload`,
-            formData
-          );
+          const res = await axios.post(`${API_URL}/api/upload`, formData);
           imageUrl = res.data.imageUrl;
         }
 
         await axios.post(
-          `${API_URL}:${PORT}/api/events/`,
+          `${API_URL}/api/events/`,
           {
             title,
             description,
@@ -111,7 +120,6 @@ export default function AddPlanScreen() {
         Alert.alert("Error", "Ingresá sesión para publicar un evento");
       }
     } catch (error) {
-      console.log("add plan error", error);
       if (error.response) {
         Alert.alert("Error", error.response.data);
       } else {
@@ -204,8 +212,44 @@ export default function AddPlanScreen() {
                 />
               </View>
             </View>
-            <Text style={styles.text}>Categoria</Text>
-            <GenericInput value={category} onChangeText={setCategory} />
+            <View style={styles.container2}>
+              <View style={styles.inputContainer}>
+                <ModalSelector
+                  data={categories}
+                  onChange={(option) => {
+                    setCategory(option.label);
+                  }}
+                  overlayStyle={{ backgroundColor: "transparent" }}
+                  optionContainerStyle={{
+                    backgroundColor: "#691359",
+                    borderWidth: 8,
+                    borderRadius: 4,
+                    borderColor: "#59104c",
+                  }}
+                  optionTextStyle={{
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                  cancelStyle={{
+                    backgroundColor: "#781365",
+                  }}
+                  cancelTextStyle={{
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                  cancelText="Cancelar"
+                >
+                  <Text style={styles.categoryContainer} value={category}>
+                    {category}{" "}
+                    <Image
+                      source={ChevronImg}
+                      resizeMode="contain"
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </Text>
+                </ModalSelector>
+              </View>
+            </View>
             <Text style={styles.text}>Link para pagar</Text>
             <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
             <Text style={styles.text}>Imagen</Text>

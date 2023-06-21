@@ -10,19 +10,19 @@ import axios from "axios";
 // Components
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/profileScreenStyles";
-import { setUser } from "../state/user";
+import { setSelectedPlan } from "../state/selectedPlan";
 import { API_URL } from "../services/urls";
 
-export const ChangeData = ({ baseData, propName, keyboardType }) => {
-  const user = useSelector((state) => state.user);
+export const ChangeEventData = ({ baseData, propName, keyboardType }) => {
+  const plan = useSelector((state) => state.selectedPlan);
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
   const [change, setChange] = useState(false);
 
-  const createEditedUser = (propName, newValue) => {
-    let editedUser = { ...user };
-    editedUser[propName] = newValue;
-    return editedUser;
+  const createEditedPlan = (propName, newValue) => {
+    let editedPlan = { ...plan };
+    editedPlan[propName] = newValue;
+    return editedPlan;
   };
 
   const handleChange = async (propName, newValue) => {
@@ -31,7 +31,7 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
         const token = await AsyncStorage.getItem("token");
         if (token) {
           await axios.put(
-            `${API_URL}/api/users/`,
+            `${API_URL}/api/events/${plan._id}`,
             {
               [propName]: newValue,
             },
@@ -41,7 +41,7 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
               },
             }
           );
-          dispatch(setUser(createEditedUser(propName, newValue)));
+          dispatch(setSelectedPlan(createEditedPlan(propName, newValue)));
         }
       } catch (error) {
         Alert.alert(`Error: ${error}`);
@@ -51,7 +51,7 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
   };
 
   const formattedData =
-    propName === "birthdate" ? moment(newData).format("DD/MM/YYYY") : newData;
+    propName === "event_date" ? moment(newData).format("DD/MM/YYYY") : newData;
 
   return (
     <>

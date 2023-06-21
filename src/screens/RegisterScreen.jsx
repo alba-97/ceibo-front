@@ -8,7 +8,7 @@ import axios from "axios";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
 
@@ -34,7 +34,7 @@ export default function RegisterScreen() {
       formattedBirthdate = birthdate.toISOString();
     }
     try {
-      const res = await axios.post(`${API_URL}:${PORT}/api/users/signup`, {
+      const res = await axios.post(`${API_URL}/api/users/signup`, {
         username,
         password,
         email,
@@ -114,7 +114,11 @@ export default function RegisterScreen() {
           <Text style={styles.text}>Direccion</Text>
           <GenericInput value={address} onChangeText={setAddress} />
           <Text style={styles.text}>Numero de telefono</Text>
-          <GenericInput keyboardType={'numeric'} value={phone} onChangeText={setPhone} />
+          <GenericInput
+            keyboardType={"numeric"}
+            value={phone}
+            onChangeText={setPhone}
+          />
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>

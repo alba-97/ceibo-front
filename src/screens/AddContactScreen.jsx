@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
-import { Feather } from "@expo/vector-icons";
+import { Feather, AntDesign } from "@expo/vector-icons";
 // Services
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
@@ -23,6 +23,10 @@ export default function ContactsScreen() {
   const dispatch = useDispatch();
   const selectedContact = useSelector((state) => state.selectedContact);
   const user = useSelector((state) => state.user);
+
+  const handleBack = () => {
+    navigation.navigate("Contacts");
+  };
 
   const handleQueryChange = (text) => {
     setQuery(text);
@@ -63,18 +67,25 @@ export default function ContactsScreen() {
       <Navbar />
       <View style={styles.container}>
         <View style={styles.container3}>
+          <TouchableOpacity onPress={handleBack}>
+            <AntDesign
+              name="back"
+              size={30}
+              color="white"
+              style={{ marginLeft: "4%" }}
+            />
+          </TouchableOpacity>
           <GenericInput
             value={query}
             onChangeText={handleQueryChange}
             placeholder={"Buscar"}
-            customStyle={styles.input}
           />
           <TouchableOpacity onPress={() => filterContacts()}>
             <Feather
               name="arrow-right"
               size={30}
               color="white"
-              style={styles.reload}
+              style={{ marginLeft: "5%" }}
             />
           </TouchableOpacity>
         </View>
