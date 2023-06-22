@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../services/urls";
-import { ScrollView, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,11 +14,15 @@ import { clearUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/core";
+import * as ImagePicker from 'expo-image-picker';
+import { Alert } from "react-native";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [profile_img, setProfile_img] = useState('');
+
 
   const handleLogout = () => {
     axios.post(`${API_URL}/api/users/logout`);
@@ -30,6 +34,49 @@ export default function ProfileScreen() {
     navigation.navigate("Preferences");
   };
 
+
+  
+      
+  const selectImage=async()=> {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+   try {
+     const token = await AsyncStorage.getItem("token");
+     const path = result?.assets[0]?.uri;
+  if (token && path) {
+    if (path !== ""){
+     const formData = new FormData();
+  formData.append("image", {
+    uri: path,
+    name: "image.jpg",
+    type: "image/jpeg",
+  });
+  const response = await axios.post(`${API_URL}/api/upload`, formData);
+  await axios.put(
+    `${API_URL}/api/users/`,
+    {
+      profile_img:response.data.imageUrl
+    },
+    {
+      headers: { 
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+  setProfile_img(response.data.imageUrl);
+  Alert.alert("Hecho", "Imagen de perfil actualizada correctamente")
+  }
+}
+} catch (error) {
+  console.log(error.response.data);
+  Alert.alert("Error", "Error al actualizar la imagen de perfil");
+  console.log(error);
+}
+}
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -41,7 +88,16 @@ export default function ProfileScreen() {
       {user._id ? (
         <ScrollView>
           <View style={styles.container}>
-            <ProfilePicture imageSource={"profile_img"} />
+          
+            {profile_img ? (
+              <TouchableOpacity onPress={selectImage}>
+                <ProfilePicture imageSource={profile_img} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={selectImage}>
+                <Text style={styles.buttonText}>Seleccionar imagen</Text>
+              </TouchableOpacity>
+            )}
             <ChangeData
               keyboardType="default"
               baseData={user?.username}
@@ -96,3 +152,4 @@ export default function ProfileScreen() {
     </LinearGradient>
   );
 }
+
