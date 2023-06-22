@@ -112,6 +112,7 @@ export default function HomeScreen() {
             )}
           </View>
         )}
+        <View style={{ marginBottom: 30 }}></View>
       </ScrollView>
     </LinearGradient>
   );
