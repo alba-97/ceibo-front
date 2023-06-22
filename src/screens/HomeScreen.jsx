@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -19,18 +19,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
-import { setUser, setUserPlans } from "../state/user";
+import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
-import { getHistory } from "../services/getHistory";
-import { setHistory } from "../state/history";
+import { getPlanHistory } from "../services/getPlanHistory";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
   const plans = useSelector((state) => state.plans);
-  const history = useSelector((state) => state.history);
 
   const { refetch } = refetchData();
 
@@ -53,8 +51,10 @@ export default function HomeScreen() {
     getUser().then((userData) => {
       if (userData._id) {
         dispatch(setUser(userData));
-        getHistory().then((history) => dispatch(setHistory(history)));
         getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
+        getPlanHistory().then((planHistory) =>
+          dispatch(setPlanHistory(planHistory))
+        );
         if (userData.preferences && userData.preferences[0]) {
           getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
         } else {
@@ -87,37 +87,35 @@ export default function HomeScreen() {
           text="Nuestras recomendaciones"
           onPress={handlePress}
         />
-        {user && user.plans && user.plans[0] ? (
-          <SwiperComponent
-            plans={user.plans}
-            text="Tus Planes"
-            onPress={handlePress}
-          />
-        ) : (
-          <>
-            <Text style={styles.text}>Tus planes</Text>
-            <Text style={[styles.text, { textAlign: "center" }]}>
-              Aún no tienes planes
-            </Text>
-          </>
-        )}
-        {user._id ? (
-          history[0] ? (
-            <SwiperComponent
-              plans={history}
-              text="Planes Finalizados"
-              onPress={handlePress}
-            />
-          ) : (
-            <>
-              <Text style={styles.text}>Planes finalizados</Text>
+
+        {user._id && (
+          <View>
+            {user.plans && user.plans[0] ? (
+              <SwiperComponent
+                plans={user.plans}
+                text="Tus Planes"
+                onPress={handlePress}
+              />
+            ) : (
               <Text style={[styles.text, { textAlign: "center" }]}>
-                no tienes planes en tu historial
+                Aún no tienes planes
               </Text>
-            </>
-          )
-        ) : (
-          ""
+            )}
+            {user.history && user.history[0] ? (
+              <SwiperComponent
+                plans={user.history}
+                text="Planes pasados"
+                onPress={handlePress}
+              />
+            ) : (
+              <>
+                <Text style={styles.text}>Planes pasados</Text>
+                <Text style={[styles.text, { textAlign: "center" }]}>
+                  no tienes planes en tu historial
+                </Text>
+              </>
+            )}
+          </View>
         )}
         <View style={{ marginBottom: 50 }}></View>
       </ScrollView>

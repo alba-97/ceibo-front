@@ -26,7 +26,7 @@ export default function SearchScreen() {
     { label: "Categoría", value: "category" },
     { label: "Usuario", value: "user" },
   ];
-  const [option, setOption] = useState(options[0]);
+  const [option, setOption] = useState(options[0].value);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -104,7 +104,12 @@ export default function SearchScreen() {
             placeholder="Buscar plan"
           />
         </View>
-        <RadioButton options={options} onSelect={setOption} />
+        <RadioButton
+          style={{ flexDirection: "row", marginVertical: 10 }}
+          options={options}
+          onSelect={setOption}
+          defaultValue={option}
+        />
         <View style={styles.content}>
           <ScrollView style={{ width: "100%" }}>
             {results ? (
@@ -112,7 +117,7 @@ export default function SearchScreen() {
                 <SearchImg key={index} plan={item} onPress={handlePress} />
               ))
             ) : (
-              <Text>Cargando datoss...</Text>
+              <Text>Cargando datos...</Text>
             )}
           </ScrollView>
         </View>

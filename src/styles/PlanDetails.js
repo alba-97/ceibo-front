@@ -32,6 +32,9 @@ export const styles = StyleSheet.create({
     fontWeight: 300,
     fontSize: 20,
     color: "#fff",
+    padding: 10,
+    margin: 5,
+    textAlign: "center",
   },
   p: {
     fontSize: 18,

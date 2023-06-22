@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     height: 100,
   },
   text: {
-    width: 300,
+    width: 250,
     top: -100,
     left: 110,
     color: "#FFF",

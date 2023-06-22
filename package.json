@@ -39,6 +39,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.2.0",
     "react-native": "0.71.8",
+    "react-native-animated-loader": "^1.0.0",
     "react-native-contacts": "^7.0.5",
     "react-native-datepicker": "^1.7.2",
     "react-native-dotenv": "^3.4.8",
