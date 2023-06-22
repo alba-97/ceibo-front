@@ -15,7 +15,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import * as ImagePicker from "expo-image-picker";
 import ChevronImg from "../assets/images/chevron.png";
 
@@ -87,15 +87,12 @@ export default function AddPlanScreen() {
             type: "image/jpeg",
             name: "image.jpg",
           });
-          const res = await axios.post(
-            `${API_URL}:${PORT}/api/upload`,
-            formData
-          );
+          const res = await axios.post(`${API_URL}/api/upload`, formData);
           imageUrl = res.data.imageUrl;
         }
 
         await axios.post(
-          `${API_URL}:${PORT}/api/events/`,
+          `${API_URL}/api/events/`,
           {
             title,
             description,

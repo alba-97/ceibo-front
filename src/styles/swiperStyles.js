@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   view: {
     borderStyle: "solid",
     alignItems: "center",
@@ -13,7 +13,7 @@ export default styles = StyleSheet.create({
   },
   text: {
     color: "#FFF",
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "bold",
     marginLeft: "10%",
     marginBottom: 23,

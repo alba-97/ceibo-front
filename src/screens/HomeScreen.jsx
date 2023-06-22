@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { Linking, ScrollView } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -19,11 +19,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
-import { setUser, setUserPlans } from "../state/user";
+import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
+import { getPlanHistory } from "../services/getPlanHistory";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
@@ -47,27 +48,13 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    const handleDeepLink = async (event) => {
-      const { url } = event;
-      const urlParts = url.split("//");
-      if (urlParts.length === 2) {
-        const [scheme, route] = urlParts;
-        if (scheme === "clubdelplan:" && route) {
-          console.log(route);
-          const updatedPlan = await getPlan(route);
-          dispatch(setSelectedPlan(updatedPlan));
-          navigation.navigate("PlanDetail");
-        }
-      }
-    };
-    Linking.addEventListener("url", handleDeepLink);
-  }, []);
-
-  useEffect(() => {
     getUser().then((userData) => {
       if (userData._id) {
         dispatch(setUser(userData));
         getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
+        getPlanHistory().then((planHistory) =>
+          dispatch(setPlanHistory(planHistory))
+        );
         if (userData.preferences && userData.preferences[0]) {
           getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
         } else {
@@ -100,12 +87,30 @@ export default function HomeScreen() {
           text="Nuestras recomendaciones"
           onPress={handlePress}
         />
-        {user && user.plans && (
-          <SwiperComponent
-            plans={user.plans}
-            text="Tus Planes"
-            onPress={handlePress}
-          />
+
+        {user._id && (
+          <View>
+            {user.plans && user.plans[0] ? (
+              <SwiperComponent
+                plans={user.plans}
+                text="Tus Planes"
+                onPress={handlePress}
+              />
+            ) : (
+              <Text style={[styles.text, { textAlign: "center" }]}>
+                Aún no tienes planes
+              </Text>
+            )}
+            {user.history && user.history[0] ? (
+              <SwiperComponent
+                plans={user.history}
+                text="Planes pasados"
+                onPress={handlePress}
+              />
+            ) : (
+              <Text></Text>
+            )}
+          </View>
         )}
       </ScrollView>
     </LinearGradient>

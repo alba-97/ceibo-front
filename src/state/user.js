@@ -10,6 +10,7 @@ const initialState = {
   phone: null,
   profile_img: null,
   plans: [],
+  history: [],
   preferences: [],
 };
 
@@ -24,6 +25,11 @@ const userSlice = createSlice({
       newState.plans = action.payload;
       return newState;
     },
+    setPlanHistory: (state, action) => {
+      const newState = { ...state };
+      newState.history = action.payload;
+      return newState;
+    },
     setPreferences: (state, action) => {
       const newState = { ...state };
       newState.preferences = action.payload;
@@ -32,6 +38,11 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser, setUserPlans, setPreferences } =
-  userSlice.actions;
+export const {
+  setUser,
+  clearUser,
+  setUserPlans,
+  setPlanHistory,
+  setPreferences,
+} = userSlice.actions;
 export default userSlice.reducer;

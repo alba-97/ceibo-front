@@ -23,4 +23,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  text: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: "10%",
+    marginBottom: 23,
+    paddingTop: "5%",
+  },
 });

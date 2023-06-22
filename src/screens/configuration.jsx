@@ -10,7 +10,7 @@ import { styles } from "../styles/configurationStyles";
 import { clearUser } from "../state/user";
 
 import axios from "axios";
-import { API_URL, PORT } from "@env";
+import { API_URL } from "../services/urls";
 import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/native";
 
@@ -20,7 +20,7 @@ export default function Configuration() {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    axios.post(`${API_URL}:${PORT}/api/users/logout`);
+    axios.post(`${API_URL}/api/users/logout`);
     AsyncStorage.removeItem("token");
     dispatch(clearUser());
   };
@@ -44,25 +44,29 @@ export default function Configuration() {
       end={[1, 1]}
       style={styles.container}
     >
-        <Navbar/>
+      <Navbar />
       <View style={styles.container}>
         <View style={styles.row}>
-          <TouchableOpacity onPress={handleEdit}style={styles.cubo}>
+          <TouchableOpacity onPress={handleEdit} style={styles.cubo}>
             <Text style={styles.text}>Editar Perfil</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleEvent}style={styles.cubo}>
+          <TouchableOpacity onPress={handleEvent} style={styles.cubo}>
             <Text style={styles.text}>Mis Eventos</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <TouchableOpacity onPress={handleContact}style={styles.cubo}>
+          <TouchableOpacity onPress={handleContact} style={styles.cubo}>
             <Text style={styles.text}>Contactos</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleCategories}style={styles.cubo}>
+          <TouchableOpacity onPress={handleCategories} style={styles.cubo}>
             <Text style={styles.text}>Categorias Preferidas</Text>
           </TouchableOpacity>
         </View>
-        <GenericButton customStyle={styles.text}onPress={handleLogout} text="Cerrar Sesion" />
+        <GenericButton
+          customStyle={styles.text}
+          onPress={handleLogout}
+          text="Cerrar Sesion"
+        />
       </View>
     </LinearGradient>
   );
