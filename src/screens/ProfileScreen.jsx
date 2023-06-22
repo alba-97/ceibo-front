@@ -10,19 +10,17 @@ import LoginScreen from "./LoginScreen";
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
 import { styles } from "../styles/profileScreenStyles";
-import { clearUser } from "../state/user";
+import { clearUser, updateUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/core";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [profile_img, setProfile_img] = useState('');
-
 
   const handleLogout = () => {
     axios.post(`${API_URL}/api/users/logout`);
@@ -34,49 +32,48 @@ export default function ProfileScreen() {
     navigation.navigate("Preferences");
   };
 
-
-  
-      
-  const selectImage=async()=> {
+  const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-   try {
-     const token = await AsyncStorage.getItem("token");
-     const path = result?.assets[0]?.uri;
-  if (token && path) {
-    if (path !== ""){
-     const formData = new FormData();
-  formData.append("image", {
-    uri: path,
-    name: "image.jpg",
-    type: "image/jpeg",
-  });
-  const response = await axios.post(`${API_URL}/api/upload`, formData);
-  await axios.put(
-    `${API_URL}/api/users/`,
-    {
-      profile_img:response.data.imageUrl
-    },
-    {
-      headers: { 
-        Authorization: `Bearer ${token}`,
-      },
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const path = result?.assets[0]?.uri;
+      if (token && path) {
+        if (path !== "") {
+          const formData = new FormData();
+          formData.append("image", {
+            uri: path,
+            name: "image.jpg",
+            type: "image/jpeg",
+          });
+          const response = await axios.post(`${API_URL}/api/upload`, formData);
+          await axios.put(
+            `${API_URL}/api/users/`,
+            {
+              profile_img: response.data.imageUrl,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          dispatch(
+            updateUser({ key: "profile_img", value: response.data.imageUrl })
+          );
+          Alert.alert("Hecho", "Imagen de perfil actualizada correctamente");
+        }
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      Alert.alert("Error", "Error al actualizar la imagen de perfil");
+      console.log(error);
     }
-  )
-  setProfile_img(response.data.imageUrl);
-  Alert.alert("Hecho", "Imagen de perfil actualizada correctamente")
-  }
-}
-} catch (error) {
-  console.log(error.response.data);
-  Alert.alert("Error", "Error al actualizar la imagen de perfil");
-  console.log(error);
-}
-}
+  };
   return (
     <LinearGradient
       colors={["#000", "#7D0166"]}
@@ -88,10 +85,9 @@ export default function ProfileScreen() {
       {user._id ? (
         <ScrollView>
           <View style={styles.container}>
-          
-            {profile_img ? (
+            {user.profile_img ? (
               <TouchableOpacity onPress={selectImage}>
-                <ProfilePicture imageSource={profile_img} />
+                <ProfilePicture imageSource={user.profile_img} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={selectImage}>
@@ -152,4 +148,3 @@ export default function ProfileScreen() {
     </LinearGradient>
   );
 }
-
