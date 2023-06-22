@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: "center",
+   // flex: 1,
   },
   containerChange: {
     paddingTop: 15,
@@ -99,4 +100,47 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
+  // logoutContainer: {
+  //   paddingTop: 20,
+  //   paddingBottom: 20,
+  //   color: "#FFF",
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  //   textAlign: "center",
+  //   marginBottom: 4,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // }, 
+  // button: {
+  //   borderWidth: 1,
+  //   borderColor: "white",
+  //   backgroundColor: "#7D0166",
+  //   borderRadius: 10,
+  //   padding: 10,
+  //   marginTop: 10,
+  // },
+  // buttonText: {
+  //   borderWidth: 1,
+  //   borderColor: "white",
+  //   color: "#fff",
+  //   textAlign: "center",
+  // },imageContainer: {
+  //   alignItems: "center",
+  //   marginTop: 20,
+  // },
+  
+  // selectedImage: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   borderWidth: 1,
+  //   borderColor: "white",
+  //   width: 200,
+  //   height: 200,
+  //   resizeMode: "cover",
+  // },
+
+
 });
+
+
+
