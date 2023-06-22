@@ -4,6 +4,7 @@ import selectedPlanReducer from "./selectedPlan";
 import plansReducer from "./plans";
 import contactsReducer from "./contacts";
 import selectedContactReducer from "./selectedContact";
+import historyReducer from "./history";
 
 const reducers = combineReducers({
   user: userReducer,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   selectedPlan: selectedPlanReducer,
   contacts: contactsReducer,
   selectedContact: selectedContactReducer,
+  history: historyReducer,
 });
 
 const store = configureStore({
