@@ -9,13 +9,13 @@ import axios from "axios";
 import { getUser } from "../services/getUser";
 import { getUserPlans } from "../services/getUserPlans";
 // Components
+import GoogleSignInButton from "../components/GoogleSignInButton";
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
+import { Navbar } from "../components/Navbar";
 import { styles } from "../styles/loginScreenStyles";
 import { setUser, setUserPlans } from "../state/user";
 import { API_URL } from "../services/urls";
-import GoogleSignInButton from "../components/GoogleSignInButton";
-import { Navbar } from "../components/Navbar";
 
 export default function LoginScreen() {
   const navigation = useNavigation();

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { API_URL } from "../services/urls";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";

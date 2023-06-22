@@ -111,7 +111,7 @@ export default function HomeScreen() {
               <>
                 <Text style={styles.text}>Planes pasados</Text>
                 <Text style={[styles.text, { textAlign: "center" }]}>
-                  no tienes planes en tu historial
+                  No tienes planes en tu historial
                 </Text>
               </>
             )}
