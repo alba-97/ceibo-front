@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { API_URL } from "../services/urls";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -83,18 +83,18 @@ export default function ProfileScreen() {
     >
       {user._id ? (
         <View style={styles.container}>
-            <Navbar/>
-        <ScrollView>
-        <View style={styles.imageContainer}>
-            {user.profile_img ? (
-              <TouchableOpacity onPress={selectImage}>
-                <ProfilePicture imageSource={user.profile_img} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.button} onPress={selectImage}>
-                <Text style={styles.buttonText}>Seleccionar imagen</Text>
-              </TouchableOpacity>
-            )}
+          <Navbar />
+          <ScrollView>
+            <View style={styles.imageContainer}>
+              {user.profile_img ? (
+                <TouchableOpacity onPress={selectImage}>
+                  <ProfilePicture imageSource={user.profile_img} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.button} onPress={selectImage}>
+                  <Text style={styles.buttonText}>Seleccionar imagen</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <ChangeData
               keyboardType="default"
@@ -139,13 +139,13 @@ export default function ProfileScreen() {
               dataUser={"Nacimiento"}
             />
             <View style={styles.prefContainer}>
-            <GenericButton onPress={handlePreferences} text="Preferencias" />
+              <GenericButton onPress={handlePreferences} text="Preferencias" />
             </View>
             <View style={styles.logoutContainer}>
-            <GenericButton onPress={handleLogout} text="Logout" />
+              <GenericButton onPress={handleLogout} text="Logout" />
             </View>
-        </ScrollView>
-          </View>
+          </ScrollView>
+        </View>
       ) : (
         <LoginScreen />
       )}
