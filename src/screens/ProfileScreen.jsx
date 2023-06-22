@@ -81,9 +81,9 @@ export default function ProfileScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
       {user._id ? (
-          <View style={styles.container}>
+        <View style={styles.container}>
+            <Navbar/>
         <ScrollView>
         <View style={styles.imageContainer}>
             {user.profile_img ? (

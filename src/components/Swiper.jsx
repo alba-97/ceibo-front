@@ -1,7 +1,7 @@
 // Native
 import { ImageContainer } from "./ImageContainer";
 // Components
-import styles from "../styles/swiperStyles";
+import { styles } from "../styles/swiperStyles";
 import React from "react";
 import { View, FlatList, Text } from "react-native";
 export function SwiperComponent({ plans, text, onPress }) {

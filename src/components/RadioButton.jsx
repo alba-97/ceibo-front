@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
-const RadioButton = ({ options, onSelect }) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const RadioButton = ({ options, onSelect, style, defaultValue }) => {
+  const [selectedOption, setSelectedOption] = useState(defaultValue);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -10,7 +10,7 @@ const RadioButton = ({ options, onSelect }) => {
   };
 
   return (
-    <View>
+    <View {...style}>
       {options.map((option) => (
         <TouchableOpacity
           key={option.value}
@@ -44,7 +44,8 @@ const RadioButton = ({ options, onSelect }) => {
               color: "white",
               fontWeight: "bold",
               marginVertical: 5,
-              marginLeft: 10,
+              marginLeft: 5,
+              marginRight: 10,
             }}
           >
             {option.label}
