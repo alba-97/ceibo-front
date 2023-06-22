@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: "white",
     borderStyle: "solid",
     width: windowWidth,
-    
+    justifyContent: "center",
   },
 
   text: {

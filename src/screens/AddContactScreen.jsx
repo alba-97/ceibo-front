@@ -115,7 +115,7 @@ export default function ContactsScreen() {
               },
             ]}
           >
-            Para buscar un contacto, use el buscador
+            Busque el contacto que desea agregar
           </Text>
         )}
       </View>
