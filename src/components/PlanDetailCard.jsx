@@ -184,15 +184,7 @@ export const PlanDetailCard = () => {
               <Text style={styles.text}>{formattingDate}</Text>
             </View>
 
-            <Text style={styles.text}>
-              Organizador: {plan?.organizer?.username}
-            </Text>
-
-            <Text style={styles.p}>
-              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
-              <Entypo name="star" size={20} color={"#fdd835"} />
-            </Text>
-            <View style={{ marginVertical: 20 }}>
+            <View>
               {plan.ended ? (
                 <View>
                   <Text style={styles.subtitle}>
@@ -247,8 +239,16 @@ export const PlanDetailCard = () => {
                 </View>
               )}
             </View>
+            <Text style={styles.text}>
+              Organizador: {plan?.organizer?.username}
+            </Text>
 
-            <Text style={styles.subtitle}>Descripcion</Text>
+            <Text style={styles.p}>
+              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+              <Entypo name="star" size={20} color={"#fdd835"} />
+            </Text>
+
+            <Text style={styles.subtitle}>Descripcion:</Text>
             <Text style={styles.text}>{plan.description}</Text>
             {user._id && <Comments />}
             {canEdit && user._id ? (
