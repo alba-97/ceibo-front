@@ -1,6 +1,6 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 // import { Linking } from 'react-native';
 // import Mailer from 'react-native-mail';
@@ -72,7 +72,7 @@ export default function ContactInfoScreen() {
       }}
     >
       <Navbar />
-      <View style={{ marginTop: "15%" }}>
+      <ScrollView style={{ marginTop: "15%" }}>
         <View style={styles.container}>
           <ProfilePicture imageSource={contact.profile_img} />
           <View style={{ marginTop: "5%" }}></View>
@@ -110,7 +110,7 @@ export default function ContactInfoScreen() {
             )}
           </View>
         </View>
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
