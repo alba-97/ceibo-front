@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -19,11 +19,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
-import { setUser, setUserPlans } from "../state/user";
+import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
+import { getPlanHistory } from "../services/getPlanHistory";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
@@ -51,6 +52,9 @@ export default function HomeScreen() {
       if (userData._id) {
         dispatch(setUser(userData));
         getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
+        getPlanHistory().then((planHistory) =>
+          dispatch(setPlanHistory(planHistory))
+        );
         if (userData.preferences && userData.preferences[0]) {
           getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
         } else {
@@ -69,7 +73,7 @@ export default function HomeScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
+      <Navbar></Navbar>
       <ScrollView>
         {plans[0] && (
           <MainEvent
@@ -83,20 +87,37 @@ export default function HomeScreen() {
           text="Nuestras recomendaciones"
           onPress={handlePress}
         />
-        {user && user.plans && user.plans[0] ? (
-          <SwiperComponent
-            plans={user.plans}
-            text="Tus Planes"
-            onPress={handlePress}
-          />
-        ) : (
-          <>
-            <Text style={styles.text}>Tus planes</Text>
-            <Text style={[styles.text, { textAlign: "center" }]}>
-              Aún no tienes planes
-            </Text>
-          </>
+
+        {user._id && (
+          <View>
+            {user.plans && user.plans[0] ? (
+              <SwiperComponent
+                plans={user.plans}
+                text="Tus Planes"
+                onPress={handlePress}
+              />
+            ) : (
+              <Text style={[styles.text, { textAlign: "center" }]}>
+                Aún no tienes planes
+              </Text>
+            )}
+            {user.history && user.history[0] ? (
+              <SwiperComponent
+                plans={user.history}
+                text="Planes pasados"
+                onPress={handlePress}
+              />
+            ) : (
+              <>
+                <Text style={styles.text}>Planes pasados</Text>
+                <Text style={[styles.text, { textAlign: "center" }]}>
+                  No tienes planes en tu historial
+                </Text>
+              </>
+            )}
+          </View>
         )}
+        <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
     </LinearGradient>
   );

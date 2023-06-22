@@ -14,6 +14,7 @@ import MultipleDropdown from "./MultipleDropdown";
 import { useNavigation } from "@react-navigation/core";
 import refetchData from "../services/refetchData";
 import RadioButton from "./RadioButton";
+import { Entypo } from "@expo/vector-icons";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export const PlanDetailCard = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [invited, setInvited] = useState([]);
+  const [contactList, setContactList] = useState([]);
   const navigation = useNavigation();
   const [canEdit, setCanEdit] = useState(false);
   const { triggerRefetch } = refetchData();
@@ -34,31 +36,45 @@ export const PlanDetailCard = () => {
 
   const [sendMethod, setSendMethod] = useState(sendMethods[0].value);
 
-  useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        setInvited([]);
-        let res = await axios.get(`${API_URL}/api/users`);
-        let invitedUsers = res.data.filter((item) => user._id !== item._id);
-        invitedUsers = invitedUsers.filter((item) => item[sendMethod]);
-        invitedUsers = invitedUsers.map((item) => ({
-          label: item.username,
-          value: item[sendMethod],
-        }));
-        setUsers(invitedUsers);
-        const token = await AsyncStorage.getItem("token");
+  const fetchInfo = async () => {
+    try {
+      let res = await axios.get(`${API_URL}/api/users`);
+      let contacts = res.data.filter((item) => user._id !== item._id);
+      contacts = contacts.map((item) => ({
+        username: item.username,
+        email: item.email,
+        phone: item.phone,
+      }));
+      setUsers(contacts);
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
         res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setCanEdit(res.data);
-      } catch (error) {
-        console.log(error);
       }
-    };
+    } catch (error) {}
+  };
+
+  useEffect(() => {
     fetchInfo();
-  }, [sendMethod]);
+  }, []);
+
+  const handleChange = (e) => {
+    setSendMethod(e);
+    try {
+      let info = users.filter((item) => item[e]);
+      info = info.map((item) => ({
+        label: item.username,
+        value: item[sendMethod],
+      }));
+      setContactList(info);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formattingDate = plan.event_date
     .split("T")[0]
@@ -151,108 +167,134 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
-      <View style={styles.card}>
-        <Image
-          source={{ uri: plan?.img }}
-          style={{
-            width: "100%",
-            height: "15%",
-          }}
-        />
-        <Text style={styles.title}>{plan?.title}</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>{formattingDate}</Text>
-          <Text style={styles.subtitle}>Descripcion</Text>
-          <Text style={styles.text}>{plan.description}</Text>
-
-          {plan.ended ? (
-            <View>
-              <Text style={styles.subtitle}>
-                El evento finalizó el {formattingDate}
-              </Text>
-
-              {user._id &&
-                user.plans &&
-                user.plans.some((userPlan) => userPlan._id == plan._id) &&
-                plan.organizer &&
-                plan.ended && <Rating plan={plan} />}
+    <ScrollView>
+      <View style={{ minHeight: screenHeight }}>
+        <View style={styles.card}>
+          <Text style={styles.title}>{plan?.title}</Text>
+          <Image
+            source={{ uri: plan?.img }}
+            style={{
+              width: "100%",
+              height: 200,
+            }}
+          />
+          <View style={styles.detailsContainer}>
+            <View style={styles.date}>
+              <Text style={styles.subtitle}>Fecha: </Text>
+              <Text style={styles.text}>{formattingDate}</Text>
             </View>
-          ) : (
-            <View>
-              {user._id && (
-                <View style={styles.buttonContainer}>
-                  {!user.plans?.some(
-                    (userPlan) => userPlan._id === plan._id
-                  ) ? (
-                    <View>
-                      {!loading ? (
-                        <GenericButton
-                          text={"Participar"}
-                          onPress={handleEnroll}
-                        />
+
+            <Text style={styles.text}>
+              Organizador: {plan?.organizer?.username}
+            </Text>
+
+            <Text style={styles.p}>
+              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+              <Entypo name="star" size={20} color={"#fdd835"} />
+            </Text>
+            <View style={{ marginVertical: 20 }}>
+              {plan.ended ? (
+                <View>
+                  <Text style={styles.subtitle}>
+                    El evento finalizó el {formattingDate}
+                  </Text>
+
+                  {user._id &&
+                    user.history &&
+                    user.history.some((item) => item._id == plan._id) &&
+                    plan.organizer &&
+                    plan.ended && <Rating plan={plan} />}
+                </View>
+              ) : (
+                <View>
+                  {user._id && (
+                    <View style={styles.buttonContainer}>
+                      {!user.plans?.some(
+                        (userPlan) => userPlan._id === plan._id
+                      ) ? (
+                        <>
+                          {!loading ? (
+                            <GenericButton
+                              text={"+"}
+                              onPress={handleEnroll}
+                              customStyle={styles.btn}
+                            />
+                          ) : (
+                            <GenericButton
+                              text={"..."}
+                              customStyle={styles.btn}
+                            />
+                          )}
+                        </>
                       ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
-                      )}
-                    </View>
-                  ) : (
-                    <View>
-                      {!loading ? (
-                        <GenericButton
-                          text={"Dejar de participar"}
-                          onPress={() => handleStopParticipating(plan._id)}
-                        />
-                      ) : (
-                        <GenericButton
-                          text={"Cargando..."}
-                          customStyle={{ backgroundColor: "#7D0166" }}
-                        />
+                        <>
+                          {!loading ? (
+                            <GenericButton
+                              text={"x"}
+                              customStyle={styles.btn}
+                              onPress={() => handleStopParticipating(plan._id)}
+                            />
+                          ) : (
+                            <GenericButton
+                              text={"..."}
+                              customStyle={styles.btn}
+                            />
+                          )}
+                        </>
                       )}
                     </View>
                   )}
-                  <View style={styles.input}>
-                    <MultipleDropdown
-                      setSelected={(val) => setInvited(val)}
-                      data={users}
-                      save="value"
-                      onSelect={() => {}}
-                      label="Invitar personas"
-                      placeholder="Invitar personas"
-                      search={false}
-                      textStyles={styles.item}
-                      boxStyles={styles.dropdown}
-                      dropdownStyles={styles.dropdown}
-                      badgeStyles={styles.item}
-                    />
-                    <RadioButton
-                      options={sendMethods}
-                      onSelect={setSendMethod}
-                    />
-                    {invited.length > 0 && (
-                      <GenericButton text={"Invitar"} onPress={handleInvite} />
-                    )}
-                  </View>
                 </View>
               )}
             </View>
-          )}
-        </View>
-        {canEdit && (
-          <View style={styles.input}>
-            <GenericButton
-              text={"Editar evento"}
-              onPress={() => {
-                navigation.navigate("EditPlan");
-              }}
-            />
-            <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+
+            <Text style={styles.subtitle}>Descripcion</Text>
+            <Text style={styles.text}>{plan.description}</Text>
+            {user._id && <Comments />}
+            {canEdit && user._id ? (
+              <View style={styles.input}>
+                <GenericButton
+                  text={"Editar evento"}
+                  onPress={() => {
+                    navigation.navigate("EditPlan");
+                  }}
+                />
+                <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+              </View>
+            ) : (
+              <>
+                <View style={styles.input}>
+                  <MultipleDropdown
+                    setSelected={(val) => setInvited(val)}
+                    data={contactList}
+                    save="value"
+                    onSelect={() => {}}
+                    label="Invitar personas"
+                    placeholder="Invitar personas"
+                    search={false}
+                    textStyles={styles.item}
+                    boxStyles={styles.dropdown}
+                    dropdownStyles={styles.dropdown}
+                    badgeStyles={styles.item}
+                  />
+                  <RadioButton
+                    options={sendMethods}
+                    onSelect={handleChange}
+                    defaultValue={sendMethod}
+                  />
+                </View>
+                {invited.length > 0 && (
+                  <GenericButton
+                    text={"Invitar"}
+                    customStyle={{ marginHorizontal: 50 }}
+                    onPress={handleInvite}
+                  />
+                )}
+              </>
+            )}
+            <View style={{ marginBottom: 10 }}></View>
           </View>
-        )}
-        {user._id && <Comments />}
+        </View>
       </View>
     </ScrollView>
   );

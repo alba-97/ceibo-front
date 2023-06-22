@@ -1,5 +1,5 @@
 // Native
-import { Alert, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EvilIcons, Feather } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,7 @@ import { styles } from "../styles/profileScreenStyles";
 import { setUser } from "../state/user";
 import { API_URL } from "../services/urls";
 
-export const ChangeData = ({ baseData, propName, keyboardType }) => {
+export const ChangeData = ({ dataUser, baseData, propName, keyboardType }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
@@ -57,6 +57,9 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
     <>
       {!change ? (
         <View style={styles.container3}>
+          <View style={styles.dataUserContainer}>
+            <Text style={styles.textData}>{dataUser}:</Text>
+          </View>
           <ProfileText
             customStyle={styles.container3}
             customStyleText={styles.text3}
@@ -73,9 +76,13 @@ export const ChangeData = ({ baseData, propName, keyboardType }) => {
         <View style={styles.container3}>
           {keyboardType !== "date" ? (
             <View style={styles.containerChange}>
+              <View style={styles.dataUserContainer2}>
+                <Text style={styles.textData}>{dataUser}:</Text>
+              </View>
+
               <TextInput
-                keyboardType={keyboardType}
                 style={styles.text3}
+                keyboardType={keyboardType}
                 value={newData}
                 onChangeText={setNewData}
               />
