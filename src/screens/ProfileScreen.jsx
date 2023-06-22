@@ -83,8 +83,9 @@ export default function ProfileScreen() {
     >
       <Navbar />
       {user._id ? (
-        <ScrollView>
           <View style={styles.container}>
+        <ScrollView>
+        <View style={styles.imageContainer}>
             {user.profile_img ? (
               <TouchableOpacity onPress={selectImage}>
                 <ProfilePicture imageSource={user.profile_img} />
@@ -94,6 +95,7 @@ export default function ProfileScreen() {
                 <Text style={styles.buttonText}>Seleccionar imagen</Text>
               </TouchableOpacity>
             )}
+            </View>
             <ChangeData
               keyboardType="default"
               baseData={user?.username}
@@ -136,12 +138,14 @@ export default function ProfileScreen() {
               propName={"birthdate"}
               dataUser={"Nacimiento"}
             />
-            <View style={{ marginBottom: "5%" }} />
+            <View style={styles.prefContainer}>
             <GenericButton onPress={handlePreferences} text="Preferencias" />
-            <View style={{ marginBottom: "2%" }} />
+            </View>
+            <View style={styles.logoutContainer}>
             <GenericButton onPress={handleLogout} text="Logout" />
-          </View>
+            </View>
         </ScrollView>
+          </View>
       ) : (
         <LoginScreen />
       )}
