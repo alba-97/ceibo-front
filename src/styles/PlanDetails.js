@@ -6,6 +6,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "transparent",
     overflow: "hidden",
   },
+  input: {
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+
   title: {
     textAlign: "center",
     fontSize: 24,
@@ -73,10 +78,8 @@ export const styles = StyleSheet.create({
     color: "#fff",
   },
   dropdown: {
-    position: "absolute",
-    height: "100%",
+    backgroundColor: "#0004",
     right: 20,
-    backgroundColor: "#000",
     zIndex: 10,
   },
 });

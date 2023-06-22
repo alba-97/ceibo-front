@@ -44,22 +44,41 @@ const Comments = () => {
           })}
         <View style={{ marginBottom: 30 }}></View>
       </View>
-      <Text
-        style={{ color: "#fff", fontSize: 40 }}
-        onPress={() => {
-          if (page > 1) setPage(page - 1);
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
       >
-        {"<"}
-      </Text>
-      <Text
-        style={{ color: "#fff", fontSize: 40 }}
-        onPress={() => {
-          if (plan.comments.length - (page + 1) * 5 >= -4) setPage(page + 1);
-        }}
-      >
-        {">"}
-      </Text>
+        {page > 1 ? (
+          <Text
+            style={{ color: "#fff", fontSize: 40 }}
+            onPress={() => {
+              setPage(page - 1);
+            }}
+          >
+            {"<"}
+          </Text>
+        ) : (
+          <Text></Text>
+        )}
+        {plan.comments.length - (page + 1) * 5 >= -4 ? (
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 40,
+            }}
+            onPress={() => {
+              setPage(page + 1);
+            }}
+          >
+            {">"}
+          </Text>
+        ) : (
+          ""
+        )}
+      </View>
       <View style={styles.inputCont}>
         <GenericInput
           placeholder="agrega un comentario"
