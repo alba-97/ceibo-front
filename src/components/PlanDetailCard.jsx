@@ -54,12 +54,8 @@ export const PlanDetailCard = () => {
           },
         });
         setCanEdit(res.data);
-      } else {
-        Alert.alert("Error", "No autorizado");
       }
-    } catch (error) {
-      Alert.alert("Error", error.response.data);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
