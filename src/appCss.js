@@ -6,6 +6,26 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  logo: {
+    width: 120,
+    height: 60,
+  },
+  logoReco: {
+    width: 280,
+    height: 20,
+  },
+  logoMisP: {
+    width: 120,
+    height: 20,
+  },
+  logoutContainer: {
+    paddingTop:15,
+    borderRadius: 18,
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+
   content: {
     flex: 1,
     alignItems: "center",

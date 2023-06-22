@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    marginTop: 35,
+    marginTop: 3,
   },
   swiperContainer: {
     height: 155,
@@ -18,4 +18,13 @@ export const styles = StyleSheet.create({
     marginLeft: "10%",
     marginBottom: 23,
   },
+  logoutContainer: {
+  
+   
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  
+
 });

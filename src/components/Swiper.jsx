@@ -3,11 +3,19 @@ import { ImageContainer } from "./ImageContainer";
 // Components
 import { styles } from "../styles/swiperStyles";
 import React from "react";
-import { View, FlatList, Text } from "react-native";
-export function SwiperComponent({ plans, text, onPress }) {
+import { View, FlatList, Text, Image } from "react-native";
+
+export function SwiperComponent({ plans, text, onPress , image, styleLogo}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{text}</Text>
+
+ {/* <View style={{ textAlign: "center" }}> */}
+       {/* //esto es lo nuevo */}
+        <View style={styles.logoutContainer}>
+          <Image style={styleLogo} source={image} />
+        </View>
+        {/* //esto es lo nuevo */}
+      {/* </View> */}
       <FlatList
         data={plans}
         renderItem={({ item }) => {

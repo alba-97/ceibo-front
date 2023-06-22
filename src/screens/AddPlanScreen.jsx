@@ -24,7 +24,7 @@ import { DatePicker } from "../components/DatePicker";
 import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
-
+import crearPlan from '../assets/crearPlan.png'
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -261,9 +261,17 @@ export default function AddPlanScreen() {
                 style={styles.image}
               />
             </TouchableOpacity>
-            <View style={styles.crearPlan}>
-              <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
+            
+            <View style={styles.logout1Container}>
+            <View style={styles.logoutContainer}>
+              <TouchableOpacity onPress={handleSubmit}>
+                <Image style={styles.logo} source={crearPlan} />
+              </TouchableOpacity>
+             
             </View>
+            </View>
+
+
           </View>
         </ScrollView>
       </LinearGradient>

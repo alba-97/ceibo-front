@@ -55,13 +55,14 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     paddingHorizontal: 10,
-    margin: 10,
+    marginTop: 10,
   },
   comment: {
     fontSize: 14,
     color: "#fff",
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    marginBottom: 10,
+    
   },
   detailsContainer: {
     padding: 20,
@@ -83,4 +84,11 @@ export const styles = StyleSheet.create({
   img: {
     width: "100%",
   },
+  commentContainer:{
+    borderRadius: 20,
+    backgroundColor:"rgba(225, 200, 200, 0.3)",
+    marginBottom:5,
+    marginTop:10,
+
+  }
 });

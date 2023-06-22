@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../services/urls";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,6 +16,8 @@ import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/core";
 import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
+import cerrarSesion from "../assets/cerrarSesion.png";
+import preferencias from "../assets/preferencias.png";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
@@ -83,18 +85,18 @@ export default function ProfileScreen() {
     >
       {user._id ? (
         <View style={styles.container}>
-            <Navbar/>
-        <ScrollView>
-        <View style={styles.imageContainer}>
-            {user.profile_img ? (
-              <TouchableOpacity onPress={selectImage}>
-                <ProfilePicture imageSource={user.profile_img} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.button} onPress={selectImage}>
-                <Text style={styles.buttonText}>Seleccionar imagen</Text>
-              </TouchableOpacity>
-            )}
+          <Navbar />
+          <ScrollView>
+            <View style={styles.imageContainer}>
+              {user.profile_img ? (
+                <TouchableOpacity onPress={selectImage}>
+                  <ProfilePicture imageSource={user.profile_img} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.button} onPress={selectImage}>
+                  <Text style={styles.buttonText}>Seleccionar imagen</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <ChangeData
               keyboardType="default"
@@ -138,14 +140,26 @@ export default function ProfileScreen() {
               propName={"birthdate"}
               dataUser={"Nacimiento"}
             />
-            <View style={styles.prefContainer}>
-            <GenericButton onPress={handlePreferences} text="Preferencias" />
+           
+            <View style={styles.logout1Container}>
+            <View style={styles.preferenciasContainer}>
+              <TouchableOpacity onPress={handleLogout}>
+                <Image style={styles.logoPref} source={preferencias} />
+              </TouchableOpacity>
+             
             </View>
+            </View>
+
+            <View style={styles.logout1Container}>
             <View style={styles.logoutContainer}>
-            <GenericButton onPress={handleLogout} text="Logout" />
+              <TouchableOpacity onPress={handleLogout}>
+                <Image style={styles.logo} source={cerrarSesion} />
+              </TouchableOpacity>
+             
             </View>
-        </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
+        </View>
       ) : (
         <LoginScreen />
       )}

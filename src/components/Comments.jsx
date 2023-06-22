@@ -32,11 +32,12 @@ const Comments = () => {
           customStyle={{ marginTop: "5%" }}
         />
       </View>
+      <Text></Text>
       {plan.comments &&
         plan.comments.map((item, index) => {
           return (
-            <View key={index}>
-              <Text style={styles.username}>{item.user.username}</Text>
+            <View style={styles.commentContainer} key={index}>
+              <Text style={styles.username}>{item.user.username}:</Text>
               <Text style={styles.comment}>{item.text}</Text>
             </View>
           );
