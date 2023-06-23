@@ -16,6 +16,7 @@ import { styles } from "../styles/loginScreenStyles";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
+import { Navbar } from "../components/Navbar";
 import { getPlanHistory } from "../services/getPlanHistory";
 
 export default function LoginScreen() {
@@ -35,6 +36,7 @@ export default function LoginScreen() {
         username,
         password,
       });
+      console.log("soy res", res.data);
       if (res.data.token) {
         await AsyncStorage.setItem("token", res.data.token);
         await axios.get(`${API_URL}/api/users/secret`, {
@@ -50,7 +52,6 @@ export default function LoginScreen() {
         const planHistory = await getPlanHistory();
         dispatch(setPlanHistory(planHistory));
 
-        // navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
         navigation.navigate("HomeScreen");
       }
     } catch (error) {
@@ -65,6 +66,7 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
+      <Navbar />
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
@@ -81,6 +83,7 @@ export default function LoginScreen() {
               ¿No tienes cuenta? Crea una
             </Text>
           </View>
+
           <GoogleSignInButton />
         </View>
       </ScrollView>
