@@ -22,18 +22,43 @@ import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { CheckBox } from "react-native-elements";
 import axios from "axios";
 import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
+import { removePlan } from "../state/plans";
 
-export default function ProfileScreen() {
+export default function EditPlanScreen() {
   const plan = useSelector((state) => state.selectedPlan);
   const navigation = useNavigation();
 
   const [category, setCategory] = useState(plan?.category?.name);
   const [imageUrl, setImageUrl] = useState(plan?.img);
   const [categories, setCategories] = useState([]);
+  const [checked, setChecked] = useState(plan?.private);
+
+  const handleCheckBoxToggle = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await axios.put(
+          `${API_URL}/api/events/${plan._id}`,
+          {
+            private: !checked,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setChecked(!checked);
+        removePlan(plan._id);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -108,6 +133,7 @@ export default function ProfileScreen() {
               propName={"title"}
               mode={"event"}
               data="Título"
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -115,6 +141,7 @@ export default function ProfileScreen() {
               propName={"description"}
               mode={"event"}
               data="Descripción"
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -122,6 +149,7 @@ export default function ProfileScreen() {
               propName={"location"}
               mode={"event"}
               data="Ubicación"
+              styles={styles}
             />
             <ChangeData
               keyboardType="date"
@@ -129,6 +157,7 @@ export default function ProfileScreen() {
               propName={"event_date"}
               mode={"event"}
               data="Fecha"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -136,6 +165,7 @@ export default function ProfileScreen() {
               propName={"start_time"}
               mode={"event"}
               data="Hora de inicio"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -143,6 +173,7 @@ export default function ProfileScreen() {
               propName={"end_time"}
               mode={"event"}
               data="Hora de finalización"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -150,6 +181,7 @@ export default function ProfileScreen() {
               propName={"min_age"}
               mode={"event"}
               data="Edad mínima"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -157,6 +189,7 @@ export default function ProfileScreen() {
               propName={"max_age"}
               mode={"event"}
               data="Edad máxima"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -164,6 +197,7 @@ export default function ProfileScreen() {
               propName={"min_to_pay"}
               mode={"event"}
               data="Mínimo a pagar"
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -171,6 +205,7 @@ export default function ProfileScreen() {
               propName={"total_to_pay"}
               mode={"event"}
               data="Total a pagar"
+              styles={styles}
             />
 
             <ModalSelector
@@ -222,12 +257,27 @@ export default function ProfileScreen() {
               </Text>
             </ModalSelector>
 
+            <View>
+              <CheckBox
+                title="¿Evento privado?"
+                checked={checked}
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                }}
+                textStyle={{ color: "white" }}
+                checkedColor="white"
+                onPress={handleCheckBoxToggle}
+              />
+            </View>
+
             <ChangeData
               keyboardType="default"
               baseData={plan?.link_to_pay}
               propName={"link_to_pay"}
               mode={"event"}
               data="Link para pagar"
+              styles={styles}
             />
 
             <TouchableOpacity style={styles.container} onPress={selectImage}>

@@ -102,6 +102,7 @@ export default function ProfileScreen() {
               propName={"username"}
               data={"Usuario"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -109,6 +110,7 @@ export default function ProfileScreen() {
               propName={"first_name"}
               data={"Nombre"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -116,6 +118,7 @@ export default function ProfileScreen() {
               propName={"last_name"}
               data={"Apellido"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -123,6 +126,7 @@ export default function ProfileScreen() {
               propName={"address"}
               data={"Direccion"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="email-address"
@@ -130,6 +134,7 @@ export default function ProfileScreen() {
               propName={"email"}
               data={"Email"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -137,6 +142,7 @@ export default function ProfileScreen() {
               propName={"phone"}
               data={"Telefono"}
               mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="date"
@@ -144,6 +150,7 @@ export default function ProfileScreen() {
               propName={"birthdate"}
               data={"Nacimiento"}
               mode={"user"}
+              styles={styles}
             />
             <View style={styles.prefContainer}>
               <GenericButton onPress={handlePreferences} text="Preferencias" />

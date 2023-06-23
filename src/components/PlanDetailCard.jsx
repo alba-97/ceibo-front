@@ -85,7 +85,6 @@ export const PlanDetailCard = () => {
       console.log(error);
     }
   };
-  console.log(plan);
   const formattingDate = plan?.event_date
     .split("T")[0]
     .split("-")

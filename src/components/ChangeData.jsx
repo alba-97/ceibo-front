@@ -2,17 +2,16 @@
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EvilIcons, Feather } from "@expo/vector-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import moment from "moment";
 import axios from "axios";
 // Components
 import { ProfileText } from "../components/ProfileText";
-import { styles } from "../styles/profileScreenStyles";
-import { setUser, updateUser } from "../state/user";
+import { updateUser } from "../state/user";
 import { API_URL } from "../services/urls";
-import { setSelectedPlan, updateSelectedPlan } from "../state/selectedPlan";
+import { updateSelectedPlan } from "../state/selectedPlan";
 
 export const ChangeData = ({
   mode,
@@ -20,10 +19,12 @@ export const ChangeData = ({
   baseData,
   propName,
   keyboardType,
+  styles,
 }) => {
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
   const [change, setChange] = useState(false);
+  const plan = useSelector((state) => state.selectedPlan);
 
   const handleChange = async (propName, newValue) => {
     if (change) {
@@ -45,7 +46,7 @@ export const ChangeData = ({
             dispatch(updateUser({ key: propName, value: newValue }));
           } else if (mode == "event") {
             await axios.put(
-              `${API_URL}/api/users/`,
+              `${API_URL}/api/events/${plan._id}`,
               {
                 [propName]: newValue,
               },
@@ -59,7 +60,8 @@ export const ChangeData = ({
           }
         }
       } catch (error) {
-        Alert.alert(`Error: ${error}`);
+        console.log(error.response.data);
+        Alert.alert("Error", error.response.data);
       }
     }
     setChange(!change);
