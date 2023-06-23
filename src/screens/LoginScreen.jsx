@@ -9,13 +9,14 @@ import axios from "axios";
 import { getUser } from "../services/getUser";
 import { getUserPlans } from "../services/getUserPlans";
 // Components
+import GoogleSignInButton from "../components/GoogleSignInButton";
 import { GenericButton } from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
-import { setUser, setUserPlans } from "../state/user";
+import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { API_URL } from "../services/urls";
-import GoogleSignInButton from "../components/GoogleSignInButton";
-import { Navbar } from "../components/Navbar";
+import refetchData from "../services/refetchData";
+import { getPlanHistory } from "../services/getPlanHistory";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -45,6 +46,10 @@ export default function LoginScreen() {
         dispatch(setUser(userData));
         const userPlans = await getUserPlans();
         dispatch(setUserPlans(userPlans));
+
+        const planHistory = await getPlanHistory();
+        dispatch(setPlanHistory(planHistory));
+
         // navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
         navigation.navigate("HomeScreen");
       }
@@ -60,7 +65,6 @@ export default function LoginScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
       <ScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>

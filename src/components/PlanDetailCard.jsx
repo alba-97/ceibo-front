@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/core";
 import refetchData from "../services/refetchData";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
+import { getUserFriends } from "../services/getUserFriends";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,8 @@ export const PlanDetailCard = () => {
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [invited, setInvited] = useState([]);
-  const [contactList, setContactList] = useState([]);
   const navigation = useNavigation();
   const [canEdit, setCanEdit] = useState(false);
   const { triggerRefetch } = refetchData();
@@ -38,14 +39,21 @@ export const PlanDetailCard = () => {
 
   const fetchInfo = async () => {
     try {
-      let res = await axios.get(`${API_URL}/api/users`);
-      let contacts = res.data.filter((item) => user._id !== item._id);
-      contacts = contacts.map((item) => ({
+      let users = await getUserFriends();
+      users = users.map((item) => ({
         username: item.username,
         email: item.email,
         phone: item.phone,
       }));
-      setUsers(contacts);
+      setUsers(users);
+
+      let friends = users.filter((item) => item.email);
+      friends = friends.map((item) => ({
+        label: item.username,
+        value: item.email,
+      }));
+      setFriends(friends);
+
       const token = await AsyncStorage.getItem("token");
       if (token) {
         res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
@@ -55,22 +63,24 @@ export const PlanDetailCard = () => {
         });
         setCanEdit(res.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetchInfo();
   }, []);
 
-  const handleChange = (e) => {
-    setSendMethod(e);
+  const handleChange = (method) => {
     try {
-      let info = users.filter((item) => item[e]);
-      info = info.map((item) => ({
+      let friends = users.filter((item) => item[method]);
+      friends = friends.map((item) => ({
         label: item.username,
-        value: item[sendMethod],
+        value: item[method],
       }));
-      setContactList(info);
+      setSendMethod(method);
+      setFriends(friends);
     } catch (error) {
       console.log(error);
     }
@@ -167,129 +177,134 @@ export const PlanDetailCard = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ minHeight: screenHeight * 2 }}>
-      <View style={styles.card}>
-        <Image
-          source={{ uri: plan?.img }}
-          style={{
-            width: "100%",
-            height: "15%",
-          }}
-        />
-        <Text style={styles.title}>{plan?.title}</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.subtitle}>Fecha</Text>
-          <Text style={styles.text}>{formattingDate}</Text>
-          <Text style={styles.subtitle}>Descripcion</Text>
-          <Text style={styles.text}>{plan.description}</Text>
+    <ScrollView>
+      <View style={{ minHeight: screenHeight }}>
+        <View style={styles.card}>
+          <Text style={styles.title}>{plan?.title}</Text>
+          <Image
+            source={{ uri: plan?.img }}
+            style={{
+              width: "100%",
+              height: 200,
+            }}
+          />
+          <View style={styles.detailsContainer}>
+            <View style={styles.date}>
+              <Text style={styles.subtitle}>Fecha: </Text>
+              <Text style={styles.text}>{formattingDate}</Text>
+            </View>
 
-          <Text style={styles.text}>
-            Organizador: {plan?.organizer?.username}
-          </Text>
+            <View>
+              {plan.ended ? (
+                <View>
+                  <Text style={styles.subtitle}>
+                    El evento finalizó el {formattingDate}
+                  </Text>
 
-          <Text style={styles.p}>
-            {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
-            <Entypo name="star" size={20} color={"#fdd835"} />
-          </Text>
-          <View style={{ marginVertical: 20 }}>
-            {plan.ended ? (
-              <View>
-                <Text style={styles.subtitle}>
-                  El evento finalizó el {formattingDate}
-                </Text>
-
-                {user._id &&
-                  user.history &&
-                  user.history.some((item) => item._id == plan._id) &&
-                  plan.organizer &&
-                  plan.ended && <Rating plan={plan} />}
-              </View>
-            ) : (
-              <View>
-                {user._id && (
-                  <View>
-                    {!canEdit && (
-                      <View style={styles.buttonContainer}>
-                        {!user.plans?.some(
-                          (userPlan) => userPlan._id === plan._id
-                        ) ? (
-                          <View>
-                            {!loading ? (
-                              <GenericButton
-                                text={"Participar"}
-                                onPress={handleEnroll}
-                              />
-                            ) : (
-                              <GenericButton
-                                text={"Cargando..."}
-                                customStyle={{ backgroundColor: "#7D0166" }}
-                              />
-                            )}
-                          </View>
-                        ) : (
-                          <View>
-                            {!loading ? (
-                              <GenericButton
-                                text={"Dejar de participar"}
-                                onPress={() =>
-                                  handleStopParticipating(plan._id)
-                                }
-                              />
-                            ) : (
-                              <GenericButton
-                                text={"Cargando..."}
-                                customStyle={{ backgroundColor: "#7D0166" }}
-                              />
-                            )}
-                          </View>
-                        )}
-                      </View>
-                    )}
-
-                    <View style={styles.input}>
-                      <MultipleDropdown
-                        setSelected={(val) => setInvited(val)}
-                        data={contactList}
-                        save="value"
-                        onSelect={() => {}}
-                        label="Invitar personas"
-                        placeholder="Invitar personas"
-                        search={false}
-                        textStyles={styles.item}
-                        boxStyles={styles.dropdown}
-                        dropdownStyles={styles.dropdown}
-                        badgeStyles={styles.item}
-                      />
-                      <RadioButton
-                        options={sendMethods}
-                        onSelect={handleChange}
-                        defaultValue={sendMethod}
-                      />
-                      {invited.length > 0 && (
-                        <GenericButton
-                          text={"Invitar"}
-                          onPress={handleInvite}
-                        />
+                  {user._id &&
+                    user.history &&
+                    user.history.some((item) => item._id == plan._id) &&
+                    plan.organizer &&
+                    plan.ended && <Rating plan={plan} />}
+                </View>
+              ) : (
+                <View>
+                  {user._id && (
+                    <View style={styles.buttonContainer}>
+                      {!user.plans?.some(
+                        (userPlan) => userPlan._id === plan._id
+                      ) ? (
+                        <>
+                          {!loading ? (
+                            <GenericButton
+                              text={"+"}
+                              onPress={handleEnroll}
+                              customStyle={styles.btn}
+                            />
+                          ) : (
+                            <GenericButton
+                              text={"..."}
+                              customStyle={styles.btn}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {!loading ? (
+                            <GenericButton
+                              text={"x"}
+                              customStyle={styles.btn}
+                              onPress={() => handleStopParticipating(plan._id)}
+                            />
+                          ) : (
+                            <GenericButton
+                              text={"..."}
+                              customStyle={styles.btn}
+                            />
+                          )}
+                        </>
                       )}
                     </View>
-                  </View>
-                )}
+                  )}
+                </View>
+              )}
+            </View>
+            <Text style={styles.text}>
+              Organizador: {plan?.organizer?.username}
+            </Text>
+
+            <Text style={styles.p}>
+              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+              <Entypo name="star" size={20} color={"#fdd835"} />
+            </Text>
+
+            <Text style={styles.subtitle}>Descripcion:</Text>
+            <Text style={styles.text}>{plan.description}</Text>
+            {user._id && <Comments />}
+            {canEdit && user._id ? (
+              <View style={styles.input}>
+                <GenericButton
+                  text={"Editar evento"}
+                  onPress={() => {
+                    navigation.navigate("EditPlan");
+                  }}
+                />
+                <GenericButton text={"Borrar evento"} onPress={handleDelete} />
               </View>
+            ) : (
+              <>
+                <View style={styles.input}>
+                  <MultipleDropdown
+                    setSelected={(val) => setInvited(val)}
+                    data={friends}
+                    save="value"
+                    onSelect={() => {}}
+                    label="Invitar personas"
+                    placeholder="Invitar personas"
+                    search={false}
+                    textStyles={styles.item}
+                    boxStyles={styles.dropdown}
+                    dropdownStyles={styles.dropdown}
+                    badgeStyles={styles.item}
+                  />
+                  <RadioButton
+                    options={sendMethods}
+                    onSelect={handleChange}
+                    defaultValue={sendMethod}
+                  />
+                </View>
+                {invited && invited[0] && (
+                  <GenericButton
+                    text={"Invitar"}
+                    customStyle={{ marginHorizontal: 50 }}
+                    onPress={handleInvite}
+                  />
+                )}
+              </>
             )}
+            <View style={{ marginBottom: 10 }}></View>
           </View>
         </View>
-        {canEdit && (
-          <View style={styles.input}>
-            <GenericButton
-              text={"Editar evento"}
-              onPress={() => {
-                navigation.navigate("EditPlan");
-              }}
-            />
-            <GenericButton text={"Borrar evento"} onPress={handleDelete} />
-          </View>
-        )}
-        {user._id && <Comments />}
       </View>
     </ScrollView>
   );

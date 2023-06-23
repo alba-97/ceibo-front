@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView, KeyboardAvoidingView } from "react-native";
 import { GenericInput } from "./GenericInput";
 import { useDispatch, useSelector } from "react-redux";
 import { styles } from "../styles/PlanDetails";
@@ -9,40 +9,90 @@ import { setComments } from "../state/selectedPlan";
 
 const Comments = () => {
   const plan = useSelector((state) => state.selectedPlan);
+  const [page, setPage] = useState(1);
+  const user = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
 
   const handleComment = async () => {
-    if (comment.length > 0) {
-      let newComment = await addComment(comment, plan._id);
-      dispatch(setComments(newComment));
-      setComment("");
-    }
+    let newComment = await addComment(comment, plan._id);
+    dispatch(setComments(newComment));
   };
 
   return (
-    <View style={{ marginTop: "5%" }}>
-      <Text style={styles.subtitle}>¡Agrega un comentario al evento!</Text>
-      <View style={styles.input}>
-        <GenericInput value={comment} onChangeText={setComment} />
+    <>
+      <Text style={styles.subtitle}>Comentarios:</Text>
+      <View
+        style={{
+          height: 280,
+          borderColor: "#000",
+          borderWidth: 1,
+          margin: 5,
+          padding: 15,
+        }}
+      >
+        {plan.comments &&
+          plan.comments.map((item, index) => {
+            if (index < page * 5 && index >= (page - 1) * 5)
+              return (
+                <View key={index}>
+                  <Text style={styles.username}>{item.user.username}:</Text>
+                  <Text style={styles.comment}>{item.text}</Text>
+                </View>
+              );
+          })}
+        <View style={{ marginBottom: 30 }}></View>
+      </View>
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {page > 1 ? (
+          <Text
+            style={{ color: "#fff", fontSize: 40 }}
+            onPress={() => {
+              setPage(page - 1);
+            }}
+          >
+            {"<"}
+          </Text>
+        ) : (
+          <Text></Text>
+        )}
+        {plan.comments.length - (page + 1) * 5 >= -4 ? (
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 40,
+            }}
+            onPress={() => {
+              setPage(page + 1);
+            }}
+          >
+            {">"}
+          </Text>
+        ) : (
+          ""
+        )}
+      </View>
+      <View style={styles.inputCont}>
+        <GenericInput
+          placeholder="agrega un comentario"
+          value={comment}
+          onChangeText={setComment}
+          customStyle={{ borderRadius: 5 }}
+        />
         <GenericButton
           onPress={handleComment}
           text={"Enviar"}
-          customStyle={{ marginTop: "5%" }}
+          customStyle={styles.btn}
         />
       </View>
-      <Text></Text>
-      {plan.comments &&
-        plan.comments.map((item, index) => {
-          return (
-            <View style={styles.commentContainer} key={index}>
-              <Text style={styles.username}>{item.user.username}:</Text>
-              <Text style={styles.comment}>{item.text}</Text>
-            </View>
-          );
-        })}
-    </View>
+    </>
   );
 };
 
