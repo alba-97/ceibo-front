@@ -16,8 +16,8 @@ export const styles = StyleSheet.create({
     height: 110,
   },
   date: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: "5%",
+    paddingBottom: "5%",
     width: "50%",
     textAlign: "center",
     marginBottom: 4,
@@ -34,7 +34,6 @@ export const styles = StyleSheet.create({
   },
   categoryContainer: {
     alignItems: "center",
-    marginTop: 15,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -43,16 +42,16 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     fontSize: 18,
+    marginTop: "20%",
   },
   crearPlan: {
     alignItems: "center",
     flex: 1,
     width: "65%",
-    marginBottom: 15,
-    marginTop: 15,
+    marginTop: "5%",
   },
   label: {
-    paddingTop: 10,
+    paddingTop: "15%",
     marginBottom: 4,
     color: "#FFF",
     fontSize: 16,
@@ -67,7 +66,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
   },
   text: {
-    paddingTop: 10,
+    paddingTop: "5%",
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
