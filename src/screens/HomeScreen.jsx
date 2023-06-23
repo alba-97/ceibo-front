@@ -73,7 +73,7 @@ export default function HomeScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar />
+      <Navbar></Navbar>
       <ScrollView>
         {plans[0] && (
           <MainEvent
@@ -108,10 +108,16 @@ export default function HomeScreen() {
                 onPress={handlePress}
               />
             ) : (
-              <Text></Text>
+              <>
+                <Text style={styles.text}>Planes pasados</Text>
+                <Text style={[styles.text, { textAlign: "center" }]}>
+                  No tienes planes en tu historial
+                </Text>
+              </>
             )}
           </View>
         )}
+        <View style={{ marginBottom: 30 }}></View>
       </ScrollView>
     </LinearGradient>
   );

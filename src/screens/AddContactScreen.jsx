@@ -12,7 +12,6 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 // Services
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
-import { GenericButton } from "../components/GenericButton";
 import { getAllUsers } from "../services/getAllUsers";
 
 export default function ContactsScreen() {
@@ -22,7 +21,6 @@ export default function ContactsScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selectedContact = useSelector((state) => state.selectedContact);
-  const user = useSelector((state) => state.user);
 
   const handleBack = () => {
     navigation.navigate("Contacts");
@@ -105,7 +103,20 @@ export default function ContactsScreen() {
             </View>
           </ScrollView>
         ) : (
-          <Text>Para buscar un contacto, use el buscador</Text>
+          <Text
+            style={[
+              styles.text2,
+              {
+                flex: 1,
+                justifyContent: "center",
+                textAlign: "center",
+                marginTop: "50%",
+                fontSize: 20,
+              },
+            ]}
+          >
+            Busque el contacto que desea agregar
+          </Text>
         )}
       </View>
     </LinearGradient>
