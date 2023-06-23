@@ -43,12 +43,6 @@ export default function AddPlanScreen1() {
 
   const handleContinue = () => {
     const eventDate = new Date(event_date).toISOString();
-    console.log("--------------------- 1 ------------------");
-    console.log("title", title);
-    console.log("description", description);
-    console.log("location", location);
-    console.log("event_date", eventDate);
-    console.log("path", path);
 
     navigation.navigate("AddPlanScreen2", {
       title,

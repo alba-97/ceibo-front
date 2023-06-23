@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Image } from "react-native";
 
 // Components
 import { styles } from "../appCss";
@@ -25,6 +25,12 @@ import { setPlans } from "../state/plans";
 import { getOrganizer } from "../services/getOrganizer";
 import refetchData from "../services/refetchData";
 import { getPlanHistory } from "../services/getPlanHistory";
+
+import noTienesPlanes from "../assets/noTienesPlanes.png";
+import recomendaciones from "../assets/recomendaciones.png";
+import misPlanes from "../assets/misPlanes.png";
+import noPlanesCreados from "../assets/noPlanesCreados.png";
+import planesPasados from "../assets/planesPasados.png";
 
 export default function HomeScreen() {
   const user = useSelector((state) => state.user);
@@ -84,8 +90,9 @@ export default function HomeScreen() {
         )}
         <SwiperComponent
           plans={plans}
-          text="Nuestras recomendaciones"
           onPress={handlePress}
+          image={recomendaciones}
+          styleLogo={styles.logoReco}
         />
 
         {user._id && (
@@ -93,27 +100,30 @@ export default function HomeScreen() {
             {user.plans && user.plans[0] ? (
               <SwiperComponent
                 plans={user.plans}
-                text="Tus Planes"
+                image={misPlanes}
                 onPress={handlePress}
+                styleLogo={styles.logoMisP}
               />
             ) : (
-              <Text style={[styles.text, { textAlign: "center" }]}>
-                Aún no tienes planes
-              </Text>
+              <View style={{ textAlign: "center" }}>
+                <View style={styles.logoutContainer}>
+                  <Image style={styles.logo} source={noTienesPlanes} />
+                </View>
+              </View>
             )}
             {user.history && user.history[0] ? (
               <SwiperComponent
                 plans={user.history}
-                text="Planes pasados"
                 onPress={handlePress}
+                image={planesPasados}
+                styleLogo={styles.logoMisPPasados}
               />
             ) : (
-              <>
-                <Text style={styles.text}>Planes pasados</Text>
-                <Text style={[styles.text, { textAlign: "center" }]}>
-                  No tienes planes en tu historial
-                </Text>
-              </>
+              <View style={{ textAlign: "center" }}>
+                <View style={styles.logoutContainer}>
+                  <Image style={styles.logoNoPlanes} source={noPlanesCreados} />
+                </View>
+              </View>
             )}
           </View>
         )}

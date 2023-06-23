@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { setUser, setUserPlans } from "../state/user";
 import { API_URL, expoClientId, iosClientId, androidClientId } from "@env";
+import iniciarConGoogle from "../assets/iniciarConGoogle.png";
 
 import * as ReactNative from "react-native";
 import * as WebBrowser from "expo-web-browser";
@@ -120,14 +121,21 @@ const GoogleSignInButton = () => {
     }
   };
   return (
-    <ReactNative.SafeAreaView>
-      <ReactNative.View style={styles.inputContainer}>
-        <GenericButton
-          disabled={!request}
-          onPress={onPressButton}
-          text={"login con google"}
-        />
-      </ReactNative.View>
+    <ReactNative.SafeAreaView style={{width:'100%', alignItems: "center",}}>
+     
+        <ReactNative.View style={styles.googleContainer}>
+          <ReactNative.TouchableOpacity
+
+            disabled={!request}
+            onPress={onPressButton}
+          >
+            <ReactNative.Image
+              style={styles.logoGoogle}
+              source={iniciarConGoogle}
+            />
+          </ReactNative.TouchableOpacity>
+        </ReactNative.View>
+     
     </ReactNative.SafeAreaView>
   );
 };

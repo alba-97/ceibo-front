@@ -65,4 +65,19 @@ export const styles = StyleSheet.create({
     alignItems: "center",
    
   },
+  logo:{
+    width: 160,
+    height: 25,
+  },
+  logoutContainer: {
+    
+    paddingTop: 12,
+    paddingBottom:12,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "75%",
+    backgroundColor:'rgba(0, 0, 0, 0.4)',
+  
+  },
 });

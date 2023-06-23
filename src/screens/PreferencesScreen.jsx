@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { Image, TouchableOpacity, View, ScrollView, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles/preferencesStyles";
 import { Navbar } from "../components/Navbar";
@@ -9,7 +9,7 @@ import { getCategories } from "../services/getCategories";
 import { addPreferences } from "../services/addPreferences";
 import { useNavigation } from "@react-navigation/core";
 import refetchData from "../services/refetchData";
-
+import actualizar from'../assets/actualizar.png'
 import { updateUser } from "../services/updateUser";
 
 export default function PreferencesScreen() {
@@ -62,11 +62,14 @@ export default function PreferencesScreen() {
             dropdownStyles={styles.inputContainer}
             badgeStyles={styles.badge}
           />
-          <GenericButton
-            customStyle={styles.button}
-            onPress={handleSubmit}
-            text={"Actualizar"}
-          />
+        
+
+<View style={styles.logoutContainer}>
+           <TouchableOpacity onPress={handleSubmit}>
+             <Image style={styles.logo} source={actualizar} />
+           </TouchableOpacity>
+         </View>
+         
         </View>
       </ScrollView>
     </LinearGradient>

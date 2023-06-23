@@ -15,25 +15,50 @@ import ChevronImg from "../assets/images/chevron.png";
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
 import { styles } from "../styles/editPlanStyles";
-import { ChangeEventData } from "../components/ChangeEventData";
+import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { CheckBox } from "react-native-elements";
 import axios from "axios";
 import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
+import { removePlan } from "../state/plans";
 
-export default function ProfileScreen() {
+export default function EditPlanScreen() {
   const plan = useSelector((state) => state.selectedPlan);
   const navigation = useNavigation();
 
   const [category, setCategory] = useState(plan?.category?.name);
   const [imageUrl, setImageUrl] = useState(plan?.img);
   const [categories, setCategories] = useState([]);
+  const [checked, setChecked] = useState(plan?.private);
+
+  const handleCheckBoxToggle = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await axios.put(
+          `${API_URL}/api/events/${plan._id}`,
+          {
+            private: !checked,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setChecked(!checked);
+        removePlan(plan._id);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -102,55 +127,85 @@ export default function ProfileScreen() {
         <ScrollView>
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.title}
               propName={"title"}
+              mode={"event"}
+              data="Título"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.description}
               propName={"description"}
+              mode={"event"}
+              data="Descripción"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.location}
               propName={"location"}
+              mode={"event"}
+              data="Ubicación"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="date"
               baseData={plan?.event_date}
               propName={"event_date"}
+              mode={"event"}
+              data="Fecha"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.start_time}
               propName={"start_time"}
+              mode={"event"}
+              data="Hora de inicio"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.end_time}
               propName={"end_time"}
+              mode={"event"}
+              data="Hora de finalización"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_age}
               propName={"min_age"}
+              mode={"event"}
+              data="Edad mínima"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.max_age}
               propName={"max_age"}
+              mode={"event"}
+              data="Edad máxima"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_to_pay}
               propName={"min_to_pay"}
+              mode={"event"}
+              data="Mínimo a pagar"
+              styles={styles}
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.total_to_pay}
               propName={"total_to_pay"}
+              mode={"event"}
+              data="Total a pagar"
+              styles={styles}
             />
 
             <ModalSelector
@@ -202,10 +257,27 @@ export default function ProfileScreen() {
               </Text>
             </ModalSelector>
 
-            <ChangeEventData
+            <View>
+              <CheckBox
+                title="¿Evento privado?"
+                checked={checked}
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                }}
+                textStyle={{ color: "white" }}
+                checkedColor="white"
+                onPress={handleCheckBoxToggle}
+              />
+            </View>
+
+            <ChangeData
               keyboardType="default"
               baseData={plan?.link_to_pay}
               propName={"link_to_pay"}
+              mode={"event"}
+              data="Link para pagar"
+              styles={styles}
             />
 
             <TouchableOpacity style={styles.container} onPress={selectImage}>

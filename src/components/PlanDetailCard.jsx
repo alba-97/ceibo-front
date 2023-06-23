@@ -16,6 +16,9 @@ import refetchData from "../services/refetchData";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
 import { getUserFriends } from "../services/getUserFriends";
+import fecha from'../assets/fecha.png'
+import descripcion from '../assets/descripcion.png'
+import organizador from '../assets/organizador.png'
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -85,8 +88,7 @@ export const PlanDetailCard = () => {
       console.log(error);
     }
   };
-
-  const formattingDate = plan.event_date
+  const formattingDate = plan?.event_date
     .split("T")[0]
     .split("-")
     .reverse()
@@ -189,10 +191,7 @@ export const PlanDetailCard = () => {
             }}
           />
           <View style={styles.detailsContainer}>
-            <View style={styles.date}>
-              <Text style={styles.subtitle}>Fecha: </Text>
-              <Text style={styles.text}>{formattingDate}</Text>
-            </View>
+           
 
             <View>
               {plan.ended ? (
@@ -249,27 +248,43 @@ export const PlanDetailCard = () => {
                 </View>
               )}
             </View>
-            <Text style={styles.text}>
-              Organizador: {plan?.organizer?.username}
-            </Text>
-
-            <Text style={styles.p}>
-              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
-              <Entypo name="star" size={20} color={"#fdd835"} />
-            </Text>
-
-            <Text style={styles.subtitle}>Descripcion:</Text>
-            <Text style={styles.text}>{plan.description}</Text>
+           
+            <View style={styles.pContainer}>
+              <Text style={styles.p}>
+                {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+                <Entypo name="star" size={20} color={"#fdd835"} />
+              </Text>
+            </View>
+ <View style={styles.date}>
+              
+              <Image style={styles.logo} source={fecha} />
+              <Text style={styles.text2}>{formattingDate}</Text>
+            </View>
+           
+            <View style={styles.orgCont}>
+             <Image style={styles.logo5} source={organizador} /> 
+             
+             </View>
+             <Text style={styles.text6}>{plan?.organizer?.username}</Text>
+            <Image style={styles.logo3} source={descripcion} />
+            <Text style={styles.text3}>{plan.description}</Text>
             {user._id && <Comments />}
             {canEdit && user._id ? (
-              <View style={styles.input}>
-                <GenericButton
-                  text={"Editar evento"}
-                  onPress={() => {
-                    navigation.navigate("EditPlan");
-                  }}
-                />
-                <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+              <View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Editar evento"}
+                    onPress={() => {
+                      navigation.navigate("EditPlan");
+                    }}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Borrar evento"}
+                    onPress={handleDelete}
+                  />
+                </View>
               </View>
             ) : (
               <>

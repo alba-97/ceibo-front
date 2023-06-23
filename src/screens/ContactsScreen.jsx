@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,8 +11,10 @@ import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
 import { SingleContact } from "../components/SingleContact";
 import { GenericButton } from "../components/GenericButton";
+import iniciaSesion from '../assets/iniciaSesion.png'
 import { getUserFriends } from "../services/getUserFriends";
 import { setContacts } from "../state/contacts";
+import amigos from '../assets/amigos.png'
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
@@ -94,8 +96,9 @@ export default function ContactsScreen() {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.text1}>Amigos</Text>
-
+          <View style={styles.logoCont}>
+          <Image style={styles.logo1} source={amigos}/>
+          </View>
           <ScrollView>
             <View>
               {filteredContacts?.map((contact, i) => (
@@ -117,10 +120,13 @@ export default function ContactsScreen() {
             Para ver contactos, inicie sesión
           </Text>
           <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
-            <GenericButton
-              text="Iniciar Sesión"
-              onPress={() => navigation.navigate("Login")}
-            />
+          
+<View style={styles.logoutContainer}>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Image style={styles.logo} source={iniciaSesion} />
+              </TouchableOpacity>
+            </View>
+            
           </View>
         </View>
       )}

@@ -26,12 +26,6 @@ import { Feather } from "@expo/vector-icons";
 
 export default function AddPlanScreen2({ route }) {
   const { title, description, location, event_date, path } = route.params;
-  console.log("------------------ 2 ---------------------");
-  console.log("title", title);
-  console.log("description", description);
-  console.log("location", location);
-  console.log("event_date", event_date);
-  console.log("path", path);
 
   const [min_age, setMin_age] = useState("");
   const [max_age, setMax_age] = useState("");
