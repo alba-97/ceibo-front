@@ -16,47 +16,34 @@ import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { API_URL } from "../services/urls";
-import * as ImagePicker from "expo-image-picker";
 import ChevronImg from "../assets/images/chevron.png";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DatePicker } from "../components/DatePicker";
 import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
+import { Feather } from "@expo/vector-icons";
 
-export default function AddPlanScreen() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [event_date, setEvent_date] = useState(null);
-  const [start_time, setStart_time] = useState("");
-  const [end_time, setEnd_time] = useState("");
+export default function AddPlanScreen2({ route }) {
+  const { title, description, location, event_date, path } = route.params;
+  console.log("------------------ 2 ---------------------");
+  console.log("title", title);
+  console.log("description", description);
+  console.log("location", location);
+  console.log("event_date", event_date);
+  console.log("path", path);
+
   const [min_age, setMin_age] = useState("");
   const [max_age, setMax_age] = useState("");
   const [min_to_pay, setMin_to_pay] = useState("");
   const [total_to_pay, setTotal_to_pay] = useState("");
+  const [start_time, setStart_time] = useState("");
+  const [end_time, setEnd_time] = useState("");
   const [category, setCategory] = useState("Categoría");
-  const [link_to_pay, setLink_to_pay] = useState("");
-  const [path, setPath] = useState("");
   const [categories, setCategories] = useState([]);
+  const [link_to_pay, setLink_to_pay] = useState("");
 
   const navigation = useNavigation();
-
-  const selectImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      setPath(result.assets[0].uri);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -65,10 +52,6 @@ export default function AddPlanScreen() {
       );
     });
   }, []);
-
-  useEffect(() => {
-    setEvent_date(event_date);
-  }, [event_date]);
 
   const handleSubmit = async () => {
     try {
@@ -128,6 +111,10 @@ export default function AddPlanScreen() {
     }
   };
 
+  const handleBack = () => {
+    navigation.navigate("AddPlanScreen1");
+  };
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -137,26 +124,24 @@ export default function AddPlanScreen() {
         style={styles.container}
       >
         <Navbar />
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            left: "-20%",
+            marginTop: "5%",
+            marginBottom: "5%",
+          }}
+          onPress={handleBack}
+        >
+          <Feather
+            name="arrow-left"
+            size={30}
+            color="white"
+            style={{ marginLeft: "5%" }}
+          />
+        </TouchableOpacity>
         <ScrollView>
           <View style={styles.content}>
-            <Text style={styles.text}>Titulo</Text>
-            <GenericInput value={title} onChangeText={setTitle} />
-            <Text style={styles.text}>Descripcion</Text>
-            <GenericInput value={description} onChangeText={setDescription} />
-            <Text style={styles.text}>Lugar</Text>
-            <GenericInput value={location} onChangeText={setLocation} />
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Fecha</Text>
-                <DatePicker
-                  type="date"
-                  value={event_date}
-                  onChange={(date) => setEvent_date(new Date(date))}
-                  placeholder="DD/MM/YYYY"
-                  customStyle={styles.birthdate}
-                />
-              </View>
-            </View>
             <View style={styles.container2}>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Minima Edad</Text>
@@ -240,7 +225,7 @@ export default function AddPlanScreen() {
                   cancelText="Cancelar"
                 >
                   <Text style={styles.categoryContainer} value={category}>
-                    {category}{" "}
+                    {category}
                     <Image
                       source={ChevronImg}
                       resizeMode="contain"
@@ -252,15 +237,6 @@ export default function AddPlanScreen() {
             </View>
             <Text style={styles.text}>Link para pagar</Text>
             <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
-            <Text style={styles.text}>Imagen</Text>
-            <TouchableOpacity style={styles.container} onPress={selectImage}>
-              <Image
-                source={{
-                  uri: "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
-                }}
-                style={styles.image}
-              />
-            </TouchableOpacity>
             <View style={styles.crearPlan}>
               <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
             </View>

@@ -9,7 +9,8 @@ import { useNavigation } from "@react-navigation/core";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import AddPlanScreen from "../screens/AddPlanScreen";
+import AddPlanScreen1 from "../screens/AddPlanScreen1";
+import AddPlanScreen2 from "../screens/AddPlanScreen2";
 import SearchScreen from "../screens/SearchScreen";
 import PlanDetailScreen from "../screens/PlanDetailScreen";
 import ContactInfoScreen from "../screens/ContactInfoScreen";
@@ -57,8 +58,12 @@ function NavbarStack() {
 
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
       <HomeStackNavigator.Screen
-        name="AddPlanScreen"
-        component={AddPlanScreen}
+        name="AddPlanScreen1"
+        component={AddPlanScreen1}
+      />
+      <HomeStackNavigator.Screen
+        name="AddPlanScreen2"
+        component={AddPlanScreen2}
       />
       <HomeStackNavigator.Screen name="Search" component={SearchScreen} />
       <HomeStackNavigator.Screen
@@ -141,7 +146,7 @@ function BottomNavbar() {
       />
       <Tab.Screen
         name="AddPlan"
-        component={AddPlanScreen}
+        component={AddPlanScreen1}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
