@@ -24,6 +24,7 @@ import { DatePicker } from "../components/DatePicker";
 import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
+import crearPlan from '../assets/crearPlan.png'
 import { CheckBox } from "react-native-elements";
 
 export default function AddPlanScreen() {
@@ -282,9 +283,17 @@ export default function AddPlanScreen() {
                 style={styles.image}
               />
             </TouchableOpacity>
-            <View style={styles.crearPlan}>
-              <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
+            
+            <View style={styles.logout1Container}>
+            <View style={styles.logoutContainer}>
+              <TouchableOpacity onPress={handleSubmit}>
+                <Image style={styles.logo} source={crearPlan} />
+              </TouchableOpacity>
+             
             </View>
+            </View>
+
+
           </View>
         </ScrollView>
       </LinearGradient>

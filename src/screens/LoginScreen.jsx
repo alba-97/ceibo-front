@@ -1,6 +1,6 @@
 //Native
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, ScrollView, Alert } from "react-native";
+import { View, Text, ScrollView, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -18,7 +18,8 @@ import { API_URL } from "../services/urls";
 import refetchData from "../services/refetchData";
 import { Navbar } from "../components/Navbar";
 import { getPlanHistory } from "../services/getPlanHistory";
-
+import iniciaSesion from '../assets/iniciaSesion.png'
+import { Image } from "react-native";
 export default function LoginScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -77,13 +78,21 @@ export default function LoginScreen() {
             secureTextEntry={true}
           />
           <View style={styles.inputContainer}>
-            <GenericButton onPress={handleLogin} text={"Iniciar Sesion"} />
+         
+            <View style={styles.logoutContainer}>
+              <TouchableOpacity onPress={handleLogin}>
+                <Image style={styles.logo} source={iniciaSesion} />
+              </TouchableOpacity>
+            </View>
+            
+
             <Text style={styles.text} onPress={handleSignup}>
               ¿No tienes cuenta? Crea una
             </Text>
-          </View>
 
           <GoogleSignInButton />
+          
+          </View>
         </View>
       </ScrollView>
     </LinearGradient>

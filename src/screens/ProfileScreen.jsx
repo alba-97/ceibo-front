@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { API_URL } from "../services/urls";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,6 +16,8 @@ import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/core";
 import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
+import cerrarSesion from "../assets/cerrarSesion.png";
+import preferencias from "../assets/preferencias.png";
 
 export default function ProfileScreen() {
   const user = useSelector((state) => state.user);
@@ -152,14 +154,27 @@ export default function ProfileScreen() {
               mode={"user"}
               styles={styles}
             />
-            <View style={styles.prefContainer}>
-              <GenericButton onPress={handlePreferences} text="Preferencias" />
+           
+            <View style={styles.logout1Container}>
+            <View style={styles.preferenciasContainer}>
+              <TouchableOpacity onPress={handlePreferences}>
+                <Image style={styles.logoPref} source={preferencias} />
+              </TouchableOpacity>
+             
             </View>
+            </View>
+
+            <View style={styles.logout1Container}>
             <View style={styles.logoutContainer}>
-              <GenericButton onPress={handleLogout} text="Logout" />
+              <TouchableOpacity onPress={handleLogout}>
+                <Image style={styles.logo} source={cerrarSesion} />
+              </TouchableOpacity>
+             
+            </View>
             </View>
           </ScrollView>
         </View>
+         
       ) : (
         <LoginScreen />
       )}
