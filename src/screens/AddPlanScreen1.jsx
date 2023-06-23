@@ -18,7 +18,9 @@ export default function AddPlanScreen1() {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [event_date, setEvent_date] = useState(null);
-  const [path, setPath] = useState("");
+  const [path, setPath] = useState(
+    "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png"
+  );
 
   const navigation = useNavigation();
 
@@ -89,7 +91,7 @@ export default function AddPlanScreen1() {
             >
               <Image
                 source={{
-                  uri: "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+                  uri: path,
                 }}
                 style={styles.image}
               />

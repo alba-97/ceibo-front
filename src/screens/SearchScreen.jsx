@@ -1,5 +1,5 @@
 // React Components
-import { Text, ScrollView, View } from "react-native";
+import { Text, ScrollView, View, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState, useContext } from "react";
 // Components
@@ -53,7 +53,8 @@ export default function SearchScreen() {
           setResults(response.data);
         })
         .catch((error) => {
-          console.error(error);
+          Alert.alert("Error", "Evento no encontrado");
+          console.log(error);
         });
     } else if (option == "category") {
       axios
@@ -62,7 +63,8 @@ export default function SearchScreen() {
           setResults(response.data);
         })
         .catch((error) => {
-          console.error(error);
+          Alert.alert("Error", "Evento no encontrado");
+          console.log(error);
         });
     } else if (option == "user") {
       axios
@@ -71,7 +73,8 @@ export default function SearchScreen() {
           setResults(response.data);
         })
         .catch((error) => {
-          console.error(error);
+          Alert.alert("Error", "Evento no encontrado");
+          console.log(error);
         });
     }
   };
