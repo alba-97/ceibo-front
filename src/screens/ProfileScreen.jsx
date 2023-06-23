@@ -143,7 +143,7 @@ export default function ProfileScreen() {
            
             <View style={styles.logout1Container}>
             <View style={styles.preferenciasContainer}>
-              <TouchableOpacity onPress={handleLogout}>
+              <TouchableOpacity onPress={handlePreferences}>
                 <Image style={styles.logoPref} source={preferencias} />
               </TouchableOpacity>
              

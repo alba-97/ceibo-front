@@ -1,5 +1,5 @@
 // Native
-import { View, Text, ScrollView, Alert, TextInput } from "react-native";
+import { View, Text, ScrollView, Alert, TextInput, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { Navbar } from "../components/Navbar";
 import { API_URL } from "../services/urls";
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
+import crearCuenta from '../assets/crearCuenta.png'
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
@@ -122,7 +123,15 @@ export default function RegisterScreen() {
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>
-              <GenericButton onPress={handleSubmit} text={"Crear Cuenta"} />
+           
+         
+         
+         <View style={styles.logoutContainer}>
+           <TouchableOpacity onPress={handleSubmit}>
+             <Image style={styles.logo} source={crearCuenta} />
+           </TouchableOpacity>
+         </View>
+         
             </View>
           </View>
         </View>

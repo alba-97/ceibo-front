@@ -1,7 +1,7 @@
 // Native
 import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
@@ -15,7 +15,7 @@ import { fetchContacts } from "../services/fetchContacts";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
 import { GenericButton } from "../components/GenericButton";
-
+import iniciaSesion from '../assets/iniciaSesion.png'
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
@@ -107,10 +107,13 @@ export default function ContactsScreen() {
             Para ver contactos, inicie sesión
           </Text>
           <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
-            <GenericButton
-              text="Iniciar Sesión"
-              onPress={() => navigation.navigate("Login")}
-            />
+          
+<View style={styles.logoutContainer}>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Image style={styles.logo} source={iniciaSesion} />
+              </TouchableOpacity>
+            </View>
+            
           </View>
         </View>
       )}

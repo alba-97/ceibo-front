@@ -37,4 +37,16 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 40,
   },
+  logo:{
+    width: 120,
+    height: 35,
+  },
+  logoutContainer: {
+    paddingTop: 10,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "65%",
+    backgroundColor:'rgba(0, 0, 0, 0.4)',
+  },
 });

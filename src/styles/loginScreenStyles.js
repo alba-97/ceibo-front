@@ -8,9 +8,10 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: "center",
-    flex: 1,
+  
     paddingTop: "10%",
-    width: "70%",
+    width: "80%",
+  
   },
   scroll: {
     flex: 1,
@@ -31,4 +32,35 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  logo:{
+    width: 120,
+    height: 21,
+  },
+  logoGoogle:{
+    width: 220,
+    height: 26,
+  },
+  logoutContainer: {
+    
+    paddingTop: 12,
+    paddingBottom:12,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "90%",
+    backgroundColor:'rgba(0, 0, 0, 0.4)',
+  
+  },
+  googleContainer: {
+    
+    paddingTop: 10,
+    paddingBottom:10,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "90%",
+    backgroundColor:'rgba(0, 0, 0, 0.4)',
+  
+  },
+  
 });
