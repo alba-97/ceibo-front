@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingTop: "10%",
     width: "70%",
+    // marginBottom: 100,
   },
   scroll: {
     flex: 1,

@@ -1,6 +1,6 @@
 // Native
 import { LinearGradient } from "expo-linear-gradient";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 // import { Linking } from 'react-native';
 // import Mailer from 'react-native-mail';
@@ -24,7 +24,7 @@ export default function ContactInfoScreen() {
   const [isFriend, setIsFriend] = useState(true);
 
   const fullName = `${first_name}  ${last_name}`;
-  const birthdate = contact.birthdate?.split("-");
+  const birthdate = contact?.birthdate?.split("-");
   const formattedBirthdate = `${birthdate[2]?.split("T")[0]} / ${
     birthdate[1]
   } / ${birthdate[0]}`;
@@ -70,16 +70,20 @@ export default function ContactInfoScreen() {
       }}
     >
       <Navbar />
-      <View style={{ marginTop: "15%" }}>
+      <ScrollView style={{ marginTop: "15%" }}>
         <View style={styles.container}>
           <ProfilePicture imageSource={contact.profile_img} />
           <View style={{ marginTop: "5%" }}></View>
           <ProfileText style={styles.text} text={username} />
           <ProfileText style={styles.text} text={`Nombre: ${fullName}`} />
-          <ProfileText
-            style={styles.text}
-            text={`Cumpleaños: ${formattedBirthdate}`}
-          />
+          {birthdate ? (
+            <ProfileText
+              style={styles.text}
+              text={`Cumpleaños: ${formattedBirthdate}`}
+            />
+          ) : (
+            ""
+          )}
           {phone ? (
             <ProfileText style={styles.text} text={`Teléfono: ${phone}`} />
           ) : (
@@ -120,7 +124,7 @@ export default function ContactInfoScreen() {
             )}
           </View>
         </View>
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 }

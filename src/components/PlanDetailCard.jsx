@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/core";
 import refetchData from "../services/refetchData";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
+import { getUserFriends } from "../services/getUserFriends";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,8 @@ export const PlanDetailCard = () => {
   const screenHeight = Dimensions.get("window").height;
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [invited, setInvited] = useState([]);
-  const [contactList, setContactList] = useState([]);
   const navigation = useNavigation();
   const [canEdit, setCanEdit] = useState(false);
   const { triggerRefetch } = refetchData();
@@ -38,14 +39,21 @@ export const PlanDetailCard = () => {
 
   const fetchInfo = async () => {
     try {
-      let res = await axios.get(`${API_URL}/api/users`);
-      let contacts = res.data.filter((item) => user._id !== item._id);
-      contacts = contacts.map((item) => ({
+      let users = await getUserFriends();
+      users = users.map((item) => ({
         username: item.username,
         email: item.email,
         phone: item.phone,
       }));
-      setUsers(contacts);
+      setUsers(users);
+
+      let friends = users.filter((item) => item.email);
+      friends = friends.map((item) => ({
+        label: item.username,
+        value: item.email,
+      }));
+      setFriends(friends);
+
       const token = await AsyncStorage.getItem("token");
       if (token) {
         res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
@@ -55,22 +63,24 @@ export const PlanDetailCard = () => {
         });
         setCanEdit(res.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetchInfo();
   }, []);
 
-  const handleChange = (e) => {
-    setSendMethod(e);
+  const handleChange = (method) => {
     try {
-      let info = users.filter((item) => item[e]);
-      info = info.map((item) => ({
+      let friends = users.filter((item) => item[method]);
+      friends = friends.map((item) => ({
         label: item.username,
-        value: item[sendMethod],
+        value: item[method],
       }));
-      setContactList(info);
+      setSendMethod(method);
+      setFriends(friends);
     } catch (error) {
       console.log(error);
     }
@@ -184,15 +194,7 @@ export const PlanDetailCard = () => {
               <Text style={styles.text}>{formattingDate}</Text>
             </View>
 
-            <Text style={styles.text}>
-              Organizador: {plan?.organizer?.username}
-            </Text>
-
-            <Text style={styles.p}>
-              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
-              <Entypo name="star" size={20} color={"#fdd835"} />
-            </Text>
-            <View style={{ marginVertical: 20 }}>
+            <View>
               {plan.ended ? (
                 <View>
                   <Text style={styles.subtitle}>
@@ -247,8 +249,16 @@ export const PlanDetailCard = () => {
                 </View>
               )}
             </View>
+            <Text style={styles.text}>
+              Organizador: {plan?.organizer?.username}
+            </Text>
 
-            <Text style={styles.subtitle}>Descripcion</Text>
+            <Text style={styles.p}>
+              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+              <Entypo name="star" size={20} color={"#fdd835"} />
+            </Text>
+
+            <Text style={styles.subtitle}>Descripcion:</Text>
             <Text style={styles.text}>{plan.description}</Text>
             {user._id && <Comments />}
             {canEdit && user._id ? (
@@ -266,7 +276,7 @@ export const PlanDetailCard = () => {
                 <View style={styles.input}>
                   <MultipleDropdown
                     setSelected={(val) => setInvited(val)}
-                    data={contactList}
+                    data={friends}
                     save="value"
                     onSelect={() => {}}
                     label="Invitar personas"
@@ -283,7 +293,7 @@ export const PlanDetailCard = () => {
                     defaultValue={sendMethod}
                   />
                 </View>
-                {invited.length > 0 && (
+                {invited && invited[0] && (
                   <GenericButton
                     text={"Invitar"}
                     customStyle={{ marginHorizontal: 50 }}
