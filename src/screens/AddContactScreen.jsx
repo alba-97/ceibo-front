@@ -13,6 +13,9 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
 import { getAllUsers } from "../services/getAllUsers";
+import { GenericButton } from "../components/GenericButton";
+import { addContactsAsFriends } from "../services/addContactsAsFriends";
+import { fetchContacts } from "../services/fetchContacts";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
@@ -28,6 +31,11 @@ export default function ContactsScreen() {
 
   const handleQueryChange = (text) => {
     setQuery(text);
+  };
+
+  const handleAddContactsFriends = async () => {
+    await addContactsAsFriends();
+    navigation.navigate("Contacts");
   };
 
   const filterContacts = () => {
@@ -87,7 +95,7 @@ export default function ContactsScreen() {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.text1}>Agregar Contactos</Text>
+        <Text style={styles.text1}>Agregar Amigos</Text>
         {filteredContacts[0] ? (
           <ScrollView>
             <View>
@@ -103,20 +111,36 @@ export default function ContactsScreen() {
             </View>
           </ScrollView>
         ) : (
-          <Text
-            style={[
-              styles.text2,
-              {
-                flex: 1,
-                justifyContent: "center",
-                textAlign: "center",
-                marginTop: "50%",
-                fontSize: 20,
-              },
-            ]}
-          >
-            Busque el contacto que desea agregar
-          </Text>
+          <>
+            <Text
+              style={[
+                styles.text2,
+                {
+                  flex: 1,
+                  justifyContent: "center",
+                  textAlign: "center",
+                  marginTop: "50%",
+                  fontSize: 20,
+                },
+              ]}
+            >
+              Busque el contacto que desea agregar
+            </Text>
+            <View
+              style={{
+                alignItems: "center",
+                paddingBottom: "5%",
+                paddingTop: "5%",
+              }}
+            >
+              <GenericButton
+                text="Agregar contactos telefónicos como amigos"
+                onPress={handleAddContactsFriends}
+                textStyle={{ fontSize: 15 }}
+                customStyle={{ width: "95%" }}
+              />
+            </View>
+          </>
         )}
       </View>
     </LinearGradient>

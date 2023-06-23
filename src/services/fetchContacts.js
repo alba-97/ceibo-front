@@ -3,7 +3,7 @@ import { getAllUsers } from "./getAllUsers";
 
 function getContactNumbers(data) {
   const phoneNumbers = [];
-  for (let i = 0; i < data.length && i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     const contact = data[i];
     if (contact.phoneNumbers) {
       const phoneNumber = contact.phoneNumbers[0]?.number;
@@ -35,6 +35,7 @@ export async function fetchContacts() {
       });
       const phoneNumbers = getContactNumbers(data);
       const filteredContacts = await filterContacts(phoneNumbers);
+      console.log("filtered contacts", filteredContacts);
       return filteredContacts;
     }
   } catch (error) {

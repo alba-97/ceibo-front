@@ -21,20 +21,20 @@ export default function ContactInfoScreen() {
     contact;
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const [isFriend, setIsFriend] = useState(false);
+  const [isFriend, setIsFriend] = useState(true);
 
   const fullName = `${first_name}  ${last_name}`;
-  const birthdate = contact.birthdate.split("-");
-  const formattedBirthdate = `${birthdate[2].split("T")[0]} / ${
+  const birthdate = contact.birthdate?.split("-");
+  const formattedBirthdate = `${birthdate[2]?.split("T")[0]} / ${
     birthdate[1]
   } / ${birthdate[0]}`;
 
-  useEffect(() => {
-    const isAlreadyFriend = async () => {
-      const userFriends = await getUserFriends(user._id);
-      setIsFriend(userFriends.includes(contact));
-    };
+  const isAlreadyFriend = async () => {
+    const userFriends = await getUserFriends(user._id);
+    setIsFriend(userFriends.some((friend) => friend._id === contact._id));
+  };
 
+  useEffect(() => {
     isAlreadyFriend();
   }, [user._id, contact]);
 
@@ -42,7 +42,6 @@ export default function ContactInfoScreen() {
     try {
       setLoading(true);
       await addFriend(friendId);
-      // console.log("friends after add", await getUserFriends(user._id));
       setIsFriend(true);
       setLoading(false);
     } catch (error) {
@@ -54,7 +53,6 @@ export default function ContactInfoScreen() {
     try {
       setLoading(true);
       await removeFriend(user._id, friendId);
-      // console.log("friends after remove", await getUserFriends(user._id));
       setLoading(false);
       setIsFriend(false);
     } catch (error) {
@@ -82,9 +80,21 @@ export default function ContactInfoScreen() {
             style={styles.text}
             text={`Cumpleaños: ${formattedBirthdate}`}
           />
-          <ProfileText style={styles.text} text={`Teléfono: ${phone}`} />
-          <ProfileText style={styles.text} text={`Email: ${email}`} />
-          <ProfileText style={styles.text} text={`Dirección: ${address}`} />
+          {phone ? (
+            <ProfileText style={styles.text} text={`Teléfono: ${phone}`} />
+          ) : (
+            ""
+          )}
+          {email ? (
+            <ProfileText style={styles.text} text={`Email: ${email}`} />
+          ) : (
+            ""
+          )}
+          {address ? (
+            <ProfileText style={styles.text} text={`Dirección: ${address}`} />
+          ) : (
+            ""
+          )}
           <View style={{ alignItems: "center" }}>
             {!loading ? (
               <>
