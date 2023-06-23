@@ -17,6 +17,7 @@ export function SwiperComponent({ plans, text, onPress }) {
             </View>
           );
         }}
+        keyExtractor={(item, index) => index.toString()}
         horizontal={true}
         ItemSeparatorComponent={<View style={{ margin: 10 }}></View>}
         showsHorizontalScrollIndicator={false}

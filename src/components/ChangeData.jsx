@@ -2,63 +2,80 @@
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EvilIcons, Feather } from "@expo/vector-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import moment from "moment";
 import axios from "axios";
 // Components
 import { ProfileText } from "../components/ProfileText";
-import { styles } from "../styles/profileScreenStyles";
-import { setUser } from "../state/user";
+import { updateUser } from "../state/user";
 import { API_URL } from "../services/urls";
+import { updateSelectedPlan } from "../state/selectedPlan";
 
-export const ChangeData = ({ dataUser, baseData, propName, keyboardType }) => {
-  const user = useSelector((state) => state.user);
+export const ChangeData = ({
+  mode,
+  data,
+  baseData,
+  propName,
+  keyboardType,
+  styles,
+}) => {
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
   const [change, setChange] = useState(false);
-
-  const createEditedUser = (propName, newValue) => {
-    let editedUser = { ...user };
-    editedUser[propName] = newValue;
-    return editedUser;
-  };
+  const plan = useSelector((state) => state.selectedPlan);
 
   const handleChange = async (propName, newValue) => {
     if (change) {
       try {
         const token = await AsyncStorage.getItem("token");
         if (token) {
-          await axios.put(
-            `${API_URL}/api/users/`,
-            {
-              [propName]: newValue,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
+          if (mode == "user") {
+            await axios.put(
+              `${API_URL}/api/users/`,
+              {
+                [propName]: newValue,
               },
-            }
-          );
-          dispatch(setUser(createEditedUser(propName, newValue)));
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            dispatch(updateUser({ key: propName, value: newValue }));
+          } else if (mode == "event") {
+            await axios.put(
+              `${API_URL}/api/events/${plan._id}`,
+              {
+                [propName]: newValue,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            dispatch(updateSelectedPlan({ key: propName, value: newValue }));
+          }
         }
       } catch (error) {
-        Alert.alert(`Error: ${error}`);
+        console.log(error.response.data);
+        Alert.alert("Error", error.response.data);
       }
     }
     setChange(!change);
   };
-
+  let date = mode == "user" ? "birthdate" : "event_date";
   const formattedData =
-    propName === "birthdate" ? moment(newData).format("DD/MM/YYYY") : newData;
+    propName === date ? moment(newData).format("DD/MM/YYYY") : newData;
 
   return (
     <>
       {!change ? (
         <View style={styles.container3}>
           <View style={styles.dataUserContainer}>
-            <Text style={styles.textData}>{dataUser}:</Text>
+            <Text style={styles.textData}>{data}:</Text>
           </View>
           <ProfileText
             customStyle={styles.container3}
@@ -77,7 +94,7 @@ export const ChangeData = ({ dataUser, baseData, propName, keyboardType }) => {
           {keyboardType !== "date" ? (
             <View style={styles.containerChange}>
               <View style={styles.dataUserContainer2}>
-                <Text style={styles.textData}>{dataUser}:</Text>
+                <Text style={styles.textData}>{data}:</Text>
               </View>
 
               <TextInput

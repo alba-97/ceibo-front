@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: "center",
-   // flex: 1,
+    // flex: 1,
   },
   containerChange: {
     paddingTop: 15,
@@ -101,7 +101,6 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoutContainer: {
-    
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
@@ -109,7 +108,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
-  }, 
+  },
   prefContainer: {
     paddingTop: 20,
     color: "#FFF",
@@ -119,7 +118,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
-  }, 
+  },
   button: {
     borderWidth: 1,
     borderColor: "white",
@@ -138,7 +137,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
-  
+
   selectedImage: {
     alignItems: "center",
     justifyContent: "center",
@@ -148,9 +147,4 @@ export const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
   },
-
-
 });
-
-
-

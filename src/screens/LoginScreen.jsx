@@ -36,7 +36,6 @@ export default function LoginScreen() {
         username,
         password,
       });
-      console.log("soy res", res.data);
       if (res.data.token) {
         await AsyncStorage.setItem("token", res.data.token);
         await axios.get(`${API_URL}/api/users/secret`, {
