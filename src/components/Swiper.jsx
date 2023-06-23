@@ -25,6 +25,7 @@ export function SwiperComponent({ plans, text, onPress , image, styleLogo}) {
             </View>
           );
         }}
+        keyExtractor={(item, index) => index.toString()}
         horizontal={true}
         ItemSeparatorComponent={<View style={{ margin: 10 }}></View>}
         showsHorizontalScrollIndicator={false}

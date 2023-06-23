@@ -102,43 +102,57 @@ export default function ProfileScreen() {
               keyboardType="default"
               baseData={user?.username}
               propName={"username"}
-              dataUser={"Usuario"}
+              data={"Usuario"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.first_name}
               propName={"first_name"}
-              dataUser={"Nombre"}
+              data={"Nombre"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.last_name}
               propName={"last_name"}
-              dataUser={"Apellido"}
+              data={"Apellido"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="default"
               baseData={user?.address}
               propName={"address"}
-              dataUser={"Direccion"}
+              data={"Direccion"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="email-address"
               baseData={user?.email}
               propName={"email"}
-              dataUser={"Email"}
+              data={"Email"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
               baseData={user?.phone}
               propName={"phone"}
-              dataUser={"Telefono"}
+              data={"Telefono"}
+              mode={"user"}
+              styles={styles}
             />
             <ChangeData
               keyboardType="date"
               baseData={user?.birthdate}
               propName={"birthdate"}
-              dataUser={"Nacimiento"}
+              data={"Nacimiento"}
+              mode={"user"}
+              styles={styles}
             />
            
             <View style={styles.logout1Container}>

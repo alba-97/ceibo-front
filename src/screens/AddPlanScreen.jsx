@@ -25,6 +25,8 @@ import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import crearPlan from '../assets/crearPlan.png'
+import { CheckBox } from "react-native-elements";
+
 export default function AddPlanScreen() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -40,6 +42,12 @@ export default function AddPlanScreen() {
   const [link_to_pay, setLink_to_pay] = useState("");
   const [path, setPath] = useState("");
   const [categories, setCategories] = useState([]);
+
+  const [checked, setChecked] = useState(false);
+
+  const handleCheckBoxToggle = () => {
+    setChecked(!checked);
+  };
 
   const navigation = useNavigation();
 
@@ -107,6 +115,7 @@ export default function AddPlanScreen() {
             total_to_pay,
             category,
             link_to_pay,
+            private: checked,
           },
           {
             headers: {
@@ -249,6 +258,19 @@ export default function AddPlanScreen() {
                   </Text>
                 </ModalSelector>
               </View>
+            </View>
+            <View>
+              <CheckBox
+                title="¿Evento privado?"
+                checked={checked}
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                }}
+                textStyle={{ color: "white" }}
+                checkedColor="white"
+                onPress={handleCheckBoxToggle}
+              />
             </View>
             <Text style={styles.text}>Link para pagar</Text>
             <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />

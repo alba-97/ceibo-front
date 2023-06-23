@@ -88,8 +88,7 @@ export const PlanDetailCard = () => {
       console.log(error);
     }
   };
-
-  const formattingDate = plan.event_date
+  const formattingDate = plan?.event_date
     .split("T")[0]
     .split("-")
     .reverse()
@@ -192,7 +191,7 @@ export const PlanDetailCard = () => {
             }}
           />
           <View style={styles.detailsContainer}>
-       
+           
 
             <View>
               {plan.ended ? (
@@ -271,14 +270,21 @@ export const PlanDetailCard = () => {
             <Text style={styles.text3}>{plan.description}</Text>
             {user._id && <Comments />}
             {canEdit && user._id ? (
-              <View style={styles.input}>
-                <GenericButton
-                  text={"Editar evento"}
-                  onPress={() => {
-                    navigation.navigate("EditPlan");
-                  }}
-                />
-                <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+              <View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Editar evento"}
+                    onPress={() => {
+                      navigation.navigate("EditPlan");
+                    }}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Borrar evento"}
+                    onPress={handleDelete}
+                  />
+                </View>
               </View>
             ) : (
               <>
