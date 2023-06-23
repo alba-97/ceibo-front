@@ -15,7 +15,7 @@ import ChevronImg from "../assets/images/chevron.png";
 import { ProfilePicture } from "../components/ProfilePicture";
 import { GenericButton } from "../components/GenericButton";
 import { styles } from "../styles/editPlanStyles";
-import { ChangeEventData } from "../components/ChangeEventData";
+import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
@@ -102,55 +102,75 @@ export default function ProfileScreen() {
         <ScrollView>
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.title}
               propName={"title"}
+              mode={"event"}
+              data="Título"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.description}
               propName={"description"}
+              mode={"event"}
+              data="Descripción"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.location}
               propName={"location"}
+              mode={"event"}
+              data="Ubicación"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="date"
               baseData={plan?.event_date}
               propName={"event_date"}
+              mode={"event"}
+              data="Fecha"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.start_time}
               propName={"start_time"}
+              mode={"event"}
+              data="Hora de inicio"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.end_time}
               propName={"end_time"}
+              mode={"event"}
+              data="Hora de finalización"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_age}
               propName={"min_age"}
+              mode={"event"}
+              data="Edad mínima"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.max_age}
               propName={"max_age"}
+              mode={"event"}
+              data="Edad máxima"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_to_pay}
               propName={"min_to_pay"}
+              mode={"event"}
+              data="Mínimo a pagar"
             />
-            <ChangeEventData
+            <ChangeData
               keyboardType="numeric"
               baseData={plan?.total_to_pay}
               propName={"total_to_pay"}
+              mode={"event"}
+              data="Total a pagar"
             />
 
             <ModalSelector
@@ -202,10 +222,12 @@ export default function ProfileScreen() {
               </Text>
             </ModalSelector>
 
-            <ChangeEventData
+            <ChangeData
               keyboardType="default"
               baseData={plan?.link_to_pay}
               propName={"link_to_pay"}
+              mode={"event"}
+              data="Link para pagar"
             />
 
             <TouchableOpacity style={styles.container} onPress={selectImage}>

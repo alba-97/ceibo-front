@@ -41,7 +41,7 @@ export const ChangeEventData = ({ baseData, propName, keyboardType }) => {
               },
             }
           );
-          dispatch(setSelectedPlan(createEditedPlan(propName, newValue)));
+          dispatch(updateSelectedPlan({ key: propName, value: newValue }));
         }
       } catch (error) {
         Alert.alert(`Error: ${error}`);

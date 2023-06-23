@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
   label: {
     paddingTop: 10,
     marginBottom: 4,
-    color: "#FFF",
+    color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },

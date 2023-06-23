@@ -85,8 +85,8 @@ export const PlanDetailCard = () => {
       console.log(error);
     }
   };
-
-  const formattingDate = plan.event_date
+  console.log(plan);
+  const formattingDate = plan?.event_date
     .split("T")[0]
     .split("-")
     .reverse()
@@ -194,7 +194,15 @@ export const PlanDetailCard = () => {
               <Text style={styles.text}>{formattingDate}</Text>
             </View>
 
-            <View>
+            <Text style={styles.text}>
+              Organizador: {plan?.organizer?.username}
+            </Text>
+
+            <Text style={styles.p}>
+              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
+              <Entypo name="star" size={20} color={"#fdd835"} />
+            </Text>
+            <View style={{ marginVertical: 20 }}>
               {plan.ended ? (
                 <View>
                   <Text style={styles.subtitle}>
@@ -249,27 +257,26 @@ export const PlanDetailCard = () => {
                 </View>
               )}
             </View>
-            <Text style={styles.text}>
-              Organizador: {plan?.organizer?.username}
-            </Text>
 
-            <Text style={styles.p}>
-              {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
-              <Entypo name="star" size={20} color={"#fdd835"} />
-            </Text>
-
-            <Text style={styles.subtitle}>Descripcion:</Text>
+            <Text style={styles.subtitle}>Descripcion</Text>
             <Text style={styles.text}>{plan.description}</Text>
             {user._id && <Comments />}
             {canEdit && user._id ? (
-              <View style={styles.input}>
-                <GenericButton
-                  text={"Editar evento"}
-                  onPress={() => {
-                    navigation.navigate("EditPlan");
-                  }}
-                />
-                <GenericButton text={"Borrar evento"} onPress={handleDelete} />
+              <View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Editar evento"}
+                    onPress={() => {
+                      navigation.navigate("EditPlan");
+                    }}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <GenericButton
+                    text={"Borrar evento"}
+                    onPress={handleDelete}
+                  />
+                </View>
               </View>
             ) : (
               <>
