@@ -13,7 +13,7 @@ export const getUserFriends = async () => {
       });
       return res.data;
     } else {
-      return { _id: null };
+      return [];
     }
   } catch (error) {
     console.log(error);

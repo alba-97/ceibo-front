@@ -7,7 +7,7 @@ import { getUser } from "../services/getUser";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { setUser, setUserPlans } from "../state/user";
-import { API_URL, PORT } from "@env";
+import { API_URL, expoClientId, iosClientId, androidClientId } from "@env";
 import iniciarConGoogle from "../assets/iniciarConGoogle.png";
 
 import * as ReactNative from "react-native";
@@ -22,31 +22,23 @@ const GoogleSignInButton = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const [isUserInfoReady, setIsUserInfoReady] = useState(false);
-
   //Google
+  const [isUserInfoFetched, setIsUserInfoFetched] = useState(false);
   const [token, setToken] = useState("");
-  const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId:
-      "974579600414-23gn2jc5sb1hd1ul2bs0ujlplnbp0834.apps.googleusercontent.com",
-    androidClientId:
-      "974579600414-hdnoq57bclnqp9mackeqsnr3vs1hpga7.apps.googleusercontent.com",
-    iosClientId:
-      "974579600414-av4876t7gv6hfq2n9285unnnbmgohmi5.apps.googleusercontent.com",
+    expoClientId: expoClientId,
+    androidClientId: androidClientId,
+    iosClientId: iosClientId,
   });
 
   useEffect(() => {
     if (response?.type === "success") {
       setToken(response.authentication.accessToken);
+      if (!isUserInfoFetched) {
+        getUserInfo();
+      }
     }
   }, [response, token]);
-
-  useEffect(() => {
-    if (userInfo) {
-      handleLogin();
-    }
-  }, [userInfo]);
 
   const getUserInfo = async () => {
     try {
@@ -57,29 +49,40 @@ const GoogleSignInButton = () => {
         }
       );
       const user = await response.json();
-      if (token && user) {
+
+      const checkExistingUsers = await axios.post(
+        `${API_URL}/api/users/find-email`,
+        {
+          email: user.email,
+        }
+      );
+
+      if (!checkExistingUsers?.data) {
         await handleSignup(user);
-        setUserInfo(user);
-        setIsUserInfoReady(true);
+        await handleLogin(user.name, "Prueba1234");
+      } else {
+        await handleLogin(user.name, "Prueba1234");
       }
+      setIsUserInfoFetched(true);
     } catch (error) {
-      console.log("get user info error", error);
+      console.warn("handle login error: " + error);
     }
   };
 
   const handleSignup = async (user) => {
     try {
       const { email, given_name, family_name, picture, name } = user;
+      // const userPassword = token.toUpperCase().substring(0, 9);
       const userData = {
         username: name,
-        password: token,
+        password: "Prueba1234",
         email: email,
         first_name: given_name,
         last_name: family_name,
         profile_img: picture,
       };
+
       await createNewUser(userData);
-      await handleLogin(name, token.toUpperCase().substring(0, 9));
     } catch (error) {
       console.log("Error al hacer la petición:", error);
     }
@@ -87,15 +90,15 @@ const GoogleSignInButton = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      await axios.post(`${API_URL}:${PORT}/api/users/login`, {
+      const jwtToken = await axios.post(`${API_URL}/api/users/login`, {
         username: username,
         password: password,
       });
-      if (token) {
-        await AsyncStorage.setItem("token", token);
-        await axios.get(`${API_URL}:${PORT}/api/users/secret`, {
+      if (jwtToken.data.token) {
+        await AsyncStorage.setItem("token", jwtToken.data.token);
+        await axios.get(`${API_URL}/api/users/secret`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${jwtToken.data.token}`,
           },
         });
         const userData = await getUser();
@@ -105,32 +108,18 @@ const GoogleSignInButton = () => {
         navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
       }
     } catch (error) {
-      console.error("handle login error", error);
-      // ReactNative.Alert.alert("Error", error.response.data, [{ text: "OK" }]);
-    }
-  };
-
-  const handleLogout = () => {
-    try {
-      setToken("");
-      setUserInfo(null);
-    } catch (error) {
-      console.error(error);
+      console.log("handle login error", error);
     }
   };
 
   const onPressButton = async () => {
     try {
-      if (token) {
-        await getUserInfo();
-      } else {
-        await promptAsync();
-      }
+      await promptAsync();
+      await getUserInfo();
     } catch (error) {
       console.log("fallo onPress", error);
     }
   };
-
   return (
     <ReactNative.SafeAreaView style={{width:'100%', alignItems: "center",}}>
      

@@ -1,43 +1,55 @@
-// Native
-import { useNavigation } from "@react-navigation/core";
-import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/core";
 import { useSelector, useDispatch } from "react-redux";
-// Components
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
 import { FloatingButton } from "../components/FloatingButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
-import { Navbar } from "../components/Navbar";
 import { AntDesign } from "@expo/vector-icons";
-// Services
-import { fetchContacts } from "../services/fetchContacts";
-import { SingleContact } from "../components/SingleContact";
+import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
+import { SingleContact } from "../components/SingleContact";
 import { GenericButton } from "../components/GenericButton";
 import iniciaSesion from '../assets/iniciaSesion.png'
+import { getUserFriends } from "../services/getUserFriends";
+import { setContacts } from "../state/contacts";
+import amigos from '../assets/amigos.png'
+
 export default function ContactsScreen() {
-  const [contacts, setContacts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const selectedContact = useSelector((state) => state.selectedContact);
   const user = useSelector((state) => state.user);
+  const contacts = useSelector((state) => state.contacts);
 
-  const bringMeTheContacts = async () => {
+  const fetchFriends = async () => {
     try {
-      const fetchedContacts = await fetchContacts();
-      setContacts(fetchedContacts);
-      setFilteredContacts(fetchedContacts);
+      const friends = await getUserFriends();
+      dispatch(setContacts(friends));
+      setFilteredContacts(friends);
     } catch (error) {
-      console.error(error);
+      console.log(error);
+    }
+  };
+
+  const handleFetch = async () => {
+    try {
+      await fetchFriends();
+    } catch (error) {
+      console.log("fetch friends error", error);
     }
   };
 
   useEffect(() => {
-    bringMeTheContacts();
-  }, []);
+    try {
+      handleFetch();
+    } catch (error) {
+      console.log("user effect error", error);
+    }
+  }, [user]);
 
   const handleQueryChange = (text) => {
     setQuery(text);
@@ -47,15 +59,15 @@ export default function ContactsScreen() {
   const filterContacts = (text) => {
     const filtered = contacts?.filter(
       (contact) =>
-        contact.first_name &&
-        contact.first_name.toLowerCase().includes(text.toLowerCase())
+        contact.username &&
+        contact.username.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredContacts(filtered);
   };
 
   const handleContactPress = (contact) => {
     dispatch(setSelectedContact(contact));
-    navigation.navigate("ContactInfoScreen", { selectedContact });
+    navigation.navigate("ContactInfoScreen");
   };
 
   return (
@@ -75,7 +87,7 @@ export default function ContactsScreen() {
               placeholder={"Buscar"}
               customStyle={styles.input}
             />
-            <TouchableOpacity onPress={() => bringMeTheContacts()}>
+            <TouchableOpacity onPress={fetchFriends}>
               <AntDesign
                 name="reload1"
                 size={30}
@@ -84,8 +96,9 @@ export default function ContactsScreen() {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.text1}>Contactos</Text>
-
+          <View style={styles.logoCont}>
+          <Image style={styles.logo1} source={amigos}/>
+          </View>
           <ScrollView>
             <View>
               {filteredContacts?.map((contact, i) => (

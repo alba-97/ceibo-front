@@ -6,6 +6,6 @@ export async function createNewUser(user) {
     const res = await axios.post(`${API_URL}/api/users/signup`, user);
     return res.data;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }

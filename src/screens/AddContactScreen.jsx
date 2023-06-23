@@ -1,7 +1,7 @@
 // Native
 import { useNavigation } from "@react-navigation/core";
 import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, TouchableOpacityComponent } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // Components
@@ -13,6 +13,12 @@ import { Feather, AntDesign } from "@expo/vector-icons";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
 import { getAllUsers } from "../services/getAllUsers";
+import { GenericButton } from "../components/GenericButton";
+import { addContactsAsFriends } from "../services/addContactsAsFriends";
+import { fetchContacts } from "../services/fetchContacts";
+import busqueElContacto from '../assets/busqueElContacto.png'
+import agregarAmigo from '../assets/agregarAmigo.png'
+import agregarContacto from '../assets/agregarContacto.png'
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([]);
@@ -28,6 +34,11 @@ export default function ContactsScreen() {
 
   const handleQueryChange = (text) => {
     setQuery(text);
+  };
+
+  const handleAddContactsFriends = async () => {
+    await addContactsAsFriends();
+    navigation.navigate("Contacts");
   };
 
   const filterContacts = () => {
@@ -87,7 +98,10 @@ export default function ContactsScreen() {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.text1}>Agregar Contactos</Text>
+        <View style={styles.logoCont}>
+          <Image style={styles.logo2} source={agregarAmigo}/>
+          </View>
+       
         {filteredContacts[0] ? (
           <ScrollView>
             <View>
@@ -103,20 +117,34 @@ export default function ContactsScreen() {
             </View>
           </ScrollView>
         ) : (
-          <Text
-            style={[
-              styles.text2,
-              {
-                flex: 1,
-                justifyContent: "center",
-                textAlign: "center",
-                marginTop: "50%",
-                fontSize: 20,
-              },
-            ]}
-          >
-            Busque el contacto que desea agregar
-          </Text>
+          <>
+            <Text
+              style={[
+                styles.text2,
+                {
+                  flex: 1,
+                  justifyContent: "center",
+                  textAlign: "center",
+                  marginTop: "30%",
+                  fontSize: 20,
+                },
+              ]}
+            >
+             
+             <Image style={styles.logo3} source={busqueElContacto}/>
+            
+            </Text>
+            <View
+              style={{
+                alignItems: "center",
+                paddingBottom: "1%",
+                paddingTop: "2%",
+              }}
+            >
+
+
+            </View>
+          </>
         )}
       </View>
     </LinearGradient>
