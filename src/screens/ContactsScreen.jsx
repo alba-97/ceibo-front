@@ -10,18 +10,16 @@ import { AntDesign } from "@expo/vector-icons";
 import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
 import { SingleContact } from "../components/SingleContact";
-import { GenericButton } from "../components/GenericButton";
-import iniciaSesion from '../assets/iniciaSesion.png'
+import iniciaSesion from "../assets/iniciaSesion.png";
 import { getUserFriends } from "../services/getUserFriends";
 import { setContacts } from "../state/contacts";
-import amigos from '../assets/amigos.png'
+import amigos from "../assets/amigos.png";
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const selectedContact = useSelector((state) => state.selectedContact);
   const user = useSelector((state) => state.user);
   const contacts = useSelector((state) => state.contacts);
 
@@ -97,7 +95,7 @@ export default function ContactsScreen() {
             </TouchableOpacity>
           </View>
           <View style={styles.logoCont}>
-          <Image style={styles.logo1} source={amigos}/>
+            <Image style={styles.logo1} source={amigos} />
           </View>
           <ScrollView>
             <View>
@@ -120,13 +118,11 @@ export default function ContactsScreen() {
             Para ver contactos, inicie sesión
           </Text>
           <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
-          
-<View style={styles.logoutContainer}>
+            <View style={styles.logoutContainer}>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Image style={styles.logo} source={iniciaSesion} />
               </TouchableOpacity>
             </View>
-            
           </View>
         </View>
       )}
