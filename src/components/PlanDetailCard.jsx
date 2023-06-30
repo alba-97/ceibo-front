@@ -16,9 +16,9 @@ import refetchData from "../services/refetchData";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
 import { getUserFriends } from "../services/getUserFriends";
-import fecha from'../assets/fecha.png'
-import descripcion from '../assets/descripcion.png'
-import organizador from '../assets/organizador.png'
+import fecha from "../assets/fecha.png";
+import descripcion from "../assets/descripcion.png";
+import organizador from "../assets/organizador.png";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -191,8 +191,6 @@ export const PlanDetailCard = () => {
             }}
           />
           <View style={styles.detailsContainer}>
-           
-
             <View>
               {plan.ended ? (
                 <View>
@@ -248,24 +246,22 @@ export const PlanDetailCard = () => {
                 </View>
               )}
             </View>
-           
+
             <View style={styles.pContainer}>
               <Text style={styles.p}>
                 {plan?.organizer?.rating?.toFixed(2)}/5.00{" "}
                 <Entypo name="star" size={20} color={"#fdd835"} />
               </Text>
             </View>
- <View style={styles.date}>
-              
+            <View style={styles.date}>
               <Image style={styles.logo} source={fecha} />
               <Text style={styles.text2}>{formattingDate}</Text>
             </View>
-           
+
             <View style={styles.orgCont}>
-             <Image style={styles.logo5} source={organizador} /> 
-             
-             </View>
-             <Text style={styles.text6}>{plan?.organizer?.username}</Text>
+              <Image style={styles.logo5} source={organizador} />
+            </View>
+            <Text style={styles.text6}>{plan?.organizer?.username}</Text>
             <Image style={styles.logo3} source={descripcion} />
             <Text style={styles.text3}>{plan.description}</Text>
             {user._id && <Comments />}
