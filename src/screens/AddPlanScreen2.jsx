@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 // Components
-import { GenericButton } from "../components/GenericButton";
+import GenericButton from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
@@ -23,7 +23,6 @@ import { useNavigation } from "@react-navigation/native";
 import { getCategories } from "../services/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import { Feather } from "@expo/vector-icons";
-import refetchData from "../services/refetchData";
 
 export default function AddPlanScreen2({ route }) {
   const { title, description, location, event_date, path } = route.params;
@@ -39,8 +38,6 @@ export default function AddPlanScreen2({ route }) {
   const [link_to_pay, setLink_to_pay] = useState("");
 
   const navigation = useNavigation();
-
-  const { toggleRefetch } = refetchData();
 
   useEffect(() => {
     getCategories().then((data) => {
@@ -60,7 +57,12 @@ export default function AddPlanScreen2({ route }) {
       if (token) {
         let imageUrl;
 
-        if (path !== "") {
+        if (
+          ![
+            "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+            "",
+          ].includes(path)
+        ) {
           const formData = new FormData();
           formData.append("image", {
             uri: path,
@@ -71,29 +73,29 @@ export default function AddPlanScreen2({ route }) {
           imageUrl = res.data.imageUrl;
         }
 
-        const newEvent = await axios.post(
-          `${API_URL}/api/events/`,
-          {
-            title,
-            description,
-            location,
-            img: imageUrl,
-            event_date: formattedDate,
-            start_time,
-            end_time,
-            min_age,
-            max_age,
-            min_to_pay,
-            total_to_pay,
-            category,
-            link_to_pay,
+        const eventData = {
+          title,
+          description,
+          location,
+          img: imageUrl,
+          event_date: formattedDate,
+          start_time,
+          end_time,
+          min_age,
+          max_age,
+          min_to_pay,
+          total_to_pay,
+          category,
+          link_to_pay,
+        };
+
+        console.log(eventData);
+
+        const newEvent = await axios.post(`${API_URL}/api/events/`, eventData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        });
         Alert.alert("Exito", "Evento agregado");
         navigation.navigate("HomeScreen");
       } else {
@@ -102,6 +104,9 @@ export default function AddPlanScreen2({ route }) {
     } catch (error) {
       if (error.response) {
         Alert.alert("Error", error.response.data);
+      } else {
+        console.log(JSON.stringify(error));
+        Alert.alert("Error", JSON.stringify(error));
       }
     }
   };

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
-import { rateEvent } from "../services/rateEvent";
+import { rateEvent } from "../../services/rateEvent";
 import { View, Text, Alert } from "react-native";
-import { styles } from "../styles/PlanDetails";
+import { styles } from "../../styles/PlanDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { API_URL } from "../services/urls";
+import { API_URL } from "../../services/urls";
 
 const Rating = ({ plan }) => {
   const [rating, setRating] = useState(-1);

@@ -2,7 +2,7 @@ import { genericButtonStyle } from "../styles/buttons";
 import { TouchableOpacity, Text } from "react-native";
 import React from "react";
 
-export const GenericButton = ({ onPress, customStyle, textStyle, text }) => {
+const GenericButton = ({ onPress, customStyle, textStyle, text }) => {
   return (
     <TouchableOpacity
       style={[genericButtonStyle.button, customStyle]}
@@ -12,3 +12,4 @@ export const GenericButton = ({ onPress, customStyle, textStyle, text }) => {
     </TouchableOpacity>
   );
 };
+export default GenericButton;
