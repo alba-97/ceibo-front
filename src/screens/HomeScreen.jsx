@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { ScrollView, View, Text, Image } from "react-native";
+import { ScrollView, View, Image } from "react-native";
 
 // Components
 import { styles } from "../appCss";

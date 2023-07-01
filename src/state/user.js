@@ -30,6 +30,18 @@ const userSlice = createSlice({
       newState.plans = action.payload;
       return newState;
     },
+    addUserPlan: (state, action) => {
+      let newState = { ...state };
+      newState.plans = newState.plans.concat([action.payload]);
+      return newState;
+    },
+    removeUserPlan: (state, action) => {
+      let newState = { ...state };
+      newState.plans = newState.plans.filter(
+        (item) => item._id !== action.payload
+      );
+      return newState;
+    },
     setPlanHistory: (state, action) => {
       let newState = { ...state };
       newState.history = action.payload;
@@ -40,6 +52,16 @@ const userSlice = createSlice({
       newState.preferences = action.payload;
       return newState;
     },
+    removePlanFromUser: (state, action) => {
+      let newState = { ...state };
+      newState.plans = newState.plans.filter(
+        (item) => item._id !== action.payload
+      );
+      newState.history = newState.history.filter(
+        (item) => item._id !== action.payload
+      );
+      return newState;
+    },
   },
 });
 
@@ -48,7 +70,10 @@ export const {
   updateUser,
   clearUser,
   setUserPlans,
+  addUserPlan,
+  removeUserPlan,
   setPlanHistory,
   setPreferences,
+  removePlanFromUser,
 } = userSlice.actions;
 export default userSlice.reducer;

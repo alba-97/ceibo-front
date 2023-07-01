@@ -13,7 +13,7 @@ import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
-import { GenericButton } from "../components/GenericButton";
+import GenericButton from "../components/GenericButton";
 import { styles } from "../styles/editPlanStyles";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";

@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 // Components
-import { GenericButton } from "../components/GenericButton";
+import GenericButton from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
@@ -32,11 +32,10 @@ export default function AddPlanScreen1() {
         aspect: [4, 3],
         quality: 1,
       });
-
-      setPath(result.assets[0].uri);
-    } catch (error) {
-      console.error(error);
-    }
+      if (result.assets && result.assets[0]) {
+        setPath(result.assets[0].uri);
+      }
+    } catch {}
   };
 
   useEffect(() => {

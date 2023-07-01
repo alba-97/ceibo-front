@@ -10,12 +10,12 @@ const plansSlice = createSlice({
       return action.payload.slice(0, 6);
     },
     removePlan: (state, action) => {
-      let newState = { ...state };
+      let newState = [...state];
       newState = newState.filter((item) => item._id !== action.payload);
       return newState;
     },
     addPlan: (state, action) => {
-      let newState = { ...state };
+      let newState = [...state];
       newState = newState.concat([action.payload]);
       return newState;
     },

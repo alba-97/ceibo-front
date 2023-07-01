@@ -1,25 +1,15 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { GenericInput } from "./GenericInput";
-import { useDispatch, useSelector } from "react-redux";
-import { styles } from "../styles/PlanDetails";
-import { addComment } from "../services/addComment";
-import { GenericButton } from "./GenericButton";
-import { setComments } from "../state/selectedPlan";
+import { Text, View, TouchableOpacity, Image } from "react-native";
+import { GenericInput } from "../GenericInput";
+import { useDispatch } from "react-redux";
+import { styles } from "../../styles/PlanDetails";
+import { addComment } from "../../services/addComment";
+import { setComments } from "../../state/selectedPlan";
 import { Feather } from "@expo/vector-icons";
-import comentarios from '../assets/comentarios.png'
+import comentarios from "../../assets/comentarios.png";
 
-const Comments = () => {
-  const plan = useSelector((state) => state.selectedPlan);
+const Comments = ({ plan }) => {
   const [page, setPage] = useState(1);
-  const user = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
@@ -30,8 +20,7 @@ const Comments = () => {
   };
 
   return (
-    <>
-     
+    <View>
       <Image style={styles.logo4} source={comentarios} />
       <View
         style={{
@@ -40,7 +29,8 @@ const Comments = () => {
           marginTop: 5,
           padding: 10,
           backgroundColor: "rgba(0, 0, 0, 0.4)",
-        }}>
+        }}
+      >
         {plan.comments &&
           plan.comments.map((item, index) => {
             if (index < page * 4 && index >= (page - 1) * 4)
@@ -101,17 +91,12 @@ const Comments = () => {
             width: "80%",
           }}
         />
-    
+
         <TouchableOpacity onPress={handleComment}>
-          <Feather
-            name="arrow-right"
-            size={30}
-            color="white"
-            style={{}}
-          />
+          <Feather name="arrow-right" size={30} color="white" style={{}} />
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
