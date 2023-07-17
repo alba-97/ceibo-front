@@ -1,2 +1,2 @@
-const API_URL = "http://192.168.0.225:8080";
+const API_URL = "https://club-del-plan.onrender.com";
 module.exports = { API_URL };

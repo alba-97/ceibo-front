@@ -20,7 +20,12 @@ export default function PlanDetailScreen() {
   const user = useSelector((state) => state.user);
 
   return (
-    <LinearGradient colors={["#000", "#7D0166"]} start={[0, 0]} end={[1, 1]}>
+    <LinearGradient
+      style={{ flex: 1 }}
+      colors={["#000", "#7D0166"]}
+      start={[0, 0]}
+      end={[1, 1]}
+    >
       <Navbar />
       <ScrollView>
         <View>
@@ -53,7 +58,6 @@ export default function PlanDetailScreen() {
               <PlanInvite plan={plan} />
             </View>
           )}
-          <View style={{ marginBottom: 10 }} />
         </View>
       </ScrollView>
     </LinearGradient>
