@@ -10,6 +10,7 @@ LogBox.ignoreLogs(["The useProxy option is deprecated"]);
 
 export default function App() {
   StatusBar.setBarStyle("light-content", true);
+  StatusBar.setBackgroundColor("#000000");
   return (
     <Provider store={store}>
       <SharedRefetchProvider>
