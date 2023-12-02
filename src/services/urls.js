@@ -1,2 +1,2 @@
-const API_URL = "https://club-del-plan.onrender.com";
+const API_URL = "https://club-del-plan-qbmq.onrender.com";
 module.exports = { API_URL };
