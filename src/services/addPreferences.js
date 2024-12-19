@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "./urls";
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function addPreferences(preferences) {
@@ -8,7 +8,7 @@ export async function addPreferences(preferences) {
 
     if (token) {
       const res = await axios.post(
-        `${API_URL}/api/users/preferences/`,
+        `${API_URL}/users/preferences/`,
         preferences,
         {
           headers: {

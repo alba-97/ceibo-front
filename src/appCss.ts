@@ -22,12 +22,12 @@ export const styles = StyleSheet.create({
     width: 198,
     height: 62,
   },
-  logoMisPPasados:{
+  logoMisPPasados: {
     width: 160,
     height: 22,
   },
   logoutContainer: {
-    paddingTop:15,
+    paddingTop: 15,
     borderRadius: 18,
     alignItems: "center",
     marginTop: 10,

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { styles } from "../styles/loginScreenStyles";
 import { createNewUser } from "../services/createUser";
-import { GenericButton } from "./GenericButton";
 import { getUserPlans } from "../services/getUserPlans";
 import { getUser } from "../services/getUser";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { setUser, setUserPlans } from "../state/user";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import iniciarConGoogle from "../assets/iniciarConGoogle.png";
 
 import * as ReactNative from "react-native";
@@ -51,7 +50,7 @@ const GoogleSignInButton = () => {
       const user = await response.json();
 
       const checkExistingUsers = await axios.post(
-        `${API_URL}/api/users/find-email`,
+        `${API_URL}/users/find-email`,
         {
           email: user.email,
         }
@@ -90,13 +89,13 @@ const GoogleSignInButton = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      const jwtToken = await axios.post(`${API_URL}/api/users/login`, {
+      const jwtToken = await axios.post(`${API_URL}/users/login`, {
         username: username,
         password: password,
       });
       if (jwtToken.data.token) {
         await AsyncStorage.setItem("token", jwtToken.data.token);
-        await axios.get(`${API_URL}/api/users/secret`, {
+        await axios.get(`${API_URL}/users/secret`, {
           headers: {
             Authorization: `Bearer ${jwtToken.data.token}`,
           },

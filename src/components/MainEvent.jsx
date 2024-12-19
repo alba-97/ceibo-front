@@ -11,7 +11,7 @@ export const MainEvent = ({ plan, onPress }) => {
         <View style={styles.overlay}>
           <Text style={styles.text}>{plan?.title}</Text>
           <Text style={styles.subtitle}>
-            {plan?.event_date && formatDate(plan?.event_date)}
+            {plan?.start_date && formatDate(plan?.start_date)}
           </Text>
           <Text style={styles.subtitle}>{plan?.category?.name}</Text>
         </View>

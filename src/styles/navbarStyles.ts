@@ -4,20 +4,16 @@ const windowWidth = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
   container: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
+    marginTop: 30,
+    alignItems: "center",
     borderBottomColor: "white",
-    borderStyle: "solid",
+    borderBottomWidth: 1,
     width: windowWidth,
-    justifyContent: "center",
   },
-
   text: {
     color: "#FFF",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
-    marginLeft: 20,
-    textAlign: "center",
   },
+  logo: { width: 160, height: 75 },
 });

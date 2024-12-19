@@ -4,7 +4,7 @@ import MultipleDropdown from "../MultipleDropdown";
 import RadioButton from "../RadioButton";
 import { styles } from "../../styles/PlanDetails";
 import GenericButton from "../GenericButton";
-import { API_URL } from "../../services/urls";
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getUserFriends } from "../../services/getUserFriends";
@@ -38,7 +38,7 @@ const PlanInvite = ({ plan }) => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
         await axios.post(
-          `${API_URL}/api/users/invite`,
+          `${API_URL}/users/invite`,
           {
             users: invited,
             plan,

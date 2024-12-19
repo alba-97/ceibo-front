@@ -4,7 +4,7 @@ import Rating from "./Rating";
 import { styles } from "../../styles/PlanDetails";
 
 const PlanEnded = ({ plan, user }) => {
-  const formattingDate = plan?.event_date
+  const formattingDate = plan?.start_date
     .split("T")[0]
     .split("-")
     .reverse()

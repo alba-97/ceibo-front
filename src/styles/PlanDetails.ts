@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
   detailsContainer: {
     justifyContent: "center",
     marginTop: 5,
+    padding: 20,
   },
   date: {
     flexDirection: "row",
@@ -48,29 +49,29 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#fff",
     marginTop: 15,
   },
   subtitle2: {
     fontSize: 20,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#fff",
     marginTop: 15,
     left: 20,
   },
   subtitle3: {
     fontSize: 17,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#fff",
   },
   text: {
-    fontWeight: 300,
+    fontWeight: "300",
     fontSize: 18,
     color: "#fff",
   },
   text2: {
-    fontWeight: 300,
+    fontWeight: "300",
     fontSize: 18,
     color: "#fff",
   },
@@ -117,9 +118,6 @@ export const styles = StyleSheet.create({
     color: "#fff",
     paddingHorizontal: 10,
     marginBottom: 10,
-  },
-  detailsContainer: {
-    padding: 20,
   },
   buttonContainer: {
     top: -12,

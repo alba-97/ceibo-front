@@ -11,7 +11,7 @@ const PlanEnroll = ({ plan, user }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const formattingDate = plan?.event_date
+  const formattingDate = plan?.start_date
     .split("T")[0]
     .split("-")
     .reverse()

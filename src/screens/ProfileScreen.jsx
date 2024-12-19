@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { API_URL } from "../services/urls";
+
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,7 +8,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 // Components
 import { ProfilePicture } from "../components/ProfilePicture";
-import { GenericButton } from "../components/GenericButton";
+import { API_URL } from "@env";
 import { styles } from "../styles/profileScreenStyles";
 import { clearUser, updateUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
@@ -25,7 +25,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    axios.post(`${API_URL}/api/users/logout`);
+    axios.post(`${API_URL}/users/logout`);
     AsyncStorage.removeItem("token");
     dispatch(clearUser());
   };
@@ -52,9 +52,9 @@ export default function ProfileScreen() {
             name: "image.jpg",
             type: "image/jpeg",
           });
-          const response = await axios.post(`${API_URL}/api/upload`, formData);
+          const response = await axios.post(`${API_URL}/upload`, formData);
           await axios.put(
-            `${API_URL}/api/users/`,
+            `${API_URL}/users/`,
             {
               profile_img: response.data.imageUrl,
             },
@@ -64,9 +64,7 @@ export default function ProfileScreen() {
               },
             }
           );
-          dispatch(
-            updateUser({ key: "profile_img", value: response.data.imageUrl })
-          );
+          dispatch(updateUser({ profile_img: response.data.imageUrl }));
           Alert.alert("Hecho", "Imagen de perfil actualizada correctamente");
         }
       }
@@ -154,27 +152,24 @@ export default function ProfileScreen() {
               mode={"user"}
               styles={styles}
             />
-           
+
             <View style={styles.logout1Container}>
-            <View style={styles.preferenciasContainer}>
-              <TouchableOpacity onPress={handlePreferences}>
-                <Image style={styles.logoPref} source={preferencias} />
-              </TouchableOpacity>
-             
-            </View>
+              <View style={styles.preferenciasContainer}>
+                <TouchableOpacity onPress={handlePreferences}>
+                  <Image style={styles.logoPref} source={preferencias} />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.logout1Container}>
-            <View style={styles.logoutContainer}>
-              <TouchableOpacity onPress={handleLogout}>
-                <Image style={styles.logo} source={cerrarSesion} />
-              </TouchableOpacity>
-             
-            </View>
+              <View style={styles.logoutContainer}>
+                <TouchableOpacity onPress={handleLogout}>
+                  <Image style={styles.logo} source={cerrarSesion} />
+                </TouchableOpacity>
+              </View>
             </View>
           </ScrollView>
         </View>
-         
       ) : (
         <LoginScreen />
       )}

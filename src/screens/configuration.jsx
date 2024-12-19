@@ -10,7 +10,7 @@ import { styles } from "../styles/configurationStyles";
 import { clearUser } from "../state/user";
 
 import axios from "axios";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
 import { useNavigation } from "@react-navigation/native";
 
@@ -20,7 +20,7 @@ export default function Configuration() {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    axios.post(`${API_URL}/api/users/logout`);
+    axios.post(`${API_URL}/users/logout`);
     AsyncStorage.removeItem("token");
     dispatch(clearUser());
   };

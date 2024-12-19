@@ -1,12 +1,13 @@
+import UserResponse from "@/interfaces/User";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState: UserResponse[] = [];
 
 const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
-    setContacts: (state, action) => action.payload,
+    setContacts: (_, action) => action.payload,
   },
 });
 

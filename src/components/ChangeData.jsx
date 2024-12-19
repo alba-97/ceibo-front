@@ -10,8 +10,8 @@ import axios from "axios";
 // Components
 import { ProfileText } from "../components/ProfileText";
 import { updateUser } from "../state/user";
-import { API_URL } from "../services/urls";
 import { updateSelectedPlan } from "../state/selectedPlan";
+import { API_URL } from "@env";
 
 export const ChangeData = ({
   mode,
@@ -33,7 +33,7 @@ export const ChangeData = ({
         if (token) {
           if (mode == "user") {
             await axios.put(
-              `${API_URL}/api/users/`,
+              `${API_URL}/users/`,
               {
                 [propName]: newValue,
               },
@@ -43,10 +43,10 @@ export const ChangeData = ({
                 },
               }
             );
-            dispatch(updateUser({ key: propName, value: newValue }));
+            dispatch(updateUser({ [propName]: newValue }));
           } else if (mode == "event") {
             await axios.put(
-              `${API_URL}/api/events/${plan._id}`,
+              `${API_URL}/events/${plan._id}`,
               {
                 [propName]: newValue,
               },
@@ -56,7 +56,11 @@ export const ChangeData = ({
                 },
               }
             );
-            dispatch(updateSelectedPlan({ key: propName, value: newValue }));
+            dispatch(
+              updateSelectedPlan({
+                [propName]: newValue,
+              })
+            );
           }
         }
       } catch (error) {
@@ -66,7 +70,7 @@ export const ChangeData = ({
     }
     setChange(!change);
   };
-  let date = mode == "user" ? "birthdate" : "event_date";
+  let date = mode == "user" ? "birthdate" : "start_date";
   const formattedData =
     propName === date ? moment(newData).format("DD/MM/YYYY") : newData;
 

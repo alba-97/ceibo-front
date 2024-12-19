@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Alert } from "react-native";
-import { bottomNavigationBarStyle } from "../styles/navigationBarStyles";
 // Navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -35,6 +34,7 @@ import { getOrganizer } from "../services/getOrganizer";
 import { getPlan } from "../services/getPlan";
 import { useDispatch } from "react-redux";
 import AddContactScreen from "../screens/AddContactScreen";
+import { bottomNavigationBarStyle } from "../styles/navigationBarStyles";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();

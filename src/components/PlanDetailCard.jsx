@@ -6,12 +6,12 @@ import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserPlans } from "../state/user";
 import axios from "axios";
-import { API_URL } from "../services/urls";
+
 import Comments from "./Plan/Comments";
 import { GenericButton } from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
 import { useNavigation } from "@react-navigation/core";
-import refetchData from "../services/refetchData";
+import { API_URL } from "@env";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
 import { getUserFriends } from "../services/getUserFriends";
@@ -27,8 +27,6 @@ export const PlanDetailCard = () => {
   const [users, setUsers] = useState([]);
 
   const navigation = useNavigation();
-
-  const { triggerRefetch } = refetchData();
 
   const sendMethods = [
     { label: "Email", value: "email" },
@@ -56,7 +54,7 @@ export const PlanDetailCard = () => {
 
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        res = await axios.get(`${API_URL}/api/events/${plan._id}/can-update`, {
+        res = await axios.get(`${API_URL}/events/${plan._id}/can-update`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -72,7 +70,7 @@ export const PlanDetailCard = () => {
     fetchInfo();
   }, []);
 
-  const formattingDate = plan?.event_date
+  const formattingDate = plan?.start_date
     .split("T")[0]
     .split("-")
     .reverse()
@@ -85,7 +83,7 @@ export const PlanDetailCard = () => {
 
       if (token) {
         await axios.post(
-          `${API_URL}/api/events/enroll`,
+          `${API_URL}/events/enroll`,
           { eventId: plan._id },
           {
             headers: {

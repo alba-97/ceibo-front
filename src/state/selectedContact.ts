@@ -1,23 +1,23 @@
+import UserResponse from "@/interfaces/User";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: UserResponse = {
   _id: null,
-  address: null,
-  birthdate: null,
-  email: null,
-  first_name: null,
-  last_name: null,
-  password: null,
-  phone: null,
-  profile_img: null,
-  username: null,
+  address: "",
+  birthdate: "",
+  email: "",
+  first_name: "",
+  last_name: "",
+  phone: "",
+  profile_img: "",
+  username: "",
 };
 
 const selectedContactSlice = createSlice({
   name: "selectedContact",
   initialState,
   reducers: {
-    setSelectedContact: (state, action) => action.payload,
+    setSelectedContact: (_, action) => action.payload,
   },
 });
 

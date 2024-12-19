@@ -1,12 +1,13 @@
+import EventResponse from "@/interfaces/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState: EventResponse[] = [];
 
 const historySlice = createSlice({
   name: "history",
   initialState,
   reducers: {
-    setHistory: (state, action) => {
+    setHistory: (_, action) => {
       return action.payload;
     },
   },

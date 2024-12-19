@@ -6,18 +6,15 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
-    justifyContent: 'space-evenly',
+    justifyContent: "space-evenly",
     color: "white",
-  
   },
   row: {
- 
     width: "100%",
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center', 
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
-
   cubo: {
     height: 120,
     width: 120,

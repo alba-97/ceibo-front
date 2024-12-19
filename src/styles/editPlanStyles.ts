@@ -1,8 +1,30 @@
-import { Dimensions, StyleSheet } from "react-native";
-
-const windowWidth = Dimensions.get("window").width;
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  image: {
+    width: 250,
+    height: 110,
+  },
+  categoryContainer: {
+    alignItems: "center",
+    marginTop: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: "rgba(225, 200, 200, 0.3)",
+    borderColor: "rgba(10, 7, 7, 0.2)",
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 18,
+  },
+  crearPlan: {
+    alignItems: "center",
+    flex: 1,
+    width: "65%",
+    marginBottom: 15,
+    marginTop: 15,
+  },
+
   container: {
     flex: 1,
     width: "100%",
@@ -11,7 +33,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     color: "white",
   },
-
   container2: {
     width: "90%",
     flexDirection: "row",
@@ -20,7 +41,6 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: "center",
-    // flex: 1,
   },
   containerChange: {
     paddingTop: 15,
@@ -28,10 +48,11 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "white",
     borderStyle: "solid",
-    width: windowWidth,
+    width: "100%",
+    alignItems: "center",
   },
   container3: {
-    width: windowWidth,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -51,23 +72,20 @@ export const styles = StyleSheet.create({
     left: "90%",
     bottom: "25%",
   },
-
   text3: {
+    width: "50%",
     color: "#FFF",
-    fontSize: 17,
+    fontSize: 14,
     fontWeight: "bold",
     marginLeft: 20,
     textAlign: "center",
   },
-
   textData: {
     color: "#FFF",
     fontSize: 13,
-
     marginLeft: 20,
     textAlign: "center",
   },
-
   label: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -100,35 +118,12 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
-  logo: {
-    width: 155,
-    height: 43,
-  },
   logoutContainer: {
-    paddingTop: 10,
-    borderRadius: 25,
-    alignItems: "center",
-    marginBottom: 10,
-    width: "75%",
-    backgroundColor:'rgba(0, 0, 0, 0.4)',
-  
-  },
-  logoPref: {
-    width: 140,
-    height: 35,
-  },
-  preferenciasContainer: {
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom:10,
-    borderRadius:25,
-    alignItems: "center",
-    marginTop: 10,
-    width: "75%",
-    backgroundColor:'rgba(0, 0, 0, 0.4)',
-  },
-  logout1Container: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -138,6 +133,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -159,7 +155,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
-
   selectedImage: {
     alignItems: "center",
     justifyContent: "center",

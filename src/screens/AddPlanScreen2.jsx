@@ -15,7 +15,7 @@ import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import ChevronImg from "../assets/images/chevron.png";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -25,7 +25,7 @@ import ModalSelector from "react-native-modal-selector";
 import { Feather } from "@expo/vector-icons";
 
 export default function AddPlanScreen2({ route }) {
-  const { title, description, location, event_date, path } = route.params;
+  const { title, description, location, start_date, path } = route.params;
 
   const [min_age, setMin_age] = useState("");
   const [max_age, setMax_age] = useState("");
@@ -49,7 +49,7 @@ export default function AddPlanScreen2({ route }) {
 
   const handleSubmit = async () => {
     try {
-      let formattedDate = event_date;
+      let formattedDate = start_date;
       if (formattedDate instanceof Date) {
         formattedDate = formattedDate.toISOString().split("T")[0];
       }
@@ -69,7 +69,7 @@ export default function AddPlanScreen2({ route }) {
             type: "image/jpeg",
             name: "image.jpg",
           });
-          const res = await axios.post(`${API_URL}/api/upload`, formData);
+          const res = await axios.post(`${API_URL}/upload`, formData);
           imageUrl = res.data.imageUrl;
         }
 
@@ -78,7 +78,7 @@ export default function AddPlanScreen2({ route }) {
           description,
           location,
           img: imageUrl,
-          event_date: formattedDate,
+          start_date: formattedDate,
           start_time,
           end_time,
           min_age,
@@ -91,7 +91,7 @@ export default function AddPlanScreen2({ route }) {
 
         console.log(eventData);
 
-        const newEvent = await axios.post(`${API_URL}/api/events/`, eventData, {
+        await axios.post(`${API_URL}/events/`, eventData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

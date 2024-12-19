@@ -1,4 +1,3 @@
-import React from "react";
 import { StatusBar, LogBox } from "react-native";
 import Navigation from "./navigation/AppNavigator";
 import { KeyboardAvoidingView, Platform } from "react-native";

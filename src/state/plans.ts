@@ -1,12 +1,13 @@
+import EventResponse from "@/interfaces/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState: EventResponse[] = [];
 
 const plansSlice = createSlice({
   name: "plans",
   initialState,
   reducers: {
-    setPlans: (state, action) => {
+    setPlans: (_, action) => {
       return action.payload.slice(0, 6);
     },
     removePlan: (state, action) => {

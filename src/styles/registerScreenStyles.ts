@@ -6,12 +6,10 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-
   scroll: {
     flex: 1,
     width: "100%",
   },
-
   container2: {
     width: "90%",
     flexDirection: "row",
@@ -31,14 +29,14 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input2: {
-    paddingLeft:10,
+    paddingLeft: 10,
     fontSize: 16,
     width: "80%",
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     height: 45,
     borderWidth: 1,
     borderColor: "white",
-    borderRadius:18,
+    borderRadius: 18,
     color: "white",
   },
   text: {
@@ -57,27 +55,23 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 4,
   },
-
   crearCuenta: {
     flex: 1,
     marginTop: 15,
     marginBottom: 15,
     alignItems: "center",
-   
   },
-  logo:{
+  logo: {
     width: 160,
     height: 25,
   },
   logoutContainer: {
-    
     paddingTop: 12,
-    paddingBottom:12,
+    paddingBottom: 12,
     borderRadius: 25,
     alignItems: "center",
     marginBottom: 10,
     width: "75%",
-    backgroundColor:'rgba(0, 0, 0, 0.4)',
-  
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
 });

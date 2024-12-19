@@ -8,7 +8,7 @@ import axios from "axios";
 import { GenericInput } from "../components/GenericInput";
 import { GenericButton } from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
 import { useSelector } from "react-redux";
@@ -36,7 +36,7 @@ export default function RegisterScreen() {
       formattedBirthdate = birthdate.toISOString();
     }
     try {
-      const res = await axios.post(`${API_URL}/api/users/signup`, {
+      const res = await axios.post(`${API_URL}/users/signup`, {
         username,
         password,
         email,

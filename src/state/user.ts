@@ -1,14 +1,16 @@
+import UserResponse from "@/interfaces/User";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: UserResponse = {
   _id: null,
-  email: null,
-  username: null,
-  last_name: null,
-  email: null,
-  birthdate: null,
-  phone: null,
-  profile_img: null,
+  email: "",
+  username: "",
+  first_name: "",
+  last_name: "",
+  address: "",
+  birthdate: "",
+  phone: "",
+  profile_img: "",
   plans: [],
   history: [],
   preferences: [],
@@ -18,10 +20,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => action.payload,
+    setUser: (_, action) => action.payload,
     updateUser: (state, action) => {
-      let newState = { ...state };
-      newState[action.payload.key] = action.payload.value;
+      const newState = { ...state, ...action.payload };
       return newState;
     },
     clearUser: () => initialState,

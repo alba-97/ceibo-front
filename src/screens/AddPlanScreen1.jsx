@@ -17,7 +17,7 @@ export default function AddPlanScreen1() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [event_date, setEvent_date] = useState(null);
+  const [start_date, setstart_date] = useState(null);
   const [path, setPath] = useState(
     "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png"
   );
@@ -39,17 +39,17 @@ export default function AddPlanScreen1() {
   };
 
   useEffect(() => {
-    setEvent_date(event_date);
-  }, [event_date]);
+    setstart_date(start_date);
+  }, [start_date]);
 
   const handleContinue = () => {
-    const eventDate = new Date(event_date).toISOString();
+    const eventDate = new Date(start_date).toISOString();
 
     navigation.navigate("AddPlanScreen2", {
       title,
       description,
       location,
-      event_date: eventDate,
+      start_date: eventDate,
       path,
     });
   };
@@ -77,8 +77,8 @@ export default function AddPlanScreen1() {
                 <Text style={styles.text}>Fecha</Text>
                 <DatePicker
                   type="date"
-                  value={event_date}
-                  onChange={(date) => setEvent_date(new Date(date))}
+                  value={start_date}
+                  onChange={(date) => setstart_date(new Date(date))}
                   placeholder="DD/MM/YYYY"
                 />
               </View>

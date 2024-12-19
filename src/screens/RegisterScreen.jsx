@@ -1,17 +1,25 @@
 // Native
-import { View, Text, ScrollView, Alert, TextInput, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Alert,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 //Components
 import { GenericInput } from "../components/GenericInput";
-import { GenericButton } from "../components/GenericButton";
+import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "../services/urls";
+
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
-import crearCuenta from '../assets/crearCuenta.png'
+import crearCuenta from "../assets/crearCuenta.png";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
@@ -35,7 +43,7 @@ export default function RegisterScreen() {
       formattedBirthdate = birthdate.toISOString();
     }
     try {
-      const res = await axios.post(`${API_URL}/api/users/signup`, {
+      const res = await axios.post(`${API_URL}/users/signup`, {
         username,
         password,
         email,
@@ -123,15 +131,11 @@ export default function RegisterScreen() {
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>
-           
-         
-         
-         <View style={styles.logoutContainer}>
-           <TouchableOpacity onPress={handleSubmit}>
-             <Image style={styles.logo} source={crearCuenta} />
-           </TouchableOpacity>
-         </View>
-         
+              <View style={styles.logoutContainer}>
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Image style={styles.logo} source={crearCuenta} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -139,4 +143,3 @@ export default function RegisterScreen() {
     </LinearGradient>
   );
 }
-

@@ -1,24 +1,17 @@
+import { EventResponse, EventForm } from "@/interfaces/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: EventResponse = {
   _id: null,
-  title: null,
-  description: null,
-  location: null,
-  img: null,
-  event_date: null,
-  created_at: null,
-  min_age: null,
-  max_age: null,
-  min_to_pay: null,
-  total_to_pay: null,
-  deadline_to_pay: null,
-  link_to_pay: null,
+  title: "",
+  description: "",
+  location: "",
+  img: "",
+  start_date: "",
   category: null,
-  start_time: null,
-  end_time: null,
+  end_date: "",
   comments: [],
-  organizer: {},
+  organizer: null,
   ended: false,
   private: false,
 };
@@ -27,12 +20,11 @@ const selectedPlanSlice = createSlice({
   name: "selectedPlan",
   initialState,
   reducers: {
-    setSelectedPlan: (state, action) => {
+    setSelectedPlan: (_, action) => {
       return action.payload;
     },
-    updateSelectedPlan: (state, action) => {
-      let newState = { ...state };
-      newState[action.payload.key] = action.payload.value;
+    updateSelectedPlan: (state, action: { payload: Partial<EventForm> }) => {
+      const newState = { ...state, ...action.payload };
       return newState;
     },
     setOrganizer: (state, action) => {
@@ -40,7 +32,7 @@ const selectedPlanSlice = createSlice({
       newState.organizer = action.payload;
       return newState;
     },
-    clearSelectedPlan: (state, action) => {
+    clearSelectedPlan: () => {
       return initialState;
     },
     setComments: (state, action) => {

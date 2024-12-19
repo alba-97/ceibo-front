@@ -12,7 +12,7 @@ export const SearchImg = ({ plan, onPress }) => {
 
       <Text style={styles.text}>{plan?.title}</Text>
       <Text style={styles.textFecha}>
-        {plan?.event_date && formatDate(plan?.event_date)}
+        {plan?.start_date && formatDate(plan?.start_date)}
       </Text>
     </TouchableOpacity>
   );

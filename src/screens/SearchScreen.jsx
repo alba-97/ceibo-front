@@ -1,11 +1,11 @@
 // React Components
 import { Text, ScrollView, View, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 // Components
 import { GenericInput } from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import { styles } from "../appCss";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
@@ -48,7 +48,7 @@ export default function SearchScreen() {
   const handleSearch = () => {
     if (option == "text") {
       axios
-        .get(`${API_URL}/api/events/search?query=${query}`)
+        .get(`${API_URL}/events/search?query=${query}`)
         .then((response) => {
           setResults(response.data);
         })
@@ -58,7 +58,7 @@ export default function SearchScreen() {
         });
     } else if (option == "category") {
       axios
-        .get(`${API_URL}/api/events/search/category?query=${query}`)
+        .get(`${API_URL}/events/search/category?query=${query}`)
         .then((response) => {
           setResults(response.data);
         })
@@ -68,7 +68,7 @@ export default function SearchScreen() {
         });
     } else if (option == "user") {
       axios
-        .get(`${API_URL}/api/events/search/user?query=${query}`)
+        .get(`${API_URL}/events/search/user?query=${query}`)
         .then((response) => {
           setResults(response.data);
         })
@@ -79,15 +79,17 @@ export default function SearchScreen() {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const { data } = await axios.get(`${API_URL}/events`);
+      setResults(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${API_URL}/api/events`)
-      .then((response) => {
-        setResults(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    fetchData();
   }, [refetch]);
 
   return (

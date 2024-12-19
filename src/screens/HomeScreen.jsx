@@ -53,23 +53,32 @@ export default function HomeScreen() {
     }
   };
 
-  useEffect(() => {
-    getUser().then((userData) => {
-      if (userData._id) {
-        dispatch(setUser(userData));
-        getUserPlans().then((userPlans) => dispatch(setUserPlans(userPlans)));
-        getPlanHistory().then((planHistory) =>
-          dispatch(setPlanHistory(planHistory))
-        );
-        if (userData.preferences && userData.preferences[0]) {
-          getFilteredPlans().then((plans) => dispatch(setPlans(plans)));
-        } else {
-          getAllPlans().then((plans) => dispatch(setPlans(plans)));
-        }
+  const fetchData = async () => {
+    const userData = await getUser();
+
+    if (userData._id) {
+      dispatch(setUser(userData));
+      const userPlans = await getUserPlans();
+      dispatch(setUserPlans(userPlans));
+
+      const planHistory = await getPlanHistory();
+      dispatch(setPlanHistory(planHistory));
+
+      if (userData.preferences && userData.preferences[0]) {
+        const plans = await getFilteredPlans();
+        dispatch(setPlans(plans));
       } else {
-        getAllPlans().then((plans) => dispatch(setPlans(plans)));
+        const plans = await getAllPlans();
+        dispatch(setPlans(plans));
       }
-    });
+    } else {
+      const plans = await getAllPlans();
+      dispatch(setPlans(plans));
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [refetch]);
 
   return (
@@ -79,7 +88,7 @@ export default function HomeScreen() {
       end={[1, 1]}
       style={styles.container}
     >
-      <Navbar></Navbar>
+      <Navbar />
       <ScrollView>
         {plans[0] && (
           <MainEvent

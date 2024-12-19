@@ -1,21 +1,14 @@
-// Native
 import { ImageContainer } from "./ImageContainer";
-// Components
 import { styles } from "../styles/swiperStyles";
 import React from "react";
-import { View, FlatList, Text, Image } from "react-native";
+import { View, FlatList, Image } from "react-native";
 
-export function SwiperComponent({ plans, text, onPress , image, styleLogo}) {
+export function SwiperComponent({ plans, onPress, image, styleLogo }) {
   return (
     <View style={styles.container}>
-
- {/* <View style={{ textAlign: "center" }}> */}
-       {/* //esto es lo nuevo */}
-        <View style={styles.logoutContainer}>
-          <Image style={styleLogo} source={image} />
-        </View>
-        {/* //esto es lo nuevo */}
-      {/* </View> */}
+      <View style={styles.logoutContainer}>
+        <Image style={styleLogo} source={image} />
+      </View>
       <FlatList
         data={plans}
         renderItem={({ item }) => {
@@ -25,7 +18,7 @@ export function SwiperComponent({ plans, text, onPress , image, styleLogo}) {
             </View>
           );
         }}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         horizontal={true}
         ItemSeparatorComponent={<View style={{ margin: 10 }}></View>}
         showsHorizontalScrollIndicator={false}

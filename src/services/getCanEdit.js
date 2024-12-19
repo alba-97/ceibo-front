@@ -1,12 +1,12 @@
 import axios from "axios";
-import { API_URL } from "./urls";
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getCanEdit = async (id) => {
   try {
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      const res = await axios.get(`${API_URL}/api/events/${id}/can-update`, {
+      const res = await axios.get(`${API_URL}/events/${id}/can-update`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -79,16 +79,15 @@ export const styles = StyleSheet.create({
   },
   logoutContainer: {
     paddingTop: 10,
-    paddingBottom:10,
+    paddingBottom: 10,
     borderRadius: 25,
     alignItems: "center",
     marginBottom: 10,
     width: "60%",
-    backgroundColor:'rgba(0, 0, 0, 0.4)',
-  
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   logout1Container: {
-    marginTop:"5%",
+    marginTop: "5%",
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",

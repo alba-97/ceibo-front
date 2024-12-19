@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     position: "relative",
   },
@@ -28,3 +28,5 @@ export default styles = StyleSheet.create({
     fontWeight: 500,
   },
 });
+
+export default styles;

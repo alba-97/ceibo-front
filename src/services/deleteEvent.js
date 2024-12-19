@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "./urls";
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { removePlanFromUser } from "../state/user";
@@ -9,7 +9,7 @@ export const deleteEvent = async (id, dispatch) => {
   try {
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      await axios.delete(`${API_URL}/api/events/${id}`, {
+      await axios.delete(`${API_URL}/events/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

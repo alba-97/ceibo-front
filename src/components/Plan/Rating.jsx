@@ -5,7 +5,7 @@ import { View, Text, Alert } from "react-native";
 import { styles } from "../../styles/PlanDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { API_URL } from "../../services/urls";
+import { API_URL } from "@env";
 
 const Rating = ({ plan }) => {
   const [rating, setRating] = useState(-1);
@@ -14,14 +14,11 @@ const Rating = ({ plan }) => {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const res = await axios.get(
-          `${API_URL}/api/events/${plan._id}/rating`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get(`${API_URL}/events/${plan._id}/rating`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setRating(res.data.rating);
         return res.data.rating;
       } else {

@@ -9,11 +9,10 @@ import axios from "axios";
 import { getUser } from "../services/getUser";
 import { getUserPlans } from "../services/getUserPlans";
 // Components
-import GoogleSignInButton from "../components/GoogleSignInButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
-import { API_URL } from "../services/urls";
+import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
 import { getPlanHistory } from "../services/getPlanHistory";
 import iniciaSesion from "../assets/iniciaSesion.png";
@@ -31,13 +30,13 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`${API_URL}/api/users/login`, {
+      const res = await axios.post(`${API_URL}/users/login`, {
         username,
         password,
       });
       if (res.data.token) {
         await AsyncStorage.setItem("token", res.data.token);
-        await axios.get(`${API_URL}/api/users/secret`, {
+        await axios.get(`${API_URL}/users/secret`, {
           headers: {
             Authorization: `Bearer ${res.data.token}`,
           },
