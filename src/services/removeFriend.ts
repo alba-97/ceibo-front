@@ -1,10 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@env";
 import axios from "axios";
 
-export const removeFriend = async (userId, friendId) => {
+export const removeFriend = async (userId: string, friendId: string) => {
   try {
-    // const token = await AsyncStorage.getItem("token");
     const res = await axios.put(`${API_URL}/users/remove-friend/${friendId}`, {
       userId: userId,
     });

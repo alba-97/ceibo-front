@@ -1,5 +1,4 @@
-export const formatDate = (date) => {
-  date = date.slice(0, 10);
+export const formatDate = (date: string) => {
   const months = [
     "Enero",
     "Febrero",
@@ -14,9 +13,9 @@ export const formatDate = (date) => {
     "Noviembre",
     "Diciembre",
   ];
-  date = date.split("-");
-  const day = parseInt(date[2], 10);
-  const month = months[parseInt(date[1], 10) - 1];
-  const year = date[0];
+  const dateArray = date.slice(0, 10).split("-");
+  const day = parseInt(dateArray[2], 10);
+  const month = months[parseInt(dateArray[1], 10) - 1];
+  const year = dateArray[0];
   return `${day} de ${month} de ${year}`;
 };

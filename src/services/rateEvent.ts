@@ -2,21 +2,20 @@ import axios from "axios";
 import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const getUserFriends = async () => {
+export async function rateEvent(rating: number, planId: string) {
   try {
     const token = await AsyncStorage.getItem("token");
-    if (token) {
-      const res = await axios.get(`${API_URL}/users/friends`, {
+    const res = await axios.post(
+      `${API_URL}/events/${planId}/rate`,
+      { rating },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      return res.data;
-    } else {
-      return [];
-    }
+      }
+    );
+    return res.data;
   } catch (error) {
-    console.log(error);
-    return [];
+    console.error(error);
   }
-};
+}

@@ -1,7 +1,7 @@
 import * as Contacts from "expo-contacts";
 import { getAllUsers } from "./getAllUsers";
 
-function getContactNumbers(data) {
+const getContactNumbers = (data: Contacts.Contact[]) => {
   const phoneNumbers = [];
   for (let i = 0; i < data.length; i++) {
     const contact = data[i];
@@ -11,9 +11,9 @@ function getContactNumbers(data) {
     }
   }
   return phoneNumbers;
-}
+};
 
-async function filterContacts(phoneNumbers) {
+const filterContacts = async (phoneNumbers: string[]) => {
   const users = await getAllUsers();
   const filteredPhoneNumbers = [];
 
@@ -23,22 +23,16 @@ async function filterContacts(phoneNumbers) {
     }
   }
   return filteredPhoneNumbers;
-}
+};
 
-export async function fetchContacts() {
-  try {
-    const { status } = await Contacts.requestPermissionsAsync();
-
-    if (status === "granted") {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.PhoneNumbers],
-      });
-      const phoneNumbers = getContactNumbers(data);
-      const filteredContacts = await filterContacts(phoneNumbers);
-      console.log("filtered contacts", filteredContacts);
-      return filteredContacts;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
+export const fetchContacts = async () => {
+  const { status } = await Contacts.requestPermissionsAsync();
+  if (status !== "granted") return [];
+  const { data } = await Contacts.getContactsAsync({
+    fields: [Contacts.Fields.PhoneNumbers],
+  });
+  const phoneNumbers = getContactNumbers(data);
+  const filteredContacts = await filterContacts(phoneNumbers);
+  console.log("filtered contacts", filteredContacts);
+  return filteredContacts;
+};
