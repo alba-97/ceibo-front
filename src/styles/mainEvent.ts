@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#FFF",
     fontSize: 20,
-    fontWeight: 600,
+    fontWeight: "600",
     marginLeft: 7,
   },
   subtitle: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#FFF",
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: "500",
   },
 });
 

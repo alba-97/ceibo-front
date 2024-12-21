@@ -16,4 +16,5 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logo: { width: 160, height: 75 },
+  bottom: { height: 20 },
 });

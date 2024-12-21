@@ -19,6 +19,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-native-dotenv": "^0.2.2",
+    "@types/react-navigation": "^3.0.8",
     "axios": "^1.7.9",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "cloudinary-react-native": "^0.0.2",

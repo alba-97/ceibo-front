@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
   text: {
     color: "#FFF",
     fontSize: 20,
-    fontWeight: 600,
+    fontWeight: "600",
     marginLeft: 7,
   },
   subtitle: {
     marginLeft: 7,
     color: "#FFF",
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: "500",
   },
 });
 

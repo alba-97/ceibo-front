@@ -1,1 +1,0 @@
-Aquí puedes almacenar utilidades o funciones de ayuda que se utilizan en diferentes partes de la aplicación.

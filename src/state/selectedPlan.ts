@@ -1,4 +1,5 @@
-import { EventResponse, EventForm } from "@/interfaces/Event";
+import EventForm from "@/interfaces/forms/Event";
+import { EventResponse } from "@/interfaces/responses/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: EventResponse = {

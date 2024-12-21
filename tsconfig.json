@@ -23,11 +23,11 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@schemas/*": ["./src/schemas/*"],
       "@state/*": ["./src/state/*"],
-      "@services/*": ["./src/services/*"],
+      "@services/*": ["src/api/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./src/styles/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

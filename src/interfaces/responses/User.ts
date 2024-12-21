@@ -2,7 +2,7 @@ import CategoryResponse from "./Category";
 import { EventResponse } from "./Event";
 
 export default interface UserResponse {
-  _id: string | null;
+  _id: string;
   email: string;
   username: string;
   address: string;
@@ -14,4 +14,5 @@ export default interface UserResponse {
   plans: EventResponse[];
   history: EventResponse[];
   preferences: CategoryResponse[];
+  rating: number;
 }

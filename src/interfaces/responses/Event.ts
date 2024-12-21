@@ -3,16 +3,16 @@ import CommentResponse from "./Comment";
 import UserResponse from "./User";
 
 export interface EventResponse {
-  _id: string | null;
+  _id: string;
   title: string;
   description: string;
   location: string;
   start_date: string;
   end_date: string;
   img: string;
-  category: CategoryResponse | null;
+  category: CategoryResponse;
   comments: CommentResponse[];
-  organizer: UserResponse | null;
+  organizer: UserResponse;
   ended: boolean;
   private: boolean;
 }
