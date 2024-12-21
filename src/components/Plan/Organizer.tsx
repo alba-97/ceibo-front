@@ -2,7 +2,7 @@ import { View, Text, Image } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import organizador from "../../assets/organizador.png";
 import { styles } from "../../styles/PlanDetails";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface IPlanOrganizerProps {
   plan: EventResponse;

@@ -7,7 +7,7 @@ import { addComment } from "../../api/addComment";
 import { setComments } from "../../state/selectedPlan";
 import { Feather } from "@expo/vector-icons";
 import comentarios from "../../assets/comentarios.png";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface ICommentsProps {
   plan: EventResponse;

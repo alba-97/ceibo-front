@@ -1,11 +1,12 @@
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import styles from "../styles/mainEvent";
-import { formatDate } from "../utils/fromDateToDateDescription";
-import { EventResponse } from "@/interfaces/responses/Event";
+import fromDateToDateDescription from "../utils/fromDateToDateDescription";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface IMainEventProps {
   plan: EventResponse;
   onPress: (plan: EventResponse) => void;
+  title?: string;
 }
 
 export const MainEvent = ({ plan, onPress }: IMainEventProps) => {
@@ -16,7 +17,7 @@ export const MainEvent = ({ plan, onPress }: IMainEventProps) => {
         <View style={styles.overlay}>
           <Text style={styles.text}>{plan?.title}</Text>
           <Text style={styles.subtitle}>
-            {plan?.start_date && formatDate(plan?.start_date)}
+            {plan?.start_date && fromDateToDateDescription(plan?.start_date)}
           </Text>
           <Text style={styles.subtitle}>{plan?.category?.name}</Text>
         </View>

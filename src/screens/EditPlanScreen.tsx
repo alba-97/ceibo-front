@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   ScrollView,
   View,
@@ -11,26 +11,29 @@ import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
-// Components
 import { ProfilePicture } from "../components/ProfilePicture";
 import GenericButton from "../components/GenericButton";
 import { styles } from "../styles/editPlanStyles";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { getCategories } from "../api/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckBox } from "react-native-elements";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { API_URL } from "@env";
 import refetchData from "../api/refetchData";
 import { removePlan } from "../state/plans";
+import { RootState } from "@/state/store";
+import CategoryResponse from "@/interfaces/responses/Category";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import IOption from "@/interfaces/Option";
 
 export default function EditPlanScreen() {
-  const plan = useSelector((state) => state.selectedPlan);
-  const navigation = useNavigation();
+  const plan = useSelector((state: RootState) => state.selectedPlan);
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [category, setCategory] = useState(plan?.category?.name);
   const [imageUrl, setImageUrl] = useState(plan?.img);
@@ -56,14 +59,17 @@ export default function EditPlanScreen() {
         removePlan(plan._id);
       }
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
     }
   };
 
   useEffect(() => {
     getCategories().then((data) => {
       setCategories(
-        data.map((item, index) => ({ key: index, label: item.name }))
+        data.map((item: CategoryResponse, index: number) => ({
+          key: index,
+          label: item.name,
+        }))
       );
     });
   }, []);
@@ -78,15 +84,19 @@ export default function EditPlanScreen() {
       });
 
       const token = await AsyncStorage.getItem("token");
-      const path = result?.assets[0]?.uri;
+      const path = result.assets?.[0].uri;
       if (token && path) {
         if (path !== "") {
           const formData = new FormData();
-          formData.append("image", {
+          const file = {
             uri: path,
             type: "image/jpeg",
             name: "image.jpg",
-          });
+          };
+          const blob = await fetch(file.uri).then((response) =>
+            response.blob()
+          );
+          formData.append("image", blob, file.name);
           const res = await axios.post(`${API_URL}/upload`, formData);
           await axios.put(
             `${API_URL}/events/${plan._id}`,
@@ -103,7 +113,8 @@ export default function EditPlanScreen() {
         }
       }
     } catch (error) {
-      Alert.alert("Error", error.response.data);
+      if (error instanceof AxiosError)
+        Alert.alert("Error", error.response?.data);
       console.log(error);
     }
   };
@@ -152,7 +163,7 @@ export default function EditPlanScreen() {
               styles={styles}
             />
             <ChangeData
-              keyboardType="date"
+              keyboardType="numeric"
               baseData={plan?.start_date}
               propName={"start_date"}
               mode={"event"}
@@ -161,15 +172,7 @@ export default function EditPlanScreen() {
             />
             <ChangeData
               keyboardType="numeric"
-              baseData={plan?.start_time}
-              propName={"start_time"}
-              mode={"event"}
-              data="Hora de inicio"
-              styles={styles}
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.end_time}
+              baseData={plan?.end_date}
               propName={"end_time"}
               mode={"event"}
               data="Hora de finalización"
@@ -210,7 +213,7 @@ export default function EditPlanScreen() {
 
             <ModalSelector
               data={categories}
-              onChange={async (option) => {
+              onChange={async (option: IOption) => {
                 const token = await AsyncStorage.getItem("token");
                 if (token) {
                   await axios.put(
@@ -247,7 +250,7 @@ export default function EditPlanScreen() {
               }}
               cancelText="Cancelar"
             >
-              <Text style={styles.categoryContainer} value={category}>
+              <Text style={styles.categoryContainer}>
                 {category}{" "}
                 <Image
                   source={ChevronImg}

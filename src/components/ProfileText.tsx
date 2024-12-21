@@ -3,7 +3,8 @@ import { View, Text, ViewStyle, TextStyle } from "react-native";
 
 interface IProfileTextProps {
   text: string;
-  customStyle: ViewStyle;
+  style?: TextStyle;
+  customStyle?: ViewStyle;
   customStyleText?: TextStyle;
 }
 

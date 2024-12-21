@@ -25,9 +25,10 @@ import ModalSelector from "react-native-modal-selector";
 import { Feather } from "@expo/vector-icons";
 import CategoryResponse from "@/interfaces/responses/Category";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import IOption from "@/interfaces/Option";
 
 interface IAddPlanScreen2Props {
-  route: {
+  route?: {
     params: {
       title: string;
       description: string;
@@ -38,7 +39,17 @@ interface IAddPlanScreen2Props {
   };
 }
 
-export default function AddPlanScreen2({ route }: IAddPlanScreen2Props) {
+export default function AddPlanScreen2({
+  route = {
+    params: {
+      title: "",
+      description: "",
+      location: "",
+      start_date: "",
+      path: "",
+    },
+  },
+}: IAddPlanScreen2Props) {
   const { title, description, location, start_date, path } = route.params;
 
   const [min_age, setMin_age] = useState("");
@@ -208,7 +219,7 @@ export default function AddPlanScreen2({ route }: IAddPlanScreen2Props) {
               <View style={styles.inputContainer}>
                 <ModalSelector
                   data={categories}
-                  onChange={(option) => {
+                  onChange={(option: IOption) => {
                     setCategory(option.label);
                   }}
                   overlayStyle={{ backgroundColor: "transparent" }}
@@ -231,7 +242,7 @@ export default function AddPlanScreen2({ route }: IAddPlanScreen2Props) {
                   }}
                   cancelText="Cancelar"
                 >
-                  <Text style={styles.categoryContainer} value={category}>
+                  <Text style={styles.categoryContainer}>
                     {category}
                     <Image
                       source={ChevronImg}

@@ -1,5 +1,5 @@
 import CategoryResponse from "./Category";
-import { EventResponse } from "./Event";
+import EventResponse from "./Event";
 
 export default interface UserResponse {
   _id: string;
@@ -14,5 +14,5 @@ export default interface UserResponse {
   plans: EventResponse[];
   history: EventResponse[];
   preferences: CategoryResponse[];
-  rating: number;
+  rating?: number;
 }

@@ -1,18 +1,31 @@
 import EventForm from "@/interfaces/forms/Event";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: EventResponse = {
-  _id: null,
+  _id: "",
   title: "",
   description: "",
   location: "",
   img: "",
   start_date: "",
-  category: null,
+  category: { _id: "", name: "" },
   end_date: "",
   comments: [],
-  organizer: null,
+  organizer: {
+    _id: "",
+    email: "",
+    username: "",
+    address: "",
+    birthdate: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    profile_img: "",
+    plans: [],
+    history: [],
+    preferences: [],
+  },
   ended: false,
   private: false,
 };

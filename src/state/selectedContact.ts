@@ -1,8 +1,8 @@
-import UserResponse from "@/interfaces/User";
+import UserResponse from "@/interfaces/responses/User";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: UserResponse = {
-  _id: null,
+  _id: "",
   address: "",
   birthdate: "",
   email: "",
@@ -11,6 +11,9 @@ const initialState: UserResponse = {
   phone: "",
   profile_img: "",
   username: "",
+  plans: [],
+  history: [],
+  preferences: [],
 };
 
 const selectedContactSlice = createSlice({

@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useState } from "react";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface ICalendarData {
   date: Date;

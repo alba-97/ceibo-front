@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import Rating from "./Rating";
 import { styles } from "../../styles/PlanDetails";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 
 interface IPlanEndedProps {

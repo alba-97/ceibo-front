@@ -8,7 +8,7 @@ import {
   StyleProp,
   ImageSourcePropType,
 } from "react-native";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import Separator from "./Separator";
 
 interface ISwiperProps {

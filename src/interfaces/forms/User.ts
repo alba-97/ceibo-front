@@ -8,4 +8,5 @@ export default interface UserForm {
   last_name: string;
   phone?: string;
   profile_img: string;
+  new_user?: boolean;
 }

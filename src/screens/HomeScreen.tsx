@@ -11,7 +11,7 @@ import { getFilteredPlans } from "../api/getFilteredPlans";
 import { getUser } from "../api/getUser";
 import { getPlan } from "../api/getPlan";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
@@ -24,6 +24,8 @@ import misPlanes from "../assets/misPlanes.png";
 import noPlanesCreados from "../assets/noPlanesCreados.png";
 import planesPasados from "../assets/planesPasados.png";
 import { RootState } from "@/state/store";
+import EventResponse from "@/interfaces/responses/Event";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -32,9 +34,9 @@ export default function HomeScreen() {
   const { refetch } = refetchData();
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handlePress = async (plan) => {
+  const handlePress = async (plan: EventResponse) => {
     try {
       const updatedPlan = await getPlan(plan._id);
       dispatch(setSelectedPlan(updatedPlan));
@@ -107,7 +109,7 @@ export default function HomeScreen() {
                 styleLogo={styles.logoMisP}
               />
             ) : (
-              <View style={{ textAlign: "center" }}>
+              <View style={{ alignItems: "center" }}>
                 <View style={styles.logoutContainer}>
                   <Image style={styles.logo} source={noTienesPlanes} />
                 </View>
@@ -121,7 +123,7 @@ export default function HomeScreen() {
                 styleLogo={styles.logoMisPPasados}
               />
             ) : (
-              <View style={{ textAlign: "center" }}>
+              <View style={{ alignItems: "center" }}>
                 <View style={styles.logoutContainer}>
                   <Image style={styles.logoNoPlanes} source={noPlanesCreados} />
                 </View>

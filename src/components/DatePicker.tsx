@@ -1,13 +1,16 @@
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { TextInput } from "react-native";
+import { TextInput, ViewStyle } from "react-native";
 import { styles } from "../styles/datePickerStyles";
 import { useState } from "react";
 
 interface IDatePickerProps {
-  selectedDate: string;
-  value?: Date;
+  selectedDate?: string;
+  value?: Date | null;
+  customStyle?: ViewStyle;
+  type?: string;
+  placeholder?: string;
   onChange: (date: Date) => void;
 }
 

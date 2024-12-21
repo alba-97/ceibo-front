@@ -1,28 +1,26 @@
-// Native
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
-import React, { useState, useEffect } from "react";
-// Components
+import { useState, useEffect } from "react";
 import GenericButton from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
-
 import { DatePicker } from "../components/DatePicker";
-import { useNavigation } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function AddPlanScreen1() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [start_date, setstart_date] = useState(null);
+  const [start_date, setstart_date] = useState<Date>(new Date());
   const [path, setPath] = useState(
     "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png"
   );
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const selectImage = async () => {
     try {
@@ -43,7 +41,7 @@ export default function AddPlanScreen1() {
   }, [start_date]);
 
   const handleContinue = () => {
-    const eventDate = new Date(start_date).toISOString();
+    const eventDate = start_date.toISOString();
 
     navigation.navigate("AddPlanScreen2", {
       title,

@@ -1,7 +1,7 @@
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { formatDate } from "../utils/fromDateToDateDescription";
+import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import styles from "../styles/ImageContainerStyles";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface IMainEventProps {
   plan: EventResponse;
@@ -15,7 +15,7 @@ export const ImageContainer = ({ plan, onPress }: IMainEventProps) => {
       <View style={styles.overlay}>
         <Text style={styles.text}>{plan?.title}</Text>
         <Text style={styles.subtitle}>
-          {plan?.start_date && formatDate(plan?.start_date)}
+          {plan?.start_date && fromDateToDateDescription(plan?.start_date)}
         </Text>
         <Text style={styles.subtitle}>{plan?.category?.name}</Text>
       </View>

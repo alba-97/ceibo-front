@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, Alert, TextInput } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { GenericInput } from "../components/GenericInput";
 import GenericButton from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
@@ -11,19 +11,20 @@ import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birthdate, setBirthdate] = useState(null);
+  const [birthdate, setBirthdate] = useState<Date | null>();
   const [address, setAddress] = useState("");
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
   const user = useSelector((state: RootState) => state.user);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   useEffect(() => {
     setBirthdate(birthdate);
@@ -51,12 +52,13 @@ export default function RegisterScreen() {
       setPassword("");
       setEmail("");
       setPhone("");
-      setBirthdate("");
+      setBirthdate(null);
       setAddress("");
       setFirst_name("");
       setLast_name("");
     } catch (error) {
-      Alert.alert("Error", error.response.data, [{ text: "OK" }]);
+      if (error instanceof AxiosError)
+        Alert.alert("Error", error.response?.data, [{ text: "OK" }]);
     }
   };
 
@@ -112,7 +114,6 @@ export default function RegisterScreen() {
             placeholder="DD/MM/YYYY"
             customStyle={styles.birthdate}
           />
-
           <Text style={styles.text}>Direccion</Text>
           <GenericInput value={user?.address} onChangeText={setAddress} />
           <Text style={styles.text}>Numero de telefono</Text>

@@ -3,7 +3,7 @@ import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserForm from "@/interfaces/forms/User";
 
-export async function updateUser(data: UserForm) {
+export async function updateUser(data: Partial<UserForm>) {
   try {
     const token = await AsyncStorage.getItem("token");
     await axios.put(`${API_URL}/users/`, data, {

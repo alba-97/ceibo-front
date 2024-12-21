@@ -1,4 +1,3 @@
-// Native
 import { LinearGradient } from "expo-linear-gradient";
 import { View, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
@@ -18,8 +17,8 @@ export default function ContactInfoScreen() {
   const { _id, first_name, last_name, address, phone, username, email } =
     contact;
   const user = useSelector((state: RootState) => state.user);
-  const [loading, setLoading] = useState(false);
-  const [isFriend, setIsFriend] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isFriend, setIsFriend] = useState<boolean>(true);
 
   const fullName = `${first_name}  ${last_name}`;
   const birthdate = contact?.birthdate?.split("-");
@@ -28,7 +27,7 @@ export default function ContactInfoScreen() {
   } / ${birthdate[0]}`;
 
   const isAlreadyFriend = async () => {
-    const userFriends = await getUserFriends(user._id);
+    const userFriends = await getUserFriends();
     setIsFriend(userFriends.some((friend) => friend._id === contact._id));
   };
 
@@ -36,7 +35,7 @@ export default function ContactInfoScreen() {
     isAlreadyFriend();
   }, [user._id, contact]);
 
-  const handleAddFriend = async (friendId) => {
+  const handleAddFriend = async (friendId: string) => {
     try {
       setLoading(true);
       await addFriend(friendId);
@@ -47,7 +46,7 @@ export default function ContactInfoScreen() {
     }
   };
 
-  const handleRemoveFriend = async (friendId) => {
+  const handleRemoveFriend = async (friendId: string) => {
     try {
       setLoading(true);
       await removeFriend(user._id, friendId);

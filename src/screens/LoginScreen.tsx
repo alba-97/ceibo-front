@@ -1,10 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Text, ScrollView, Alert, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getUser } from "../api/getUser";
 import { getUserPlans } from "../api/getUserPlans";
 import { GenericInput } from "../components/GenericInput";
@@ -15,17 +15,16 @@ import { Navbar } from "../components/Navbar";
 import { getPlanHistory } from "../api/getPlanHistory";
 import iniciaSesion from "../assets/iniciaSesion.png";
 import { Image } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handleSignup = () => {
-    navigation.navigate("Register");
-  };
+  const handleSignup = () => {};
 
   const handleLogin = async () => {
     try {
@@ -44,14 +43,13 @@ export default function LoginScreen() {
         dispatch(setUser(userData));
         const userPlans = await getUserPlans();
         dispatch(setUserPlans(userPlans));
-
         const planHistory = await getPlanHistory();
         dispatch(setPlanHistory(planHistory));
-
         navigation.navigate("HomeScreen");
       }
     } catch (error) {
-      Alert.alert("Error", error.response.data, [{ text: "OK" }]);
+      if (error instanceof AxiosError)
+        Alert.alert("Error", error.response?.data, [{ text: "OK" }]);
     }
   };
 

@@ -5,7 +5,7 @@ import { getCanEdit } from "../../api/getCanEdit";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { deleteEvent } from "../../api/deleteEvent";
 import { useDispatch } from "react-redux";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import { styles } from "@/styles/genericInputStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 

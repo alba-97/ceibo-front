@@ -1,11 +1,15 @@
-import { TextInput, TextStyle } from "react-native";
+import { KeyboardTypeOptions, TextInput, TextStyle } from "react-native";
 import { styles } from "../styles/genericInputStyles";
 
 interface IGenericInputProps {
   customStyle?: TextStyle;
   placeholder?: string;
   value: string;
+  style?: TextStyle;
   onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  onSubmitEditing?: () => void;
 }
 
 export const GenericInput = ({

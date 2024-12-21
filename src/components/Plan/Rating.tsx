@@ -6,7 +6,7 @@ import { styles } from "../../styles/PlanDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_URL } from "@env";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface IRatingProps {
   plan: EventResponse;

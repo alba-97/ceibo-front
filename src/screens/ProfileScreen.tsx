@@ -42,15 +42,12 @@ export default function ProfileScreen() {
     });
     try {
       const token = await AsyncStorage.getItem("token");
-      const path = result?.assets[0]?.uri;
+      const path = result.assets?.[0].uri;
       if (token && path) {
         if (path !== "") {
           const formData = new FormData();
-          formData.append("image", {
-            uri: path,
-            name: "image.jpg",
-            type: "image/jpeg",
-          });
+          const blob = await fetch(path).then((response) => response.blob());
+          formData.append("image", blob, "image.jpg");
           const response = await axios.post(`${API_URL}/upload`, formData);
           await axios.put(
             `${API_URL}/users/`,
@@ -143,7 +140,7 @@ export default function ProfileScreen() {
               styles={styles}
             />
             <ChangeData
-              keyboardType="date"
+              keyboardType="numeric"
               baseData={user?.birthdate}
               propName={"birthdate"}
               data={"Nacimiento"}

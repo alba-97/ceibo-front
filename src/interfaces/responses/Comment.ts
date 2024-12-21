@@ -1,4 +1,4 @@
-import { EventResponse } from "./Event";
+import EventResponse from "./Event";
 import UserResponse from "./User";
 
 export default interface CommentResponse {

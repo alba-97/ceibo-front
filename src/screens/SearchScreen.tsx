@@ -1,14 +1,12 @@
-// React Components
 import { Text, ScrollView, View, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
-// Components
+import { useEffect, useState } from "react";
 import { GenericInput } from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { API_URL } from "@env";
 import { styles } from "../appCss";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { getPlan } from "../api/getPlan";
@@ -16,6 +14,9 @@ import { SearchImg } from "../components/searchImage";
 import { getOrganizer } from "../api/getOrganizer";
 import refetchData from "../api/refetchData";
 import RadioButton from "../components/RadioButton";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import EventResponse from "@/interfaces/responses/Event";
+import IOption from "@/interfaces/Option";
 
 export default function SearchScreen() {
   const [results, setResults] = useState([]);
@@ -26,14 +27,14 @@ export default function SearchScreen() {
     { label: "Categoría", value: "category" },
     { label: "Usuario", value: "user" },
   ];
-  const [option, setOption] = useState(options[0].value);
+  const [option, setOption] = useState<IOption>(options[0]);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
 
   const { refetch } = refetchData();
 
-  const handlePress = async (plan) => {
+  const handlePress = async (plan: EventResponse) => {
     const updatedPlan = await getPlan(plan._id);
     dispatch(setSelectedPlan(updatedPlan));
     const organizer = await getOrganizer(plan._id);
@@ -41,12 +42,12 @@ export default function SearchScreen() {
     navigation.navigate("PlanDetail");
   };
 
-  const handleQueryChange = (text) => {
+  const handleQueryChange = (text: string) => {
     setQuery(text);
   };
 
   const handleSearch = () => {
-    if (option == "text") {
+    if (option.value == "text") {
       axios
         .get(`${API_URL}/events/search?query=${query}`)
         .then((response) => {
@@ -56,7 +57,7 @@ export default function SearchScreen() {
           Alert.alert("Error", "Evento no encontrado");
           console.log(error);
         });
-    } else if (option == "category") {
+    } else if (option.value == "category") {
       axios
         .get(`${API_URL}/events/search/category?query=${query}`)
         .then((response) => {
@@ -66,7 +67,7 @@ export default function SearchScreen() {
           Alert.alert("Error", "Evento no encontrado");
           console.log(error);
         });
-    } else if (option == "user") {
+    } else if (option.value == "user") {
       axios
         .get(`${API_URL}/events/search/user?query=${query}`)
         .then((response) => {

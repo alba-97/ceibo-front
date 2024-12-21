@@ -5,7 +5,7 @@ interface IGenericButtonProps {
   text: string;
   textStyle?: TextStyle;
   onPress?: () => void;
-  customStyle?: ViewStyle;
+  customStyle?: ViewStyle | TextStyle;
 }
 
 const GenericButton = ({

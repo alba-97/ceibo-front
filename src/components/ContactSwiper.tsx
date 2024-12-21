@@ -1,4 +1,4 @@
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import { ImageContainer } from "./ImageContainer";
 import { Text, View } from "react-native";
 import Swiper from "react-native-swiper";

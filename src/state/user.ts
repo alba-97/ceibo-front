@@ -2,7 +2,7 @@ import UserResponse from "@/interfaces/responses/User";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: UserResponse = {
-  _id: null,
+  _id: "",
   email: "",
   username: "",
   first_name: "",

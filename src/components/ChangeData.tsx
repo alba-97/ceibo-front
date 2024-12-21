@@ -17,16 +17,17 @@ import { ProfileText } from "../components/ProfileText";
 import { updateUser } from "../state/user";
 import { updateSelectedPlan } from "../state/selectedPlan";
 import { API_URL } from "@env";
-import { styles } from "../styles/editPlanStyles";
+import { styles as editPlanStyles } from "../styles/editPlanStyles";
+import { styles as profileScreenStyles } from "../styles/profileScreenStyles";
 import { RootState } from "@/state/store";
 
 interface IChangeData {
   mode: string;
   data: string;
-  baseData: string;
+  baseData?: string | number;
   propName: string;
   keyboardType: KeyboardTypeOptions;
-  styles: typeof styles;
+  styles: typeof editPlanStyles | typeof profileScreenStyles;
 }
 
 export const ChangeData = ({
@@ -37,6 +38,7 @@ export const ChangeData = ({
   keyboardType,
   styles,
 }: IChangeData) => {
+  if (typeof baseData !== "string") baseData = String(baseData);
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
   const [change, setChange] = useState(false);

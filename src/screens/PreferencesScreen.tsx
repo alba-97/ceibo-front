@@ -12,9 +12,10 @@ import actualizar from "../assets/actualizar.png";
 import { updateUser } from "../api/updateUser";
 import CategoryResponse from "@/interfaces/responses/Category";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import IOption from "@/interfaces/Option";
 
 export default function PreferencesScreen() {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<IOption[]>([]);
   const [categories, setCategories] = useState([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -32,7 +33,7 @@ export default function PreferencesScreen() {
   }, [refetch]);
 
   const handleSubmit = async () => {
-    const status = await addPreferences(selected);
+    const status = await addPreferences([{ name: selected[0].value }]);
     if (status == 200) {
       triggerRefetch();
       updateUser({ new_user: false });

@@ -1,7 +1,7 @@
 import { Image, Text, TouchableOpacity } from "react-native";
-import { formatDate } from "../utils/fromDateToDateDescription";
+import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import styles from "../styles/searchImageStyle";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 
 interface ISearchImgProps {
   plan: EventResponse;
@@ -15,7 +15,7 @@ export const SearchImg = ({ plan, onPress }: ISearchImgProps) => {
 
       <Text style={styles.text}>{plan?.title}</Text>
       <Text style={styles.textFecha}>
-        {plan?.start_date && formatDate(plan?.start_date)}
+        {plan?.start_date && fromDateToDateDescription(plan?.start_date)}
       </Text>
     </TouchableOpacity>
   );

@@ -1,4 +1,4 @@
-import EventResponse from "@/interfaces/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: EventResponse[] = [];

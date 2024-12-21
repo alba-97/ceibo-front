@@ -8,7 +8,7 @@ import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getUserFriends } from "../../api/getUserFriends";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
 

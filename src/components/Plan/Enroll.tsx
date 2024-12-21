@@ -6,7 +6,7 @@ import { enrollUser } from "../../api/enrollUser";
 import { useDispatch } from "react-redux";
 import { discardUser } from "../../api/discardUser";
 import fecha from "../../assets/fecha.png";
-import { EventResponse } from "@/interfaces/responses/Event";
+import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 
 interface IPlanEnrollProps {
