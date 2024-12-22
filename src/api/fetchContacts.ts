@@ -1,5 +1,5 @@
 import * as Contacts from "expo-contacts";
-import { getAllUsers } from "./getAllUsers";
+import getAllUsers from "./getAllUsers";
 
 const getContactNumbers = (data: Contacts.Contact[]) => {
   const phoneNumbers = [];
@@ -33,6 +33,5 @@ export const fetchContacts = async () => {
   });
   const phoneNumbers = getContactNumbers(data);
   const filteredContacts = await filterContacts(phoneNumbers);
-  console.log("filtered contacts", filteredContacts);
   return filteredContacts;
 };

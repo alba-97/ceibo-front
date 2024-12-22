@@ -1,21 +1,13 @@
 import axios from "axios";
 import { API_URL } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import getHeaders from "@/utils/getHeaders";
 
-export const addComment = async (text: string, planId: string) => {
-  try {
-    const token = await AsyncStorage.getItem("token");
-    const res = await axios.post(
-      `${API_URL}/comments/${planId}`,
-      { text },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
+export default async (text: string, planId: string) => {
+  const headers = await getHeaders();
+  const { data } = await axios.post(
+    `${API_URL}/comments/${planId}`,
+    { text },
+    headers
+  );
+  return data;
 };

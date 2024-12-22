@@ -4,81 +4,57 @@ import MultipleDropdown from "../MultipleDropdown";
 import RadioButton from "../RadioButton";
 import { styles } from "../../styles/PlanDetails";
 import GenericButton from "../GenericButton";
-import { API_URL } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { getUserFriends } from "../../api/getUserFriends";
+import getUserFriends from "../../api/getUserFriends";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
+import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
+import inviteUsers from "@/api/inviteUsers";
+import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
+import handleError from "@/utils/handleError";
 
 interface IPlanInviteProps {
   plan: EventResponse;
 }
 
 const PlanInvite = ({ plan }: IPlanInviteProps) => {
-  const sendMethods = [
+  const sendMethods: IOption[] = [
     { label: "Email", value: "email" },
     { label: "WhatsApp", value: "phone" },
   ];
   const [sendMethod, setSendMethod] = useState<IOption>(sendMethods[0]);
   const [users, setUsers] = useState<UserResponse[]>([]);
-  const [friends, setFriends] = useState<IOption[]>([]);
+  const [friendsDropdown, setFriendsDropdown] = useState<IOption[]>([]);
   const [invited, setInvited] = useState<IOption[]>([]);
 
   const handleChange = (option: IOption) => {
     try {
-      const friends = users.map((item) => ({
-        label: item.username,
-        value: item.email,
-      }));
+      const friendsDropdown = fromUserResponsesToOptions(users);
       setSendMethod(option);
-      setFriends(friends);
-    } catch (error) {
-      console.log(error);
+      setFriendsDropdown(friendsDropdown);
+    } catch (err) {
+      handleError(err);
     }
   };
 
   const handleInvite = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        await axios.post(
-          `${API_URL}/users/invite`,
-          {
-            users: invited,
-            plan,
-            method: sendMethod.value,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        Alert.alert("OK", "Invitaciones enviadas");
-      } else {
-        Alert.alert("Error", "Error de autenticación");
-      }
-    } catch (error) {
+      const users = fromOptionstoStringArray(invited);
+      await inviteUsers(users, plan, sendMethod.value);
+      Alert.alert("OK", "Invitaciones enviadas");
+    } catch (err) {
       Alert.alert("Error", "Hubo un problema al enviar invitaciones");
     }
   };
 
   const fetchInfo = async () => {
     try {
-      let users = await getUserFriends();
+      const users = await getUserFriends();
       setUsers(users);
-
-      const friends = users
-        .filter((item) => item.email)
-        .map((item) => ({
-          label: item.username,
-          value: item.email,
-        }));
-      setFriends(friends);
-    } catch (error) {
-      console.log(error);
+      const friends = fromUserResponsesToOptions(users);
+      setFriendsDropdown(friends);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -90,7 +66,7 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
     <View style={styles.input}>
       <MultipleDropdown
         setSelected={(val) => setInvited(val)}
-        data={friends}
+        data={friendsDropdown}
         save="value"
         onSelect={() => {}}
         label="Invitar personas"
@@ -106,7 +82,7 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
         onSelect={handleChange}
         defaultValue={sendMethod}
       />
-      {invited && invited[0] && (
+      {invited[0] && (
         <GenericButton
           text={"Invitar"}
           customStyle={{ marginHorizontal: 50 }}

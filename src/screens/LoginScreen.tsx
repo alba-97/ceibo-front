@@ -1,21 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, ScrollView, Alert, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
-import { getUser } from "../api/getUser";
-import { getUserPlans } from "../api/getUserPlans";
+import axios from "axios";
+import getUser from "../api/getUser";
+import getUserPlans from "../api/getUserPlans";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
-import { getPlanHistory } from "../api/getPlanHistory";
+import getPlanHistory from "../api/getPlanHistory";
 import iniciaSesion from "../assets/iniciaSesion.png";
 import { Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -28,15 +29,15 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`${API_URL}/users/login`, {
+      const { data } = await axios.post(`${API_URL}/users/login`, {
         username,
         password,
       });
-      if (res.data.token) {
-        await AsyncStorage.setItem("token", res.data.token);
+      if (data.token) {
+        await AsyncStorage.setItem("token", data.token);
         await axios.get(`${API_URL}/users/secret`, {
           headers: {
-            Authorization: `Bearer ${res.data.token}`,
+            Authorization: `Bearer ${data.token}`,
           },
         });
         const userData = await getUser();
@@ -47,9 +48,8 @@ export default function LoginScreen() {
         dispatch(setPlanHistory(planHistory));
         navigation.navigate("HomeScreen");
       }
-    } catch (error) {
-      if (error instanceof AxiosError)
-        Alert.alert("Error", error.response?.data, [{ text: "OK" }]);
+    } catch (err) {
+      handleError(err);
     }
   };
 

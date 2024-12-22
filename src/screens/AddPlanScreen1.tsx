@@ -10,6 +10,7 @@ import { DatePicker } from "../components/DatePicker";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function AddPlanScreen1() {
   const [title, setTitle] = useState("");
@@ -33,7 +34,9 @@ export default function AddPlanScreen1() {
       if (result.assets && result.assets[0]) {
         setPath(result.assets[0].uri);
       }
-    } catch {}
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   useEffect(() => {

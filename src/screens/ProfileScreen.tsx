@@ -17,6 +17,7 @@ import cerrarSesion from "../assets/cerrarSesion.png";
 import preferencias from "../assets/preferencias.png";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -64,9 +65,8 @@ export default function ProfileScreen() {
           Alert.alert("Hecho", "Imagen de perfil actualizada correctamente");
         }
       }
-    } catch (error) {
-      Alert.alert("Error", "Error al actualizar la imagen de perfil");
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
   };
   return (

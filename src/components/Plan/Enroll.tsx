@@ -2,12 +2,14 @@ import { useState } from "react";
 import { View, Image, Text } from "react-native";
 import GenericButton from "../GenericButton";
 import { styles } from "../../styles/PlanDetails";
-import { enrollUser } from "../../api/enrollUser";
+import enrollUser from "../../api/enrollUser";
 import { useDispatch } from "react-redux";
-import { discardUser } from "../../api/discardUser";
+import discardUser from "../../api/discardUser";
 import fecha from "../../assets/fecha.png";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
+import { removeUserPlan } from "@/state/user";
+import handleError from "@/utils/handleError";
 
 interface IPlanEnrollProps {
   plan: EventResponse;
@@ -21,14 +23,23 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
   const handleEnroll = async () => {
     if (!plan._id) return;
     setLoading(true);
-    await enrollUser(plan._id, dispatch);
+    try {
+      await enrollUser(plan._id);
+    } catch (err) {
+      handleError(err);
+    }
     setLoading(false);
   };
 
   const handleStopParticipating = async () => {
     if (!plan._id) return;
     setLoading(true);
-    await discardUser(plan._id, dispatch);
+    try {
+      await discardUser(plan._id);
+      dispatch(removeUserPlan(plan._id));
+    } catch (err) {
+      handleError(err);
+    }
     setLoading(false);
   };
 

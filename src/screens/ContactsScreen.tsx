@@ -11,12 +11,13 @@ import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
 import { SingleContact } from "../components/SingleContact";
 import iniciaSesion from "../assets/iniciaSesion.png";
-import { getUserFriends } from "../api/getUserFriends";
+import getUserFriends from "../api/getUserFriends";
 import { setContacts } from "../state/contacts";
 import amigos from "../assets/amigos.png";
 import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
@@ -31,24 +32,24 @@ export default function ContactsScreen() {
       const friends = await getUserFriends();
       dispatch(setContacts(friends));
       setFilteredContacts(friends);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
   const handleFetch = async () => {
     try {
       await fetchFriends();
-    } catch (error) {
-      console.log("fetch friends error", error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
   useEffect(() => {
     try {
       handleFetch();
-    } catch (error) {
-      console.log("user effect error", error);
+    } catch (err) {
+      handleError(err);
     }
   }, [user]);
 

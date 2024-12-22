@@ -9,12 +9,13 @@ import { Navbar } from "../components/Navbar";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
-import { getAllUsers } from "../api/getAllUsers";
+import getAllUsers from "../api/getAllUsers";
 import busqueElContacto from "../assets/busqueElContacto.png";
 import agregarAmigo from "../assets/agregarAmigo.png";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UserResponse from "@/interfaces/responses/User";
+import handleError from "@/utils/handleError";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState<UserResponse[]>([]);
@@ -51,10 +52,17 @@ export default function ContactsScreen() {
     navigation.navigate("ContactInfoScreen", { selectedContact });
   };
 
-  useEffect(() => {
-    getAllUsers().then((users) => {
+  const fetchUsers = async () => {
+    try {
+      const users = await getAllUsers();
       setContacts(users);
-    });
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   return (

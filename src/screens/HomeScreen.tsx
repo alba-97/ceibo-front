@@ -5,19 +5,19 @@ import { styles } from "../appCss";
 import { Navbar } from "../components/Navbar";
 import { SwiperComponent } from "../components/Swiper";
 import { MainEvent } from "../components/MainEvent";
-import { getAllPlans } from "../api/getAllPlans";
-import { getUserPlans } from "../api/getUserPlans";
-import { getFilteredPlans } from "../api/getFilteredPlans";
-import { getUser } from "../api/getUser";
-import { getPlan } from "../api/getPlan";
+import getAllPlans from "../api/getAllPlans";
+import getUserPlans from "../api/getUserPlans";
+import getFilteredPlans from "../api/getFilteredPlans";
+import getUser from "../api/getUser";
+import getPlan from "../api/getPlan";
 import { useSelector, useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
-import { getOrganizer } from "../api/getOrganizer";
+import getOrganizer from "../api/getOrganizer";
 import refetchData from "../api/refetchData";
-import { getPlanHistory } from "../api/getPlanHistory";
+import getPlanHistory from "../api/getPlanHistory";
 import noTienesPlanes from "../assets/noTienesPlanes.png";
 import recomendaciones from "../assets/recomendaciones.png";
 import misPlanes from "../assets/misPlanes.png";
@@ -26,6 +26,7 @@ import planesPasados from "../assets/planesPasados.png";
 import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -43,15 +44,30 @@ export default function HomeScreen() {
       const organizer = await getOrganizer(plan._id);
       dispatch(setOrganizer(organizer));
       navigation.navigate("PlanDetail");
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const userData = await getUser();
+      return userData;
+    } catch (err) {
+      return;
     }
   };
 
   const fetchData = async () => {
-    const userData = await getUser();
+    try {
+      const userData = await fetchUser();
 
-    if (userData._id) {
+      if (!userData) {
+        const plans = await getAllPlans();
+        dispatch(setPlans(plans));
+        return;
+      }
+
       dispatch(setUser(userData));
       const userPlans = await getUserPlans();
       dispatch(setUserPlans(userPlans));
@@ -59,16 +75,15 @@ export default function HomeScreen() {
       const planHistory = await getPlanHistory();
       dispatch(setPlanHistory(planHistory));
 
-      if (userData.preferences && userData.preferences[0]) {
+      if (userData.preferences[0]) {
         const plans = await getFilteredPlans();
         dispatch(setPlans(plans));
       } else {
         const plans = await getAllPlans();
         dispatch(setPlans(plans));
       }
-    } else {
-      const plans = await getAllPlans();
-      dispatch(setPlans(plans));
+    } catch (err) {
+      handleError(err);
     }
   };
 

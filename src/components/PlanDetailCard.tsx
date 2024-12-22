@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getUserPlans } from "../api/getUserPlans";
+import getUserPlans from "../api/getUserPlans";
 import { styles } from "../styles/PlanDetails";
 import { useSelector, useDispatch } from "react-redux";
-import { setUserPlans } from "../state/user";
-import axios from "axios";
+import { addUserPlan, setUserPlans } from "../state/user";
 import Comments from "./Plan/Comments";
 import GenericButton from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
-import { API_URL } from "@env";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
-import { getUserFriends } from "../api/getUserFriends";
+import getUserFriends from "../api/getUserFriends";
 import fecha from "../assets/fecha.png";
 import descripcion from "../assets/descripcion.png";
 import organizador from "../assets/organizador.png";
@@ -21,8 +18,12 @@ import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
 import PlanEnded from "./Plan/Ended";
-import { discardUser } from "@/api/discardUser";
+import discardUser from "@/api/discardUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import getEditableEvents from "@/api/getEditableEvents";
+import enrollUser from "@/api/enrollUser";
+import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
+import handleError from "@/utils/handleError";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -47,27 +48,14 @@ export const PlanDetailCard = () => {
     try {
       let users = await getUserFriends();
       setUsers(users);
-      const friends = users.filter((item) => item.email);
-      const friendsOptions = friends.map((item) => ({
-        label: item.username,
-        value: item.email,
-      }));
+
+      const friendsOptions = fromUserResponsesToOptions(users);
       setFriends(friendsOptions);
 
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        const { data } = await axios.get(
-          `${API_URL}/events/${plan._id}/can-update`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setCanEdit(data);
-      }
-    } catch (error) {
-      console.log(error);
+      const data = await getEditableEvents(plan._id);
+      setCanEdit(data);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -84,30 +72,24 @@ export const PlanDetailCard = () => {
   const handleEnroll = async () => {
     setLoading(true);
     try {
-      const token = await AsyncStorage.getItem("token");
-
-      if (token) {
-        await axios.post(
-          `${API_URL}/events/enroll`,
-          { eventId: plan._id },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const newPlans = await getUserPlans();
-        dispatch(setUserPlans(newPlans));
-      }
-    } catch (error) {
-      console.log(error);
+      const data = await enrollUser(plan._id);
+      dispatch(addUserPlan(data));
+      const newPlans = await getUserPlans();
+      dispatch(setUserPlans(newPlans));
+    } catch (err) {
+      handleError(err);
     }
     setLoading(false);
   };
 
   const handleStopParticipating = async (id: string | null) => {
+    if (!id) return;
     setLoading(true);
-    id && (await discardUser(id, dispatch));
+    try {
+      await discardUser(id);
+    } catch (err) {
+      handleError(err);
+    }
     setLoading(false);
   };
 

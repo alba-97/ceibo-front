@@ -1,25 +1,23 @@
 import {
-  Alert,
   KeyboardTypeOptions,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EvilIcons, Feather } from "@expo/vector-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DatePicker } from "./DatePicker";
 import { useState } from "react";
 import moment from "moment";
-import axios, { AxiosError } from "axios";
 import { ProfileText } from "../components/ProfileText";
 import { updateUser } from "../state/user";
 import { updateSelectedPlan } from "../state/selectedPlan";
-import { API_URL } from "@env";
 import { styles as editPlanStyles } from "../styles/editPlanStyles";
 import { styles as profileScreenStyles } from "../styles/profileScreenStyles";
-import { RootState } from "@/state/store";
+import editUser from "@/api/editUser";
+import editEvent from "@/api/editEvent";
+import handleError from "@/utils/handleError";
 
 interface IChangeData {
   mode: string;
@@ -41,52 +39,26 @@ export const ChangeData = ({
   if (typeof baseData !== "string") baseData = String(baseData);
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
-  const [change, setChange] = useState(false);
-  const plan = useSelector((state: RootState) => state.selectedPlan);
+  const [change, setChange] = useState<boolean>(false);
 
   const handleChange = async (propName: string, newValue: string) => {
-    if (change) {
-      try {
-        const token = await AsyncStorage.getItem("token");
-        if (token) {
-          if (mode == "user") {
-            await axios.put(
-              `${API_URL}/users/`,
-              {
-                [propName]: newValue,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            dispatch(updateUser({ [propName]: newValue }));
-          } else if (mode == "event") {
-            await axios.put(
-              `${API_URL}/events/${plan._id}`,
-              {
-                [propName]: newValue,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            dispatch(
-              updateSelectedPlan({
-                [propName]: newValue,
-              })
-            );
-          }
-        }
-      } catch (error) {
-        if (error instanceof AxiosError)
-          Alert.alert("Error", error.response?.data);
+    try {
+      setChange(!change);
+      if (!change) return;
+      const data = { [propName]: newValue };
+      switch (mode) {
+        case "user":
+          await editUser(data);
+          dispatch(updateUser(data));
+          break;
+        case "event":
+          await editEvent(data);
+          dispatch(updateSelectedPlan(data));
+          break;
       }
+    } catch (err) {
+      handleError(err);
     }
-    setChange(!change);
   };
   let date = mode == "user" ? "birthdate" : "start_date";
   const formattedData =

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { styles } from "../styles/loginScreenStyles";
-import { createNewUser } from "../api/createUser";
-import { getUserPlans } from "../api/getUserPlans";
-import { getUser } from "../api/getUser";
+import createNewUser from "../api/createUser";
+import getUserPlans from "../api/getUserPlans";
+import getUser from "../api/getUser";
 import { useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { setUser, setUserPlans } from "../state/user";
@@ -21,6 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import GoogleUser from "@/interfaces/Google";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -70,8 +71,8 @@ const GoogleSignInButton = () => {
         await handleLogin(user.name, "Prueba1234");
       }
       setIsUserInfoFetched(true);
-    } catch (error) {
-      console.warn("handle login error: " + error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -87,8 +88,8 @@ const GoogleSignInButton = () => {
         profile_img: picture,
       };
       await createNewUser(userData);
-    } catch (error) {
-      console.log("Error al hacer la petición:", error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -111,8 +112,8 @@ const GoogleSignInButton = () => {
         dispatch(setUserPlans(userPlans));
         navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
       }
-    } catch (error) {
-      console.log("handle login error", error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -120,8 +121,8 @@ const GoogleSignInButton = () => {
     try {
       await promptAsync();
       await getUserInfo();
-    } catch (error) {
-      console.log("fallo onPress", error);
+    } catch (err) {
+      handleError(err);
     }
   };
   return (

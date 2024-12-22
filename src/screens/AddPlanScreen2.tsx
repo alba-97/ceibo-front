@@ -1,4 +1,3 @@
-// Native
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Text,
@@ -9,7 +8,6 @@ import {
   Image,
 } from "react-native";
 import { useState, useEffect } from "react";
-// Components
 import GenericButton from "../components/GenericButton";
 import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
@@ -17,15 +15,15 @@ import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { API_URL } from "@env";
 import ChevronImg from "../assets/images/chevron.png";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { getCategories } from "../api/getCategories";
+import getCategories from "../api/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import { Feather } from "@expo/vector-icons";
-import CategoryResponse from "@/interfaces/responses/Category";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
+import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import handleError from "@/utils/handleError";
+import createEvent from "@/api/createEvent";
 
 interface IAddPlanScreen2Props {
   route?: {
@@ -58,74 +56,70 @@ export default function AddPlanScreen2({
   const [total_to_pay, setTotal_to_pay] = useState("");
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
-  const [category, setCategory] = useState("Categoría");
-  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState<IOption>({
+    value: "categoria",
+    label: "Categoría",
+  });
+  const [categories, setCategories] = useState<IOption[]>([]);
   const [link_to_pay, setLink_to_pay] = useState("");
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  const fetchCategories = async () => {
+    try {
+      const data = await getCategories();
+      const categories = fromCategoryResponsesToOptions(data);
+      setCategories(categories);
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
   useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(
-        data.map((item: CategoryResponse, index: number) => ({
-          key: index,
-          label: item.name,
-        }))
-      );
-    });
+    fetchCategories();
   }, []);
 
   const handleSubmit = async () => {
     try {
       const formattedDate = start_date.split("T")[0];
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        let imageUrl;
 
-        if (
-          ![
-            "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
-            "",
-          ].includes(path)
-        ) {
-          const response = await fetch(path);
-          const blob = await response.blob();
-          const formData = new FormData();
-          formData.append("image", blob, "image.jpg");
-          const res = await axios.post(`${API_URL}/upload`, formData);
-          imageUrl = res.data.imageUrl;
-        }
+      let imageUrl;
 
-        const eventData = {
-          title,
-          description,
-          location,
-          img: imageUrl,
-          start_date: formattedDate,
-          start_time,
-          end_time,
-          min_age,
-          max_age,
-          min_to_pay,
-          total_to_pay,
-          category,
-          link_to_pay,
-        };
-
-        console.log(eventData);
-
-        await axios.post(`${API_URL}/events/`, eventData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        Alert.alert("Exito", "Evento agregado");
-        navigation.navigate("HomeScreen");
-      } else {
-        Alert.alert("Error", "Ingresá sesión para publicar un evento");
+      if (
+        ![
+          "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+          "",
+        ].includes(path)
+      ) {
+        const response = await fetch(path);
+        const blob = await response.blob();
+        const formData = new FormData();
+        formData.append("image", blob, "image.jpg");
+        const res = await axios.post(`${API_URL}/upload`, formData);
+        imageUrl = res.data.imageUrl;
       }
-    } catch (error) {
-      Alert.alert("Error", JSON.stringify(error));
+
+      const eventData = {
+        title,
+        description,
+        location,
+        img: imageUrl,
+        start_date: formattedDate,
+        end_date: formattedDate,
+        end_time,
+        min_age,
+        max_age,
+        min_to_pay,
+        total_to_pay,
+        category: category.value,
+        link_to_pay,
+        private: false,
+      };
+      await createEvent(eventData);
+      Alert.alert("Exito", "Evento agregado");
+      navigation.navigate("HomeScreen");
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -220,7 +214,7 @@ export default function AddPlanScreen2({
                 <ModalSelector
                   data={categories}
                   onChange={(option: IOption) => {
-                    setCategory(option.label);
+                    setCategory(option);
                   }}
                   overlayStyle={{ backgroundColor: "transparent" }}
                   optionContainerStyle={{
@@ -243,7 +237,7 @@ export default function AddPlanScreen2({
                   cancelText="Cancelar"
                 >
                   <Text style={styles.categoryContainer}>
-                    {category}
+                    {category.label}
                     <Image
                       source={ChevronImg}
                       resizeMode="contain"

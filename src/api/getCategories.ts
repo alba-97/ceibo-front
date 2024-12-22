@@ -1,11 +1,10 @@
 import axios from "axios";
 import { API_URL } from "@env";
+import CategoryResponse from "@/interfaces/responses/Category";
 
-export async function getCategories() {
-  try {
-    const res = await axios.get(`${API_URL}/categories/`);
-    return res.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+export default async () => {
+  const { data } = await axios.get<CategoryResponse[]>(
+    `${API_URL}/categories/`
+  );
+  return data;
+};

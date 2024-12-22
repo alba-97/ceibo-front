@@ -10,7 +10,7 @@ import {
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { GenericInput } from "../components/GenericInput";
 import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
@@ -18,6 +18,7 @@ import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
 import crearCuenta from "../assets/crearCuenta.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import handleError from "@/utils/handleError";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
@@ -61,9 +62,8 @@ export default function RegisterScreen() {
       setAddress("");
       setFirst_name("");
       setLast_name("");
-    } catch (error) {
-      if (error instanceof AxiosError)
-        Alert.alert("Error", error.response?.data, [{ text: "OK" }]);
+    } catch (err) {
+      handleError(err);
     }
   };
 

@@ -7,10 +7,11 @@ import { useSelector } from "react-redux";
 import { ProfilePicture } from "../components/ProfilePicture";
 import { ProfileText } from "../components/ProfileText";
 import { styles } from "../styles/ProfileTextStyles";
-import { addFriend } from "../api/addFriend";
-import { removeFriend } from "../api/removeFriend";
-import { getUserFriends } from "../api/getUserFriends";
+import addFriend from "../api/addFriend";
+import removeFriend from "../api/removeFriend";
+import getUserFriends from "../api/getUserFriends";
 import { RootState } from "@/state/store";
+import handleError from "@/utils/handleError";
 
 export default function ContactInfoScreen() {
   const contact = useSelector((state: RootState) => state.selectedContact);
@@ -27,8 +28,12 @@ export default function ContactInfoScreen() {
   } / ${birthdate[0]}`;
 
   const isAlreadyFriend = async () => {
-    const userFriends = await getUserFriends();
-    setIsFriend(userFriends.some((friend) => friend._id === contact._id));
+    try {
+      const userFriends = await getUserFriends();
+      setIsFriend(userFriends.some((friend) => friend._id === contact._id));
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   useEffect(() => {
@@ -41,8 +46,8 @@ export default function ContactInfoScreen() {
       await addFriend(friendId);
       setIsFriend(true);
       setLoading(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -52,8 +57,8 @@ export default function ContactInfoScreen() {
       await removeFriend(user._id, friendId);
       setLoading(false);
       setIsFriend(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
   };
 

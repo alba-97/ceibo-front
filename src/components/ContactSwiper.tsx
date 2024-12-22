@@ -27,10 +27,7 @@ export function ContactSwiper({ title, plans, onPress }: IContactSwiperProps) {
         {plans.map((p, index) => {
           return (
             <View style={styles.view} key={index}>
-              <ImageContainer
-                plan={p}
-                onPress={handlePress} // Agrega el evento onPress aquí
-              />
+              <ImageContainer plan={p} onPress={handlePress} />
             </View>
           );
         })}

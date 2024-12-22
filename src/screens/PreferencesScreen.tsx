@@ -4,40 +4,41 @@ import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "../styles/preferencesStyles";
 import { Navbar } from "../components/Navbar";
 import MultipleDropdown from "../components/MultipleDropdown";
-import { getCategories } from "../api/getCategories";
-import { addPreferences } from "../api/addPreferences";
+import getCategories from "../api/getCategories";
+import addPreferences from "../api/addPreferences";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import refetchData from "../api/refetchData";
 import actualizar from "../assets/actualizar.png";
-import { updateUser } from "../api/updateUser";
-import CategoryResponse from "@/interfaces/responses/Category";
+import editUser from "../api/editUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
+import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import handleError from "@/utils/handleError";
 
 export default function PreferencesScreen() {
   const [selected, setSelected] = useState<IOption[]>([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<IOption[]>([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { refetch, triggerRefetch } = refetchData();
 
+  const fetchCategories = async () => {
+    const data = await getCategories();
+    setCategories(fromCategoryResponsesToOptions(data));
+  };
+
   useEffect(() => {
-    getCategories().then((data) =>
-      setCategories(
-        data.map((item: CategoryResponse, index: number) => ({
-          key: index,
-          value: item.name,
-        }))
-      )
-    );
+    fetchCategories();
   }, [refetch]);
 
   const handleSubmit = async () => {
-    const status = await addPreferences([{ name: selected[0].value }]);
-    if (status == 200) {
+    try {
+      await addPreferences([{ name: selected[0].value }]);
       triggerRefetch();
-      updateUser({ new_user: false });
+      editUser({ new_user: false });
       navigation.navigate("HomeScreen");
+    } catch (err) {
+      handleError(err);
     }
   };
 

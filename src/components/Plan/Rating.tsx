@@ -1,36 +1,26 @@
 import { useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
-import { rateEvent } from "../../api/rateEvent";
+import rateEvent from "@/api/rateEvent";
 import { View, Text, Alert } from "react-native";
-import { styles } from "../../styles/PlanDetails";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { API_URL } from "@env";
+import { styles } from "@/styles/PlanDetails";
 import EventResponse from "@/interfaces/responses/Event";
+import getRating from "@/api/getRating";
+import handleError from "@/utils/handleError";
 
 interface IRatingProps {
   plan: EventResponse;
 }
 
 const Rating = ({ plan }: IRatingProps) => {
-  const [rating, setRating] = useState(-1);
+  const [rating, setRating] = useState<number>();
 
   const fetchRating = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        const res = await axios.get(`${API_URL}/events/${plan._id}/rating`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setRating(res.data.rating);
-        return res.data.rating;
-      } else {
-        return -1;
-      }
-    } catch (error) {
-      console.log(error);
+      const { rating } = await getRating(plan._id);
+      setRating(rating);
+      return rating;
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -38,14 +28,16 @@ const Rating = ({ plan }: IRatingProps) => {
     fetchRating();
   }, []);
 
-  const handleRating = async (e: number) => {
+  const handleRating = async (rating: number) => {
     if (!plan._id) return;
     const userRating = await fetchRating();
-    if (userRating === -1) {
-      const data = await rateEvent(e, plan._id);
-      const newRating = await fetchRating();
-      setRating(newRating);
+    if (!userRating) return;
+    try {
+      const data = await rateEvent(rating, plan._id);
+      setRating(rating);
       Alert.alert("Exito", data.message);
+    } catch (err) {
+      handleError(err);
     }
   };
 
@@ -53,11 +45,7 @@ const Rating = ({ plan }: IRatingProps) => {
     <View style={styles.input}>
       <Text style={styles.text}>Tu calificación:</Text>
       <Text style={styles.text}>
-        {rating === -1 ? (
-          <StarRating rating={rating} onChange={handleRating} />
-        ) : (
-          <StarRating rating={rating} onChange={handleRating} color="#A9A9A9" />
-        )}
+        {rating && <StarRating rating={rating} onChange={handleRating} />}
       </Text>
     </View>
   );

@@ -3,11 +3,12 @@ import { Text, View, TouchableOpacity, Image } from "react-native";
 import { GenericInput } from "../GenericInput";
 import { useDispatch } from "react-redux";
 import { styles } from "../../styles/PlanDetails";
-import { addComment } from "../../api/addComment";
+import addComment from "../../api/addComment";
 import { setComments } from "../../state/selectedPlan";
 import { Feather } from "@expo/vector-icons";
 import comentarios from "../../assets/comentarios.png";
 import EventResponse from "@/interfaces/responses/Event";
+import handleError from "@/utils/handleError";
 
 interface ICommentsProps {
   plan: EventResponse;
@@ -21,8 +22,12 @@ const Comments = ({ plan }: ICommentsProps) => {
 
   const handleComment = async () => {
     if (!plan._id) return;
-    const newComment = await addComment(comment, plan._id);
-    dispatch(setComments(newComment));
+    try {
+      const newComment = await addComment(comment, plan._id);
+      dispatch(setComments(newComment));
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   return (

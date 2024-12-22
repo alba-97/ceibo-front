@@ -9,14 +9,15 @@ import axios from "axios";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
-import { getPlan } from "../api/getPlan";
+import getPlan from "../api/getPlan";
 import { SearchImg } from "../components/searchImage";
-import { getOrganizer } from "../api/getOrganizer";
+import getOrganizer from "../api/getOrganizer";
 import refetchData from "../api/refetchData";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";
 import IOption from "@/interfaces/Option";
+import handleError from "@/utils/handleError";
 
 export default function SearchScreen() {
   const [results, setResults] = useState([]);
@@ -35,11 +36,15 @@ export default function SearchScreen() {
   const { refetch } = refetchData();
 
   const handlePress = async (plan: EventResponse) => {
-    const updatedPlan = await getPlan(plan._id);
-    dispatch(setSelectedPlan(updatedPlan));
-    const organizer = await getOrganizer(plan._id);
-    dispatch(setOrganizer(organizer));
-    navigation.navigate("PlanDetail");
+    try {
+      const updatedPlan = await getPlan(plan._id);
+      dispatch(setSelectedPlan(updatedPlan));
+      const organizer = await getOrganizer(plan._id);
+      dispatch(setOrganizer(organizer));
+      navigation.navigate("PlanDetail");
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const handleQueryChange = (text: string) => {
@@ -84,8 +89,8 @@ export default function SearchScreen() {
     try {
       const { data } = await axios.get(`${API_URL}/events`);
       setResults(data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 

@@ -1,12 +1,15 @@
 import axios from "axios";
 import { API_URL } from "@env";
-import UserResponse from "@/interfaces/responses/User";
 import getHeaders from "@/utils/getHeaders";
 
-export default async () => {
+interface RatingResponse {
+  rating: number;
+}
+
+export default async (id: string) => {
   const headers = await getHeaders();
-  const { data } = await axios.get<UserResponse[]>(
-    `${API_URL}/users/friends`,
+  const { data } = await axios.get<RatingResponse>(
+    `${API_URL}/events/${id}/rating`,
     headers
   );
   return data;

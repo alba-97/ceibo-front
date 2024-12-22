@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  ScrollView,
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  Alert,
-} from "react-native";
+import { ScrollView, View, TouchableOpacity, Image, Text } from "react-native";
 import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
@@ -18,18 +11,19 @@ import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { getCategories } from "../api/getCategories";
+import getCategories from "../api/getCategories";
 import ModalSelector from "react-native-modal-selector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckBox } from "react-native-elements";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { API_URL } from "@env";
 import refetchData from "../api/refetchData";
 import { removePlan } from "../state/plans";
 import { RootState } from "@/state/store";
-import CategoryResponse from "@/interfaces/responses/Category";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
+import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import handleError from "@/utils/handleError";
 
 export default function EditPlanScreen() {
   const plan = useSelector((state: RootState) => state.selectedPlan);
@@ -37,7 +31,7 @@ export default function EditPlanScreen() {
 
   const [category, setCategory] = useState(plan?.category?.name);
   const [imageUrl, setImageUrl] = useState(plan?.img);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<IOption[]>([]);
   const [checked, setChecked] = useState(plan?.private);
 
   const handleCheckBoxToggle = async () => {
@@ -58,20 +52,18 @@ export default function EditPlanScreen() {
         setChecked(!checked);
         removePlan(plan._id);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
+  };
+  const fetchCategories = async () => {
+    const data = await getCategories();
+    const categories = fromCategoryResponsesToOptions(data);
+    setCategories(categories);
   };
 
   useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(
-        data.map((item: CategoryResponse, index: number) => ({
-          key: index,
-          label: item.name,
-        }))
-      );
-    });
+    fetchCategories();
   }, []);
 
   const selectImage = async () => {
@@ -112,10 +104,8 @@ export default function EditPlanScreen() {
           setImageUrl(res.data.imageUrl);
         }
       }
-    } catch (error) {
-      if (error instanceof AxiosError)
-        Alert.alert("Error", error.response?.data);
-      console.log(error);
+    } catch (err) {
+      handleError(err);
     }
   };
 

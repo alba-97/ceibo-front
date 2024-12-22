@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Alert } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -29,12 +28,12 @@ import {
 } from "@expo/vector-icons";
 import PreferencesScreen from "../screens/PreferencesScreen";
 import { setOrganizer, setSelectedPlan } from "../state/selectedPlan";
-import { getOrganizer } from "../api/getOrganizer";
-import { getPlan } from "../api/getPlan";
+import getOrganizer from "../api/getOrganizer";
+import getPlan from "../api/getPlan";
 import { useDispatch } from "react-redux";
 import AddContactScreen from "../screens/AddContactScreen";
 import { bottomNavigationBarStyle } from "../styles/navigationBarStyles";
-import { AxiosError } from "axios";
+import handleError from "@/utils/handleError";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
@@ -101,10 +100,8 @@ function BottomNavbar() {
           const organizer = await getOrganizer(route);
           dispatch(setOrganizer(organizer));
           navigation.navigate("PlanDetail");
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            Alert.alert("msg", error.response?.data);
-          }
+        } catch (err) {
+          handleError(err);
         }
       }
     }
