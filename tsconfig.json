@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -23,7 +23,7 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@schemas/*": ["./src/schemas/*"],
       "@state/*": ["./src/state/*"],
-      "@services/*": ["src/api/*"],
+      "@services/*": ["./src/api/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./src/styles/*"]
     },

@@ -3,6 +3,7 @@ import Rating from "./Rating";
 import { styles } from "../../styles/PlanDetails";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
+import fromDateToDateDescription from "@/utils/fromDateToDateDescription";
 
 interface IPlanEndedProps {
   plan: EventResponse;
@@ -10,12 +11,13 @@ interface IPlanEndedProps {
 }
 
 const PlanEnded = ({ plan, user }: IPlanEndedProps) => {
-  const formattingDate = plan?.start_date;
+  const formattingDate = fromDateToDateDescription(plan?.end_date);
+  const time = plan?.end_date.split("T")[1].slice(0, 5);
 
   return (
     <View>
       <Text style={styles.subtitle}>
-        El evento finalizó el {formattingDate}
+        El evento finalizó el {formattingDate} a a las {time} hs.
       </Text>
 
       {user._id &&
