@@ -16,7 +16,7 @@ import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { setPlans } from "../state/plans";
 import getOrganizer from "../api/getOrganizer";
-import refetchData from "../api/refetchData";
+import refetchData from "../utils/refetchData";
 import getPlanHistory from "../api/getPlanHistory";
 import noTienesPlanes from "../assets/noTienesPlanes.png";
 import recomendaciones from "../assets/recomendaciones.png";

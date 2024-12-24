@@ -1,60 +1,42 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
-import { useState, useEffect } from "react";
-import GenericButton from "../components/GenericButton";
-import { GenericInput } from "../components/GenericInput";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Button,
+  GestureResponderEvent,
+} from "react-native";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
-import * as ImagePicker from "expo-image-picker";
-import { DatePicker } from "../components/DatePicker";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import handleError from "@/utils/handleError";
+import { Formik } from "formik";
+import { GenericInput } from "@/components/GenericInput";
+import EventForm from "@/interfaces/forms/Event";
+import DatetimePicker from "@/components/DatetimePicker";
+import UploadFile from "@/components/UploadFile";
 
 export default function AddPlanScreen1() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [start_date, setstart_date] = useState<Date>(new Date());
-  const [path, setPath] = useState(
-    "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png"
-  );
+  const initialValues: EventForm = {
+    title: "",
+    description: "",
+    location: "",
+    start_date: new Date().toISOString(),
+    end_date: new Date().toISOString(),
+    img: "",
+    min_age: null,
+    max_age: null,
+    min_to_pay: null,
+    total_to_pay: null,
+    category: "Default",
+    link_to_pay: "",
+    private: false,
+  };
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-
-  const selectImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (result.assets && result.assets[0]) {
-        setPath(result.assets[0].uri);
-      }
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
-  useEffect(() => {
-    setstart_date(start_date);
-  }, [start_date]);
-
-  const handleContinue = () => {
-    const eventDate = start_date.toISOString();
-
-    navigation.navigate("AddPlanScreen2", {
-      title,
-      description,
-      location,
-      start_date: eventDate,
-      path,
-    });
-  };
-
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -63,44 +45,106 @@ export default function AddPlanScreen1() {
         end={[1, 1]}
         style={styles.container}
       >
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        >
+          {({ handleChange, handleBlur, values, setFieldValue }) => (
+            <View>
+              <ScrollView>
+                <ProfileText text="Crear Plan" />
+
+                <View style={[styles.content, { paddingTop: "5%" }]}>
+                  <Text style={styles.text}>Título</Text>
+
+                  <GenericInput
+                    onChangeText={handleChange("title")}
+                    onBlur={handleBlur("title")}
+                    value={values.title}
+                  />
+
+                  <Text style={styles.text}>Descripción</Text>
+
+                  <GenericInput
+                    onChangeText={handleChange("description")}
+                    onBlur={handleBlur("description")}
+                    value={values.description}
+                  />
+
+                  <View style={styles.container2}>
+                    <View style={styles.inputContainer}>
+                      <Text style={styles.text}>Lugar</Text>
+                      <GenericInput
+                        onChangeText={handleChange("location")}
+                        onBlur={handleBlur("location")}
+                        value={values.location}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={styles.container2}>
+                    <View style={styles.inputContainer}>
+                      <Text style={styles.text}>Fecha de inicio</Text>
+                      <DatetimePicker
+                        date={values.start_date}
+                        onChange={(date: string) =>
+                          setFieldValue("start_date", date)
+                        }
+                      />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                      <Text style={styles.text}>Fecha de finalización</Text>
+                      <DatetimePicker
+                        date={values.end_date}
+                        onChange={(date: string) =>
+                          setFieldValue("end_date", date)
+                        }
+                      />
+                    </View>
+                  </View>
+                  <Text style={styles.text}>Imagen</Text>
+
+                  <UploadFile
+                    onChange={(url: string) => {
+                      setFieldValue("img", url);
+                    }}
+                  />
+
+                  <TouchableOpacity
+                    style={[styles.container, { padding: "5%" }]}
+                    onPress={(img: GestureResponderEvent) =>
+                      setFieldValue("img", img)
+                    }
+                  >
+                    {values.img !== "" && (
+                      <Image
+                        source={{
+                          uri: values.img,
+                        }}
+                        style={styles.image}
+                      />
+                    )}
+                  </TouchableOpacity>
+                  <View style={styles.crearPlan}>
+                    <Button
+                      onPress={(_: GestureResponderEvent) => {
+                        if (values.start_date)
+                          values.start_date = values.start_date;
+                        navigation.navigate("AddPlanScreen2", values);
+                      }}
+                      title="Next"
+                    />
+                  </View>
+                </View>
+              </ScrollView>
+            </View>
+          )}
+        </Formik>
+
         <Navbar />
-        <ScrollView>
-          <ProfileText text="Crear Plan" />
-          <View style={[styles.content, { paddingTop: "5%" }]}>
-            <Text style={styles.text}>Título</Text>
-            <GenericInput value={title} onChangeText={setTitle} />
-            <Text style={styles.text}>Descripción</Text>
-            <GenericInput value={description} onChangeText={setDescription} />
-            <Text style={styles.text}>Lugar</Text>
-            <GenericInput value={location} onChangeText={setLocation} />
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.text}>Fecha</Text>
-                <DatePicker
-                  type="date"
-                  value={start_date}
-                  onChange={(date) => setstart_date(new Date(date))}
-                  placeholder="DD/MM/YYYY"
-                />
-              </View>
-            </View>
-            <Text style={styles.text}>Imagen</Text>
-            <TouchableOpacity
-              style={[styles.container, { padding: "5%" }]}
-              onPress={selectImage}
-            >
-              <Image
-                source={{
-                  uri: path,
-                }}
-                style={styles.image}
-              />
-            </TouchableOpacity>
-            <View style={styles.crearPlan}>
-              <GenericButton onPress={handleContinue} text={"Continuar"} />
-            </View>
-          </View>
-        </ScrollView>
       </LinearGradient>
     </View>
   );

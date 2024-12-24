@@ -7,15 +7,17 @@ import { useState } from "react";
 
 interface IDatePickerProps {
   selectedDate?: string;
-  value?: Date | null;
+  value?: Date | string | null;
   customStyle?: ViewStyle;
   type?: string;
   placeholder?: string;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | string) => void;
 }
 
 export const DatePicker = ({ value, onChange }: IDatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState(value);
+  const [selectedDate, setSelectedDate] = useState(
+    typeof value === "string" ? new Date(value) : value
+  );
   const [showPicker, setShowPicker] = useState(false);
   const [_, setIsEditing] = useState(false);
 

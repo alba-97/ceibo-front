@@ -6,10 +6,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  TextInput,
+  Button,
 } from "react-native";
 import { useState, useEffect } from "react";
-import GenericButton from "../components/GenericButton";
-import { GenericInput } from "../components/GenericInput";
 import { styles } from "../styles/addPlanStyles";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
@@ -24,6 +24,8 @@ import IOption from "@/interfaces/Option";
 import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
 import handleError from "@/utils/handleError";
 import createEvent from "@/api/createEvent";
+import { Formik } from "formik";
+import EventForm from "@/interfaces/forms/Event";
 
 interface IAddPlanScreen2Props {
   route?: {
@@ -31,8 +33,9 @@ interface IAddPlanScreen2Props {
       title: string;
       description: string;
       location: string;
-      start_date: string;
-      path: string;
+      start_date: Date | null;
+      end_date: Date | null;
+      img: string;
     };
   };
 }
@@ -43,25 +46,17 @@ export default function AddPlanScreen2({
       title: "",
       description: "",
       location: "",
-      start_date: "",
-      path: "",
+      start_date: null,
+      end_date: null,
+      img: "",
     },
   },
 }: IAddPlanScreen2Props) {
-  const { title, description, location, start_date, path } = route.params;
-
-  const [min_age, setMin_age] = useState("");
-  const [max_age, setMax_age] = useState("");
-  const [min_to_pay, setMin_to_pay] = useState("");
-  const [total_to_pay, setTotal_to_pay] = useState("");
-  const [start_time, setStart_time] = useState("");
-  const [end_time, setEnd_time] = useState("");
   const [category, setCategory] = useState<IOption>({
-    value: "categoria",
-    label: "Categoría",
+    value: "default",
+    label: "Default",
   });
   const [categories, setCategories] = useState<IOption[]>([]);
-  const [link_to_pay, setLink_to_pay] = useState("");
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -79,52 +74,19 @@ export default function AddPlanScreen2({
     fetchCategories();
   }, []);
 
-  const handleSubmit = async () => {
-    try {
-      const formattedDate = start_date.split("T")[0];
-
-      let imageUrl;
-
-      if (
-        ![
-          "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
-          "",
-        ].includes(path)
-      ) {
-        const response = await fetch(path);
-        const blob = await response.blob();
-        const formData = new FormData();
-        formData.append("image", blob, "image.jpg");
-        const res = await axios.post(`${API_URL}/upload`, formData);
-        imageUrl = res.data.imageUrl;
-      }
-
-      const eventData = {
-        title,
-        description,
-        location,
-        img: imageUrl,
-        start_date: formattedDate,
-        end_date: formattedDate,
-        end_time,
-        min_age,
-        max_age,
-        min_to_pay,
-        total_to_pay,
-        category: category.value,
-        link_to_pay,
-        private: false,
-      };
-      await createEvent(eventData);
-      Alert.alert("Exito", "Evento agregado");
-      navigation.navigate("HomeScreen");
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
   const handleBack = () => {
     navigation.navigate("AddPlanScreen1");
+  };
+
+  const initialValues: EventForm = {
+    ...route.params,
+    min_age: null,
+    max_age: null,
+    min_to_pay: null,
+    total_to_pay: null,
+    category: "Default",
+    link_to_pay: "",
+    private: false,
   };
 
   return (
@@ -153,106 +115,130 @@ export default function AddPlanScreen2({
           />
         </TouchableOpacity>
         <ScrollView>
-          <View style={styles.content}>
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Minima Edad</Text>
-                <GenericInput
-                  value={min_age}
-                  onChangeText={setMin_age}
-                  style={styles.input2}
-                />
-              </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Maxima Edad</Text>
-                <GenericInput
-                  value={max_age}
-                  onChangeText={setMax_age}
-                  style={styles.input2}
-                />
-              </View>
-            </View>
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Pago Minimo</Text>
-                <GenericInput
-                  value={min_to_pay}
-                  onChangeText={setMin_to_pay}
-                  style={styles.input2}
-                />
-              </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Pago Total</Text>
-                <GenericInput
-                  value={total_to_pay}
-                  onChangeText={setTotal_to_pay}
-                  style={styles.input2}
-                />
-              </View>
-            </View>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={async (values) => {
+              try {
+                let imageUrl;
 
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Hora de Inicio</Text>
-                <GenericInput
-                  value={start_time}
-                  onChangeText={setStart_time}
-                  style={styles.input2}
-                />
+                if (
+                  ![
+                    "https://cdn.discordapp.com/attachments/1105565124825186415/1113122954897801406/El_club_del_plan.png",
+                    "",
+                  ].includes(values.img)
+                ) {
+                  const response = await fetch(values.img);
+                  const blob = await response.blob();
+                  const formData = new FormData();
+                  formData.append("image", blob, "image.jpg");
+                  const res = await axios.post(`${API_URL}/upload`, formData);
+                  imageUrl = res.data.imageUrl;
+                }
+
+                values.img = imageUrl;
+                await createEvent(values);
+                Alert.alert("Exito", "Evento agregado");
+                navigation.navigate("HomeScreen");
+              } catch (err) {
+                handleError(err);
+              }
+            }}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              setFieldValue,
+            }) => (
+              <View>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Minima Edad</Text>
+                  <TextInput
+                    onChangeText={handleChange("min_age")}
+                    onBlur={handleBlur("min_age")}
+                    value={`${values.min_age}`}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Máxima Edad</Text>
+                  <TextInput
+                    onChangeText={handleChange("max_age")}
+                    onBlur={handleBlur("max_age")}
+                    value={`${values.max_age}`}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Mínimo a pagar</Text>
+                  <TextInput
+                    onChangeText={handleChange("min_to_pay")}
+                    onBlur={handleBlur("min_to_pay")}
+                    value={`${values.min_to_pay}`}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Total a pagar</Text>
+                  <TextInput
+                    onChangeText={handleChange("total_to_pay")}
+                    onBlur={handleBlur("total_to_pay")}
+                    value={`${values.total_to_pay}`}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <ModalSelector
+                    data={categories}
+                    onChange={(option: IOption) => {
+                      setFieldValue("category", option.value);
+                      setCategory(option);
+                    }}
+                    overlayStyle={{ backgroundColor: "transparent" }}
+                    optionContainerStyle={{
+                      backgroundColor: "#691359",
+                      borderWidth: 8,
+                      borderRadius: 4,
+                      borderColor: "#59104c",
+                    }}
+                    optionTextStyle={{
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                    cancelStyle={{
+                      backgroundColor: "#781365",
+                    }}
+                    cancelTextStyle={{
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                    cancelText="Cancelar"
+                  >
+                    <Text style={styles.categoryContainer}>
+                      {category.label}
+                      <Image
+                        source={ChevronImg}
+                        resizeMode="contain"
+                        style={{ width: 20, height: 20 }}
+                      />
+                    </Text>
+                  </ModalSelector>
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Link para pagar</Text>
+                  <TextInput
+                    onChangeText={handleChange("link_to_pay")}
+                    onBlur={handleBlur("link_to_pay")}
+                    value={values.link_to_pay}
+                  />
+                </View>
+
+                <Button onPress={() => handleSubmit()} title="Submit" />
               </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Hora de Cierre</Text>
-                <GenericInput
-                  value={end_time}
-                  onChangeText={setEnd_time}
-                  style={styles.input2}
-                />
-              </View>
-            </View>
-            <View style={styles.container2}>
-              <View style={styles.inputContainer}>
-                <ModalSelector
-                  data={categories}
-                  onChange={(option: IOption) => {
-                    setCategory(option);
-                  }}
-                  overlayStyle={{ backgroundColor: "transparent" }}
-                  optionContainerStyle={{
-                    backgroundColor: "#691359",
-                    borderWidth: 8,
-                    borderRadius: 4,
-                    borderColor: "#59104c",
-                  }}
-                  optionTextStyle={{
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                  cancelStyle={{
-                    backgroundColor: "#781365",
-                  }}
-                  cancelTextStyle={{
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                  cancelText="Cancelar"
-                >
-                  <Text style={styles.categoryContainer}>
-                    {category.label}
-                    <Image
-                      source={ChevronImg}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  </Text>
-                </ModalSelector>
-              </View>
-            </View>
-            <Text style={styles.text}>Link para pagar</Text>
-            <GenericInput value={link_to_pay} onChangeText={setLink_to_pay} />
-            <View style={styles.crearPlan}>
-              <GenericButton onPress={handleSubmit} text={"Crear Plan"} />
-            </View>
-          </View>
+            )}
+          </Formik>
         </ScrollView>
       </LinearGradient>
     </View>

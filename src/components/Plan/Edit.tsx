@@ -1,14 +1,16 @@
 import { View } from "react-native";
 import { useEffect, useState } from "react";
 import GenericButton from "../GenericButton";
-import getEditableEvents from "../../api/getEditableEvents";
+import getEditableEvents from "@/api/getEditableEvents";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import deleteEvent from "../../api/deleteEvent";
+import deleteEvent from "@/api/deleteEvent";
 import { useDispatch } from "react-redux";
 import EventResponse from "@/interfaces/responses/Event";
 import { styles } from "@/styles/genericInputStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import { removePlanFromUser } from "@/state/user";
+import { removePlan } from "@/state/plans";
 
 interface IPlanEditProps {
   plan: EventResponse;
@@ -22,7 +24,9 @@ const PlanEdit = ({ plan }: IPlanEditProps) => {
   const handleDelete = async () => {
     if (!plan._id) return;
     try {
-      await deleteEvent(plan._id, dispatch);
+      await deleteEvent(plan._id);
+      dispatch(removePlanFromUser(plan._id));
+      dispatch(removePlan(plan._id));
       navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);

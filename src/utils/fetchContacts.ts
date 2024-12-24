@@ -1,5 +1,5 @@
 import * as Contacts from "expo-contacts";
-import getAllUsers from "./getAllUsers";
+import getAllUsers from "@/api/getAllUsers";
 
 const getContactNumbers = (data: Contacts.Contact[]) => {
   const phoneNumbers = [];

@@ -12,7 +12,7 @@ import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
 import getPlan from "../api/getPlan";
 import { SearchImg } from "../components/searchImage";
 import getOrganizer from "../api/getOrganizer";
-import refetchData from "../api/refetchData";
+import refetchData from "../utils/refetchData";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";

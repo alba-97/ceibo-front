@@ -7,6 +7,7 @@ interface IGenericInputProps {
   value: string;
   style?: TextStyle;
   onChangeText: (text: string) => void;
+  onBlur: (e: unknown) => void;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
   onSubmitEditing?: () => void;

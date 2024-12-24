@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckBox } from "react-native-elements";
 import axios from "axios";
 import { API_URL } from "@env";
-import refetchData from "../api/refetchData";
+import refetchData from "../utils/refetchData";
 import { removePlan } from "../state/plans";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

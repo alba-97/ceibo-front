@@ -1,7 +1,7 @@
-import { fetchContacts } from "./fetchContacts";
-import getUserFriends from "./getUserFriends";
-import addFriend from "./addFriend";
+import getUserFriends from "../api/getUserFriends";
+import addFriend from "../api/addFriend";
 import UserResponse from "@/interfaces/responses/User";
+import { fetchContacts } from "@/utils/fetchContacts";
 
 const findMissingContacts = (
   contacts: UserResponse[],
