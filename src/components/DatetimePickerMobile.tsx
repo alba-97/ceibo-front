@@ -3,8 +3,8 @@ import {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { useFormikContext } from "formik";
 import GenericButton from "./GenericButton";
+import { useFormikContext } from "formik";
 
 interface IDatetimePickerProps {
   field: string;
