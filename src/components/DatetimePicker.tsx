@@ -1,24 +1,14 @@
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
-import datetimePickerStyles from "@/styles/datetimePicker";
-import dayjs from "dayjs";
+import DatetimePickerMobile from "./DatetimePickerMobile";
+import DatetimePickerWeb from "./DatetimePickerWeb";
+import { Platform } from "react-native";
 
 interface IDatetimePickerProps {
-  date: string;
-  onChange: (date: string) => void;
+  field: string;
 }
 
-const DatetimePicker = ({ date, onChange }: IDatetimePickerProps) => {
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <StaticDateTimePicker
-        value={dayjs(date)}
-        onChange={(newDate) => onChange(newDate?.toISOString() ?? "")}
-        sx={datetimePickerStyles}
-      />
-    </LocalizationProvider>
-  );
+const DatetimePicker = ({ field }: IDatetimePickerProps) => {
+  if (Platform.OS !== "web") return <DatetimePickerMobile field={field} />;
+  else return <DatetimePickerWeb field={field} />;
 };
 
 export default DatetimePicker;
