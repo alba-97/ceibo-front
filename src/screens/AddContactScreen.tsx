@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
 import { Feather, AntDesign } from "@expo/vector-icons";

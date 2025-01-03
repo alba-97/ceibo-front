@@ -1,150 +1,74 @@
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Button,
-  GestureResponderEvent,
-} from "react-native";
-import { styles } from "../styles/addPlanStyles";
+import { View, ScrollView } from "react-native";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Formik } from "formik";
-import { GenericInput } from "@/components/GenericInput";
+import initialValues from "@/common/eventInitialValues";
+import TextField from "@/components/TextField";
+import DateField from "@/components/DateField";
+import ImageField from "@/components/ImageField";
+import GenericButton from "@/components/GenericButton";
 import EventForm from "@/interfaces/forms/Event";
-import DatetimePicker from "@/components/DatetimePicker";
-import UploadFile from "@/components/UploadFile";
 
 export default function AddPlanScreen1() {
-  const initialValues: EventForm = {
-    title: "",
-    description: "",
-    location: "",
-    start_date: new Date().toISOString(),
-    end_date: new Date().toISOString(),
-    img: "",
-    min_age: null,
-    max_age: null,
-    min_to_pay: null,
-    total_to_pay: null,
-    category: "Default",
-    link_to_pay: "",
-    private: false,
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const goToNextStep = (values: EventForm) => {
+    if (values.start_date) values.start_date = values.start_date;
+    navigation.navigate("AddPlanScreen2", values);
   };
 
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
+      }}
+    >
       <LinearGradient
         colors={["#000", "#7D0166"]}
         start={[0, 0]}
         end={[1, 1]}
-        style={styles.container}
+        style={{
+          flex: 1,
+          width: "100%",
+          alignItems: "center",
+        }}
       >
-        <Formik
-          initialValues={initialValues}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
-        >
-          {({ handleChange, handleBlur, values, setFieldValue }) => (
-            <View>
-              <ScrollView>
-                <ProfileText text="Crear Plan" />
+        <Navbar />
+        <Formik initialValues={initialValues} onSubmit={goToNextStep}>
+          {({ handleSubmit }) => (
+            <ScrollView
+              style={{ width: "100%" }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ alignItems: "center" }}
+            >
+              <ProfileText text="Create Event" />
+              <View
+                style={{
+                  marginVertical: 20,
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TextField placeholder="Title" field="title" />
+                <TextField placeholder="Description" field="description" />
+                <TextField placeholder="Location" field="location" />
 
-                <View style={[styles.content, { paddingTop: "5%" }]}>
-                  <Text style={styles.text}>Título</Text>
+                <DateField placeholder="Start Date" field="start_date" />
+                <DateField placeholder="End Date" field="end_date" />
 
-                  <GenericInput
-                    onChangeText={handleChange("title")}
-                    onBlur={handleBlur("title")}
-                    value={values.title}
-                  />
+                <ImageField placeholder="Image" field="img" />
 
-                  <Text style={styles.text}>Descripción</Text>
-
-                  <GenericInput
-                    onChangeText={handleChange("description")}
-                    onBlur={handleBlur("description")}
-                    value={values.description}
-                  />
-
-                  <View style={styles.container2}>
-                    <View style={styles.inputContainer}>
-                      <Text style={styles.text}>Lugar</Text>
-                      <GenericInput
-                        onChangeText={handleChange("location")}
-                        onBlur={handleBlur("location")}
-                        value={values.location}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={styles.container2}>
-                    <View style={styles.inputContainer}>
-                      <Text style={styles.text}>Fecha de inicio</Text>
-                      <DatetimePicker
-                        date={values.start_date}
-                        onChange={(date: string) =>
-                          setFieldValue("start_date", date)
-                        }
-                      />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                      <Text style={styles.text}>Fecha de finalización</Text>
-                      <DatetimePicker
-                        date={values.end_date}
-                        onChange={(date: string) =>
-                          setFieldValue("end_date", date)
-                        }
-                      />
-                    </View>
-                  </View>
-                  <Text style={styles.text}>Imagen</Text>
-
-                  <UploadFile
-                    onChange={(url: string) => {
-                      setFieldValue("img", url);
-                    }}
-                  />
-
-                  <TouchableOpacity
-                    style={[styles.container, { padding: "5%" }]}
-                    onPress={(img: GestureResponderEvent) =>
-                      setFieldValue("img", img)
-                    }
-                  >
-                    {values.img !== "" && (
-                      <Image
-                        source={{
-                          uri: values.img,
-                        }}
-                        style={styles.image}
-                      />
-                    )}
-                  </TouchableOpacity>
-                  <View style={styles.crearPlan}>
-                    <Button
-                      onPress={(_: GestureResponderEvent) => {
-                        if (values.start_date)
-                          values.start_date = values.start_date;
-                        navigation.navigate("AddPlanScreen2", values);
-                      }}
-                      title="Next"
-                    />
-                  </View>
-                </View>
-              </ScrollView>
-            </View>
+                <GenericButton onPress={handleSubmit} text="Next" />
+              </View>
+            </ScrollView>
           )}
         </Formik>
-
-        <Navbar />
       </LinearGradient>
     </View>
   );

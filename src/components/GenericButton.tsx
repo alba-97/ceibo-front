@@ -1,4 +1,3 @@
-import { genericButtonStyle } from "../styles/buttons";
 import { TouchableOpacity, Text, TextStyle, ViewStyle } from "react-native";
 
 interface IGenericButtonProps {
@@ -6,6 +5,7 @@ interface IGenericButtonProps {
   textStyle?: TextStyle;
   onPress?: () => void;
   customStyle?: ViewStyle | TextStyle;
+  type?: string;
 }
 
 const GenericButton = ({
@@ -16,10 +16,33 @@ const GenericButton = ({
 }: IGenericButtonProps) => {
   return (
     <TouchableOpacity
-      style={[genericButtonStyle.button, customStyle]}
+      style={[
+        {
+          backgroundColor: "rgba(225, 200, 200, 0.3)",
+          borderRadius: 20,
+          alignItems: "center",
+          borderWidth: 2,
+          borderColor: "rgba(10, 7, 7, 0.2)",
+          paddingHorizontal: 10,
+          paddingVertical: 8,
+          width: "25%",
+        },
+        customStyle,
+      ]}
       onPress={onPress}
     >
-      <Text style={[genericButtonStyle.buttonText, textStyle]}>{text}</Text>
+      <Text
+        style={[
+          {
+            color: "white",
+            fontSize: 16,
+            fontWeight: "bold",
+          },
+          textStyle,
+        ]}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };

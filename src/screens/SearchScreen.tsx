@@ -1,7 +1,7 @@
 import { Text, ScrollView, View, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { API_URL } from "@env";
 import { styles } from "../appCss";

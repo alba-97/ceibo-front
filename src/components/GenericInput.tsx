@@ -1,28 +1,45 @@
 import { KeyboardTypeOptions, TextInput, TextStyle } from "react-native";
-import { styles } from "../styles/genericInputStyles";
 
 interface IGenericInputProps {
   customStyle?: TextStyle;
   placeholder?: string;
-  value: string;
+  type?: string;
+  value: string | number | null;
   style?: TextStyle;
   onChangeText: (text: string) => void;
-  onBlur: (e: unknown) => void;
+  onBlur?: (e: unknown) => void;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
   onSubmitEditing?: () => void;
 }
 
-export const GenericInput = ({
+export default ({
   customStyle,
   placeholder = "",
+  value,
   ...props
 }: IGenericInputProps) => {
   return (
     <TextInput
       {...props}
+      value={value === null ? "" : value.toString()}
       placeholder={placeholder}
-      style={[styles.input, customStyle, { flexDirection: "row" }]}
+      style={[
+        {
+          fontSize: 16,
+          color: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: "white",
+          paddingHorizontal: 10,
+          paddingVertical: 8,
+          width: "80%",
+          height: 64,
+        },
+        customStyle,
+        { flexDirection: "row" },
+      ]}
       placeholderTextColor="#999"
     />
   );

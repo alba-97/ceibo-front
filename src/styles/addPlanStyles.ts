@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  error: {
+    color: "white",
+  },
   container: {
     flex: 1,
     width: "100%",
@@ -29,6 +32,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   inputContainer: {
+    width: "100%",
     alignItems: "center",
     flex: 1,
   },
@@ -68,7 +72,7 @@ export const styles = StyleSheet.create({
   text: {
     paddingTop: "5%",
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 4,

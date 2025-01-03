@@ -11,7 +11,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
 import { styles } from "../styles/registerScreenStyles";

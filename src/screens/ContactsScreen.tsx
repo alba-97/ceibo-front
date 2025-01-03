@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { FloatingButton } from "../components/FloatingButton";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import { styles } from "../styles/stylesContact";
 import { AntDesign } from "@expo/vector-icons";
 import { Navbar } from "../components/Navbar";

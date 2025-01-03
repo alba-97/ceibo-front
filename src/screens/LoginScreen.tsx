@@ -7,7 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import getUser from "../api/getUser";
 import getUserPlans from "../api/getUserPlans";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import { styles } from "../styles/loginScreenStyles";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
 import { API_URL } from "@env";

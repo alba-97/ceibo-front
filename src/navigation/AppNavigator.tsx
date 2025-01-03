@@ -37,7 +37,6 @@ import handleError from "@/utils/handleError";
 
 const Tab = createBottomTabNavigator();
 const HomeStackNavigator = createNativeStackNavigator();
-const { size, color } = bottomNavigationBarStyle;
 
 function NavbarStack() {
   return (
@@ -47,14 +46,11 @@ function NavbarStack() {
       }}
     >
       <HomeStackNavigator.Screen name="HomeScreen" component={HomeScreen} />
-
       <HomeStackNavigator.Screen
         name="Preferences"
         component={PreferencesScreen}
       />
-
       <HomeStackNavigator.Screen name="EditPlan" component={EditPlanScreen} />
-
       <HomeStackNavigator.Screen name="Profile" component={ProfileScreen} />
       <HomeStackNavigator.Screen
         name="AddPlanScreen1"
@@ -134,9 +130,7 @@ function BottomNavbar() {
         component={NavbarStack}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <Entypo name="home" size={size.height} color={color.color} />
-          ),
+          tabBarIcon: () => <Entypo name="home" size={30} color={"#fff"} />,
         }}
       />
       <Tab.Screen
@@ -144,9 +138,7 @@ function BottomNavbar() {
         component={SearchScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <Feather name="search" size={size.height} color={color.color} />
-          ),
+          tabBarIcon: () => <Feather name="search" size={30} color={"#fff"} />,
         }}
       />
       <Tab.Screen
@@ -155,11 +147,7 @@ function BottomNavbar() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <MaterialIcons
-              name="add-to-photos"
-              size={size.height}
-              color={color.color}
-            />
+            <MaterialIcons name="add-to-photos" size={30} color={"#fff"} />
           ),
         }}
       />
@@ -169,7 +157,7 @@ function BottomNavbar() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <AntDesign name="contacts" size={size.height} color={color.color} />
+            <AntDesign name="contacts" size={30} color={"#fff"} />
           ),
         }}
       />
@@ -179,11 +167,7 @@ function BottomNavbar() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <FontAwesome
-              name="user-circle-o"
-              size={size.height}
-              color={color.color}
-            />
+            <FontAwesome name="user-circle-o" size={30} color={"#fff"} />
           ),
         }}
       />

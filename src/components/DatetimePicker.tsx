@@ -1,5 +1,8 @@
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { Button } from "react-native";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
+import datetimePickerStyles from "@/styles/datetimePicker";
+import dayjs from "dayjs";
 
 interface IDatetimePickerProps {
   date: string;
@@ -8,26 +11,13 @@ interface IDatetimePickerProps {
 
 const DatetimePicker = ({ date, onChange }: IDatetimePickerProps) => {
   return (
-    <Button
-      title={date.slice(0, 16).replace("T", " ")}
-      onPress={() => {
-        DateTimePickerAndroid.open({
-          value: new Date(),
-          onChange: (_, selectedDate) => {
-            DateTimePickerAndroid.open({
-              mode: "time",
-              value: new Date(),
-              onChange: (_, selectedDate2) => {
-                if (!selectedDate || !selectedDate2) return;
-                const date = selectedDate.toISOString().split("T")[0];
-                const time = selectedDate2.toISOString().split("T")[1];
-                onChange(`${date}T${time}`);
-              },
-            });
-          },
-        });
-      }}
-    />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <StaticDateTimePicker
+        value={dayjs(date)}
+        onChange={(newDate) => onChange(newDate?.toISOString() ?? "")}
+        sx={datetimePickerStyles}
+      />
+    </LocalizationProvider>
   );
 };
 
