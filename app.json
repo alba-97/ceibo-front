@@ -4,6 +4,7 @@
     "slug": "ceiboFront",
     "scheme": "clubdelplan",
     "icon": "./assets/appicon.png",
+    "newArchEnabled": true,
     "android": {
       "intentFilters": [
         {
@@ -24,6 +25,9 @@
         "foregroundImage": "./assets/appicon.png",
         "backgroundColor": "#0A0A0A"
       }
+    },
+    "web": {
+      "bundler": "metro"
     },
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],

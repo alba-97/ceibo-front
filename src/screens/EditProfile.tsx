@@ -3,7 +3,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { GenericInput } from "../components/GenericInput";
+import GenericInput from "../components/GenericInput";
 import GenericButton from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
 import { API_URL } from "@env";
@@ -14,7 +14,7 @@ import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 
-export default function RegisterScreen() {
+export default function EditProfile() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
-import { GenericInput } from "../GenericInput";
+import GenericInput from "../GenericInput";
 import { useDispatch } from "react-redux";
 import { styles } from "../../styles/PlanDetails";
 import addComment from "../../api/addComment";
