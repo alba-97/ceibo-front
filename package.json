@@ -11,7 +11,6 @@
   "dependencies": {
     "@emotion/styled": "^11.14.0",
     "@expo/metro-runtime": "~4.0.0",
-    "@mui/x-date-pickers": "^7.23.3",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/datetimepicker": "8.2.0",
@@ -22,6 +21,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-native-dotenv": "^0.2.2",
     "@types/react-navigation": "^3.0.8",
+    "antd": "^5.22.7",
     "axios": "^1.7.9",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "cloudinary-react-native": "^0.0.2",

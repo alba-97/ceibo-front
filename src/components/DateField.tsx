@@ -1,8 +1,6 @@
-import EventForm from "@/interfaces/forms/Event";
-import { useFormikContext } from "formik";
 import { Text, View } from "react-native";
-import DatetimePicker from "./DatetimePicker";
 import ErrorMsg from "./ErrorMsg";
+import DatetimePicker from "./DatetimePicker";
 
 interface IDateFieldProps {
   placeholder: string;
@@ -10,7 +8,6 @@ interface IDateFieldProps {
 }
 
 const DateField = ({ placeholder, field }: IDateFieldProps) => {
-  const { values, setFieldValue } = useFormikContext<EventForm>();
   return (
     <View
       style={{
@@ -29,12 +26,7 @@ const DateField = ({ placeholder, field }: IDateFieldProps) => {
       >
         {placeholder}
       </Text>
-      <DatetimePicker
-        date={values[field as keyof EventForm] as string}
-        onChange={(date: string) => {
-          setFieldValue(field, date);
-        }}
-      />
+      <DatetimePicker field={field} />
       <ErrorMsg field={field} />
     </View>
   );

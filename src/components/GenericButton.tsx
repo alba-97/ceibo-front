@@ -23,9 +23,8 @@ const GenericButton = ({
           alignItems: "center",
           borderWidth: 2,
           borderColor: "rgba(10, 7, 7, 0.2)",
-          paddingHorizontal: 10,
-          paddingVertical: 8,
-          width: "25%",
+          paddingHorizontal: 15,
+          paddingVertical: 15,
         },
         customStyle,
       ]}
