@@ -11,11 +11,11 @@ import DateField from "@/components/DateField";
 import ImageField from "@/components/ImageField";
 import GenericButton from "@/components/GenericButton";
 import EventForm from "@/interfaces/forms/Event";
+import AddEventSchema1 from "@/utils/schema/AddEventSchema1";
 
 export default function AddPlanScreen1() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const goToNextStep = (values: EventForm) => {
-    if (values.start_date) values.start_date = values.start_date;
     navigation.navigate("AddPlanScreen2", values);
   };
 
@@ -39,7 +39,11 @@ export default function AddPlanScreen1() {
         }}
       >
         <Navbar />
-        <Formik initialValues={initialValues} onSubmit={goToNextStep}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={goToNextStep}
+          validationSchema={AddEventSchema1}
+        >
           {({ handleSubmit }) => (
             <ScrollView
               style={{ width: "100%" }}
