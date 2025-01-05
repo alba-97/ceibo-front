@@ -1,11 +1,8 @@
-import { Text, ScrollView, View, Alert } from "react-native";
+import { Text, ScrollView, View, Alert, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
-import { API_URL } from "@env";
-import { styles } from "../appCss";
-import axios from "axios";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
 import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
@@ -16,24 +13,23 @@ import refetchData from "../utils/refetchData";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";
-import IOption from "@/interfaces/Option";
 import handleError from "@/utils/handleError";
+import getPlans from "@/api/getPlans";
+import { Formik } from "formik";
+import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
 
 export default function SearchScreen() {
-  const [results, setResults] = useState([]);
-  const [query, setQuery] = useState("");
-
   const options = [
-    { label: "Texto", value: "text" },
-    { label: "Categoría", value: "category" },
-    { label: "Usuario", value: "user" },
+    { label: "Text", value: "text" },
+    { label: "Category", value: "category" },
+    { label: "User", value: "user" },
   ];
-  const [option, setOption] = useState<IOption>(options[0]);
 
+  const [results, setResults] = useState<EventResponse[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
-
   const { refetch } = refetchData();
+  const inputRef = useRef<TextInput>(null);
 
   const handlePress = async (plan: EventResponse) => {
     try {
@@ -47,48 +43,21 @@ export default function SearchScreen() {
     }
   };
 
-  const handleQueryChange = (text: string) => {
-    setQuery(text);
-  };
-
-  const handleSearch = () => {
-    if (option.value == "text") {
-      axios
-        .get(`${API_URL}/events/search?query=${query}`)
-        .then((response) => {
-          setResults(response.data);
-        })
-        .catch((error) => {
-          Alert.alert("Error", "Evento no encontrado");
-          console.log(error);
-        });
-    } else if (option.value == "category") {
-      axios
-        .get(`${API_URL}/events/search/category?query=${query}`)
-        .then((response) => {
-          setResults(response.data);
-        })
-        .catch((error) => {
-          Alert.alert("Error", "Evento no encontrado");
-          console.log(error);
-        });
-    } else if (option.value == "user") {
-      axios
-        .get(`${API_URL}/events/search/user?query=${query}`)
-        .then((response) => {
-          setResults(response.data);
-        })
-        .catch((error) => {
-          Alert.alert("Error", "Evento no encontrado");
-          console.log(error);
-        });
+  const handleSearch = async (values: EventQuery) => {
+    try {
+      const events = await getPlans(values);
+      setResults(events);
+      inputRef.current?.focus();
+    } catch (err) {
+      Alert.alert("Error", "Event not found");
+      console.log(err);
     }
   };
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/events`);
-      setResults(data);
+      const events = await getPlans();
+      setResults(events);
     } catch (err) {
       console.error(err);
     }
@@ -99,37 +68,71 @@ export default function SearchScreen() {
   }, [refetch]);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        width: "100%",
+        flex: 1,
+        alignItems: "center",
+      }}
+    >
       <LinearGradient
         colors={["#000", "#7D0166"]}
         start={[0, 0]}
         end={[1, 1]}
-        style={styles.container}
+        style={{
+          width: "100%",
+          flex: 1,
+          alignItems: "center",
+        }}
       >
         <Navbar />
-        <View style={styles.searchContainer}>
-          <GenericInput
-            value={query}
-            onSubmitEditing={handleSearch}
-            onChangeText={handleQueryChange}
-            placeholder="Buscar plan"
-          />
-        </View>
-        <RadioButton
-          style={{ flexDirection: "row", marginVertical: 10 }}
-          options={options}
-          onSelect={setOption}
-          defaultValue={option}
-        />
-        <View style={styles.content}>
-          <ScrollView style={{ width: "100%" }}>
-            {results ? (
-              results.map((item, index) => (
-                <SearchImg key={index} plan={item} onPress={handlePress} />
-              ))
-            ) : (
-              <Text>Cargando datos...</Text>
-            )}
+        <Formik
+          initialValues={{
+            searchTerm: "",
+            search: options[0].value as EventQueryType,
+          }}
+          onSubmit={handleSearch}
+        >
+          {({ handleSubmit, setFieldValue, values }) => (
+            <View
+              style={{
+                width: "100%",
+                paddingTop: "5%",
+                alignItems: "center",
+              }}
+            >
+              <GenericInput
+                ref={inputRef}
+                value={values.searchTerm}
+                onSubmitEditing={handleSubmit}
+                onChangeText={(searchTerm: string) =>
+                  setFieldValue("searchTerm", searchTerm)
+                }
+                placeholder="Search event"
+              />
+
+              <RadioButton
+                options={options}
+                onSelect={(option) => setFieldValue("search", option.value)}
+              />
+            </View>
+          )}
+        </Formik>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            paddingHorizontal: 20,
+            marginLeft: 30,
+          }}
+        >
+          <ScrollView
+            style={{ width: "100%" }}
+            showsVerticalScrollIndicator={false}
+          >
+            {results?.map((item, index) => (
+              <SearchImg key={index} plan={item} onPress={handlePress} />
+            )) ?? <Text>Loading data...</Text>}
           </ScrollView>
         </View>
       </LinearGradient>

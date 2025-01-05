@@ -6,16 +6,10 @@ interface IRadioButtonProps {
   options: IOption[];
   onSelect: (option: IOption) => void;
   style?: ViewStyle;
-  defaultValue: IOption;
 }
 
-const RadioButton = ({
-  options,
-  onSelect,
-  style,
-  defaultValue,
-}: IRadioButtonProps) => {
-  const [selectedOption, setSelectedOption] = useState<IOption>(defaultValue);
+const RadioButton = ({ options, onSelect, style = {} }: IRadioButtonProps) => {
+  const [selectedOption, setSelectedOption] = useState<IOption>();
 
   const handleOptionSelect = (option: IOption) => {
     setSelectedOption(option);
@@ -23,7 +17,7 @@ const RadioButton = ({
   };
 
   return (
-    <View {...style}>
+    <View style={{ ...style, flexDirection: "row", marginVertical: 10 }}>
       {options.map((option) => (
         <TouchableOpacity
           key={option.value}
@@ -37,12 +31,12 @@ const RadioButton = ({
               borderRadius: 10,
               borderWidth: 2,
               borderColor:
-                selectedOption.value === option.value ? "white" : "gray",
+                selectedOption?.value === option.value ? "white" : "gray",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            {selectedOption.value === option.value && (
+            {selectedOption?.value === option.value && (
               <View
                 style={{
                   width: 10,

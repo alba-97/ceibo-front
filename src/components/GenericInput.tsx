@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { KeyboardTypeOptions, TextInput, TextStyle } from "react-native";
 
 interface IGenericInputProps {
@@ -13,34 +14,32 @@ interface IGenericInputProps {
   onSubmitEditing?: () => void;
 }
 
-export default ({
-  customStyle,
-  placeholder = "",
-  value,
-  ...props
-}: IGenericInputProps) => {
-  return (
-    <TextInput
-      {...props}
-      value={value === null ? "" : value.toString()}
-      placeholder={placeholder}
-      style={[
-        {
-          fontSize: 16,
-          color: "white",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
-          borderRadius: 20,
-          borderWidth: 1,
-          borderColor: "white",
-          paddingHorizontal: 10,
-          paddingVertical: 8,
-          width: "80%",
-          height: 64,
-        },
-        customStyle,
-        { flexDirection: "row" },
-      ]}
-      placeholderTextColor="#999"
-    />
-  );
-};
+export default forwardRef<TextInput, IGenericInputProps>(
+  ({ customStyle, placeholder = "", value, ...props }, ref) => {
+    return (
+      <TextInput
+        {...props}
+        value={value === null ? "" : value.toString()}
+        placeholder={placeholder}
+        ref={ref}
+        style={[
+          {
+            fontSize: 16,
+            color: "white",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            borderRadius: 20,
+            borderWidth: 1,
+            borderColor: "white",
+            paddingHorizontal: 10,
+            paddingVertical: 8,
+            width: "80%",
+            height: 64,
+          },
+          customStyle,
+          { flexDirection: "row" },
+        ]}
+        placeholderTextColor="#999"
+      />
+    );
+  }
+);

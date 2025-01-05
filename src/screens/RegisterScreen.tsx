@@ -38,9 +38,7 @@ export default function RegisterScreen() {
 
   const handleSubmit = async () => {
     let formattedBirthdate = null;
-    if (birthdate instanceof Date) {
-      formattedBirthdate = birthdate.toISOString();
-    }
+    if (birthdate instanceof Date) formattedBirthdate = birthdate.toISOString();
     try {
       const res = await axios.post(`${API_URL}/users/signup`, {
         username,
