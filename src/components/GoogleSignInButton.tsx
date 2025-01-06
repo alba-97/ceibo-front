@@ -99,19 +99,19 @@ const GoogleSignInButton = () => {
         username: username,
         password: password,
       });
-      if (jwtToken.data.token) {
-        await AsyncStorage.setItem("token", jwtToken.data.token);
-        await axios.get(`${API_URL}/users/secret`, {
-          headers: {
-            Authorization: `Bearer ${jwtToken.data.token}`,
-          },
-        });
-        const userData = await getUser();
-        dispatch(setUser(userData));
-        const userPlans = await getUserPlans();
-        dispatch(setUserPlans(userPlans));
-        navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
-      }
+      if (!jwtToken.data.token) return;
+
+      await AsyncStorage.setItem("token", jwtToken.data.token);
+      await axios.get(`${API_URL}/users/secret`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken.data.token}`,
+        },
+      });
+      const userData = await getUser();
+      dispatch(setUser(userData));
+      const { data } = await getUserPlans();
+      dispatch(setUserPlans(data));
+      navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
     } catch (err) {
       handleError(err);
     }

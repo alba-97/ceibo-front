@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { Image, TouchableOpacity, View, ScrollView, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { styles } from "../styles/preferencesStyles";
-import { Navbar } from "../components/Navbar";
-import MultipleDropdown from "../components/MultipleDropdown";
-import getCategories from "../api/getCategories";
-import addPreferences from "../api/addPreferences";
+import { styles } from "@/styles/preferencesStyles";
+import { Navbar } from "@/components/Navbar";
+import MultipleDropdown from "@/components/MultipleDropdown";
+import getCategories from "@/api/getCategories";
+import addPreferences from "@/api/addPreferences";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
-import refetchData from "../utils/refetchData";
-import actualizar from "../assets/actualizar.png";
-import editUser from "../api/editUser";
+import refetchData from "@/utils/refetchData";
+import actualizar from "@/assets/actualizar.png";
+import editUser from "@/api/editUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
 import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
@@ -23,7 +23,7 @@ export default function PreferencesScreen() {
   const { refetch, triggerRefetch } = refetchData();
 
   const fetchCategories = async () => {
-    const data = await getCategories();
+    const { data } = await getCategories();
     setCategories(fromCategoryResponsesToOptions(data));
   };
 

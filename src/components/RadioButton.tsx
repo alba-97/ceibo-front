@@ -6,10 +6,16 @@ interface IRadioButtonProps {
   options: IOption[];
   onSelect: (option: IOption) => void;
   style?: ViewStyle;
+  defaultValue?: IOption;
 }
 
-const RadioButton = ({ options, onSelect, style = {} }: IRadioButtonProps) => {
-  const [selectedOption, setSelectedOption] = useState<IOption>();
+const RadioButton = ({
+  options,
+  onSelect,
+  style = {},
+  defaultValue = { label: "", value: "" },
+}: IRadioButtonProps) => {
+  const [selectedOption, setSelectedOption] = useState<IOption>(defaultValue);
 
   const handleOptionSelect = (option: IOption) => {
     setSelectedOption(option);

@@ -29,8 +29,8 @@ export default function ContactInfoScreen() {
 
   const isAlreadyFriend = async () => {
     try {
-      const userFriends = await getUserFriends();
-      setIsFriend(userFriends.some((friend) => friend._id === contact._id));
+      const { data: friends } = await getUserFriends();
+      setIsFriend(friends.some((friend) => friend._id === contact._id));
     } catch (err) {
       handleError(err);
     }

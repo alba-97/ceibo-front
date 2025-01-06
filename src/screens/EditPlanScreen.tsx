@@ -57,7 +57,7 @@ export default function EditPlanScreen() {
     }
   };
   const fetchCategories = async () => {
-    const data = await getCategories();
+    const { data } = await getCategories();
     const categories = fromCategoryResponsesToOptions(data);
     setCategories(categories);
   };

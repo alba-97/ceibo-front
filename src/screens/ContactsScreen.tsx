@@ -29,9 +29,9 @@ export default function ContactsScreen() {
 
   const fetchFriends = async () => {
     try {
-      const friends = await getUserFriends();
-      dispatch(setContacts(friends));
-      setFilteredContacts(friends);
+      const { data } = await getUserFriends();
+      dispatch(setContacts(data));
+      setFilteredContacts(data);
     } catch (err) {
       handleError(err);
     }

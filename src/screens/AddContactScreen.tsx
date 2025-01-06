@@ -54,8 +54,8 @@ export default function ContactsScreen() {
 
   const fetchUsers = async () => {
     try {
-      const users = await getAllUsers();
-      setContacts(users);
+      const { data } = await getAllUsers();
+      setContacts(data);
     } catch (err) {
       handleError(err);
     }

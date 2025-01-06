@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
-import GenericInput from "../GenericInput";
+import GenericInput from "@/components/GenericInput";
 import { useDispatch } from "react-redux";
-import { styles } from "../../styles/PlanDetails";
-import addComment from "../../api/addComment";
-import { setComments } from "../../state/selectedPlan";
+import { styles } from "@/styles/PlanDetails";
+import addComment from "@/api/addComment";
+import { setComments } from "@/state/selectedPlan";
 import { Feather } from "@expo/vector-icons";
-import comentarios from "../../assets/comentarios.png";
+import comentarios from "@/assets/comentarios.png";
 import EventResponse from "@/interfaces/responses/Event";
 import handleError from "@/utils/handleError";
 
