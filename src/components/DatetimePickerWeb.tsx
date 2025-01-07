@@ -14,7 +14,6 @@ const DatetimePickerWeb = ({ field }: IDatetimePickerProps) => {
         showTime
         showSecond={false}
         onChange={(_, dateString) => {
-          console.log(dateString);
           typeof dateString === "string" &&
             setFieldValue(field, dateString.replace(" ", "T"));
         }}
