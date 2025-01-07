@@ -18,7 +18,7 @@ const findMissingContacts = (
 
 export const addContactsAsFriends = async () => {
   const contacts = await fetchContacts();
-  const friends = await getUserFriends();
+  const { data: friends } = await getUserFriends();
   const missingContacts = findMissingContacts(contacts, friends);
   for (const contact of missingContacts) {
     contact._id && (await addFriend(contact._id));

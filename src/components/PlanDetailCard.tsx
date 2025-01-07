@@ -46,14 +46,14 @@ export const PlanDetailCard = () => {
 
   const fetchInfo = async () => {
     try {
-      let users = await getUserFriends();
-      setUsers(users);
+      const { data: friends } = await getUserFriends();
+      setUsers(friends);
 
-      const friendsOptions = fromUserResponsesToOptions(users);
+      const friendsOptions = fromUserResponsesToOptions(friends);
       setFriends(friendsOptions);
 
-      const data = await getEditableEvents(plan._id);
-      setCanEdit(data);
+      const canEdit = await getEditableEvents(plan._id);
+      setCanEdit(canEdit);
     } catch (err) {
       handleError(err);
     }

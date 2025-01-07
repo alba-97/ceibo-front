@@ -42,9 +42,9 @@ export default function LoginScreen() {
         });
         const userData = await getUser();
         dispatch(setUser(userData));
-        const userPlans = await getUserPlans();
+        const { data: userPlans } = await getUserPlans();
         dispatch(setUserPlans(userPlans));
-        const planHistory = await getPlanHistory();
+        const { data: planHistory } = await getPlanHistory();
         dispatch(setPlanHistory(planHistory));
         navigation.navigate("HomeScreen");
       }

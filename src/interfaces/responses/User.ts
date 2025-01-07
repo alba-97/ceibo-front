@@ -15,4 +15,5 @@ export default interface UserResponse {
   history: EventResponse[];
   preferences: CategoryResponse[];
   rating?: number;
+  new_user?: boolean;
 }

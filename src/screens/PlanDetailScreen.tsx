@@ -1,5 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { View, ScrollView, Text, Image } from "react-native";
+import { Text, Image } from "react-native";
 import { useSelector } from "react-redux";
 import Comments from "../components/Plan/Comments";
 import PlanOrganizer from "../components/Plan/Organizer";
@@ -11,21 +10,19 @@ import { styles } from "../styles/PlanDetails";
 import descripcion from "../assets/descripcion.png";
 import { Navbar } from "../components/Navbar";
 import { RootState } from "@/state/store";
+import AppScrollView from "@/components/AppScrollView";
+import AppGradient from "@/components/AppGradient";
+import AppView from "@/components/AppView";
 
 export default function PlanDetailScreen() {
   const plan = useSelector((state: RootState) => state.selectedPlan);
   const user = useSelector((state: RootState) => state.user);
 
   return (
-    <LinearGradient
-      style={{ flex: 1 }}
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-    >
+    <AppGradient>
       <Navbar />
-      <ScrollView>
-        <View>
+      <AppScrollView>
+        <AppView>
           <Text style={styles.title}>{plan?.title}</Text>
           <Image
             source={{ uri: plan?.img }}
@@ -34,29 +31,29 @@ export default function PlanDetailScreen() {
               height: 200,
             }}
           />
-        </View>
-        <View style={styles.detailsContainer}>
-          <View>
+        </AppView>
+        <AppView className="justify-center mt-5 p-20">
+          <AppView>
             {plan.ended ? (
               <PlanEnded plan={plan} user={user} />
             ) : (
               <PlanEnroll plan={plan} user={user} />
             )}
-          </View>
+          </AppView>
 
           <PlanOrganizer plan={plan} />
 
           <Image style={styles.logo3} source={descripcion} />
           <Text style={styles.text3}>{plan.description}</Text>
           {user._id && (
-            <View>
+            <AppView>
               <Comments plan={plan} />
               <PlanEdit plan={plan} />
               <PlanInvite plan={plan} />
-            </View>
+            </AppView>
           )}
-        </View>
-      </ScrollView>
-    </LinearGradient>
+        </AppView>
+      </AppScrollView>
+    </AppGradient>
   );
 }

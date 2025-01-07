@@ -1,5 +1,4 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { View, Alert, ScrollView } from "react-native";
+import { Alert } from "react-native";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -18,6 +17,9 @@ import TextField from "@/components/TextField";
 import SelectField from "@/components/SelectField";
 import initialValues from "@/common/eventInitialValues";
 import GenericButton from "@/components/GenericButton";
+import AppView from "@/components/AppView";
+import AppGradient from "@/components/AppGradient";
+import AppScrollView from "@/components/AppScrollView";
 
 interface IAddPlanScreen2Props {
   route?: {
@@ -45,7 +47,7 @@ export default function AddPlanScreen2({
 
   const fetchCategories = async () => {
     try {
-      const data = await getCategories();
+      const { data } = await getCategories();
       const categories = fromCategoryResponsesToOptions(data);
       setCategories(categories);
     } catch (err) {
@@ -66,24 +68,8 @@ export default function AddPlanScreen2({
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: "100%",
-        height: "100%",
-        alignItems: "center",
-      }}
-    >
-      <LinearGradient
-        colors={["#000", "#7D0166"]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={{
-          flex: 1,
-          width: "100%",
-          alignItems: "center",
-        }}
-      >
+    <AppView className="flex w-full h-full align-center">
+      <AppGradient className="flex w-full align-center">
         <Navbar />
         <Formik
           initialValues={initialValues}
@@ -91,21 +77,9 @@ export default function AddPlanScreen2({
           onSubmit={submitEvent}
         >
           {({ handleSubmit }) => (
-            <ScrollView
-              style={{
-                width: "100%",
-              }}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ alignItems: "center" }}
-            >
+            <AppScrollView className="w-full">
               <BackArrow onPress={handleBack} />
-              <View
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  marginVertical: 20,
-                }}
-              >
+              <AppView className="w-full mt-20 align-center">
                 <TextField placeholder="Minimum age" field="min_age" />
                 <TextField placeholder="Maximum age" field="max_age" />
                 <TextField placeholder="Minimum to pay" field="min_to_pay" />
@@ -113,11 +87,11 @@ export default function AddPlanScreen2({
                 <SelectField data={categories} field="category" />
                 <TextField placeholder="Link to pay" field="link_to_pay" />
                 <GenericButton onPress={handleSubmit} text="Submit" />
-              </View>
-            </ScrollView>
+              </AppView>
+            </AppScrollView>
           )}
         </Formik>
-      </LinearGradient>
-    </View>
+      </AppGradient>
+    </AppView>
   );
 }

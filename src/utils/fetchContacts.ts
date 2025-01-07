@@ -14,7 +14,7 @@ const getContactNumbers = (data: Contacts.Contact[]) => {
 };
 
 const filterContacts = async (phoneNumbers: string[]) => {
-  const users = await getAllUsers();
+  const { data: users } = await getAllUsers();
   const filteredPhoneNumbers = [];
 
   for (const user of users) {

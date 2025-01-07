@@ -1,5 +1,3 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { View, ScrollView } from "react-native";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
@@ -12,6 +10,9 @@ import ImageField from "@/components/ImageField";
 import GenericButton from "@/components/GenericButton";
 import EventForm from "@/interfaces/forms/Event";
 import AddEventSchema1 from "@/utils/schema/AddEventSchema1";
+import AppView from "@/components/AppView";
+import AppGradient from "@/components/AppGradient";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function AddPlanScreen1() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -20,24 +21,8 @@ export default function AddPlanScreen1() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: "100%",
-        height: "100%",
-        alignItems: "center",
-      }}
-    >
-      <LinearGradient
-        colors={["#000", "#7D0166"]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={{
-          flex: 1,
-          width: "100%",
-          alignItems: "center",
-        }}
-      >
+    <AppView className="flex w-full h-full align-center">
+      <AppGradient className="flex w-full align-center">
         <Navbar />
         <Formik
           initialValues={initialValues}
@@ -45,20 +30,12 @@ export default function AddPlanScreen1() {
           validationSchema={AddEventSchema1}
         >
           {({ handleSubmit }) => (
-            <ScrollView
-              style={{ width: "100%" }}
-              showsVerticalScrollIndicator={false}
+            <AppScrollView
+              className="w-full"
               contentContainerStyle={{ alignItems: "center" }}
             >
               <ProfileText text="Create Event" />
-              <View
-                style={{
-                  marginVertical: 20,
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <AppView className="my-20 w-full align-center justify-center">
                 <TextField placeholder="Title" field="title" />
                 <TextField placeholder="Description" field="description" />
                 <TextField placeholder="Location" field="location" />
@@ -69,11 +46,11 @@ export default function AddPlanScreen1() {
                 <ImageField placeholder="Image" field="img" />
 
                 <GenericButton onPress={handleSubmit} text="Next" />
-              </View>
-            </ScrollView>
+              </AppView>
+            </AppScrollView>
           )}
         </Formik>
-      </LinearGradient>
-    </View>
+      </AppGradient>
+    </AppView>
   );
 }

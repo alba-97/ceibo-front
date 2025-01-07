@@ -12,6 +12,7 @@ import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions"
 import inviteUsers from "@/api/inviteUsers";
 import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
 import handleError from "@/utils/handleError";
+import fromResponseToForm from "@/utils/event/fromResponseToForm";
 
 interface IPlanInviteProps {
   plan: EventResponse;
@@ -40,18 +41,19 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
   const handleInvite = async () => {
     try {
       const users = fromOptionstoStringArray(invited);
-      await inviteUsers(users, plan, sendMethod.value);
-      Alert.alert("OK", "Invitaciones enviadas");
+      const form = fromResponseToForm(plan);
+      await inviteUsers(users, form, sendMethod.value);
+      Alert.alert("OK", "Invites sent successfully");
     } catch (err) {
-      Alert.alert("Error", "Hubo un problema al enviar invitaciones");
+      Alert.alert("Error", "There was an error sending invites");
     }
   };
 
   const fetchInfo = async () => {
     try {
-      const users = await getUserFriends();
-      setUsers(users);
-      const friends = fromUserResponsesToOptions(users);
+      const { data } = await getUserFriends();
+      setUsers(data);
+      const friends = fromUserResponsesToOptions(data);
       setFriendsDropdown(friends);
     } catch (err) {
       handleError(err);

@@ -1,5 +1,4 @@
-import { Text, ScrollView, View, Alert, TextInput } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { Text, View, Alert, TextInput } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
@@ -17,6 +16,9 @@ import handleError from "@/utils/handleError";
 import getPlans from "@/api/getPlans";
 import { Formik } from "formik";
 import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
+import AppView from "@/components/AppView";
+import AppGradient from "@/components/AppGradient";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function SearchScreen() {
   const options = [
@@ -45,8 +47,8 @@ export default function SearchScreen() {
 
   const handleSearch = async (values: EventQuery) => {
     try {
-      const events = await getPlans(values);
-      setResults(events);
+      const { data } = await getPlans(values);
+      setResults(data);
       inputRef.current?.focus();
     } catch (err) {
       Alert.alert("Error", "Event not found");
@@ -56,8 +58,8 @@ export default function SearchScreen() {
 
   const fetchData = async () => {
     try {
-      const events = await getPlans();
-      setResults(events);
+      const { data } = await getPlans();
+      setResults(data);
     } catch (err) {
       console.error(err);
     }
@@ -68,23 +70,8 @@ export default function SearchScreen() {
   }, [refetch]);
 
   return (
-    <View
-      style={{
-        width: "100%",
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
-      <LinearGradient
-        colors={["#000", "#7D0166"]}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={{
-          width: "100%",
-          flex: 1,
-          alignItems: "center",
-        }}
-      >
+    <AppView className="flex w-full align-center">
+      <AppGradient className="flex w-full align-center">
         <Navbar />
         <Formik
           initialValues={{
@@ -94,7 +81,7 @@ export default function SearchScreen() {
           onSubmit={handleSearch}
         >
           {({ handleSubmit, setFieldValue, values }) => (
-            <View
+            <AppView
               style={{
                 width: "100%",
                 paddingTop: "5%",
@@ -115,7 +102,7 @@ export default function SearchScreen() {
                 options={options}
                 onSelect={(option) => setFieldValue("search", option.value)}
               />
-            </View>
+            </AppView>
           )}
         </Formik>
         <View
@@ -126,16 +113,13 @@ export default function SearchScreen() {
             marginLeft: 30,
           }}
         >
-          <ScrollView
-            style={{ width: "100%" }}
-            showsVerticalScrollIndicator={false}
-          >
+          <AppScrollView className="w-full">
             {results?.map((item, index) => (
               <SearchImg key={index} plan={item} onPress={handlePress} />
             )) ?? <Text>Loading data...</Text>}
-          </ScrollView>
+          </AppScrollView>
         </View>
-      </LinearGradient>
-    </View>
+      </AppGradient>
+    </AppView>
   );
 }

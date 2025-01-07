@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { useEffect, useState } from "react";
-import GenericButton from "../GenericButton";
+import GenericButton from "@/components/GenericButton";
 import getEditableEvents from "@/api/getEditableEvents";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import deleteEvent from "@/api/deleteEvent";
