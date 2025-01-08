@@ -17,7 +17,7 @@ export default interface EventResponse {
   img: string;
   category: CategoryResponse;
   comments: CommentResponse[];
-  organizer: UserResponse;
+  createdBy: UserResponse;
   ended: boolean;
   private: boolean;
 }

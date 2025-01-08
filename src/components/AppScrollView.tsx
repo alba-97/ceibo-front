@@ -1,22 +1,36 @@
-import fromClassNameToStyles from "@/utils/fromClassNameToStyles";
+import { useDraggableScroll } from "@/hooks/useDraggableScroll";
+import { ForwardedRef, forwardRef, useImperativeHandle, useRef } from "react";
 import { ScrollView, ScrollViewProps } from "react-native";
 
-interface IAppViewProps extends ScrollViewProps {
-  className?: string;
+interface IScrollViewProps extends ScrollViewProps {
   children?: React.ReactNode;
+  setIsStill?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default ({ className, children, ...props }: IAppViewProps) => {
-  const combinedStyles = fromClassNameToStyles(className);
+export default forwardRef<ScrollView, IScrollViewProps>(
+  (
+    { children, setIsStill, ...props }: IScrollViewProps,
+    forwardedRef: ForwardedRef<ScrollView>
+  ) => {
+    const localRef = useRef<ScrollView>(null);
+    useImperativeHandle(forwardedRef, () => localRef.current as ScrollView);
 
-  return (
-    <ScrollView
-      style={combinedStyles}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ alignItems: "center" }}
-      {...props}
-    >
-      {children}
-    </ScrollView>
-  );
-};
+    const { refs } = useDraggableScroll<ScrollView>({
+      outerRef: localRef,
+      cursor: "grab",
+      setIsStill,
+    });
+
+    return (
+      <ScrollView
+        ref={refs}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ alignItems: "center" }}
+        {...props}
+      >
+        {children}
+      </ScrollView>
+    );
+  }
+);

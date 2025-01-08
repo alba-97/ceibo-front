@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  ScrollView,
   Alert,
   TextInput,
   TouchableOpacity,
@@ -19,6 +18,7 @@ import { DatePicker } from "../components/DatePicker";
 import crearCuenta from "../assets/crearCuenta.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
@@ -73,7 +73,7 @@ export default function RegisterScreen() {
       style={styles.container}
     >
       <Navbar />
-      <ScrollView style={styles.scroll}>
+      <AppScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
@@ -136,7 +136,7 @@ export default function RegisterScreen() {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </AppScrollView>
     </LinearGradient>
   );
 }

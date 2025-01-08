@@ -4,10 +4,9 @@ import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { useDispatch } from "react-redux";
-import { setSelectedPlan, setOrganizer } from "../state/selectedPlan";
+import { setSelectedPlan, setAuthor } from "../state/selectedPlan";
 import getPlan from "../api/getPlan";
 import { SearchImg } from "../components/searchImage";
-import getOrganizer from "../api/getOrganizer";
 import refetchData from "../utils/refetchData";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -16,9 +15,9 @@ import handleError from "@/utils/handleError";
 import getPlans from "@/api/getPlans";
 import { Formik } from "formik";
 import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
-import AppView from "@/components/AppView";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
+import { StyleSheet } from "react-native";
 
 export default function SearchScreen() {
   const options = [
@@ -37,8 +36,7 @@ export default function SearchScreen() {
     try {
       const updatedPlan = await getPlan(plan._id);
       dispatch(setSelectedPlan(updatedPlan));
-      const organizer = await getOrganizer(plan._id);
-      dispatch(setOrganizer(organizer));
+      dispatch(setAuthor(updatedPlan.createdBy));
       navigation.navigate("PlanDetail");
     } catch (err) {
       handleError(err);
@@ -70,8 +68,8 @@ export default function SearchScreen() {
   }, [refetch]);
 
   return (
-    <AppView className="flex w-full align-center">
-      <AppGradient className="flex w-full align-center">
+    <View style={styles.container}>
+      <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
           initialValues={{
@@ -81,13 +79,7 @@ export default function SearchScreen() {
           onSubmit={handleSearch}
         >
           {({ handleSubmit, setFieldValue, values }) => (
-            <AppView
-              style={{
-                width: "100%",
-                paddingTop: "5%",
-                alignItems: "center",
-              }}
-            >
+            <View style={styles.form}>
               <GenericInput
                 ref={inputRef}
                 value={values.searchTerm}
@@ -102,24 +94,44 @@ export default function SearchScreen() {
                 options={options}
                 onSelect={(option) => setFieldValue("search", option.value)}
               />
-            </AppView>
+            </View>
           )}
         </Formik>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            paddingHorizontal: 20,
-            marginLeft: 30,
-          }}
-        >
-          <AppScrollView className="w-full">
+        <View style={styles.eventContainer}>
+          <AppScrollView style={styles.scrollView}>
             {results?.map((item, index) => (
               <SearchImg key={index} plan={item} onPress={handlePress} />
             )) ?? <Text>Loading data...</Text>}
           </AppScrollView>
         </View>
       </AppGradient>
-    </AppView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  gradient: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  form: {
+    width: "100%",
+    paddingTop: "5%",
+    alignItems: "center",
+  },
+  eventContainer: {
+    flex: 1,
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginLeft: 30,
+  },
+  scrollView: {
+    width: "100%",
+  },
+});

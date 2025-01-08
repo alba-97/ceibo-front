@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,7 @@ import iniciaSesion from "../assets/iniciaSesion.png";
 import { Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <Navbar />
-      <ScrollView style={styles.scroll}>
+      <AppScrollView style={styles.scroll}>
         <View style={styles.container}>
           <Text style={styles.text}>Nombre de Usuario</Text>
           <GenericInput value={username} onChangeText={setUsername} />
@@ -83,7 +84,7 @@ export default function LoginScreen() {
             </Text>
           </View>
         </View>
-      </ScrollView>
+      </AppScrollView>
     </LinearGradient>
   );
 }

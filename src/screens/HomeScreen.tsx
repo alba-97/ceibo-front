@@ -1,7 +1,5 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { useEffect } from "react";
-import { ScrollView, View, Image } from "react-native";
-import { styles } from "../appCss";
+import { Image, StyleSheet, View } from "react-native";
 import { Navbar } from "@/components/Navbar";
 import { SwiperComponent } from "@/components/Swiper";
 import { MainEvent } from "@/components/MainEvent";
@@ -12,10 +10,9 @@ import getUser from "@/api/getUser";
 import getPlan from "@/api/getPlan";
 import { useSelector, useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
-import { setSelectedPlan, setOrganizer } from "@/state/selectedPlan";
+import { setSelectedPlan, setAuthor } from "@/state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "@/state/user";
 import { setPlans } from "@/state/plans";
-import getOrganizer from "@/api/getOrganizer";
 import refetchData from "@/utils/refetchData";
 import getPlanHistory from "@/api/getPlanHistory";
 import noTienesPlanes from "@/assets/noTienesPlanes.png";
@@ -27,6 +24,8 @@ import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import AppGradient from "@/components/AppGradient";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -41,8 +40,8 @@ export default function HomeScreen() {
     try {
       const updatedPlan = await getPlan(plan._id);
       dispatch(setSelectedPlan(updatedPlan));
-      const organizer = await getOrganizer(plan._id);
-      dispatch(setOrganizer(organizer));
+      dispatch(setAuthor(updatedPlan.createdBy));
+
       navigation.navigate("PlanDetail");
     } catch (err) {
       handleError(err);
@@ -61,14 +60,13 @@ export default function HomeScreen() {
   const fetchData = async () => {
     try {
       const userData = await fetchUser();
-
       if (!userData) {
         const { data: plans } = await getAllPlans();
         dispatch(setPlans(plans));
         return;
       }
-
       dispatch(setUser(userData));
+
       const { data: userPlans } = await getUserPlans();
       dispatch(setUserPlans(userPlans));
 
@@ -77,9 +75,6 @@ export default function HomeScreen() {
 
       if (userData.preferences[0]) {
         const { data: plans } = await getFilteredPlans();
-        dispatch(setPlans(plans));
-      } else {
-        const { data: plans } = await getAllPlans();
         dispatch(setPlans(plans));
       }
     } catch (err) {
@@ -92,14 +87,9 @@ export default function HomeScreen() {
   }, [refetch]);
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
-    >
+    <AppGradient style={styles.gradient}>
       <Navbar />
-      <ScrollView>
+      <AppScrollView>
         {plans[0] && (
           <MainEvent
             plan={plans[0]}
@@ -107,47 +97,74 @@ export default function HomeScreen() {
             onPress={handlePress}
           />
         )}
-        <SwiperComponent
-          plans={plans}
-          onPress={handlePress}
-          image={recomendaciones}
-          styleLogo={styles.logoReco}
-        />
-
+        <View style={styles.logo}>
+          <Image style={styles.recomendations} source={recomendaciones} />
+        </View>
+        <SwiperComponent plans={plans} onPress={handlePress} />
         {user._id && (
           <View>
-            {user.plans && user.plans[0] ? (
-              <SwiperComponent
-                plans={user.plans}
-                image={misPlanes}
-                onPress={handlePress}
-                styleLogo={styles.logoMisP}
-              />
+            <View style={styles.logo}>
+              <Image style={styles.myEvents} source={misPlanes} />
+            </View>
+            {user.plans?.[0] ? (
+              <SwiperComponent plans={user.plans} onPress={handlePress} />
             ) : (
-              <View style={{ alignItems: "center" }}>
-                <View style={styles.logoutContainer}>
+              <View style={styles.logoContainer}>
+                <View style={styles.logo}>
                   <Image style={styles.logo} source={noTienesPlanes} />
                 </View>
               </View>
             )}
             {user.history && user.history[0] ? (
-              <SwiperComponent
-                plans={user.history}
-                onPress={handlePress}
-                image={planesPasados}
-                styleLogo={styles.logoMisPPasados}
-              />
+              <View>
+                <View style={styles.logo}>
+                  <Image style={styles.myEvents} source={planesPasados} />
+                </View>
+                <SwiperComponent plans={user.history} onPress={handlePress} />
+              </View>
             ) : (
-              <View style={{ alignItems: "center" }}>
-                <View style={styles.logoutContainer}>
-                  <Image style={styles.logoNoPlanes} source={noPlanesCreados} />
+              <View style={styles.logoContainer}>
+                <View style={styles.logo}>
+                  <Image style={styles.noEvents} source={noPlanesCreados} />
                 </View>
               </View>
             )}
           </View>
         )}
-        <View style={{ marginBottom: 30 }}></View>
-      </ScrollView>
-    </LinearGradient>
+        <View style={styles.spacer} />
+      </AppScrollView>
+    </AppGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+    alignItems: "center",
+    width: "100%",
+  },
+  logoContainer: {
+    alignItems: "center",
+  },
+  logo: {
+    paddingTop: 15,
+    borderRadius: 18,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  recomendations: {
+    width: 280,
+    height: 20,
+  },
+  myEvents: {
+    width: 120,
+    height: 20,
+  },
+  noEvents: {
+    width: 198,
+    height: 62,
+  },
+  spacer: {
+    marginBottom: 30,
+  },
+});

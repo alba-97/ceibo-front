@@ -1,12 +1,24 @@
-import { Image } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import logo from "../assets/logo.png";
-import { styles } from "../styles/navbarStyles";
-import AppView from "./AppView";
 
 export const Navbar = () => {
   return (
-    <AppView className="py-20 align-center border-b-1 border-b-white w-full">
-      <Image style={styles.logo} source={logo} />
-    </AppView>
+    <View style={styles.container}>
+      <Image style={styles.image} source={logo} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 20,
+    alignItems: "center",
+    borderBottomColor: "white",
+    borderBottomWidth: 1,
+    width: "100%",
+  },
+  image: {
+    width: 160,
+    height: 75,
+  },
+});

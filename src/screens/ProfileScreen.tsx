@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,6 +18,7 @@ import preferencias from "../assets/preferencias.png";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import AppScrollView from "@/components/AppScrollView";
 
 export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -79,7 +80,7 @@ export default function ProfileScreen() {
       {user._id ? (
         <View style={styles.container}>
           <Navbar />
-          <ScrollView>
+          <AppScrollView>
             <View style={styles.imageContainer}>
               {user.profile_img ? (
                 <TouchableOpacity onPress={selectImage}>
@@ -163,7 +164,7 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </AppScrollView>
         </View>
       ) : (
         <LoginScreen />

@@ -1,48 +1,43 @@
 import { ImageContainer } from "./ImageContainer";
-import { styles } from "../styles/swiperStyles";
-import {
-  View,
-  FlatList,
-  Image,
-  ImageStyle,
-  StyleProp,
-  ImageSourcePropType,
-} from "react-native";
 import EventResponse from "@/interfaces/responses/Event";
-import Separator from "./Separator";
+import AppScrollView from "./AppScrollView";
+import { StyleSheet } from "react-native";
+import { useState } from "react";
 
 interface ISwiperProps {
   plans: EventResponse[];
   onPress: (plan: EventResponse) => void;
-  image: ImageSourcePropType;
-  styleLogo: StyleProp<ImageStyle>;
 }
 
-export function SwiperComponent({
-  plans,
-  onPress,
-  image,
-  styleLogo,
-}: ISwiperProps) {
+export function SwiperComponent({ plans, onPress }: ISwiperProps) {
+  const [isStill, setIsStill] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.logoutContainer}>
-        <Image style={styleLogo} source={image} />
-      </View>
-      <FlatList
-        data={plans}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.view}>
-              <ImageContainer plan={item} onPress={() => onPress(item)} />
-            </View>
-          );
-        }}
-        keyExtractor={(_, index) => index.toString()}
-        horizontal={true}
-        ItemSeparatorComponent={Separator}
-        showsHorizontalScrollIndicator={false}
-      />
-    </View>
+    <AppScrollView
+      style={styles.scrollView}
+      horizontal={true}
+      setIsStill={setIsStill}
+    >
+      {plans.map((item: EventResponse) => {
+        return (
+          <ImageContainer
+            plan={item}
+            onPress={() => {
+              isStill && onPress(item);
+            }}
+            key={item._id}
+          />
+        );
+      })}
+    </AppScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 3,
+  },
+  scrollView: {
+    width: "50%",
+  },
+});

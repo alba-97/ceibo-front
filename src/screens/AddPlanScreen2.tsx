@@ -1,4 +1,4 @@
-import { Alert } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -17,7 +17,6 @@ import TextField from "@/components/TextField";
 import SelectField from "@/components/SelectField";
 import initialValues from "@/common/eventInitialValues";
 import GenericButton from "@/components/GenericButton";
-import AppView from "@/components/AppView";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 
@@ -68,8 +67,8 @@ export default function AddPlanScreen2({
   };
 
   return (
-    <AppView className="flex w-full h-full align-center">
-      <AppGradient className="flex w-full align-center">
+    <View style={styles.container}>
+      <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
           initialValues={initialValues}
@@ -77,9 +76,9 @@ export default function AddPlanScreen2({
           onSubmit={submitEvent}
         >
           {({ handleSubmit }) => (
-            <AppScrollView className="w-full">
+            <AppScrollView style={styles.scrollView}>
               <BackArrow onPress={handleBack} />
-              <AppView className="w-full mt-20 align-center">
+              <View style={styles.form}>
                 <TextField placeholder="Minimum age" field="min_age" />
                 <TextField placeholder="Maximum age" field="max_age" />
                 <TextField placeholder="Minimum to pay" field="min_to_pay" />
@@ -87,11 +86,33 @@ export default function AddPlanScreen2({
                 <SelectField data={categories} field="category" />
                 <TextField placeholder="Link to pay" field="link_to_pay" />
                 <GenericButton onPress={handleSubmit} text="Submit" />
-              </AppView>
+              </View>
             </AppScrollView>
           )}
         </Formik>
       </AppGradient>
-    </AppView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+  },
+  gradient: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  scrollView: {
+    width: "100%",
+  },
+  form: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 20,
+  },
+});

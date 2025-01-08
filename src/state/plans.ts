@@ -8,7 +8,7 @@ const plansSlice = createSlice({
   initialState,
   reducers: {
     setPlans: (_, action) => {
-      return action.payload.slice(0, 6);
+      return action.payload;
     },
     removePlan: (state, action) => {
       let newState = [...state];

@@ -1,6 +1,5 @@
-import getOrganizer from "@/api/getOrganizer";
 import getPlan from "@/api/getPlan";
-import { setOrganizer, setSelectedPlan } from "@/state/selectedPlan";
+import { setAuthor, setSelectedPlan } from "@/state/selectedPlan";
 import handleError from "@/utils/handleError";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
@@ -38,8 +37,7 @@ const BottomNavbar = () => {
     try {
       const updatedPlan = await getPlan(route);
       dispatch(setSelectedPlan(updatedPlan));
-      const organizer = await getOrganizer(route);
-      dispatch(setOrganizer(organizer));
+      dispatch(setAuthor(updatedPlan.createdBy));
       navigation.navigate("PlanDetail");
     } catch (err) {
       handleError(err);

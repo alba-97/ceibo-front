@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, StyleSheet } from "react-native";
 import GenericButton from "../GenericButton";
-import { styles } from "../../styles/PlanDetails";
 import enrollUser from "../../api/enrollUser";
 import { useDispatch } from "react-redux";
 import discardUser from "../../api/discardUser";
@@ -10,6 +9,7 @@ import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import { removeUserPlan } from "@/state/user";
 import handleError from "@/utils/handleError";
+import formatDate from "@/utils/formatDate";
 
 interface IPlanEnrollProps {
   plan: EventResponse;
@@ -44,10 +44,10 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
   };
 
   return (
-    <View style={{ flexDirection: "row", gap: 100 }}>
+    <View style={styles.container}>
       <View style={styles.date}>
-        <Image style={styles.logo} source={fecha} />
-        <Text style={styles.text2}>{plan?.start_date}</Text>
+        <Image style={styles.dateLogo} source={fecha} />
+        <Text style={styles.text}>{formatDate(plan.start_date)}</Text>
       </View>
       {user._id && plan._id && (
         <View style={styles.buttonContainer}>
@@ -59,10 +59,10 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
                 <GenericButton
                   text={"+"}
                   onPress={handleEnroll}
-                  customStyle={styles.btn}
+                  customStyle={styles.button}
                 />
               ) : (
-                <GenericButton text={"..."} customStyle={styles.btn} />
+                <GenericButton text={"..."} customStyle={styles.button} />
               )}
             </View>
           ) : (
@@ -70,11 +70,11 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
               {!loading ? (
                 <GenericButton
                   text={"x"}
-                  customStyle={styles.btn}
+                  customStyle={styles.button}
                   onPress={handleStopParticipating}
                 />
               ) : (
-                <GenericButton text={"..."} customStyle={styles.btn} />
+                <GenericButton text={"..."} customStyle={styles.button} />
               )}
             </View>
           )}
@@ -83,5 +83,27 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flexDirection: "row", gap: 100 },
+  date: { flexDirection: "row" },
+  dateLogo: {
+    width: 80,
+    height: 20,
+  },
+  text: {
+    fontWeight: "300",
+    fontSize: 18,
+    color: "#fff",
+  },
+  buttonContainer: {
+    top: -12,
+  },
+  button: {
+    width: 60,
+    height: 45,
+    borderRadius: 5,
+  },
+});
 
 export default PlanEnroll;

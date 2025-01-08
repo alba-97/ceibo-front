@@ -1,4 +1,3 @@
-import EventForm from "@/interfaces/forms/Event";
 import EventResponse from "@/interfaces/responses/Event";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -12,7 +11,7 @@ const initialState: EventResponse = {
   category: { _id: "", name: "" },
   end_date: "",
   comments: [],
-  organizer: {
+  createdBy: {
     _id: "",
     email: "",
     username: "",
@@ -37,13 +36,16 @@ const selectedPlanSlice = createSlice({
     setSelectedPlan: (_, action) => {
       return action.payload;
     },
-    updateSelectedPlan: (state, action: { payload: Partial<EventForm> }) => {
+    updateSelectedPlan: (
+      state,
+      action: { payload: Partial<EventResponse> }
+    ) => {
       const newState = { ...state, ...action.payload };
       return newState;
     },
-    setOrganizer: (state, action) => {
+    setAuthor: (state, action) => {
       let newState = { ...state };
-      newState.organizer = action.payload;
+      newState.createdBy = action.payload;
       return newState;
     },
     clearSelectedPlan: () => {
@@ -60,7 +62,7 @@ const selectedPlanSlice = createSlice({
 export const {
   setSelectedPlan,
   updateSelectedPlan,
-  setOrganizer,
+  setAuthor,
   setComments,
   clearSelectedPlan,
 } = selectedPlanSlice.actions;
