@@ -18,11 +18,12 @@ interface IPlanInviteProps {
   plan: EventResponse;
 }
 
+const sendMethods: IOption[] = [
+  { label: "Email", value: "email" },
+  { label: "WhatsApp", value: "phone" },
+];
+
 const PlanInvite = ({ plan }: IPlanInviteProps) => {
-  const sendMethods: IOption[] = [
-    { label: "Email", value: "email" },
-    { label: "WhatsApp", value: "phone" },
-  ];
   const [sendMethod, setSendMethod] = useState<IOption>(sendMethods[0]);
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [friendsDropdown, setFriendsDropdown] = useState<IOption[]>([]);
@@ -87,7 +88,7 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
       {invited[0] && (
         <GenericButton
           text={"Invitar"}
-          customStyle={{ marginHorizontal: 50 }}
+          buttonStyle={{ marginHorizontal: 50 }}
           onPress={handleInvite}
         />
       )}

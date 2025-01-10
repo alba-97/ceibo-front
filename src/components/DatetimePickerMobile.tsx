@@ -18,7 +18,7 @@ const DatetimePickerMobile = ({ field }: IDatetimePickerProps) => {
     DateTimePickerAndroid.open({
       mode: "time",
       value: new Date(),
-      onChange: (_, selectedDate2) => {
+      onChange: (_: DateTimePickerEvent, selectedDate2?: Date) => {
         if (!selectedDate || !selectedDate2) return;
         const date = selectedDate.toISOString().split("T")[0];
         const time = selectedDate2.toISOString().split("T")[1];

@@ -108,20 +108,20 @@ export default function ContactInfoScreen() {
                   <GenericButton
                     text={"Agregar amigo"}
                     onPress={() => handleAddFriend(_id)}
-                    customStyle={{ marginTop: "4%" }}
+                    buttonStyle={{ marginTop: "4%" }}
                   />
                 ) : (
                   <GenericButton
                     text={"Eliminar amigo"}
                     onPress={() => handleRemoveFriend(_id)}
-                    customStyle={{ marginTop: "4%" }}
+                    buttonStyle={{ marginTop: "4%" }}
                   />
                 )}
               </>
             ) : (
               <GenericButton
                 text={"Cargando..."}
-                customStyle={{ marginTop: "4%", backgroundColor: "#7D0166" }}
+                buttonStyle={{ marginTop: "4%", backgroundColor: "#7D0166" }}
               />
             )}
           </View>

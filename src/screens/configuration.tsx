@@ -59,7 +59,7 @@ export default function Configuration() {
           </TouchableOpacity>
         </View>
         <GenericButton
-          customStyle={styles.text}
+          textStyle={styles.text}
           onPress={handleLogout}
           text="Cerrar Sesion"
         />

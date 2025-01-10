@@ -59,10 +59,10 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
                 <GenericButton
                   text={"+"}
                   onPress={handleEnroll}
-                  customStyle={styles.button}
+                  buttonStyle={styles.button}
                 />
               ) : (
-                <GenericButton text={"..."} customStyle={styles.button} />
+                <GenericButton text={"..."} buttonStyle={styles.button} />
               )}
             </View>
           ) : (
@@ -70,11 +70,11 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
               {!loading ? (
                 <GenericButton
                   text={"x"}
-                  customStyle={styles.button}
+                  buttonStyle={styles.button}
                   onPress={handleStopParticipating}
                 />
               ) : (
-                <GenericButton text={"..."} customStyle={styles.button} />
+                <GenericButton text={"..."} buttonStyle={styles.button} />
               )}
             </View>
           )}

@@ -108,10 +108,10 @@ export const PlanDetailCard = () => {
                       <GenericButton
                         text={"+"}
                         onPress={handleEnroll}
-                        customStyle={styles.btn}
+                        buttonStyle={styles.btn}
                       />
                     ) : (
-                      <GenericButton text={"..."} customStyle={styles.btn} />
+                      <GenericButton text={"..."} buttonStyle={styles.btn} />
                     )}
                   </>
                 ) : (
@@ -119,11 +119,11 @@ export const PlanDetailCard = () => {
                     {!loading ? (
                       <GenericButton
                         text={"x"}
-                        customStyle={styles.btn}
+                        buttonStyle={styles.btn}
                         onPress={() => handleStopParticipating(plan._id)}
                       />
                     ) : (
-                      <GenericButton text={"..."} customStyle={styles.btn} />
+                      <GenericButton text={"..."} buttonStyle={styles.btn} />
                     )}
                   </>
                 )}
@@ -135,7 +135,7 @@ export const PlanDetailCard = () => {
 
       <View style={styles.pContainer}>
         <Text style={styles.p}>
-          {plan?.organizer?.rating?.toFixed(2)}/5.00
+          {plan?.createdBy?.rating?.toFixed(2)}/5.00
           <Entypo name="star" size={20} color={"#fdd835"} />
         </Text>
       </View>
@@ -147,7 +147,7 @@ export const PlanDetailCard = () => {
       <View style={styles.orgCont}>
         <Image style={styles.logo5} source={organizador} />
       </View>
-      <Text style={styles.text6}>{plan?.organizer?.username}</Text>
+      <Text style={styles.text6}>{plan?.createdBy?.username}</Text>
       <Image style={styles.logo3} source={descripcion} />
       <Text style={styles.text3}>{plan.description}</Text>
       {user._id && <Comments plan={plan} />}
@@ -190,7 +190,7 @@ export const PlanDetailCard = () => {
           {invited && (
             <GenericButton
               text={"Invitar"}
-              customStyle={{ marginHorizontal: 50 }}
+              buttonStyle={{ marginHorizontal: 50 }}
             />
           )}
         </>

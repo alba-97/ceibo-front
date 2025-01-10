@@ -21,7 +21,7 @@ import IOption from "@/interfaces/Option";
 
 interface IMultipleDropdownProps {
   fontFamily?: string;
-  setSelected: (value: IOption[]) => void;
+  setSelected: (option: IOption[]) => void;
   placeholder: string;
   boxStyles: ViewStyle;
   dropdownStyles: ViewStyle;
@@ -33,7 +33,7 @@ interface IMultipleDropdownProps {
   closeicon?: boolean;
   search?: boolean;
   searchPlaceholder?: string;
-  onSelect?: (value?: IOption) => void;
+  onSelect?: (option?: IOption) => void;
   label?: string;
   notFoundText?: string;
   disabledItemStyles?: ViewStyle;
@@ -65,12 +65,12 @@ const MultipleDropdown = ({
   save = "key",
   dropdownShown = false,
 }: IMultipleDropdownProps) => {
-  const [_firstRender, _setFirstRender] = useState(true);
-  const [dropdown, setDropdown] = useState(dropdownShown);
+  const [_firstRender, _setFirstRender] = useState<boolean>(true);
+  const [dropdown, setDropdown] = useState<boolean>(dropdownShown);
   const [selectedvalues, setSelectedValues] = useState<IOption[]>([]);
-  const [height, setHeight] = useState(350);
+  const [height, setHeight] = useState<number>(350);
   const animatedvalue = useRef(new Animated.Value(0)).current;
-  const [filtereddata, setFilteredData] = useState(data);
+  const [filtereddata, setFilteredData] = useState<IOption[]>(data);
 
   const slidedown = () => {
     setDropdown(true);
@@ -188,9 +188,9 @@ const MultipleDropdown = ({
           }}
         >
           <Text style={[{ fontFamily }, textStyles]}>
-            {selectedvalues[0].value == ""
+            {selectedvalues[0]?.value == ""
               ? placeholder ?? "Select option"
-              : selectedvalues[0].value}
+              : selectedvalues[0]?.value ?? ""}
           </Text>
           {!arrowicon ? (
             <Image
