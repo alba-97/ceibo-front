@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Alert,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, Alert, TextInput } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -15,10 +8,10 @@ import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
 import { styles } from "../styles/registerScreenStyles";
 import { DatePicker } from "../components/DatePicker";
-import crearCuenta from "../assets/crearCuenta.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppScrollView from "@/components/AppScrollView";
+import GenericButton from "@/components/GenericButton";
 
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
@@ -128,11 +121,17 @@ export default function RegisterScreen() {
 
           <View style={styles.container2}>
             <View style={styles.crearCuenta}>
-              <View style={styles.logoutContainer}>
-                <TouchableOpacity onPress={handleSubmit}>
-                  <Image style={styles.logo} source={crearCuenta} />
-                </TouchableOpacity>
-              </View>
+              <GenericButton
+                text="Crear Cuenta"
+                onPress={handleSubmit}
+                textStyle={{
+                  color: "white",
+                  fontSize: 30,
+                  fontFamily: "Melts",
+                  textShadowOffset: { width: 5, height: 5 },
+                  textShadowColor: "#770022",
+                }}
+              />
             </View>
           </View>
         </View>

@@ -113,6 +113,6 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
     alignItems: "center",
-    marginTop: 20,
+    marginVertical: 20,
   },
 });

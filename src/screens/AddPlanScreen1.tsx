@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   form: {
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 20,
+    marginVertical: 20,
     width: "100%",
   },
 });

@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     marginLeft: 30,
+    width: "100%",
   },
   scrollView: {
     width: "100%",

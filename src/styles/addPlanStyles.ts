@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   },
   input2: {
     width: "65%",
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backgroundColor: "#22001b",
     height: 45,
     borderWidth: 1,
     borderColor: "white",

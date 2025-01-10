@@ -10,7 +10,6 @@ import { AntDesign } from "@expo/vector-icons";
 import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
 import { SingleContact } from "../components/SingleContact";
-import iniciaSesion from "../assets/iniciaSesion.png";
 import getUserFriends from "../api/getUserFriends";
 import { setContacts } from "../state/contacts";
 import amigos from "../assets/amigos.png";
@@ -18,6 +17,7 @@ import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import GenericButton from "@/components/GenericButton";
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
@@ -122,11 +122,17 @@ export default function ContactsScreen() {
             Para ver contactos, inicie sesión
           </Text>
           <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
-            <View style={styles.logoutContainer}>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Image style={styles.logo} source={iniciaSesion} />
-              </TouchableOpacity>
-            </View>
+            <GenericButton
+              text="Login"
+              onPress={() => navigation.navigate("Login")}
+              textStyle={{
+                fontFamily: "Melts",
+                fontSize: 30,
+                color: "white",
+                textShadowOffset: { width: 5, height: 5 },
+                textShadowColor: "#770022",
+              }}
+            />
           </View>
         </View>
       )}

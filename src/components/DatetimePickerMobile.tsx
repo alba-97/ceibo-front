@@ -22,7 +22,7 @@ const DatetimePickerMobile = ({ field }: IDatetimePickerProps) => {
         if (!selectedDate || !selectedDate2) return;
         const date = selectedDate.toISOString().split("T")[0];
         const time = selectedDate2.toISOString().split("T")[1];
-        setFieldValue(field, `${date}T${time}`);
+        setFieldValue(field, new Date(`${date}T${time}`));
       },
     });
   };

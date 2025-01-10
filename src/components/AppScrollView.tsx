@@ -23,7 +23,7 @@ export default forwardRef<ScrollView, IScrollViewProps>(
 
     return (
       <ScrollView
-        ref={refs}
+        ref={props.horizontal ? refs : null}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ alignItems: "center" }}

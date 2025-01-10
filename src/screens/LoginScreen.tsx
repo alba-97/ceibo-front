@@ -1,90 +1,115 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
-import axios from "axios";
-import getUser from "../api/getUser";
 import getUserPlans from "../api/getUserPlans";
-import GenericInput from "../components/GenericInput";
-import { styles } from "../styles/loginScreenStyles";
 import { setPlanHistory, setUser, setUserPlans } from "../state/user";
-import { API_URL } from "@env";
 import { Navbar } from "../components/Navbar";
 import getPlanHistory from "../api/getPlanHistory";
-import iniciaSesion from "../assets/iniciaSesion.png";
-import { Image } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppScrollView from "@/components/AppScrollView";
+import login from "@/api/login";
+import AppGradient from "@/components/AppGradient";
+import { Formik } from "formik";
+import { ProfileText } from "@/components/ProfileText";
+import TextField from "@/components/TextField";
+import LoginSchema from "@/utils/schema/LoginSchema";
+import LoginForm from "@/interfaces/forms/Login";
+import GenericButton from "@/components/GenericButton";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handleSignup = () => {};
+  const handleSignup = () => {
+    navigation.navigate("Register");
+  };
 
-  const handleLogin = async () => {
+  const handleLogin = async (values: LoginForm) => {
     try {
-      const { data } = await axios.post(`${API_URL}/users/login`, {
-        username,
-        password,
-      });
-      if (data.token) {
-        await AsyncStorage.setItem("token", data.token);
-        await axios.get(`${API_URL}/users/secret`, {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        });
-        const userData = await getUser();
-        dispatch(setUser(userData));
-        const { data: userPlans } = await getUserPlans();
-        dispatch(setUserPlans(userPlans));
-        const { data: planHistory } = await getPlanHistory();
-        dispatch(setPlanHistory(planHistory));
-        navigation.navigate("HomeScreen");
-      }
+      const { user, token } = await login(values);
+      if (!token) return;
+      dispatch(setUser(user));
+
+      const { data: userPlans } = await getUserPlans();
+      dispatch(setUserPlans(userPlans));
+
+      const { data: planHistory } = await getPlanHistory();
+      dispatch(setPlanHistory(planHistory));
+
+      navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);
     }
   };
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
-    >
+    <AppGradient style={styles.container}>
       <Navbar />
-      <AppScrollView style={styles.scroll}>
-        <View style={styles.container}>
-          <Text style={styles.text}>Nombre de Usuario</Text>
-          <GenericInput value={username} onChangeText={setUsername} />
-          <Text style={styles.text}>Contraseña</Text>
-          <GenericInput
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={true}
-          />
-          <View style={styles.inputContainer}>
-            <View style={styles.logoutContainer}>
-              <TouchableOpacity onPress={handleLogin}>
-                <Image style={styles.logo} source={iniciaSesion} />
-              </TouchableOpacity>
+      <Formik
+        initialValues={{ username: "", password: "" }}
+        onSubmit={handleLogin}
+        validationSchema={LoginSchema}
+      >
+        {({ handleSubmit }) => (
+          <AppScrollView style={styles.scrollView}>
+            <ProfileText text="Login" />
+            <View style={styles.form}>
+              <TextField placeholder="Username" field="username" />
+              <TextField
+                placeholder="Password"
+                field="password"
+                secureTextEntry={true}
+              />
             </View>
 
-            <Text style={styles.text} onPress={handleSignup}>
-              ¿No tienes cuenta? Crea una
-            </Text>
-          </View>
-        </View>
-      </AppScrollView>
-    </LinearGradient>
+            <GenericButton
+              text="Login"
+              onPress={() => handleSubmit()}
+              textStyle={styles.loginButton}
+            />
+            <View style={styles.container}>
+              <Text style={styles.text} onPress={handleSignup}>
+                ¿No tienes cuenta? Crea una
+              </Text>
+            </View>
+          </AppScrollView>
+        )}
+      </Formik>
+    </AppGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  scrollView: {
+    flex: 1,
+    width: "100%",
+  },
+  form: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 20,
+    width: "100%",
+  },
+  loginButton: {
+    fontFamily: "Melts",
+    fontSize: 30,
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+  },
+  text: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+});

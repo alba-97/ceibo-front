@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     fontSize: 16,
     width: "80%",
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    backgroundColor: "#22001b",
     height: 45,
     borderWidth: 1,
     borderColor: "white",

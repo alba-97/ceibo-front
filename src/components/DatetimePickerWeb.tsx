@@ -13,9 +13,8 @@ const DatetimePickerWeb = ({ field }: IDatetimePickerProps) => {
       <DatePicker
         showTime
         showSecond={false}
-        onChange={(_, dateString) => {
-          typeof dateString === "string" &&
-            setFieldValue(field, dateString.replace(" ", "T"));
+        onChange={(date) => {
+          setFieldValue(field, date);
         }}
         format={"DD/MM/YYYY HH:mm:ss"}
       />

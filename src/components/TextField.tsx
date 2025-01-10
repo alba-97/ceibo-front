@@ -7,9 +7,10 @@ import EventForm from "@/interfaces/forms/Event";
 interface ITextFieldProps {
   placeholder: string;
   field: string;
+  secureTextEntry?: boolean;
 }
 
-const TextField = ({ placeholder, field }: ITextFieldProps) => {
+const TextField = ({ placeholder, field, ...props }: ITextFieldProps) => {
   const { handleChange, handleBlur, values } = useFormikContext<EventForm>();
   return (
     <View style={{ width: "100%", alignItems: "center" }}>
@@ -29,6 +30,7 @@ const TextField = ({ placeholder, field }: ITextFieldProps) => {
         onChangeText={handleChange(field)}
         onBlur={handleBlur(field)}
         value={values[field as keyof EventForm] as string | number | null}
+        {...props}
       />
       <ErrorMsg field={field} />
     </View>

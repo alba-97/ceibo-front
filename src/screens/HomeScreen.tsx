@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Navbar } from "@/components/Navbar";
 import { SwiperComponent } from "@/components/Swiper";
 import { MainEvent } from "@/components/MainEvent";
@@ -15,11 +15,6 @@ import { setPlanHistory, setUser, setUserPlans } from "@/state/user";
 import { setPlans } from "@/state/plans";
 import refetchData from "@/utils/refetchData";
 import getPlanHistory from "@/api/getPlanHistory";
-import noTienesPlanes from "@/assets/noTienesPlanes.png";
-import recomendaciones from "@/assets/recomendaciones.png";
-import misPlanes from "@/assets/misPlanes.png";
-import noPlanesCreados from "@/assets/noPlanesCreados.png";
-import planesPasados from "@/assets/planesPasados.png";
 import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -97,35 +92,35 @@ export default function HomeScreen() {
             onPress={handlePress}
           />
         )}
-        <View style={styles.logo}>
-          <Image style={styles.recomendations} source={recomendaciones} />
-        </View>
+        <Text style={styles.logoText}>Nuestras Recomendaciones</Text>
         <SwiperComponent plans={plans} onPress={handlePress} />
         {user._id && (
           <View>
             <View style={styles.logo}>
-              <Image style={styles.myEvents} source={misPlanes} />
+              <Text style={styles.logoText}>Mis planes</Text>
             </View>
             {user.plans?.[0] ? (
               <SwiperComponent plans={user.plans} onPress={handlePress} />
             ) : (
               <View style={styles.logoContainer}>
                 <View style={styles.logo}>
-                  <Image style={styles.logo} source={noTienesPlanes} />
+                  <Text style={styles.normalText}>No tienes planes</Text>
                 </View>
               </View>
             )}
-            {user.history && user.history[0] ? (
+            <View style={styles.logo}>
+              <Text style={styles.logoText}>Planes creados</Text>
+            </View>
+            {user.history?.[0] ? (
               <View>
-                <View style={styles.logo}>
-                  <Image style={styles.myEvents} source={planesPasados} />
-                </View>
                 <SwiperComponent plans={user.history} onPress={handlePress} />
               </View>
             ) : (
               <View style={styles.logoContainer}>
                 <View style={styles.logo}>
-                  <Image style={styles.noEvents} source={noPlanesCreados} />
+                  <Text style={styles.normalText}>
+                    No tienes planes creados
+                  </Text>
                 </View>
               </View>
             )}
@@ -140,7 +135,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-    alignItems: "center",
     width: "100%",
   },
   logoContainer: {
@@ -152,9 +146,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
-  recomendations: {
-    width: 280,
-    height: 20,
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+  },
+  normalText: {
+    color: "white",
+    fontSize: 25,
   },
   myEvents: {
     width: 120,

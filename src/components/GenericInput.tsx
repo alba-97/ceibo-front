@@ -26,7 +26,7 @@ export default forwardRef<TextInput, IGenericInputProps>(
           {
             fontSize: 16,
             color: "white",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#22001b",
             borderRadius: 20,
             borderWidth: 1,
             borderColor: "white",

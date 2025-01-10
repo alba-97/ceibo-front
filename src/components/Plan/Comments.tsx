@@ -98,7 +98,7 @@ const Comments = ({ plan }: ICommentsProps) => {
             borderRadius: 15,
             fontSize: 16,
             color: "white",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backgroundColor: "#22001b",
             width: "80%",
           }}
         />

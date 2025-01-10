@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   scrollView: {
-    width: "50%",
+    width: "100%",
   },
 });

@@ -1,6 +1,6 @@
 export default {
   color: "white",
-  backgroundColor: "rgba(0, 0, 0, 0.3)",
+  backgroundColor: "#22001b",
   borderRadius: "16px",
   boxShadow: "0 4px 6px #2c0023",
   ".css-15fu35s-MuiDialogActions-root": {
