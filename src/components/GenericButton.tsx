@@ -6,13 +6,14 @@ interface IGenericButtonProps {
   onPress?: () => void;
   buttonStyle?: ViewStyle;
   type?: string;
+  disabled?: boolean;
 }
 
 const GenericButton = ({
-  onPress,
   text,
   buttonStyle,
   textStyle,
+  ...props
 }: IGenericButtonProps) => {
   return (
     <TouchableOpacity
@@ -20,13 +21,13 @@ const GenericButton = ({
         backgroundColor: "#22001b",
         borderRadius: 20,
         alignItems: "center",
+        padding: 15,
         borderWidth: 2,
-        borderColor: "rgba(10, 7, 7, 0.2)",
-        paddingHorizontal: 15,
-        paddingVertical: 15,
+        borderColor: "#140311",
+        boxShadow: "0 4px 6px #2c0023",
         ...buttonStyle,
       }}
-      onPress={onPress}
+      {...props}
     >
       <Text
         style={{

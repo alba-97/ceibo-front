@@ -67,19 +67,21 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
 
   return (
     <View style={styles.input}>
-      <MultipleDropdown
-        setSelected={(val) => setInvited(val)}
-        data={friendsDropdown}
-        save="value"
-        onSelect={() => {}}
-        label="Invitar personas"
-        placeholder="Invitar personas"
-        search={false}
-        textStyles={styles.item}
-        boxStyles={styles.dropdown}
-        dropdownStyles={styles.dropdown}
-        badgeStyles={styles.item}
-      />
+      {friendsDropdown[0] && (
+        <MultipleDropdown
+          setSelected={(val) => setInvited(val)}
+          data={friendsDropdown}
+          save="value"
+          onSelect={() => {}}
+          label="Invite friends"
+          placeholder="Invite friends"
+          search={false}
+          textStyles={styles.item}
+          boxStyles={styles.dropdown}
+          dropdownStyles={styles.dropdown}
+          badgeStyles={styles.item}
+        />
+      )}
       <RadioButton
         options={sendMethods}
         onSelect={handleChange}
@@ -87,7 +89,7 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
       />
       {invited[0] && (
         <GenericButton
-          text={"Invitar"}
+          text={"Invite"}
           buttonStyle={{ marginHorizontal: 50 }}
           onPress={handleInvite}
         />

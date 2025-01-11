@@ -1,8 +1,7 @@
 import EventResponse from "@/interfaces/responses/Event";
 import { ImageContainer } from "./ImageContainer";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Swiper from "react-native-swiper";
-import { styles } from "@/styles/swiperStyles";
 
 interface IContactSwiperProps {
   title: string;
@@ -15,10 +14,8 @@ export function ContactSwiper({ title, plans, onPress }: IContactSwiperProps) {
     if (onPress) onPress(event);
   };
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.text}>{title}</Text>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.text}>{title}</Text>
       <Swiper
         loop={false}
         showsPagination={false}
@@ -26,12 +23,37 @@ export function ContactSwiper({ title, plans, onPress }: IContactSwiperProps) {
       >
         {plans.map((p, index) => {
           return (
-            <View style={styles.view} key={index}>
+            <View style={styles.imageContainer} key={index}>
               <ImageContainer plan={p} onPress={handlePress} />
             </View>
           );
         })}
       </Swiper>
-    </>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    borderStyle: "solid",
+    alignItems: "center",
+  },
+  container: {
+    marginTop: 3,
+  },
+  swiperContainer: {
+    height: 155,
+  },
+  text: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: "10%",
+    marginBottom: 23,
+  },
+  logoutContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: 20,
+  },
+});

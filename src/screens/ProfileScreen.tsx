@@ -1,24 +1,22 @@
 import axios from "axios";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import { ProfilePicture } from "../components/ProfilePicture";
 import { API_URL } from "@env";
-import { styles } from "../styles/profileScreenStyles";
 import { clearUser, updateUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
-import cerrarSesion from "../assets/cerrarSesion.png";
-import preferencias from "../assets/preferencias.png";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppScrollView from "@/components/AppScrollView";
+import GenericButton from "@/components/GenericButton";
 
 export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -80,16 +78,19 @@ export default function ProfileScreen() {
       {user._id ? (
         <View style={styles.container}>
           <Navbar />
-          <AppScrollView>
+          <AppScrollView style={{ width: "100%", paddingHorizontal: 30 }}>
             <View style={styles.imageContainer}>
               {user.profile_img ? (
                 <TouchableOpacity onPress={selectImage}>
                   <ProfilePicture imageSource={user.profile_img} />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity style={styles.button} onPress={selectImage}>
-                  <Text style={styles.buttonText}>Seleccionar imagen</Text>
-                </TouchableOpacity>
+                <GenericButton
+                  onPress={selectImage}
+                  buttonStyle={styles.button}
+                  textStyle={styles.buttonText}
+                  text={"Seleccionar imagen"}
+                />
               )}
             </View>
             <ChangeData
@@ -98,7 +99,6 @@ export default function ProfileScreen() {
               propName={"username"}
               data={"Usuario"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -106,7 +106,6 @@ export default function ProfileScreen() {
               propName={"first_name"}
               data={"Nombre"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -114,7 +113,6 @@ export default function ProfileScreen() {
               propName={"last_name"}
               data={"Apellido"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -122,7 +120,6 @@ export default function ProfileScreen() {
               propName={"address"}
               data={"Direccion"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="email-address"
@@ -130,7 +127,6 @@ export default function ProfileScreen() {
               propName={"email"}
               data={"Email"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -138,7 +134,6 @@ export default function ProfileScreen() {
               propName={"phone"}
               data={"Telefono"}
               mode={"user"}
-              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
@@ -146,24 +141,21 @@ export default function ProfileScreen() {
               propName={"birthdate"}
               data={"Nacimiento"}
               mode={"user"}
-              styles={styles}
             />
 
-            <View style={styles.logout1Container}>
-              <View style={styles.preferenciasContainer}>
-                <TouchableOpacity onPress={handlePreferences}>
-                  <Image style={styles.logoPref} source={preferencias} />
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TouchableOpacity
+              onPress={handlePreferences}
+              style={styles.buttonContainer}
+            >
+              <Text style={styles.logoText}>Preferencias</Text>
+            </TouchableOpacity>
 
-            <View style={styles.logout1Container}>
-              <View style={styles.logoutContainer}>
-                <TouchableOpacity onPress={handleLogout}>
-                  <Image style={styles.logo} source={cerrarSesion} />
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={styles.buttonContainer}
+            >
+              <Text style={styles.logoText}>Cerrar sesion</Text>
+            </TouchableOpacity>
           </AppScrollView>
         </View>
       ) : (
@@ -172,3 +164,48 @@ export default function ProfileScreen() {
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+  },
+  imageContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: "white",
+    backgroundColor: "#7D0166",
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+  },
+  buttonText: {
+    borderWidth: 1,
+    borderColor: "white",
+    color: "#fff",
+    textAlign: "center",
+  },
+  buttonContainer: {
+    marginVertical: 20,
+    borderRadius: 25,
+    alignItems: "center",
+    width: "75%",
+    backgroundColor: "#22001b",
+  },
+});

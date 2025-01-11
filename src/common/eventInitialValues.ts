@@ -15,4 +15,5 @@ const initialValues: EventForm = {
   link_to_pay: "",
   private: false,
 };
+
 export default initialValues;

@@ -16,10 +16,12 @@ import TextField from "@/components/TextField";
 import LoginSchema from "@/utils/schema/LoginSchema";
 import LoginForm from "@/interfaces/forms/Login";
 import GenericButton from "@/components/GenericButton";
+import refetchData from "@/utils/refetchData";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const { triggerRefetch } = refetchData();
 
   const handleSignup = () => {
     navigation.navigate("Register");
@@ -37,6 +39,7 @@ export default function LoginScreen() {
       const { data: planHistory } = await getPlanHistory();
       dispatch(setPlanHistory(planHistory));
 
+      await triggerRefetch();
       navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);

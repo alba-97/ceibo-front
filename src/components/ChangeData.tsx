@@ -1,5 +1,6 @@
 import {
   KeyboardTypeOptions,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -10,11 +11,8 @@ import { useDispatch } from "react-redux";
 import { DatePicker } from "./DatePicker";
 import { useState } from "react";
 import moment from "moment";
-import { ProfileText } from "../components/ProfileText";
 import { updateUser } from "../state/user";
 import { updateSelectedPlan } from "../state/selectedPlan";
-import { styles as editPlanStyles } from "../styles/editPlanStyles";
-import { styles as profileScreenStyles } from "../styles/profileScreenStyles";
 import editUser from "@/api/editUser";
 import editEvent from "@/api/editEvent";
 import handleError from "@/utils/handleError";
@@ -25,7 +23,6 @@ interface IChangeData {
   baseData?: string | number;
   propName: string;
   keyboardType: KeyboardTypeOptions;
-  styles: typeof editPlanStyles | typeof profileScreenStyles;
 }
 
 export const ChangeData = ({
@@ -34,9 +31,9 @@ export const ChangeData = ({
   baseData,
   propName,
   keyboardType,
-  styles,
 }: IChangeData) => {
-  if (typeof baseData !== "string") baseData = String(baseData);
+  if (!baseData) baseData = "(Not specified)";
+  if (typeof baseData !== "string") baseData = `${baseData}`;
   const dispatch = useDispatch();
   const [newData, setNewData] = useState(baseData);
   const [change, setChange] = useState<boolean>(false);
@@ -67,32 +64,23 @@ export const ChangeData = ({
   return (
     <>
       {!change ? (
-        <View style={styles.container3}>
-          <View style={styles.dataUserContainer}>
-            <Text style={styles.textData}>{data}:</Text>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.data}>{data}:</Text>
           </View>
-          <ProfileText
-            customStyle={styles.container3}
-            customStyleText={styles.text3}
-            text={formattedData}
-          />
-          <TouchableOpacity
-            style={styles.pencilIconContainer}
-            onPress={() => handleChange(propName, newData)}
-          >
+          <Text style={styles.text}>{formattedData}</Text>
+          <TouchableOpacity onPress={() => handleChange(propName, newData)}>
             <EvilIcons name="pencil" size={30} color="white" />
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={styles.container3}>
+        <View style={styles.container}>
           {keyboardType !== ("date" as KeyboardTypeOptions) ? (
-            <View style={styles.containerChange}>
-              <View style={styles.dataUserContainer2}>
-                <Text style={styles.textData}>{data}:</Text>
-              </View>
+            <View>
+              <Text style={styles.data}>{data}:</Text>
 
               <TextInput
-                style={styles.text3}
+                style={styles.text}
                 keyboardType={keyboardType}
                 value={newData}
                 onChangeText={setNewData}
@@ -101,13 +89,13 @@ export const ChangeData = ({
           ) : (
             <DatePicker
               selectedDate={newData}
-              onChange={(date) => setNewData(date.toISOString())}
+              onChange={(date) => {
+                if (typeof date === "string") setNewData(date);
+                else setNewData(date.toISOString());
+              }}
             />
           )}
-          <TouchableOpacity
-            style={styles.pencilIconContainer}
-            onPress={() => handleChange(propName, newData)}
-          >
+          <TouchableOpacity onPress={() => handleChange(propName, newData)}>
             <Feather name="check-square" size={24} color="white" />
           </TouchableOpacity>
         </View>
@@ -115,3 +103,24 @@ export const ChangeData = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  data: {
+    color: "#FFF",
+    fontSize: 13,
+    textAlign: "center",
+  },
+  text: {
+    color: "#FFF",
+    fontSize: 17,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});

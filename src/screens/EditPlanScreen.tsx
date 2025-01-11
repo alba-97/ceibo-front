@@ -134,7 +134,6 @@ export default function EditPlanScreen() {
               propName={"title"}
               mode={"event"}
               data="Título"
-              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -142,7 +141,6 @@ export default function EditPlanScreen() {
               propName={"description"}
               mode={"event"}
               data="Descripción"
-              styles={styles}
             />
             <ChangeData
               keyboardType="default"
@@ -150,55 +148,48 @@ export default function EditPlanScreen() {
               propName={"location"}
               mode={"event"}
               data="Ubicación"
-              styles={styles}
             />
             <ChangeData
               keyboardType="numeric"
               baseData={plan?.start_date}
               propName={"start_date"}
               mode={"event"}
-              data="Fecha"
-              styles={styles}
+              data="Fecha y hora de inicio"
             />
             <ChangeData
               keyboardType="numeric"
-              baseData={plan?.end_date}
-              propName={"end_time"}
+              baseData={plan?.start_date}
+              propName={"start_date"}
               mode={"event"}
-              data="Hora de finalización"
-              styles={styles}
+              data="Fecha y hora de finalización"
             />
             <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_age}
               propName={"min_age"}
               mode={"event"}
-              data="Edad mínima"
-              styles={styles}
+              data="Min. age"
             />
             <ChangeData
               keyboardType="numeric"
               baseData={plan?.max_age}
               propName={"max_age"}
               mode={"event"}
-              data="Edad máxima"
-              styles={styles}
+              data="Max. age"
             />
             <ChangeData
               keyboardType="numeric"
               baseData={plan?.min_to_pay}
               propName={"min_to_pay"}
               mode={"event"}
-              data="Mínimo a pagar"
-              styles={styles}
+              data="Min. to pay"
             />
             <ChangeData
               keyboardType="numeric"
               baseData={plan?.total_to_pay}
               propName={"total_to_pay"}
               mode={"event"}
-              data="Total a pagar"
-              styles={styles}
+              data="Total to pay"
             />
 
             <ModalSelector
@@ -269,8 +260,7 @@ export default function EditPlanScreen() {
               baseData={plan?.link_to_pay}
               propName={"link_to_pay"}
               mode={"event"}
-              data="Link para pagar"
-              styles={styles}
+              data="Link to pay"
             />
 
             <TouchableOpacity style={styles.container} onPress={selectImage}>

@@ -20,6 +20,7 @@ import {
 } from "@expo/vector-icons";
 import ContactsScreen from "@/screens/ContactsScreen";
 import ProfileScreen from "@/screens/ProfileScreen";
+import { Platform } from "react-native";
 
 const BottomNavbar = () => {
   const Tab = createBottomTabNavigator();
@@ -90,16 +91,18 @@ const BottomNavbar = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Contacts"
-        component={ContactsScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <AntDesign name="contacts" size={30} color={"#fff"} />
-          ),
-        }}
-      />
+      {Platform.OS !== "web" && (
+        <Tab.Screen
+          name="Contacts"
+          component={ContactsScreen}
+          options={{
+            tabBarShowLabel: false,
+            tabBarIcon: () => (
+              <AntDesign name="contacts" size={30} color={"#fff"} />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}

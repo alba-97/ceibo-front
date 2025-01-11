@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { styles } from "../styles/loginScreenStyles";
 import createNewUser from "../api/createUser";
 import getUserPlans from "../api/getUserPlans";
 import getUser from "../api/getUser";
@@ -12,9 +11,6 @@ import {
   IOS_CLIENT_ID,
   ANDROID_CLIENT_ID,
 } from "@env";
-import iniciarConGoogle from "../assets/iniciarConGoogle.png";
-
-import * as ReactNative from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,6 +18,9 @@ import axios from "axios";
 import GoogleUser from "@/interfaces/Google";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
+import getGoogleUser from "@/api/getGoogleUser";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import GenericButton from "./GenericButton";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -29,11 +28,10 @@ const GoogleSignInButton = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
 
-  //Google
   const [isUserInfoFetched, setIsUserInfoFetched] = useState(false);
   const [token, setToken] = useState("");
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: EXPO_CLIENT_ID,
+    clientId: EXPO_CLIENT_ID,
     androidClientId: IOS_CLIENT_ID,
     iosClientId: ANDROID_CLIENT_ID,
   });
@@ -49,13 +47,7 @@ const GoogleSignInButton = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const user = await response.json();
+      const user = await getGoogleUser(token);
 
       const checkExistingUsers = await axios.post(
         `${API_URL}/users/find-email`,
@@ -126,20 +118,40 @@ const GoogleSignInButton = () => {
     }
   };
   return (
-    <ReactNative.SafeAreaView style={{ width: "100%", alignItems: "center" }}>
-      <ReactNative.View style={styles.googleContainer}>
-        <ReactNative.TouchableOpacity
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.container}>
+        <GenericButton
           disabled={!request}
           onPress={onPressButton}
-        >
-          <ReactNative.Image
-            style={styles.logoGoogle}
-            source={iniciarConGoogle}
-          />
-        </ReactNative.TouchableOpacity>
-      </ReactNative.View>
-    </ReactNative.SafeAreaView>
+          textStyle={styles.button}
+          text={"Iniciar sesion con Google"}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default GoogleSignInButton;
+
+const styles = StyleSheet.create({
+  safeAreaView: {
+    width: "100%",
+    alignItems: "center",
+  },
+  container: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "90%",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+  button: {
+    fontFamily: "Melts",
+    fontSize: 30,
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+  },
+});

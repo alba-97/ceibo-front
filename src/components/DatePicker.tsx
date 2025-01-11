@@ -1,13 +1,12 @@
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { TextInput, ViewStyle } from "react-native";
-import { styles } from "../styles/datePickerStyles";
+import { StyleSheet, TextInput, ViewStyle } from "react-native";
 import { useState } from "react";
 
 interface IDatePickerProps {
   selectedDate?: string;
-  value?: Date | string | null;
+  value?: Date | string;
   customStyle?: ViewStyle;
   type?: string;
   placeholder?: string;
@@ -65,3 +64,17 @@ export const DatePicker = ({ value, onChange }: IDatePickerProps) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    fontSize: 16,
+    color: "white",
+    backgroundColor: "#22001b",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    width: "80%",
+  },
+});

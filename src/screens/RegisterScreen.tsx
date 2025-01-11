@@ -18,7 +18,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birthdate, setBirthdate] = useState<Date | null>();
+  const [birthdate, setBirthdate] = useState<string | Date>();
   const [address, setAddress] = useState("");
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
@@ -49,7 +49,7 @@ export default function RegisterScreen() {
       setPassword("");
       setEmail("");
       setPhone("");
-      setBirthdate(null);
+      setBirthdate("");
       setAddress("");
       setFirst_name("");
       setLast_name("");
