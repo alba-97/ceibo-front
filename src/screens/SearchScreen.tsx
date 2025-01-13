@@ -3,11 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedPlan, setAuthor } from "../state/selectedPlan";
 import getPlan from "../api/getPlan";
 import { SearchImg } from "../components/searchImage";
-import refetchData from "../utils/refetchData";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";
@@ -18,6 +17,7 @@ import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import { StyleSheet } from "react-native";
+import { RootState } from "@/state/store";
 
 export default function SearchScreen() {
   const options = [
@@ -29,7 +29,7 @@ export default function SearchScreen() {
   const [results, setResults] = useState<EventResponse[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
-  const { refetch } = refetchData();
+  const { refetch } = useSelector((state: RootState) => state.common);
   const inputRef = useRef<TextInput>(null);
 
   const handlePress = async (plan: EventResponse) => {

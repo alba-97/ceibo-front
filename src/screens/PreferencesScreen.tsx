@@ -7,20 +7,23 @@ import MultipleDropdown from "@/components/MultipleDropdown";
 import getCategories from "@/api/getCategories";
 import addPreferences from "@/api/addPreferences";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
-import refetchData from "@/utils/refetchData";
 import actualizar from "@/assets/actualizar.png";
 import editUser from "@/api/editUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
 import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
 import handleError from "@/utils/handleError";
+import { setRefetch } from "@/state/common";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 export default function PreferencesScreen() {
   const [selected, setSelected] = useState<IOption[]>([]);
   const [categories, setCategories] = useState<IOption[]>([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const { refetch, triggerRefetch } = refetchData();
+  const { refetch } = useSelector((state: RootState) => state.common);
+  const dispatch = useDispatch();
 
   const fetchCategories = async () => {
     const { data } = await getCategories();
@@ -34,7 +37,7 @@ export default function PreferencesScreen() {
   const handleSubmit = async () => {
     try {
       await addPreferences([{ name: selected[0].value }]);
-      triggerRefetch();
+      dispatch(setRefetch());
       editUser({ new_user: false });
       navigation.navigate("HomeScreen");
     } catch (err) {

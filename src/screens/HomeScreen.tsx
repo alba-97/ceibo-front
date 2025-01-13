@@ -13,7 +13,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { setSelectedPlan, setAuthor } from "@/state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "@/state/user";
 import { setPlans } from "@/state/plans";
-import refetchData from "@/utils/refetchData";
 import getPlanHistory from "@/api/getPlanHistory";
 import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
@@ -26,7 +25,7 @@ export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
   const plans = useSelector((state: RootState) => state.plans);
 
-  const { refetch } = refetchData();
+  const { refetch } = useSelector((state: RootState) => state.common);
 
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();

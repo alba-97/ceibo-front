@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ScrollView, View, TouchableOpacity, Image, Text } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
@@ -17,17 +17,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckBox } from "react-native-elements";
 import axios from "axios";
 import { API_URL } from "@env";
-import refetchData from "../utils/refetchData";
 import { removePlan } from "../state/plans";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
 import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
 import handleError from "@/utils/handleError";
+import { setRefetch } from "@/state/common";
 
 export default function EditPlanScreen() {
   const plan = useSelector((state: RootState) => state.selectedPlan);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const dispatch = useDispatch();
 
   const [category, setCategory] = useState(plan?.category?.name);
   const [imageUrl, setImageUrl] = useState(plan?.img);
@@ -109,10 +110,8 @@ export default function EditPlanScreen() {
     }
   };
 
-  const { triggerRefetch } = refetchData();
-
   const handleRedirect = () => {
-    triggerRefetch();
+    dispatch(setRefetch());
     navigation.navigate("HomeScreen");
   };
 

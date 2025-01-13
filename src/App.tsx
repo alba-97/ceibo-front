@@ -2,7 +2,6 @@ import { StatusBar, LogBox } from "react-native";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { Provider } from "react-redux";
 import store from "./state/store";
-import { SharedRefetchProvider } from "./sharedRefetchContext";
 import AppNavigator from "./navigation/AppNavigator";
 import { useFonts } from "expo-font";
 
@@ -16,20 +15,16 @@ export default function App() {
     Melts: require("./assets/fonts/melts.ttf"),
   });
 
-  if (!loaded && !error) {
-    return null;
-  }
+  if (!loaded && !error) return null;
 
   return (
     <Provider store={store}>
-      <SharedRefetchProvider>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-          <AppNavigator />
-        </KeyboardAvoidingView>
-      </SharedRefetchProvider>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <AppNavigator />
+      </KeyboardAvoidingView>
     </Provider>
   );
 }
