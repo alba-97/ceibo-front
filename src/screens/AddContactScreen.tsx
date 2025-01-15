@@ -1,4 +1,4 @@
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UserResponse from "@/interfaces/responses/User";
 import handleError from "@/utils/handleError";
 
-export default function ContactsScreen() {
+export default function AddContactScreen() {
   const [contacts, setContacts] = useState<UserResponse[]>([]);
   const [query, setQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState<UserResponse[]>([]);

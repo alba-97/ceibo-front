@@ -7,7 +7,7 @@ import { addUserPlan, setUserPlans } from "../state/user";
 import Comments from "./Plan/Comments";
 import GenericButton from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
 import getUserFriends from "../api/getUserFriends";
@@ -24,6 +24,7 @@ import getEditableEvents from "@/api/getEditableEvents";
 import enrollUser from "@/api/enrollUser";
 import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
 import handleError from "@/utils/handleError";
+import formatDate from "@/utils/formatDate";
 
 export const PlanDetailCard = () => {
   const dispatch = useDispatch();
@@ -63,11 +64,7 @@ export const PlanDetailCard = () => {
     fetchInfo();
   }, []);
 
-  const formattingDate = plan?.start_date
-    .split("T")[0]
-    .split("-")
-    .reverse()
-    .join("/");
+  const formattingDate = formatDate(plan.start_date);
 
   const handleEnroll = async () => {
     setLoading(true);

@@ -3,7 +3,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { ProfileText } from "../components/ProfileText";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Formik } from "formik";
-import initialValues from "@/common/eventInitialValues";
+import eventInitialValues from "@/common/eventInitialValues";
 import TextField from "@/components/TextField";
 import DateField from "@/components/DateField";
 import ImageField from "@/components/ImageField";
@@ -25,7 +25,7 @@ export default function AddPlanScreen1() {
       <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
-          initialValues={initialValues}
+          initialValues={eventInitialValues}
           onSubmit={goToNextStep}
           validationSchema={AddEventSchema1}
         >

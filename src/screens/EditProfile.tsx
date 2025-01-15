@@ -19,7 +19,7 @@ export default function EditProfile() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birthdate, setBirthdate] = useState<Date | null>();
+  const [birthdate, setBirthdate] = useState("");
   const [address, setAddress] = useState("");
   const [first_name, setFirst_name] = useState("");
   const [last_name, setLast_name] = useState("");
@@ -32,17 +32,13 @@ export default function EditProfile() {
   }, [birthdate]);
 
   const handleSubmit = async () => {
-    let formattedBirthdate = null;
-    if (birthdate instanceof Date) {
-      formattedBirthdate = birthdate.toISOString();
-    }
     try {
       const res = await axios.post(`${API_URL}/users/signup`, {
         username,
         password,
         email,
         phone,
-        birthdate: formattedBirthdate,
+        birthdate,
         first_name,
         last_name,
         address,
@@ -53,7 +49,7 @@ export default function EditProfile() {
       setPassword("");
       setEmail("");
       setPhone("");
-      setBirthdate(null);
+      setBirthdate("");
       setAddress("");
       setFirst_name("");
       setLast_name("");
@@ -110,7 +106,9 @@ export default function EditProfile() {
           <DatePicker
             type="date"
             value={birthdate}
-            onChange={(date) => setBirthdate(new Date(date))}
+            onChange={(date) => {
+              if (typeof date === "string") setBirthdate(date);
+            }}
             placeholder="DD/MM/YYYY"
             customStyle={styles.birthdate}
           />

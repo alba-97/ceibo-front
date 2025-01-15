@@ -78,6 +78,9 @@ const GoogleSignInButton = () => {
         first_name: given_name,
         last_name: family_name,
         profile_img: picture,
+        address: "",
+        phone: "",
+        birthdate: "",
       };
       await createNewUser(userData);
     } catch (err) {

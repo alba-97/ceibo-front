@@ -1,12 +1,11 @@
 export default interface RegisterForm {
-  email: string;
-  password: string;
   username: string;
-  address: string;
+  password: string;
+  email: string;
+  phone: string;
   birthdate: string;
   first_name: string;
   last_name: string;
-  phone: string;
+  address: string;
   profile_img: string;
-  new_user?: boolean;
 }

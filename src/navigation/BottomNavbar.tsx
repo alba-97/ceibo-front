@@ -2,15 +2,12 @@ import getPlan from "@/api/getPlan";
 import { setAuthor, setSelectedPlan } from "@/state/selectedPlan";
 import handleError from "@/utils/handleError";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import * as Linking from "expo-linking";
 import { useDispatch } from "react-redux";
-import NavbarStack from "./NavbarStack";
 import { bottomNavigationBarStyle } from "@/styles/navigationBarStyles";
-import SearchScreen from "@/screens/SearchScreen";
-import AddPlanScreen1 from "@/screens/AddPlanScreen1";
 import {
   Entypo,
   FontAwesome,
@@ -18,12 +15,11 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import ContactsScreen from "@/screens/ContactsScreen";
-import ProfileScreen from "@/screens/ProfileScreen";
 import { Platform } from "react-native";
+import ScreenStack from "./ScreenStack";
 
 const BottomNavbar = () => {
-  const Tab = createBottomTabNavigator();
+  const { Navigator, Screen } = createBottomTabNavigator();
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -56,7 +52,7 @@ const BottomNavbar = () => {
   }, []);
 
   return (
-    <Tab.Navigator
+    <Navigator
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
@@ -65,25 +61,25 @@ const BottomNavbar = () => {
         tabBarIconStyle: { alignItems: "center", justifyContent: "center" },
       }}
     >
-      <Tab.Screen
+      <Screen
         name="Home"
-        component={NavbarStack}
+        component={() => <ScreenStack name={"HomeScreen"} />}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Entypo name="home" size={30} color={"#fff"} />,
         }}
       />
-      <Tab.Screen
+      <Screen
         name="Search"
-        component={SearchScreen}
+        component={() => <ScreenStack name={"Search"} />}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Feather name="search" size={30} color={"#fff"} />,
         }}
       />
-      <Tab.Screen
+      <Screen
         name="AddPlan"
-        component={AddPlanScreen1}
+        component={() => <ScreenStack name={"AddPlanScreen1"} />}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -92,9 +88,9 @@ const BottomNavbar = () => {
         }}
       />
       {Platform.OS !== "web" && (
-        <Tab.Screen
+        <Screen
           name="Contacts"
-          component={ContactsScreen}
+          component={() => <ScreenStack name={"AddContact"} />}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: () => (
@@ -103,9 +99,9 @@ const BottomNavbar = () => {
           }}
         />
       )}
-      <Tab.Screen
+      <Screen
         name="Profile"
-        component={ProfileScreen}
+        component={() => <ScreenStack name={"Profile"} />}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -113,7 +109,7 @@ const BottomNavbar = () => {
           ),
         }}
       />
-    </Tab.Navigator>
+    </Navigator>
   );
 };
 

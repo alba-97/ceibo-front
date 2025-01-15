@@ -1,6 +1,6 @@
 import EventForm from "@/interfaces/forms/Event";
 
-const initialValues: EventForm = {
+export default {
   title: "",
   description: "",
   location: "",
@@ -14,6 +14,4 @@ const initialValues: EventForm = {
   category: "Default",
   link_to_pay: "",
   private: false,
-};
-
-export default initialValues;
+} as EventForm;

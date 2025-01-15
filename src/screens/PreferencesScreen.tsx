@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import MultipleDropdown from "@/components/MultipleDropdown";
 import getCategories from "@/api/getCategories";
 import addPreferences from "@/api/addPreferences";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import actualizar from "@/assets/actualizar.png";
 import editUser from "@/api/editUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

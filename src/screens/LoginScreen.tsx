@@ -17,6 +17,7 @@ import LoginSchema from "@/utils/schema/LoginSchema";
 import LoginForm from "@/interfaces/forms/Login";
 import GenericButton from "@/components/GenericButton";
 import { setRefresh } from "@/state/common";
+import loginInitialValues from "@/common/loginInitialValues";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export default function LoginScreen() {
     <AppGradient style={styles.container}>
       <Navbar />
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={loginInitialValues}
         onSubmit={handleLogin}
         validationSchema={LoginSchema}
       >

@@ -9,7 +9,7 @@ import getFilteredPlans from "@/api/getFilteredPlans";
 import getUser from "@/api/getUser";
 import getPlan from "@/api/getPlan";
 import { useSelector, useDispatch } from "react-redux";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { setSelectedPlan, setAuthor } from "@/state/selectedPlan";
 import { setPlanHistory, setUser, setUserPlans } from "@/state/user";
 import { setPlans } from "@/state/plans";

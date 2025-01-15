@@ -9,7 +9,7 @@ import { API_URL } from "@env";
 import { clearUser, updateUser } from "../state/user";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 import { RootState } from "@/state/store";

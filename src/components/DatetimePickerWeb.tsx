@@ -14,7 +14,7 @@ const DatetimePickerWeb = ({ field }: IDatetimePickerProps) => {
         showTime
         showSecond={false}
         onChange={(date) => {
-          setFieldValue(field, date);
+          setFieldValue(field, date.toDate());
         }}
         format={"DD/MM/YYYY HH:mm:ss"}
       />

@@ -2,7 +2,7 @@ import { Text, View, Alert, TextInput } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
-import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedPlan, setAuthor } from "../state/selectedPlan";
 import getPlan from "../api/getPlan";

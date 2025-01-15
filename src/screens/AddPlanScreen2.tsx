@@ -15,7 +15,7 @@ import AddEventSchema2 from "@/utils/schema/AddEventSchema2";
 import BackArrow from "@/components/BackArrow";
 import TextField from "@/components/TextField";
 import SelectField from "@/components/SelectField";
-import initialValues from "@/common/eventInitialValues";
+import eventInitialValues from "@/common/eventInitialValues";
 import GenericButton from "@/components/GenericButton";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
@@ -27,7 +27,7 @@ interface IAddPlanScreen2Props {
 }
 
 export default function AddPlanScreen2({
-  route = { params: initialValues },
+  route = { params: eventInitialValues },
 }: IAddPlanScreen2Props) {
   const [categories, setCategories] = useState<IOption[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -62,16 +62,12 @@ export default function AddPlanScreen2({
     navigation.navigate("AddPlanScreen1");
   };
 
-  const initialValues: EventForm = {
-    ...route.params,
-  };
-
   return (
     <View style={styles.container}>
       <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
-          initialValues={initialValues}
+          initialValues={route.params}
           validationSchema={AddEventSchema2}
           onSubmit={submitEvent}
         >
