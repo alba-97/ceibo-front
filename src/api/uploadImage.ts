@@ -6,15 +6,14 @@ interface IImageResponse {
 }
 
 export default async (uri: string) => {
-  const fileName = uri.split("/").pop();
   const response = await fetch(uri);
   const blob = await response.blob();
 
   const formData = new FormData();
-  formData.append("image", blob, fileName || "upload.jpg");
+  formData.append("image", blob, "upload.jpg");
 
   const { data } = await axios.post<IImageResponse>(
-    `${API_URL}/upload`,
+    `${API_URL}/files`,
     formData,
     {
       headers: {

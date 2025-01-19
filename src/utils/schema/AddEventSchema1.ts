@@ -7,10 +7,30 @@ export default Yup.object().shape({
   title: Yup.string().max(100).required("Title is required"),
   description: Yup.string().max(500).required("Description is required"),
   location: Yup.string().max(100).required("Location is required"),
-  start_date: Yup.date().required("Start date is required"),
-  end_date: Yup.date()
-    .min(Yup.ref("start_date"), "End date must be after start date")
+  start_date: Yup.string()
+    .test(
+      "is-date",
+      "Start date must be a valid date",
+      (value) => value !== undefined && !isNaN(Date.parse(value))
+    )
+    .required("Start date is required"),
+  end_date: Yup.string()
+    .test(
+      "is-date",
+      "End date must be a valid date",
+      (value) => value !== undefined && !isNaN(Date.parse(value))
+    )
+    .test(
+      "is-after-start-date",
+      "End date must be after start date",
+      function (value) {
+        const startDate = Date.parse(this.parent.start_date);
+        const endDate = value !== undefined ? Date.parse(value) : undefined;
+        return endDate !== undefined && endDate >= startDate;
+      }
+    )
     .required("End date is required"),
+
   img: Yup.string()
     .test(
       "is-base64-image",

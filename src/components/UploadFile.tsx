@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { Image, View } from "react-native";
-import {
-  launchImageLibraryAsync,
-  MediaTypeOptions,
-  ImagePickerAsset,
-} from "expo-image-picker";
+import { Image, StyleSheet, View } from "react-native";
+import { launchImageLibraryAsync, ImagePickerAsset } from "expo-image-picker";
 import GenericButton from "./GenericButton";
 
 interface IImagePickerProps {
@@ -16,7 +12,7 @@ const UploadImage = ({ onChange }: IImagePickerProps) => {
 
   const pickImage = async () => {
     const result = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
+      mediaTypes: "images",
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -30,14 +26,7 @@ const UploadImage = ({ onChange }: IImagePickerProps) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.container}>
       <GenericButton onPress={pickImage} text="Upload image" />
       {image && (
         <Image
@@ -52,5 +41,14 @@ const UploadImage = ({ onChange }: IImagePickerProps) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default UploadImage;

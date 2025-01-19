@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -19,6 +19,7 @@ import eventInitialValues from "@/common/eventInitialValues";
 import GenericButton from "@/components/GenericButton";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
+import { toast } from "react-toastify";
 
 interface IAddPlanScreen2Props {
   route?: {
@@ -34,10 +35,12 @@ export default function AddPlanScreen2({
 
   const submitEvent = async (values: EventForm) => {
     try {
-      const url = await uploadImage(values.img);
-      values.img = url;
+      if (values.img) {
+        const url = await uploadImage(values.img);
+        values.img = url;
+      }
       await createEvent(values);
-      Alert.alert("Success", "Event added successfully");
+      toast.success("Event added successfully");
       navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);

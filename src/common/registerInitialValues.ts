@@ -1,4 +1,4 @@
-import RegisterForm from "@/interfaces/forms/Register";
+import UserForm from "@/interfaces/forms/User";
 
 export default {
   username: "",
@@ -10,4 +10,4 @@ export default {
   last_name: "",
   address: "",
   profile_img: "",
-} as RegisterForm;
+} as UserForm;

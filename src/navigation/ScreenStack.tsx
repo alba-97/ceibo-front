@@ -10,7 +10,6 @@ import ProfileScreen from "@/screens/ProfileScreen";
 import SearchScreen from "@/screens/SearchScreen";
 import AddContactScreen from "@/screens/AddContactScreen";
 import LoginScreen from "@/screens/LoginScreen";
-import EditProfile from "@/screens/EditProfile";
 import ContactsScreen from "@/screens/ContactsScreen";
 import RegisterScreen from "@/screens/RegisterScreen";
 
@@ -32,7 +31,6 @@ const screens = [
   { name: "Login", component: LoginScreen },
   { name: "Register", component: RegisterScreen },
   { name: "Contacts", component: ContactsScreen },
-  { name: "EditProfile", component: EditProfile },
 ];
 
 const orderedScreens = (name: string) => {

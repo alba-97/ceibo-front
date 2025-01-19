@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, View } from "react-native";
+import { View } from "react-native";
 import MultipleDropdown from "../MultipleDropdown";
 import RadioButton from "../RadioButton";
 import { styles } from "../../styles/PlanDetails";
@@ -13,6 +13,7 @@ import inviteUsers from "@/api/inviteUsers";
 import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
 import handleError from "@/utils/handleError";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
+import { toast } from "react-toastify";
 
 interface IPlanInviteProps {
   plan: EventResponse;
@@ -44,9 +45,9 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
       const users = fromOptionstoStringArray(invited);
       const form = fromResponseToForm(plan);
       await inviteUsers(users, form, sendMethod.value);
-      Alert.alert("OK", "Invites sent successfully");
+      toast.success("Invites sent successfully");
     } catch (err) {
-      Alert.alert("Error", "There was an error sending invites");
+      handleError(err);
     }
   };
 

@@ -1,35 +1,33 @@
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import ErrorMsg from "./ErrorMsg";
 import DatetimePicker from "./DatetimePicker";
 
 interface IDateFieldProps {
   placeholder: string;
   field: string;
+  dateOnly?: boolean;
 }
 
-const DateField = ({ placeholder, field }: IDateFieldProps) => {
+export default ({ placeholder, field }: IDateFieldProps) => {
   return (
-    <View
-      style={{
-        width: "100%",
-        alignItems: "center",
-      }}
-    >
-      <Text
-        style={{
-          color: "#FFF",
-          fontSize: 24,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 10,
-        }}
-      >
-        {placeholder}
-      </Text>
-      <DatetimePicker field={field} />
+    <View style={styles.container}>
+      <Text style={styles.placeholder}>{placeholder}</Text>
+      <DatetimePicker field={field} dateOnly />
       <ErrorMsg field={field} />
     </View>
   );
 };
 
-export default DateField;
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+  },
+  placeholder: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+});

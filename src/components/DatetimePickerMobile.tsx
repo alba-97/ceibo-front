@@ -8,9 +8,10 @@ import { useFormikContext } from "formik";
 
 interface IDatetimePickerProps {
   field: string;
+  readOnly?: boolean;
 }
 
-const DatetimePickerMobile = ({ field }: IDatetimePickerProps) => {
+const DatetimePickerMobile = ({ field, readOnly }: IDatetimePickerProps) => {
   const { values, setFieldValue } = useFormikContext<EventForm>();
   const date = values[field as keyof EventForm] as string;
 
@@ -31,10 +32,11 @@ const DatetimePickerMobile = ({ field }: IDatetimePickerProps) => {
     <GenericButton
       text={date.slice(0, 16).replace("T", " ")}
       onPress={() => {
-        DateTimePickerAndroid.open({
-          value: new Date(),
-          onChange: selectDate,
-        });
+        !readOnly &&
+          DateTimePickerAndroid.open({
+            value: new Date(),
+            onChange: selectDate,
+          });
       }}
     />
   );

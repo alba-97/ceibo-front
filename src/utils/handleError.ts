@@ -1,13 +1,10 @@
 import { AxiosError } from "axios";
-import { ToastAndroid } from "react-native";
+import { toast } from "react-toastify";
 
 export default (error: unknown) => {
   if (error instanceof AxiosError) {
-    ToastAndroid.show(
-      error.response?.data.message || "An error occurred",
-      ToastAndroid.LONG
-    );
+    toast.error(error.response?.data.message || "An error occurred");
   } else if (error instanceof Error) {
-    ToastAndroid.show(error.message, ToastAndroid.LONG);
+    toast.error(error.message);
   }
 };

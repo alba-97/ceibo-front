@@ -4,19 +4,26 @@ import EventForm from "@/interfaces/forms/Event";
 
 interface IDatetimePickerProps {
   field: string;
+  dateOnly?: boolean;
+  readOnly?: boolean;
 }
 
-const DatetimePickerWeb = ({ field }: IDatetimePickerProps) => {
+const DatetimePickerWeb = ({
+  field,
+  dateOnly,
+  readOnly,
+}: IDatetimePickerProps) => {
   const { setFieldValue } = useFormikContext<EventForm>();
   return (
     <Space direction="vertical" size={12}>
       <DatePicker
-        showTime
+        showTime={!dateOnly}
         showSecond={false}
         onChange={(date) => {
-          setFieldValue(field, date.toDate());
+          setFieldValue(field, date.toISOString());
         }}
-        format={"DD/MM/YYYY HH:mm:ss"}
+        format={dateOnly ? "DD/MM/YYYY" : "DD/MM/YYYY HH:mm:ss"}
+        readOnly={readOnly}
       />
     </Space>
   );

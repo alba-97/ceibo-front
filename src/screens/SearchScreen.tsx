@@ -1,4 +1,4 @@
-import { Text, View, Alert, TextInput } from "react-native";
+import { Text, View, TextInput } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
@@ -49,8 +49,7 @@ export default function SearchScreen() {
       setResults(data);
       inputRef.current?.focus();
     } catch (err) {
-      Alert.alert("Error", "Event not found");
-      console.log(err);
+      handleError(err);
     }
   };
 

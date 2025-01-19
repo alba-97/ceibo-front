@@ -1,5 +1,4 @@
 import {
-  KeyboardTypeOptions,
   StyleSheet,
   Text,
   TextInput,
@@ -7,99 +6,90 @@ import {
   View,
 } from "react-native";
 import { EvilIcons, Feather } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
-import { DatePicker } from "./DatePicker";
 import { useState } from "react";
-import moment from "moment";
-import { updateUser } from "../state/user";
-import { updateSelectedPlan } from "../state/selectedPlan";
-import editUser from "@/api/editUser";
-import editEvent from "@/api/editEvent";
 import handleError from "@/utils/handleError";
+import { useFormikContext } from "formik";
+import UserForm from "@/interfaces/forms/User";
+import DatetimePicker from "./DatetimePicker";
+import getDateOnly from "@/utils/getDateOnly";
+import editUser from "@/api/editUser";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/state/user";
+import { toast } from "react-toastify";
 
 interface IChangeData {
-  mode: string;
   data: string;
-  baseData?: string | number;
-  propName: string;
-  keyboardType: KeyboardTypeOptions;
+  field: string;
+  type: string;
 }
 
-export const ChangeData = ({
-  mode,
-  data,
-  baseData,
-  propName,
-  keyboardType,
-}: IChangeData) => {
-  if (!baseData) baseData = "(Not specified)";
-  if (typeof baseData !== "string") baseData = `${baseData}`;
-  const dispatch = useDispatch();
-  const [newData, setNewData] = useState(baseData);
+export const ChangeData = ({ data, field, type }: IChangeData) => {
   const [change, setChange] = useState<boolean>(false);
+  const { handleChange, handleBlur, values, errors } =
+    useFormikContext<UserForm>();
+  const dispatch = useDispatch();
 
-  const handleChange = async (propName: string, newValue: string) => {
+  const _value = values[field as keyof UserForm];
+  let value = "";
+  if (typeof _value === "number") value = `${_value}`;
+  else if (typeof _value === "string") value = _value;
+
+  const handleEdit = async () => {
     try {
-      setChange(!change);
-      if (!change) return;
-      const data = { [propName]: newValue };
-      switch (mode) {
-        case "user":
-          await editUser(data);
-          dispatch(updateUser(data));
-          break;
-        case "event":
-          await editEvent(data);
-          dispatch(updateSelectedPlan(data));
-          break;
+      const error = errors[field as keyof UserForm];
+      if (error) {
+        if (error) toast.error(error);
+        return;
       }
+
+      await editUser({ [field]: value });
+      dispatch(updateUser({ [field]: value }));
+      setChange(!change);
     } catch (err) {
       handleError(err);
     }
   };
-  let date = mode == "user" ? "birthdate" : "start_date";
-  const formattedData =
-    propName === date ? moment(newData).format("DD/MM/YYYY") : newData;
 
   return (
     <>
-      {!change ? (
-        <View style={styles.container}>
-          <View>
-            <Text style={styles.data}>{data}:</Text>
-          </View>
-          <Text style={styles.text}>{formattedData}</Text>
-          <TouchableOpacity onPress={() => handleChange(propName, newData)}>
-            <EvilIcons name="pencil" size={30} color="white" />
-          </TouchableOpacity>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.data}>{data}:</Text>
         </View>
-      ) : (
-        <View style={styles.container}>
-          {keyboardType !== ("date" as KeyboardTypeOptions) ? (
-            <View>
-              <Text style={styles.data}>{data}:</Text>
-
-              <TextInput
-                style={styles.text}
-                keyboardType={keyboardType}
-                value={newData}
-                onChangeText={setNewData}
-              />
-            </View>
+        <>
+          {type === "date" ? (
+            <>
+              {change ? (
+                <DatetimePicker field={field} dateOnly />
+              ) : (
+                <Text style={styles.text}>{getDateOnly(value)}</Text>
+              )}
+            </>
           ) : (
-            <DatePicker
-              selectedDate={newData}
-              onChange={(date) => {
-                if (typeof date === "string") setNewData(date);
-                else setNewData(date.toISOString());
-              }}
-            />
+            <>
+              {change ? (
+                <TextInput
+                  onChangeText={handleChange(field)}
+                  onBlur={handleBlur(field)}
+                  value={value}
+                  style={styles.input}
+                />
+              ) : (
+                <Text style={styles.text}>
+                  {!!value ? value : "(Not specified)"}
+                </Text>
+              )}
+            </>
           )}
-          <TouchableOpacity onPress={() => handleChange(propName, newData)}>
+        </>
+        <TouchableOpacity onPress={handleEdit}>
+          {!change ? (
+            <EvilIcons name="pencil" size={30} color="white" />
+          ) : (
             <Feather name="check-square" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      )}
+          )}
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -121,6 +111,12 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 17,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  input: {
+    color: "#FFF",
+    fontWeight: "bold",
+    width: "25%",
     textAlign: "center",
   },
 });

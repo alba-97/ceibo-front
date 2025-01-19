@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "./state/store";
 import AppNavigator from "./navigation/AppNavigator";
 import { useFonts } from "expo-font";
+import { ToastContainer } from "react-toastify";
 
 LogBox.ignoreLogs(["The useProxy option is deprecated"]);
 
@@ -23,6 +24,7 @@ export default function App() {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
+        <ToastContainer />
         <AppNavigator />
       </KeyboardAvoidingView>
     </Provider>

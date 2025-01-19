@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import UploadFile from "@/components/UploadFile";
 import { useFormikContext } from "formik";
 import EventForm from "@/interfaces/forms/Event";
@@ -9,22 +9,11 @@ interface IImageFieldProps {
   field: string;
 }
 
-const ImageField = ({ placeholder, field }: IImageFieldProps) => {
+export default ({ placeholder, field }: IImageFieldProps) => {
   const { setFieldValue } = useFormikContext<EventForm>();
   return (
-    <View style={{ width: "100%", alignItems: "center" }}>
-      <Text
-        style={{
-          color: "#FFF",
-          fontSize: 24,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 10,
-        }}
-      >
-        {placeholder}
-      </Text>
-
+    <View style={styles.container}>
+      <Text style={styles.placeholder}>{placeholder}</Text>
       <UploadFile
         onChange={(url: string) => {
           setFieldValue(field, url);
@@ -35,4 +24,16 @@ const ImageField = ({ placeholder, field }: IImageFieldProps) => {
   );
 };
 
-export default ImageField;
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    alignItems: "center",
+  },
+  placeholder: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+});

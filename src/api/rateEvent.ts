@@ -4,11 +4,11 @@ import getHeaders from "@/utils/getHeaders";
 
 export default async (rating: number, planId: string) => {
   const headers = await getHeaders();
-  const res = await axios.post(
+  const { data } = await axios.post(
     `${API_URL}/events/${planId}/rate`,
     { rating },
 
     headers
   );
-  return res.data;
+  return data;
 };

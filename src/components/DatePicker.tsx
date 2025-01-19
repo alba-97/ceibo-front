@@ -6,11 +6,11 @@ import { useState } from "react";
 
 interface IDatePickerProps {
   selectedDate?: string;
-  value?: Date | string;
+  value?: Date;
   customStyle?: ViewStyle;
   type?: string;
   placeholder?: string;
-  onChange: (date: Date | string) => void;
+  onChange: (date: Date) => void;
 }
 
 export const DatePicker = ({ value, onChange }: IDatePickerProps) => {
