@@ -12,7 +12,7 @@ export default function AppNavigator() {
     prefixes: [prefix],
     config: {
       screens: {
-        PlanDetail: "PlanDetail",
+        EventDetail: "EventDetail",
       },
     },
   };

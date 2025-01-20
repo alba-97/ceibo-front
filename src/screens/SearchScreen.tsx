@@ -4,14 +4,14 @@ import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedPlan, setAuthor } from "../state/selectedPlan";
-import getPlan from "../api/getPlan";
+import { setSelectedEvent, setAuthor } from "../state/selectedEvent";
+import getEvent from "../api/getEvent";
 import { SearchImg } from "../components/searchImage";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";
 import handleError from "@/utils/handleError";
-import getPlans from "@/api/getPlans";
+import getEvents from "@/api/getEvents";
 import { Formik } from "formik";
 import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
 import AppGradient from "@/components/AppGradient";
@@ -32,12 +32,12 @@ export default function SearchScreen() {
   const { refetch } = useSelector((state: RootState) => state.common);
   const inputRef = useRef<TextInput>(null);
 
-  const handlePress = async (plan: EventResponse) => {
+  const handlePress = async (event: EventResponse) => {
     try {
-      const updatedPlan = await getPlan(plan._id);
-      dispatch(setSelectedPlan(updatedPlan));
-      dispatch(setAuthor(updatedPlan.createdBy));
-      navigation.navigate("PlanDetail");
+      const updatedEvent = await getEvent(event._id);
+      dispatch(setSelectedEvent(updatedEvent));
+      dispatch(setAuthor(updatedEvent.createdBy));
+      navigation.navigate("EventDetail");
     } catch (err) {
       handleError(err);
     }
@@ -45,7 +45,7 @@ export default function SearchScreen() {
 
   const handleSearch = async (values: EventQuery) => {
     try {
-      const { data } = await getPlans(values);
+      const { data } = await getEvents(values);
       setResults(data);
       inputRef.current?.focus();
     } catch (err) {
@@ -55,7 +55,7 @@ export default function SearchScreen() {
 
   const fetchData = async () => {
     try {
-      const { data } = await getPlans();
+      const { data } = await getEvents();
       setResults(data);
     } catch (err) {
       console.error(err);
@@ -99,7 +99,7 @@ export default function SearchScreen() {
         <View style={styles.eventContainer}>
           <AppScrollView style={styles.scrollView}>
             {results?.map((item, index) => (
-              <SearchImg key={index} plan={item} onPress={handlePress} />
+              <SearchImg key={index} event={item} onPress={handlePress} />
             )) ?? <Text>Loading data...</Text>}
           </AppScrollView>
         </View>

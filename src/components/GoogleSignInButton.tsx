@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import createNewUser from "../api/createUser";
-import getUserPlans from "../api/getUserPlans";
+import getUserEvents from "../api/getUserEvents";
 import getUser from "../api/getUser";
 import { useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { setUser, setUserPlans } from "../state/user";
+import { setUser, setUserEvents } from "../state/user";
 import {
   API_URL,
   EXPO_CLIENT_ID,
@@ -104,8 +104,8 @@ const GoogleSignInButton = () => {
       });
       const userData = await getUser();
       dispatch(setUser(userData));
-      const { data } = await getUserPlans();
-      dispatch(setUserPlans(data));
+      const { data } = await getUserEvents();
+      dispatch(setUserEvents(data));
       navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
     } catch (err) {
       handleError(err);

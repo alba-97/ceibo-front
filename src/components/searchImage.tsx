@@ -3,18 +3,18 @@ import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import EventResponse from "@/interfaces/responses/Event";
 
 interface ISearchImgProps {
-  plan: EventResponse;
-  onPress: (plan: EventResponse) => void;
+  event: EventResponse;
+  onPress: (event: EventResponse) => void;
 }
 
-export const SearchImg = ({ plan, onPress }: ISearchImgProps) => {
+export const SearchImg = ({ event, onPress }: ISearchImgProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={() => onPress(plan)}>
-        <Image source={{ uri: plan?.img }} style={styles.image} />
-        <Text style={styles.bannerText}>{plan?.title}</Text>
+      <TouchableOpacity style={styles.button} onPress={() => onPress(event)}>
+        <Image source={{ uri: event?.img }} style={styles.image} />
+        <Text style={styles.bannerText}>{event?.title}</Text>
         <Text style={styles.bannerTextDate}>
-          {plan?.start_date && fromDateToDateDescription(plan?.start_date)}
+          {event?.start_date && fromDateToDateDescription(event?.start_date)}
         </Text>
       </TouchableOpacity>
     </View>

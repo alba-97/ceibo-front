@@ -23,10 +23,10 @@ export default Yup.object().shape({
     .test(
       "is-after-start-date",
       "End date must be after start date",
-      function (value) {
-        const startDate = Date.parse(this.parent.start_date);
+      (value, { parent }) => {
+        const startDate = parent.start_date;
         const endDate = value !== undefined ? Date.parse(value) : undefined;
-        return endDate !== undefined && endDate >= startDate;
+        return endDate !== undefined && endDate >= Date.parse(startDate);
       }
     )
     .required("End date is required"),

@@ -11,8 +11,7 @@ export default interface UserResponse {
   last_name: string;
   phone: string;
   profile_img: string;
-  plans: EventResponse[];
-  history: EventResponse[];
+  events: EventResponse[];
   preferences: CategoryResponse[];
   rating?: number;
   new_user?: boolean;

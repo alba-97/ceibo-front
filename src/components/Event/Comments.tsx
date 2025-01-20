@@ -2,28 +2,28 @@ import { useState } from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import GenericInput from "@/components/GenericInput";
 import { useDispatch } from "react-redux";
-import { styles } from "@/styles/PlanDetails";
+import { styles } from "@/styles/EventDetails";
 import addComment from "@/api/addComment";
-import { setComments } from "@/state/selectedPlan";
+import { setComments } from "@/state/selectedEvent";
 import { Feather } from "@expo/vector-icons";
 import comentarios from "@/assets/comentarios.png";
 import EventResponse from "@/interfaces/responses/Event";
 import handleError from "@/utils/handleError";
 
 interface ICommentsProps {
-  plan: EventResponse;
+  event: EventResponse;
 }
 
-const Comments = ({ plan }: ICommentsProps) => {
+const Comments = ({ event }: ICommentsProps) => {
   const [page, setPage] = useState(1);
   const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
 
   const handleComment = async () => {
-    if (!plan._id) return;
+    if (!event._id) return;
     try {
-      const newComment = await addComment(comment, plan._id);
+      const newComment = await addComment(comment, event._id);
       dispatch(setComments(newComment));
     } catch (err) {
       handleError(err);
@@ -42,8 +42,8 @@ const Comments = ({ plan }: ICommentsProps) => {
           backgroundColor: "rgba(0, 0, 0, 0.4)",
         }}
       >
-        {plan.comments &&
-          plan.comments.map((item, index) => {
+        {event.comments &&
+          event.comments.map((item, index) => {
             if (index < page * 4 && index >= (page - 1) * 4)
               return (
                 <View style={styles.commentContainer} key={index}>
@@ -73,7 +73,7 @@ const Comments = ({ plan }: ICommentsProps) => {
         ) : (
           <Text></Text>
         )}
-        {plan.comments.length - (page + 1) * 4 >= -4 ? (
+        {event.comments.length - (page + 1) * 4 >= -4 ? (
           <Text
             style={{
               color: "#fff",

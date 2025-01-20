@@ -55,12 +55,6 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 4,
   },
-  crearCuenta: {
-    flex: 1,
-    marginTop: 15,
-    marginBottom: 15,
-    alignItems: "center",
-  },
   logo: {
     width: 160,
     height: 25,

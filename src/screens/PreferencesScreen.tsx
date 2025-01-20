@@ -8,7 +8,6 @@ import getCategories from "@/api/getCategories";
 import addPreferences from "@/api/addPreferences";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import actualizar from "@/assets/actualizar.png";
-import editUser from "@/api/editUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
 import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
@@ -38,7 +37,6 @@ export default function PreferencesScreen() {
     try {
       await addPreferences([{ name: selected[0].value }]);
       dispatch(setRefetch());
-      editUser({ new_user: false });
       navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);
@@ -55,7 +53,7 @@ export default function PreferencesScreen() {
       <Navbar />
       <ScrollView style={styles.scroll}>
         <Text style={styles.subtitle}>
-          Mostraremos eventos que sean acordes a tus preferencias
+          We will show events that match your preferences
         </Text>
         <View style={styles.container}>
           <MultipleDropdown
@@ -63,8 +61,8 @@ export default function PreferencesScreen() {
             data={categories}
             save="value"
             onSelect={() => {}}
-            label="Preferencias"
-            placeholder="Preferencias"
+            label="preferences"
+            placeholder="Preferences"
             search={false}
             textStyles={styles.text}
             boxStyles={styles.inputContainer}

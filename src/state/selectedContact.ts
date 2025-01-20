@@ -11,8 +11,7 @@ const initialState: UserResponse = {
   phone: "",
   profile_img: "",
   username: "",
-  plans: [],
-  history: [],
+  events: [],
   preferences: [],
 };
 

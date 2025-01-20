@@ -21,22 +21,21 @@ const initialState: EventResponse = {
     last_name: "",
     phone: "",
     profile_img: "",
-    plans: [],
-    history: [],
+    events: [],
     preferences: [],
   },
   ended: false,
   private: false,
 };
 
-const selectedPlanSlice = createSlice({
-  name: "selectedPlan",
+const selectedEventSlice = createSlice({
+  name: "selectedEvent",
   initialState,
   reducers: {
-    setSelectedPlan: (_, action) => {
+    setSelectedEvent: (_, action) => {
       return action.payload;
     },
-    updateSelectedPlan: (
+    updateSelectedEvent: (
       state,
       action: { payload: Partial<EventResponse> }
     ) => {
@@ -48,7 +47,7 @@ const selectedPlanSlice = createSlice({
       newState.createdBy = action.payload;
       return newState;
     },
-    clearSelectedPlan: () => {
+    clearSelectedEvent: () => {
       return initialState;
     },
     setComments: (state, action) => {
@@ -60,10 +59,10 @@ const selectedPlanSlice = createSlice({
 });
 
 export const {
-  setSelectedPlan,
-  updateSelectedPlan,
+  setSelectedEvent,
+  updateSelectedEvent,
   setAuthor,
   setComments,
-  clearSelectedPlan,
-} = selectedPlanSlice.actions;
-export default selectedPlanSlice.reducer;
+  clearSelectedEvent,
+} = selectedEventSlice.actions;
+export default selectedEventSlice.reducer;

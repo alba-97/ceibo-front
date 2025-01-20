@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import getUserPlans from "../api/getUserPlans";
-import { setPlanHistory, setUser, setUserPlans } from "../state/user";
+import getUserEvents from "../api/getUserEvents";
+import { setCreatedEvents, setUser, setUserEvents } from "../state/user";
 import { Navbar } from "../components/Navbar";
-import getPlanHistory from "../api/getPlanHistory";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppScrollView from "@/components/AppScrollView";
@@ -18,6 +17,7 @@ import LoginForm from "@/interfaces/forms/Login";
 import GenericButton from "@/components/GenericButton";
 import { setRefresh } from "@/state/common";
 import loginInitialValues from "@/common/loginInitialValues";
+import getPastEvents from "../api/getCreatedEvents";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -33,11 +33,11 @@ export default function LoginScreen() {
       if (!token) return;
       dispatch(setUser(user));
 
-      const { data: userPlans } = await getUserPlans();
-      dispatch(setUserPlans(userPlans));
+      const { data: userEvents } = await getUserEvents();
+      dispatch(setUserEvents(userEvents));
 
-      const { data: planHistory } = await getPlanHistory();
-      dispatch(setPlanHistory(planHistory));
+      const { data: pastEvents } = await getPastEvents();
+      dispatch(setCreatedEvents(pastEvents));
 
       dispatch(setRefresh());
       navigation.navigate("HomeScreen");

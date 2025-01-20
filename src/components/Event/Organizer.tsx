@@ -3,19 +3,19 @@ import { Entypo } from "@expo/vector-icons";
 import organizador from "../../assets/organizador.png";
 import EventResponse from "@/interfaces/responses/Event";
 
-interface IPlanOrganizerProps {
-  plan: EventResponse;
+interface IEventOrganizerProps {
+  event: EventResponse;
   rating?: number;
 }
 
-const PlanOrganizer = ({ plan, rating }: IPlanOrganizerProps) => {
+const EventOrganizer = ({ event, rating }: IEventOrganizerProps) => {
   return (
     <View>
       <View style={styles.container}>
         <Image style={styles.organizerLogo} source={organizador} />
       </View>
       <View style={styles.container}>
-        <Text style={styles.p}>{plan?.createdBy?.username}</Text>
+        <Text style={styles.p}>{event?.createdBy?.username}</Text>
         <Text style={styles.p}>
           {rating && (
             <>
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlanOrganizer;
+export default EventOrganizer;

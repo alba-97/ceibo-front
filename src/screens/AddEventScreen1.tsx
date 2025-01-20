@@ -14,10 +14,10 @@ import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import { StyleSheet, View } from "react-native";
 
-export default function AddPlanScreen1() {
+export default function AddEventScreen1() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const goToNextStep = (values: EventForm) => {
-    navigation.navigate("AddPlanScreen2", values);
+    navigation.navigate("AddEventScreen2", values);
   };
 
   return (

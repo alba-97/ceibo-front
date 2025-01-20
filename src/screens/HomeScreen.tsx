@@ -3,40 +3,45 @@ import { StyleSheet, Text, View } from "react-native";
 import { Navbar } from "@/components/Navbar";
 import { SwiperComponent } from "@/components/Swiper";
 import { MainEvent } from "@/components/MainEvent";
-import getAllPlans from "@/api/getAllPlans";
-import getUserPlans from "@/api/getUserPlans";
-import getFilteredPlans from "@/api/getFilteredPlans";
+import getAllEvents from "@/api/getAllEvents";
+import getFilteredEvents from "@/api/getFilteredEvents";
 import getUser from "@/api/getUser";
-import getPlan from "@/api/getPlan";
+import getEvent from "@/api/getEvent";
 import { useSelector, useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { setSelectedPlan, setAuthor } from "@/state/selectedPlan";
-import { setPlanHistory, setUser, setUserPlans } from "@/state/user";
-import { setPlans } from "@/state/plans";
-import getPlanHistory from "@/api/getPlanHistory";
+import { setSelectedEvent, setAuthor } from "@/state/selectedEvent";
+import {
+  setCreatedEvents,
+  setUserEvents,
+  setUser,
+  setRecommendedEvents,
+} from "@/state/user";
+import { setEvents } from "@/state/events";
 import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
+import getCreatedEvents from "@/api/getCreatedEvents";
+import getUserEvents from "@/api/getUserEvents";
 
 export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
-  const plans = useSelector((state: RootState) => state.plans);
+  const events = useSelector((state: RootState) => state.events);
 
   const { refetch } = useSelector((state: RootState) => state.common);
 
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handlePress = async (plan: EventResponse) => {
+  const handlePress = async (event: EventResponse) => {
     try {
-      const updatedPlan = await getPlan(plan._id);
-      dispatch(setSelectedPlan(updatedPlan));
-      dispatch(setAuthor(updatedPlan.createdBy));
+      const updatedEvent = await getEvent(event._id);
+      dispatch(setSelectedEvent(updatedEvent));
+      dispatch(setAuthor(updatedEvent.createdBy));
 
-      navigation.navigate("PlanDetail");
+      navigation.navigate("EventDetail");
     } catch (err) {
       handleError(err);
     }
@@ -55,21 +60,21 @@ export default function HomeScreen() {
     try {
       const userData = await fetchUser();
       if (!userData) {
-        const { data: plans } = await getAllPlans();
-        dispatch(setPlans(plans));
+        const { data: events } = await getAllEvents();
+        dispatch(setEvents(events));
         return;
       }
       dispatch(setUser(userData));
 
-      const { data: userPlans } = await getUserPlans();
-      dispatch(setUserPlans(userPlans));
+      const { data: userEvents } = await getUserEvents();
+      dispatch(setUserEvents(userEvents));
 
-      const { data: planHistory } = await getPlanHistory();
-      dispatch(setPlanHistory(planHistory));
+      const { data: pastEvents } = await getCreatedEvents();
+      dispatch(setCreatedEvents(pastEvents));
 
       if (userData.preferences[0]) {
-        const { data: plans } = await getFilteredPlans();
-        dispatch(setPlans(plans));
+        const { data: recommendedEvents } = await getFilteredEvents();
+        dispatch(setRecommendedEvents(recommendedEvents));
       }
     } catch (err) {
       handleError(err);
@@ -84,48 +89,47 @@ export default function HomeScreen() {
     <AppGradient style={styles.gradient}>
       <Navbar />
       <AppScrollView>
-        {plans[0] && (
+        {events[0] && (
           <MainEvent
-            plan={plans[0]}
+            event={events[0]}
             title="Patrocinado"
             onPress={handlePress}
           />
         )}
-        <Text style={styles.logoText}>Nuestras Recomendaciones</Text>
-        <SwiperComponent plans={plans} onPress={handlePress} />
-        {user._id && (
-          <View>
-            <View style={styles.logo}>
-              <Text style={styles.logoText}>Mis planes</Text>
-            </View>
-            {user.plans?.[0] ? (
-              <SwiperComponent plans={user.plans} onPress={handlePress} />
+
+        {user._id ? (
+          <View style={styles.container}>
+            <Text style={styles.logoText}>Recommended events</Text>
+            {user.recommendedEvents?.[0] ? (
+              <SwiperComponent
+                events={user.recommendedEvents}
+                onPress={handlePress}
+              />
             ) : (
-              <View style={styles.logoContainer}>
-                <View style={styles.logo}>
-                  <Text style={styles.normalText}>No tienes planes</Text>
-                </View>
-              </View>
+              <Text style={styles.text}>No Events</Text>
             )}
-            <View style={styles.logo}>
-              <Text style={styles.logoText}>Planes creados</Text>
-            </View>
-            {user.history?.[0] ? (
-              <View>
-                <SwiperComponent plans={user.history} onPress={handlePress} />
-              </View>
+            <Text style={styles.logoText}>My Events</Text>
+            {user.events?.[0] ? (
+              <SwiperComponent events={user.events} onPress={handlePress} />
             ) : (
-              <View style={styles.logoContainer}>
-                <View style={styles.logo}>
-                  <Text style={styles.normalText}>
-                    No tienes planes creados
-                  </Text>
-                </View>
-              </View>
+              <Text style={styles.text}>No Events</Text>
+            )}
+            <Text style={styles.logoText}>Created Events</Text>
+            {user.createdEvents?.[0] ? (
+              <SwiperComponent
+                events={user.createdEvents}
+                onPress={handlePress}
+              />
+            ) : (
+              <Text style={styles.text}>No Events Created</Text>
             )}
           </View>
+        ) : (
+          <View style={styles.container}>
+            <Text style={styles.logoText}>Events</Text>
+            <SwiperComponent events={events} onPress={handlePress} />
+          </View>
         )}
-        <View style={styles.spacer} />
       </AppScrollView>
     </AppGradient>
   );
@@ -135,15 +139,11 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     width: "100%",
-  },
-  logoContainer: {
     alignItems: "center",
   },
-  logo: {
-    paddingTop: 15,
-    borderRadius: 18,
-    alignItems: "center",
-    marginVertical: 10,
+  container: {
+    width: "100%",
+    marginVertical: 20,
   },
   logoText: {
     fontFamily: "Melts",
@@ -153,20 +153,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 30,
     fontSize: 40,
+    textAlign: "center",
   },
-  normalText: {
+  text: {
     color: "white",
     fontSize: 25,
-  },
-  myEvents: {
-    width: 120,
-    height: 20,
-  },
-  noEvents: {
-    width: 198,
-    height: 62,
-  },
-  spacer: {
-    marginBottom: 30,
+    textAlign: "center",
   },
 });

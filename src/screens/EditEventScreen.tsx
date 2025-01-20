@@ -6,7 +6,7 @@ import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
 import { ProfilePicture } from "../components/ProfilePicture";
 import GenericButton from "../components/GenericButton";
-import { styles } from "../styles/editPlanStyles";
+import { styles } from "../styles/editEventStyles";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckBox } from "react-native-elements";
 import axios from "axios";
 import { API_URL } from "@env";
-import { removePlan } from "../state/plans";
+import { removeEvent } from "../state/events";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
@@ -25,22 +25,22 @@ import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryRespons
 import handleError from "@/utils/handleError";
 import { setRefetch } from "@/state/common";
 
-export default function EditPlanScreen() {
-  const plan = useSelector((state: RootState) => state.selectedPlan);
+export default function EditEventScreen() {
+  const event = useSelector((state: RootState) => state.selectedEvent);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
 
-  const [category, setCategory] = useState(plan?.category?.name);
-  const [imageUrl, setImageUrl] = useState(plan?.img);
+  const [category, setCategory] = useState(event?.category?.name);
+  const [imageUrl, setImageUrl] = useState(event?.img);
   const [categories, setCategories] = useState<IOption[]>([]);
-  const [checked, setChecked] = useState(plan?.private);
+  const [checked, setChecked] = useState(event?.private);
 
   const handleCheckBoxToggle = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
         await axios.put(
-          `${API_URL}/events/${plan._id}`,
+          `${API_URL}/events/${event._id}`,
           {
             private: !checked,
           },
@@ -51,7 +51,7 @@ export default function EditPlanScreen() {
           }
         );
         setChecked(!checked);
-        removePlan(plan._id);
+        removeEvent(event._id);
       }
     } catch (err) {
       handleError(err);
@@ -92,7 +92,7 @@ export default function EditPlanScreen() {
           formData.append("image", blob, file.name);
           const res = await axios.post(`${API_URL}/upload`, formData);
           await axios.put(
-            `${API_URL}/events/${plan._id}`,
+            `${API_URL}/events/${event._id}`,
             {
               img: res.data.imageUrl,
             },
@@ -123,73 +123,25 @@ export default function EditPlanScreen() {
       style={styles.container}
     >
       <Navbar />
-      {plan._id ? (
+      {event._id ? (
         <ScrollView>
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
+            <ChangeData field="title" placeholder="Título" />
+            <ChangeData field="description" placeholder="Descripción" />
+            <ChangeData field="location" placeholder="Ubicación" />
             <ChangeData
-              keyboardType="default"
-              baseData={plan?.title}
-              propName={"title"}
-              mode={"event"}
-              data="Título"
+              field="start_date"
+              placeholder="Fecha y hora de inicio"
             />
             <ChangeData
-              keyboardType="default"
-              baseData={plan?.description}
-              propName={"description"}
-              mode={"event"}
-              data="Descripción"
+              field="start_date"
+              placeholder="Fecha y hora de finalización"
             />
-            <ChangeData
-              keyboardType="default"
-              baseData={plan?.location}
-              propName={"location"}
-              mode={"event"}
-              data="Ubicación"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.start_date}
-              propName={"start_date"}
-              mode={"event"}
-              data="Fecha y hora de inicio"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.start_date}
-              propName={"start_date"}
-              mode={"event"}
-              data="Fecha y hora de finalización"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.min_age}
-              propName={"min_age"}
-              mode={"event"}
-              data="Min. age"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.max_age}
-              propName={"max_age"}
-              mode={"event"}
-              data="Max. age"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.min_to_pay}
-              propName={"min_to_pay"}
-              mode={"event"}
-              data="Min. to pay"
-            />
-            <ChangeData
-              keyboardType="numeric"
-              baseData={plan?.total_to_pay}
-              propName={"total_to_pay"}
-              mode={"event"}
-              data="Total to pay"
-            />
+            <ChangeData field="min_age" placeholder="Min. age" />
+            <ChangeData field="max_age" placeholder="Max. age" />
+            <ChangeData field="min_to_pay" placeholder="Min. to pay" />
+            <ChangeData field="total_to_pay" placeholder="Total to pay" />
 
             <ModalSelector
               data={categories}
@@ -197,7 +149,7 @@ export default function EditPlanScreen() {
                 const token = await AsyncStorage.getItem("token");
                 if (token) {
                   await axios.put(
-                    `${API_URL}/events/${plan._id}`,
+                    `${API_URL}/events/${event._id}`,
                     {
                       category: option.label,
                     },
@@ -254,13 +206,7 @@ export default function EditPlanScreen() {
               />
             </View>
 
-            <ChangeData
-              keyboardType="default"
-              baseData={plan?.link_to_pay}
-              propName={"link_to_pay"}
-              mode={"event"}
-              data="Link to pay"
-            />
+            <ChangeData field="link_to_pay" placeholder="Link to pay" />
 
             <TouchableOpacity style={styles.container} onPress={selectImage}>
               {imageUrl && (

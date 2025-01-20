@@ -48,12 +48,6 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: "20%",
   },
-  crearPlan: {
-    alignItems: "center",
-    flex: 1,
-    width: "65%",
-    marginTop: "5%",
-  },
   label: {
     paddingTop: "15%",
     marginBottom: 4,

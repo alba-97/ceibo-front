@@ -1,18 +1,18 @@
 import { View, Text } from "react-native";
 import Rating from "./Rating";
-import { styles } from "../../styles/PlanDetails";
+import { styles } from "../../styles/EventDetails";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import fromDateToDateDescription from "@/utils/fromDateToDateDescription";
 
-interface IPlanEndedProps {
-  plan: EventResponse;
+interface IEventEndedProps {
+  event: EventResponse;
   user: UserResponse;
 }
 
-const PlanEnded = ({ plan, user }: IPlanEndedProps) => {
-  const formattingDate = fromDateToDateDescription(plan?.end_date);
-  const time = plan?.end_date.split("T")[1].slice(0, 5);
+const EventEnded = ({ event, user }: IEventEndedProps) => {
+  const formattingDate = fromDateToDateDescription(event?.end_date);
+  const time = event?.end_date.split("T")[1].slice(0, 5);
 
   return (
     <View>
@@ -22,11 +22,11 @@ const PlanEnded = ({ plan, user }: IPlanEndedProps) => {
 
       {user._id &&
         user.history &&
-        user.history.some((item) => item._id == plan._id) &&
-        plan.organizer?._id !== user._id &&
-        plan.ended && <Rating plan={plan} />}
+        user.history.some((item) => item._id == event._id) &&
+        event.organizer?._id !== user._id &&
+        event.ended && <Rating event={event} />}
     </View>
   );
 };
 
-export default PlanEnded;
+export default EventEnded;

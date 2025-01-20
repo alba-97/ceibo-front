@@ -6,9 +6,9 @@ import Paginated from "@/interfaces/Paginated";
 
 export default async () => {
   const headers = await getHeaders();
-  const res = await axios.get<Paginated<EventResponse>>(
-    `${API_URL}/events/history`,
+  const { data } = await axios.get<Paginated<EventResponse>>(
+    `${API_URL}/events/created`,
     headers
   );
-  return res.data;
+  return data;
 };

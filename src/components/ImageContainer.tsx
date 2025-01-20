@@ -4,20 +4,20 @@ import styles from "../styles/ImageContainerStyles";
 import EventResponse from "@/interfaces/responses/Event";
 
 interface IMainEventProps {
-  plan: EventResponse;
-  onPress: (plan: EventResponse) => void;
+  event: EventResponse;
+  onPress: (event: EventResponse) => void;
 }
 
-export const ImageContainer = ({ plan, onPress }: IMainEventProps) => {
+export const ImageContainer = ({ event, onPress }: IMainEventProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress(plan)}>
-      <Image source={{ uri: plan?.img }} style={styles.image} />
+    <TouchableOpacity style={styles.container} onPress={() => onPress(event)}>
+      <Image source={{ uri: event?.img }} style={styles.image} />
       <View style={styles.overlay}>
-        <Text style={styles.text}>{plan?.title}</Text>
+        <Text style={styles.text}>{event?.title}</Text>
         <Text style={styles.subtitle}>
-          {plan?.start_date && fromDateToDateDescription(plan?.start_date)}
+          {event?.start_date && fromDateToDateDescription(event?.start_date)}
         </Text>
-        <Text style={styles.subtitle}>{plan?.category?.name}</Text>
+        <Text style={styles.subtitle}>{event?.category?.name}</Text>
       </View>
     </TouchableOpacity>
   );

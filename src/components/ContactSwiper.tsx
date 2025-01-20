@@ -5,11 +5,11 @@ import Swiper from "react-native-swiper";
 
 interface IContactSwiperProps {
   title: string;
-  plans: EventResponse[];
+  events: EventResponse[];
   onPress?: (event: EventResponse) => void;
 }
 
-export function ContactSwiper({ title, plans, onPress }: IContactSwiperProps) {
+export function ContactSwiper({ title, events, onPress }: IContactSwiperProps) {
   const handlePress = (event: EventResponse) => {
     if (onPress) onPress(event);
   };
@@ -21,10 +21,10 @@ export function ContactSwiper({ title, plans, onPress }: IContactSwiperProps) {
         showsPagination={false}
         containerStyle={styles.swiperContainer}
       >
-        {plans.map((p, index) => {
+        {events.map((p, index) => {
           return (
             <View style={styles.imageContainer} key={index}>
-              <ImageContainer plan={p} onPress={handlePress} />
+              <ImageContainer event={p} onPress={handlePress} />
             </View>
           );
         })}

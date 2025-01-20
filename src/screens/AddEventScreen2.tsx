@@ -21,15 +21,15 @@ import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import { toast } from "react-toastify";
 
-interface IAddPlanScreen2Props {
+interface IAddEventScreen2Props {
   route?: {
     params: EventForm;
   };
 }
 
-export default function AddPlanScreen2({
+export default function AddEventScreen2({
   route = { params: eventInitialValues },
-}: IAddPlanScreen2Props) {
+}: IAddEventScreen2Props) {
   const [categories, setCategories] = useState<IOption[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -62,7 +62,7 @@ export default function AddPlanScreen2({
   }, []);
 
   const handleBack = () => {
-    navigation.navigate("AddPlanScreen1");
+    navigation.navigate("AddEventScreen1");
   };
 
   return (

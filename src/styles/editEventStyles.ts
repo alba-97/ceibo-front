@@ -17,14 +17,6 @@ export const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
   },
-  crearPlan: {
-    alignItems: "center",
-    flex: 1,
-    width: "65%",
-    marginBottom: 15,
-    marginTop: 15,
-  },
-
   container: {
     flex: 1,
     width: "100%",

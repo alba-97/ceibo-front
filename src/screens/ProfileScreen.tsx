@@ -7,7 +7,6 @@ import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { launchImageLibraryAsync } from "expo-image-picker";
-import { Alert } from "react-native";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
@@ -20,6 +19,7 @@ import UserForm from "@/interfaces/forms/User";
 import fromResponseToForm from "@/utils/user/fromResponseToForm";
 import editUser from "@/api/editUser";
 import uploadImage from "@/api/uploadImage";
+import { toast } from "react-toastify";
 
 export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -51,7 +51,7 @@ export default function ProfileScreen() {
       await editUser({ profile_img });
 
       dispatch(updateUser({ profile_img }));
-      Alert.alert("Done", "Profile image updated successfully");
+      toast.success("Profile image updated successfully");
     } catch (err) {
       handleError(err);
     }
@@ -83,30 +83,30 @@ export default function ProfileScreen() {
                   url={user.profile_img}
                 />
               </View>
-              <ChangeData type="text" field={"username"} data={"Username"} />
+              <ChangeData field={"username"} placeholder={"Username"} />
+              <ChangeData field={"first_name"} placeholder={"First name"} />
+              <ChangeData field={"last_name"} placeholder={"Last name"} />
+              <ChangeData field={"address"} placeholder={"Address"} />
+              <ChangeData field={"email"} placeholder={"Email"} />
+              <ChangeData field={"phone"} placeholder={"Phone"} />
               <ChangeData
-                type="text"
-                field={"first_name"}
-                data={"First name"}
+                type="date"
+                field={"birthdate"}
+                placeholder={"Birthdate"}
               />
-              <ChangeData type="text" field={"last_name"} data={"Last name"} />
-              <ChangeData type="text" field={"address"} data={"Address"} />
-              <ChangeData type="text" field={"email"} data={"Email"} />
-              <ChangeData type="text" field={"phone"} data={"Phone"} />
-              <ChangeData type="date" field={"birthdate"} data={"Birthdate"} />
 
               <TouchableOpacity
                 onPress={handlePreferences}
                 style={styles.buttonContainer}
               >
-                <Text style={styles.logoText}>Preferencias</Text>
+                <Text style={styles.logoText}>Preferences</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleLogout}
                 style={styles.buttonContainer}
               >
-                <Text style={styles.logoText}>Cerrar sesion</Text>
+                <Text style={styles.logoText}>Log Out</Text>
               </TouchableOpacity>
             </AppScrollView>
           </Formik>

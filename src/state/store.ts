@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./user";
-import selectedPlanReducer from "./selectedPlan";
-import plansReducer from "./plans";
+import selectedEventReducer from "./selectedEvent";
+import eventsReducer from "./events";
 import contactsReducer from "./contacts";
 import selectedContactReducer from "./selectedContact";
 import historyReducer from "./history";
@@ -9,8 +9,8 @@ import commonReducer from "./common";
 
 export interface RootState {
   user: ReturnType<typeof userReducer>;
-  selectedPlan: ReturnType<typeof selectedPlanReducer>;
-  plans: ReturnType<typeof plansReducer>;
+  selectedEvent: ReturnType<typeof selectedEventReducer>;
+  events: ReturnType<typeof eventsReducer>;
   contacts: ReturnType<typeof contactsReducer>;
   selectedContact: ReturnType<typeof selectedContactReducer>;
   history: ReturnType<typeof historyReducer>;
@@ -19,8 +19,8 @@ export interface RootState {
 
 const reducers = combineReducers({
   user: userReducer,
-  plans: plansReducer,
-  selectedPlan: selectedPlanReducer,
+  events: eventsReducer,
+  selectedEvent: selectedEventReducer,
   contacts: contactsReducer,
   selectedContact: selectedContactReducer,
   history: historyReducer,

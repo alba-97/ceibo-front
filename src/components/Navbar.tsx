@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 export const Navbar = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>El club del plan</Text>
+      <Text style={styles.title}>The Event Network</Text>
     </View>
   );
 };

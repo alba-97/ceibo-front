@@ -17,10 +17,6 @@ export const styles = StyleSheet.create({
     width: 120,
     height: 20,
   },
-  logoNoPlanes: {
-    width: 198,
-    height: 62,
-  },
   logoMisPPasados: {
     width: 160,
     height: 22,

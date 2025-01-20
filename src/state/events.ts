@@ -3,19 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: EventResponse[] = [];
 
-const plansSlice = createSlice({
-  name: "plans",
+const eventsSlice = createSlice({
+  name: "events",
   initialState,
   reducers: {
-    setPlans: (_, action) => {
+    setEvents: (_, action) => {
       return action.payload;
     },
-    removePlan: (state, action) => {
+    removeEvent: (state, action) => {
       let newState = [...state];
       newState = newState.filter((item) => item._id !== action.payload);
       return newState;
     },
-    addPlan: (state, action) => {
+    addEvent: (state, action) => {
       let newState = [...state];
       newState = newState.concat([action.payload]);
       return newState;
@@ -23,5 +23,5 @@ const plansSlice = createSlice({
   },
 });
 
-export const { setPlans, removePlan, addPlan } = plansSlice.actions;
-export default plansSlice.reducer;
+export const { setEvents, removeEvent, addEvent } = eventsSlice.actions;
+export default eventsSlice.reducer;

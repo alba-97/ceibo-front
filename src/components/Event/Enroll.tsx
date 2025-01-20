@@ -7,24 +7,24 @@ import discardUser from "../../api/discardUser";
 import fecha from "../../assets/fecha.png";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
-import { removeUserPlan } from "@/state/user";
+import { removeUserEvent } from "@/state/user";
 import handleError from "@/utils/handleError";
 import formatDate from "@/utils/formatDate";
 
-interface IPlanEnrollProps {
-  plan: EventResponse;
+interface IEventEnrollProps {
+  event: EventResponse;
   user: UserResponse;
 }
 
-const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
+const EventEnroll = ({ event, user }: IEventEnrollProps) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleEnroll = async () => {
-    if (!plan._id) return;
+    if (!event._id) return;
     setLoading(true);
     try {
-      await enrollUser(plan._id);
+      await enrollUser(event._id);
     } catch (err) {
       handleError(err);
     }
@@ -32,11 +32,11 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
   };
 
   const handleStopParticipating = async () => {
-    if (!plan._id) return;
+    if (!event._id) return;
     setLoading(true);
     try {
-      await discardUser(plan._id);
-      dispatch(removeUserPlan(plan._id));
+      await discardUser(event._id);
+      dispatch(removeUserEvent(event._id));
     } catch (err) {
       handleError(err);
     }
@@ -47,12 +47,12 @@ const PlanEnroll = ({ plan, user }: IPlanEnrollProps) => {
     <View style={styles.container}>
       <View style={styles.date}>
         <Image style={styles.dateLogo} source={fecha} />
-        <Text style={styles.text}>{formatDate(plan.start_date)}</Text>
+        <Text style={styles.text}>{formatDate(event.start_date)}</Text>
       </View>
-      {user._id && plan._id && (
+      {user._id && event._id && (
         <View style={styles.buttonContainer}>
-          {!user.plans?.some(
-            (userPlan: EventResponse) => userPlan._id === plan._id
+          {!user.events?.some(
+            (userEvent: EventResponse) => userEvent._id === event._id
           ) ? (
             <View>
               {!loading ? (
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlanEnroll;
+export default EventEnroll;

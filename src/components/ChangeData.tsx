@@ -18,21 +18,22 @@ import { updateUser } from "@/state/user";
 import { toast } from "react-toastify";
 
 interface IChangeData {
-  data: string;
+  placeholder: string;
   field: string;
-  type: string;
+  type?: string;
 }
 
-export const ChangeData = ({ data, field, type }: IChangeData) => {
+export const ChangeData = ({
+  placeholder,
+  field,
+  type = "text",
+}: IChangeData) => {
   const [change, setChange] = useState<boolean>(false);
   const { handleChange, handleBlur, values, errors } =
     useFormikContext<UserForm>();
   const dispatch = useDispatch();
 
-  const _value = values[field as keyof UserForm];
-  let value = "";
-  if (typeof _value === "number") value = `${_value}`;
-  else if (typeof _value === "string") value = _value;
+  const value = values[field as keyof UserForm];
 
   const handleEdit = async () => {
     try {
@@ -44,6 +45,7 @@ export const ChangeData = ({ data, field, type }: IChangeData) => {
 
       await editUser({ [field]: value });
       dispatch(updateUser({ [field]: value }));
+
       setChange(!change);
     } catch (err) {
       handleError(err);
@@ -51,46 +53,42 @@ export const ChangeData = ({ data, field, type }: IChangeData) => {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.data}>{data}:</Text>
-        </View>
-        <>
-          {type === "date" ? (
-            <>
-              {change ? (
-                <DatetimePicker field={field} dateOnly />
-              ) : (
-                <Text style={styles.text}>{getDateOnly(value)}</Text>
-              )}
-            </>
-          ) : (
-            <>
-              {change ? (
-                <TextInput
-                  onChangeText={handleChange(field)}
-                  onBlur={handleBlur(field)}
-                  value={value}
-                  style={styles.input}
-                />
-              ) : (
-                <Text style={styles.text}>
-                  {!!value ? value : "(Not specified)"}
-                </Text>
-              )}
-            </>
-          )}
-        </>
-        <TouchableOpacity onPress={handleEdit}>
-          {!change ? (
-            <EvilIcons name="pencil" size={30} color="white" />
-          ) : (
-            <Feather name="check-square" size={24} color="white" />
-          )}
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.data}>{placeholder}:</Text>
       </View>
-    </>
+      {type === "date" ? (
+        <View>
+          {change ? (
+            <DatetimePicker field={field} dateOnly />
+          ) : (
+            <Text style={styles.text}>{getDateOnly(value)}</Text>
+          )}
+        </View>
+      ) : (
+        <View>
+          {change ? (
+            <TextInput
+              onChangeText={handleChange(field)}
+              onBlur={handleBlur(field)}
+              value={value}
+              style={styles.input}
+            />
+          ) : (
+            <Text style={styles.text}>
+              {!!value ? value : "(Not specified)"}
+            </Text>
+          )}
+        </View>
+      )}
+      <TouchableOpacity onPress={handleEdit}>
+        {!change ? (
+          <EvilIcons name="pencil" size={30} color="white" />
+        ) : (
+          <Feather name="check-square" size={24} color="white" />
+        )}
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -116,7 +114,12 @@ const styles = StyleSheet.create({
   input: {
     color: "#FFF",
     fontWeight: "bold",
-    width: "25%",
     textAlign: "center",
+    backgroundColor: "#22001b",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
 });

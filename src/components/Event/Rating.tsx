@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
 import rateEvent from "@/api/rateEvent";
 import { View, Text } from "react-native";
-import { styles } from "@/styles/PlanDetails";
+import { styles } from "@/styles/EventDetails";
 import EventResponse from "@/interfaces/responses/Event";
 import getRating from "@/api/getRating";
 import handleError from "@/utils/handleError";
 import { toast } from "react-toastify";
 
 interface IRatingProps {
-  plan: EventResponse;
+  event: EventResponse;
 }
 
-const Rating = ({ plan }: IRatingProps) => {
+const Rating = ({ event }: IRatingProps) => {
   const [rating, setRating] = useState<number>();
 
   const fetchRating = async () => {
     try {
-      const { rating } = await getRating(plan._id);
+      const { rating } = await getRating(event._id);
       setRating(rating);
       return rating;
     } catch (err) {
@@ -30,11 +30,11 @@ const Rating = ({ plan }: IRatingProps) => {
   }, []);
 
   const handleRating = async (rating: number) => {
-    if (!plan._id) return;
+    if (!event._id) return;
     const userRating = await fetchRating();
     if (!userRating) return;
     try {
-      await rateEvent(rating, plan._id);
+      await rateEvent(rating, event._id);
       setRating(rating);
       toast.success("Event rated successfully");
     } catch (err) {

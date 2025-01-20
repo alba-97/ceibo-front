@@ -5,11 +5,11 @@ import { StyleSheet } from "react-native";
 import { useState } from "react";
 
 interface ISwiperProps {
-  plans: EventResponse[];
-  onPress: (plan: EventResponse) => void;
+  events: EventResponse[];
+  onPress: (event: EventResponse) => void;
 }
 
-export function SwiperComponent({ plans, onPress }: ISwiperProps) {
+export function SwiperComponent({ events, onPress }: ISwiperProps) {
   const [isStill, setIsStill] = useState(false);
 
   return (
@@ -18,10 +18,10 @@ export function SwiperComponent({ plans, onPress }: ISwiperProps) {
       horizontal={true}
       setIsStill={setIsStill}
     >
-      {plans.map((item: EventResponse) => {
+      {events.map((item: EventResponse) => {
         return (
           <ImageContainer
-            plan={item}
+            event={item}
             onPress={() => {
               isStill && onPress(item);
             }}
@@ -34,10 +34,8 @@ export function SwiperComponent({ plans, onPress }: ISwiperProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 3,
-  },
   scrollView: {
+    flex: 1,
     width: "100%",
   },
 });

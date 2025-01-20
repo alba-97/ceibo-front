@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import MultipleDropdown from "../MultipleDropdown";
 import RadioButton from "../RadioButton";
-import { styles } from "../../styles/PlanDetails";
+import { styles } from "../../styles/EventDetails";
 import GenericButton from "../GenericButton";
 import getUserFriends from "../../api/getUserFriends";
 import EventResponse from "@/interfaces/responses/Event";
@@ -15,8 +15,8 @@ import handleError from "@/utils/handleError";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
 import { toast } from "react-toastify";
 
-interface IPlanInviteProps {
-  plan: EventResponse;
+interface IEventInviteProps {
+  event: EventResponse;
 }
 
 const sendMethods: IOption[] = [
@@ -24,7 +24,7 @@ const sendMethods: IOption[] = [
   { label: "WhatsApp", value: "phone" },
 ];
 
-const PlanInvite = ({ plan }: IPlanInviteProps) => {
+const EventInvite = ({ event }: IEventInviteProps) => {
   const [sendMethod, setSendMethod] = useState<IOption>(sendMethods[0]);
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [friendsDropdown, setFriendsDropdown] = useState<IOption[]>([]);
@@ -43,7 +43,7 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
   const handleInvite = async () => {
     try {
       const users = fromOptionstoStringArray(invited);
-      const form = fromResponseToForm(plan);
+      const form = fromResponseToForm(event);
       await inviteUsers(users, form, sendMethod.value);
       toast.success("Invites sent successfully");
     } catch (err) {
@@ -99,4 +99,4 @@ const PlanInvite = ({ plan }: IPlanInviteProps) => {
   );
 };
 
-export default PlanInvite;
+export default EventInvite;

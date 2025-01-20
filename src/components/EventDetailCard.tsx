@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
-import getUserPlans from "../api/getUserPlans";
-import { styles } from "../styles/PlanDetails";
+import getUserEvents from "../api/getUserEvents";
+import { styles } from "../styles/EventDetails";
 import { useSelector, useDispatch } from "react-redux";
-import { addUserPlan, setUserPlans } from "../state/user";
-import Comments from "./Plan/Comments";
+import { addUserEvent, setUserEvents } from "../state/user";
+import Comments from "./Event/Comments";
 import GenericButton from "./GenericButton";
 import MultipleDropdown from "./MultipleDropdown";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -17,7 +17,7 @@ import organizador from "../assets/organizador.png";
 import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
-import PlanEnded from "./Plan/Ended";
+import EventEnded from "./Event/Ended";
 import discardUser from "@/api/discardUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import getEditableEvents from "@/api/getEditableEvents";
@@ -26,9 +26,9 @@ import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions"
 import handleError from "@/utils/handleError";
 import formatDate from "@/utils/formatDate";
 
-export const PlanDetailCard = () => {
+export const EventDetailCard = () => {
   const dispatch = useDispatch();
-  const plan = useSelector((state: RootState) => state.selectedPlan);
+  const event = useSelector((state: RootState) => state.selectedEvent);
   const user = useSelector((state: RootState) => state.user);
 
   const sendMethods = [
@@ -53,7 +53,7 @@ export const PlanDetailCard = () => {
       const friendsOptions = fromUserResponsesToOptions(friends);
       setFriends(friendsOptions);
 
-      const canEdit = await getEditableEvents(plan._id);
+      const canEdit = await getEditableEvents(event._id);
       setCanEdit(canEdit);
     } catch (err) {
       handleError(err);
@@ -64,15 +64,15 @@ export const PlanDetailCard = () => {
     fetchInfo();
   }, []);
 
-  const formattingDate = formatDate(plan.start_date);
+  const formattingDate = formatDate(event.start_date);
 
   const handleEnroll = async () => {
     setLoading(true);
     try {
-      const data = await enrollUser(plan._id);
-      dispatch(addUserPlan(data));
-      const newPlans = await getUserPlans();
-      dispatch(setUserPlans(newPlans));
+      const data = await enrollUser(event._id);
+      dispatch(addUserEvent(data));
+      const { data: events } = await getUserEvents();
+      dispatch(setUserEvents(events));
     } catch (err) {
       handleError(err);
     }
@@ -93,13 +93,15 @@ export const PlanDetailCard = () => {
   return (
     <View style={styles.detailsContainer}>
       <View>
-        {plan.ended ? (
-          <PlanEnded plan={plan} user={user} />
+        {event.ended ? (
+          <EventEnded event={event} user={user} />
         ) : (
           <View>
             {user._id && (
               <View style={styles.buttonContainer}>
-                {!user.plans?.some((userPlan) => userPlan._id === plan._id) ? (
+                {!user.events?.some(
+                  (userEvent) => userEvent._id === event._id
+                ) ? (
                   <>
                     {!loading ? (
                       <GenericButton
@@ -117,7 +119,7 @@ export const PlanDetailCard = () => {
                       <GenericButton
                         text={"x"}
                         buttonStyle={styles.btn}
-                        onPress={() => handleStopParticipating(plan._id)}
+                        onPress={() => handleStopParticipating(event._id)}
                       />
                     ) : (
                       <GenericButton text={"..."} buttonStyle={styles.btn} />
@@ -132,7 +134,7 @@ export const PlanDetailCard = () => {
 
       <View style={styles.pContainer}>
         <Text style={styles.p}>
-          {plan?.createdBy?.rating?.toFixed(2)}/5.00
+          {event?.createdBy?.rating?.toFixed(2)}/5.00
           <Entypo name="star" size={20} color={"#fdd835"} />
         </Text>
       </View>
@@ -144,17 +146,17 @@ export const PlanDetailCard = () => {
       <View style={styles.orgCont}>
         <Image style={styles.logo5} source={organizador} />
       </View>
-      <Text style={styles.text6}>{plan?.createdBy?.username}</Text>
+      <Text style={styles.text6}>{event?.createdBy?.username}</Text>
       <Image style={styles.logo3} source={descripcion} />
-      <Text style={styles.text3}>{plan.description}</Text>
-      {user._id && <Comments plan={plan} />}
+      <Text style={styles.text3}>{event.description}</Text>
+      {user._id && <Comments event={event} />}
       {canEdit && user._id ? (
         <View>
           <View style={styles.input}>
             <GenericButton
               text={"Editar evento"}
               onPress={() => {
-                navigation.navigate("EditPlan");
+                navigation.navigate("EditEvent");
               }}
             />
           </View>

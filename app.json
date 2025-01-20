@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "El club del plan",
+    "name": "The Event Network",
     "slug": "ceiboFront",
-    "scheme": "clubdelplan",
+    "scheme": "theeventnetwork",
     "icon": "./assets/appicon.png",
     "newArchEnabled": true,
     "android": {
@@ -12,15 +12,12 @@
           "autoVerify": true,
           "data": [
             {
-              "scheme": "clubdelplan",
+              "scheme": "theeventnetwork",
               "host": "*",
               "pathPrefix": "/"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "package": "com.auth.ceiboFront",
@@ -33,9 +30,7 @@
       "bundler": "metro"
     },
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-image-picker",
@@ -46,9 +41,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/melts.ttf"
-          ]
+          "fonts": ["./assets/fonts/melts.ttf"]
         }
       ],
       "expo-router"

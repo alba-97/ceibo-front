@@ -9,24 +9,24 @@ import EventResponse from "@/interfaces/responses/Event";
 import { styles } from "@/styles/genericInputStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
-import { removePlanFromUser } from "@/state/user";
-import { removePlan } from "@/state/plans";
+import { removeEventFromUser } from "@/state/user";
+import { removeEvent } from "@/state/events";
 
-interface IPlanEditProps {
-  plan: EventResponse;
+interface IEventEditProps {
+  event: EventResponse;
 }
 
-const PlanEdit = ({ plan }: IPlanEditProps) => {
+const EventEdit = ({ event }: IEventEditProps) => {
   const [canEdit, setCanEdit] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
 
   const handleDelete = async () => {
-    if (!plan._id) return;
+    if (!event._id) return;
     try {
-      await deleteEvent(plan._id);
-      dispatch(removePlanFromUser(plan._id));
-      dispatch(removePlan(plan._id));
+      await deleteEvent(event._id);
+      dispatch(removeEventFromUser(event._id));
+      dispatch(removeEvent(event._id));
       navigation.navigate("HomeScreen");
     } catch (err) {
       handleError(err);
@@ -34,9 +34,9 @@ const PlanEdit = ({ plan }: IPlanEditProps) => {
   };
 
   const fetchInfo = async () => {
-    if (!plan._id) return;
+    if (!event._id) return;
     try {
-      const canEdit = await getEditableEvents(plan._id);
+      const canEdit = await getEditableEvents(event._id);
       setCanEdit(canEdit);
     } catch (err) {
       handleError(err);
@@ -55,7 +55,7 @@ const PlanEdit = ({ plan }: IPlanEditProps) => {
             <GenericButton
               text={"Editar evento"}
               onPress={() => {
-                navigation.navigate("EditPlan");
+                navigation.navigate("EditEvent");
               }}
             />
           </View>
@@ -68,4 +68,4 @@ const PlanEdit = ({ plan }: IPlanEditProps) => {
   );
 };
 
-export default PlanEdit;
+export default EventEdit;

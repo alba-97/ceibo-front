@@ -1,5 +1,5 @@
-import getPlan from "@/api/getPlan";
-import { setAuthor, setSelectedPlan } from "@/state/selectedPlan";
+import getEvent from "@/api/getEvent";
+import { setAuthor, setSelectedEvent } from "@/state/selectedEvent";
 import handleError from "@/utils/handleError";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -32,10 +32,10 @@ const BottomNavbar = () => {
     if (!(scheme === "clubdelplan:" && route)) return;
 
     try {
-      const updatedPlan = await getPlan(route);
-      dispatch(setSelectedPlan(updatedPlan));
-      dispatch(setAuthor(updatedPlan.createdBy));
-      navigation.navigate("PlanDetail");
+      const updatedEvent = await getEvent(route);
+      dispatch(setSelectedEvent(updatedEvent));
+      dispatch(setAuthor(updatedEvent.createdBy));
+      navigation.navigate("EventDetail");
     } catch (err) {
       handleError(err);
     }
@@ -78,8 +78,8 @@ const BottomNavbar = () => {
         }}
       />
       <Screen
-        name="AddPlan"
-        component={() => <ScreenStack name={"AddPlanScreen1"} />}
+        name="AddEvent"
+        component={() => <ScreenStack name={"AddEventScreen1"} />}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (

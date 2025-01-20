@@ -110,16 +110,6 @@ export const styles = StyleSheet.create({
     width: 140,
     height: 35,
   },
-  preferenciasContainer: {
-    paddingTop: 15,
-    paddingBottom: 5,
-    marginBottom: 10,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 10,
-    width: "75%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-  },
   logout1Container: {
     textAlign: "center",
     alignItems: "center",

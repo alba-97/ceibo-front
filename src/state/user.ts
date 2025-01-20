@@ -1,7 +1,13 @@
+import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: UserResponse = {
+interface UserState extends UserResponse {
+  recommendedEvents: EventResponse[];
+  createdEvents: EventResponse[];
+}
+
+const initialState: UserState = {
   _id: "",
   email: "",
   username: "",
@@ -11,8 +17,9 @@ const initialState: UserResponse = {
   birthdate: "",
   phone: "",
   profile_img: "",
-  plans: [],
-  history: [],
+  events: [],
+  createdEvents: [],
+  recommendedEvents: [],
   preferences: [],
 };
 
@@ -26,26 +33,31 @@ const userSlice = createSlice({
       return newState;
     },
     clearUser: () => initialState,
-    setUserPlans: (state, action) => {
+    setUserEvents: (state, action) => {
       let newState = { ...state };
-      newState.plans = action.payload;
+      newState.events = action.payload;
       return newState;
     },
-    addUserPlan: (state, action) => {
+    setCreatedEvents: (state, action) => {
       let newState = { ...state };
-      newState.plans = newState.plans.concat([action.payload]);
+      newState.createdEvents = action.payload;
       return newState;
     },
-    removeUserPlan: (state, action) => {
+    setRecommendedEvents: (state, action) => {
       let newState = { ...state };
-      newState.plans = newState.plans.filter(
+      newState.recommendedEvents = action.payload;
+      return newState;
+    },
+    addUserEvent: (state, action) => {
+      let newState = { ...state };
+      newState.events = newState.events.concat([action.payload]);
+      return newState;
+    },
+    removeUserEvent: (state, action) => {
+      let newState = { ...state };
+      newState.events = newState.events.filter(
         (item) => item._id !== action.payload
       );
-      return newState;
-    },
-    setPlanHistory: (state, action) => {
-      let newState = { ...state };
-      newState.history = action.payload;
       return newState;
     },
     setPreferences: (state, action) => {
@@ -53,12 +65,12 @@ const userSlice = createSlice({
       newState.preferences = action.payload;
       return newState;
     },
-    removePlanFromUser: (state, action) => {
+    removeEventFromUser: (state, action) => {
       let newState = { ...state };
-      newState.plans = newState.plans.filter(
+      newState.events = newState.events.filter(
         (item) => item._id !== action.payload
       );
-      newState.history = newState.history.filter(
+      newState.createdEvents = newState.createdEvents.filter(
         (item) => item._id !== action.payload
       );
       return newState;
@@ -70,11 +82,12 @@ export const {
   setUser,
   updateUser,
   clearUser,
-  setUserPlans,
-  addUserPlan,
-  removeUserPlan,
-  setPlanHistory,
+  setCreatedEvents,
+  setRecommendedEvents,
+  setUserEvents,
+  addUserEvent,
+  removeUserEvent,
   setPreferences,
-  removePlanFromUser,
+  removeEventFromUser,
 } = userSlice.actions;
 export default userSlice.reducer;
