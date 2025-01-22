@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import { ScrollView, View, TouchableOpacity, Image, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
-import { ProfilePicture } from "../components/ProfilePicture";
+import ProfilePicture from "../components/ProfilePicture";
 import GenericButton from "../components/GenericButton";
-import { styles } from "../styles/editEventStyles";
 import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
 import * as ImagePicker from "expo-image-picker";
@@ -223,3 +229,30 @@ export default function EditEventScreen() {
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    width: 250,
+    height: 110,
+  },
+  categoryContainer: {
+    alignItems: "center",
+    marginTop: 15,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: "rgba(225, 200, 200, 0.3)",
+    borderColor: "rgba(10, 7, 7, 0.2)",
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 18,
+  },
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+  },
+});

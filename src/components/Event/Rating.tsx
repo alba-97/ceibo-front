@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
 import rateEvent from "@/api/rateEvent";
-import { View, Text } from "react-native";
-import { styles } from "@/styles/EventDetails";
+import { View, Text, StyleSheet } from "react-native";
 import EventResponse from "@/interfaces/responses/Event";
 import getRating from "@/api/getRating";
 import handleError from "@/utils/handleError";
@@ -12,7 +11,7 @@ interface IRatingProps {
   event: EventResponse;
 }
 
-const Rating = ({ event }: IRatingProps) => {
+export default ({ event }: IRatingProps) => {
   const [rating, setRating] = useState<number>();
 
   const fetchRating = async () => {
@@ -52,4 +51,14 @@ const Rating = ({ event }: IRatingProps) => {
   );
 };
 
-export default Rating;
+const styles = StyleSheet.create({
+  input: {
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  text: {
+    fontWeight: "300",
+    fontSize: 18,
+    color: "#fff",
+  },
+});

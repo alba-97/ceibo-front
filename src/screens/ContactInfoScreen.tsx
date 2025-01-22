@@ -1,17 +1,18 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import GenericButton from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
 import { useSelector } from "react-redux";
-import { ProfilePicture } from "../components/ProfilePicture";
+import ProfilePicture from "../components/ProfilePicture";
 import { ProfileText } from "../components/ProfileText";
-import { styles } from "../styles/ProfileTextStyles";
 import addFriend from "../api/addFriend";
 import removeFriend from "../api/removeFriend";
 import getUserFriends from "../api/getUserFriends";
 import { RootState } from "@/state/store";
 import handleError from "@/utils/handleError";
+
+const windowWidth = Dimensions.get("window").width;
 
 export default function ContactInfoScreen() {
   const contact = useSelector((state: RootState) => state.selectedContact);
@@ -130,3 +131,22 @@ export default function ContactInfoScreen() {
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    borderStyle: "solid",
+    width: windowWidth,
+    justifyContent: "center",
+  },
+  text: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 20,
+    textAlign: "center",
+  },
+});

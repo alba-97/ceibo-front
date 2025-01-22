@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { SingleContact } from "../components/SingleContact";
+import SingleContact from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
 import getAllUsers from "../api/getAllUsers";
 import { RootState } from "@/state/store";

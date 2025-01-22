@@ -13,7 +13,7 @@ import GenericInput from "../components/GenericInput";
 import { AntDesign } from "@expo/vector-icons";
 import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
-import { SingleContact } from "../components/SingleContact";
+import SingleContact from "../components/SingleContact";
 import getUserFriends from "../api/getUserFriends";
 import { setContacts } from "../state/contacts";
 import { RootState } from "@/state/store";

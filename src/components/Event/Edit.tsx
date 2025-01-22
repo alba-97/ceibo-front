@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import GenericButton from "@/components/GenericButton";
 import getEditableEvents from "@/api/getEditableEvents";
@@ -6,7 +6,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import deleteEvent from "@/api/deleteEvent";
 import { useDispatch } from "react-redux";
 import EventResponse from "@/interfaces/responses/Event";
-import { styles } from "@/styles/genericInputStyles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import { removeEventFromUser } from "@/state/user";
@@ -16,7 +15,7 @@ interface IEventEditProps {
   event: EventResponse;
 }
 
-const EventEdit = ({ event }: IEventEditProps) => {
+export default ({ event }: IEventEditProps) => {
   const [canEdit, setCanEdit] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
@@ -68,4 +67,16 @@ const EventEdit = ({ event }: IEventEditProps) => {
   );
 };
 
-export default EventEdit;
+const styles = StyleSheet.create({
+  input: {
+    fontSize: 16,
+    color: "white",
+    backgroundColor: "#22001b",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    width: "80%",
+  },
+});

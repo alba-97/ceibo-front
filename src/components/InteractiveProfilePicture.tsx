@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import GenericButton from "./GenericButton";
-import { ProfilePicture } from "./ProfilePicture";
+import ProfilePicture from "./ProfilePicture";
 
 interface IInteractiveProfilePictureProps {
   url: string;

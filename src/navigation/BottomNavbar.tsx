@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import * as Linking from "expo-linking";
 import { useDispatch } from "react-redux";
-import { bottomNavigationBarStyle } from "@/styles/navigationBarStyles";
 import {
   Entypo,
   FontAwesome,
@@ -15,10 +14,10 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import { Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import ScreenStack from "./ScreenStack";
 
-const BottomNavbar = () => {
+export default () => {
   const { Navigator, Screen } = createBottomTabNavigator();
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -56,7 +55,7 @@ const BottomNavbar = () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: bottomNavigationBarStyle.backgroundColor,
+        tabBarStyle: styles.backgroundColor,
         tabBarHideOnKeyboard: true,
         tabBarIconStyle: { alignItems: "center", justifyContent: "center" },
       }}
@@ -113,4 +112,6 @@ const BottomNavbar = () => {
   );
 };
 
-export default BottomNavbar;
+const styles = StyleSheet.create({
+  backgroundColor: { backgroundColor: "black" },
+});
