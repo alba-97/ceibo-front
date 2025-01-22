@@ -5,7 +5,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import getCategories from "../api/getCategories";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
-import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import fromResponsesToOptions from "@/utils/category/fromResponsesToOptions";
 import handleError from "@/utils/handleError";
 import createEvent from "@/api/createEvent";
 import { Formik } from "formik";
@@ -50,7 +50,7 @@ export default function AddEventScreen2({
   const fetchCategories = async () => {
     try {
       const { data } = await getCategories();
-      const categories = fromCategoryResponsesToOptions(data);
+      const categories = fromResponsesToOptions(data);
       setCategories(categories);
     } catch (err) {
       handleError(err);

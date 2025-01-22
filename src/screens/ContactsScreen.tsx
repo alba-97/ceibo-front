@@ -1,23 +1,27 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { FloatingButton } from "../components/FloatingButton";
 import GenericInput from "../components/GenericInput";
-import { styles } from "../styles/stylesContact";
 import { AntDesign } from "@expo/vector-icons";
 import { Navbar } from "../components/Navbar";
 import { setSelectedContact } from "../state/selectedContact";
 import { SingleContact } from "../components/SingleContact";
 import getUserFriends from "../api/getUserFriends";
 import { setContacts } from "../state/contacts";
-import amigos from "../assets/amigos.png";
 import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import GenericButton from "@/components/GenericButton";
+import AppGradient from "@/components/AppGradient";
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
@@ -73,16 +77,11 @@ export default function ContactsScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.containerr}
-    >
+    <AppGradient style={styles.container}>
       <Navbar />
       {user?.username ? (
         <View style={styles.container}>
-          <View style={styles.container3}>
+          <View style={styles.container2}>
             <GenericInput
               value={query}
               onChangeText={handleQueryChange}
@@ -98,14 +97,12 @@ export default function ContactsScreen() {
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.logoCont}>
-            <Image style={styles.logo1} source={amigos} />
-          </View>
+          <Text style={styles.logoText}>Amigos</Text>
           <ScrollView>
             <View>
               {filteredContacts?.map((contact, i) => (
                 <Text
-                  style={styles.text2}
+                  style={styles.text}
                   key={i}
                   onPress={() => handleContactPress(contact)}
                 >
@@ -136,6 +133,57 @@ export default function ContactsScreen() {
           </View>
         </View>
       )}
-    </LinearGradient>
+    </AppGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+  },
+  container2: {
+    paddingTop: "5%",
+    paddingBottom: "4%",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  text: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+    borderBottomWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
+  },
+  loginText: {
+    paddingBottom: "1%",
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: "5%",
+    textAlign: "center",
+  },
+  input: {
+    marginLeft: "5%",
+  },
+  reload: {
+    marginLeft: "15%",
+  },
+});

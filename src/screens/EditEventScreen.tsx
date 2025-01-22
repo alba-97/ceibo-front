@@ -21,7 +21,7 @@ import { removeEvent } from "../state/events";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
-import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import fromResponsesToOptions from "@/utils/category/fromResponsesToOptions";
 import handleError from "@/utils/handleError";
 import { setRefetch } from "@/state/common";
 
@@ -59,7 +59,7 @@ export default function EditEventScreen() {
   };
   const fetchCategories = async () => {
     const { data } = await getCategories();
-    const categories = fromCategoryResponsesToOptions(data);
+    const categories = fromResponsesToOptions(data);
     setCategories(categories);
   };
 
@@ -127,17 +127,11 @@ export default function EditEventScreen() {
         <ScrollView>
           <View style={styles.container}>
             <ProfilePicture imageSource={"profile_img"} />
-            <ChangeData field="title" placeholder="Título" />
-            <ChangeData field="description" placeholder="Descripción" />
-            <ChangeData field="location" placeholder="Ubicación" />
-            <ChangeData
-              field="start_date"
-              placeholder="Fecha y hora de inicio"
-            />
-            <ChangeData
-              field="start_date"
-              placeholder="Fecha y hora de finalización"
-            />
+            <ChangeData field="title" placeholder="Title" />
+            <ChangeData field="description" placeholder="Description" />
+            <ChangeData field="location" placeholder="Location" />
+            <ChangeData field="start_date" placeholder="Start date and time" />
+            <ChangeData field="start_date" placeholder="End date and time" />
             <ChangeData field="min_age" placeholder="Min. age" />
             <ChangeData field="max_age" placeholder="Max. age" />
             <ChangeData field="min_to_pay" placeholder="Min. to pay" />

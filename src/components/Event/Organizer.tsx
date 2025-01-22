@@ -1,6 +1,5 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import organizador from "../../assets/organizador.png";
 import EventResponse from "@/interfaces/responses/Event";
 
 interface IEventOrganizerProps {
@@ -12,7 +11,7 @@ const EventOrganizer = ({ event, rating }: IEventOrganizerProps) => {
   return (
     <View>
       <View style={styles.container}>
-        <Image style={styles.organizerLogo} source={organizador} />
+        <Text style={styles.logoText}>Organizer</Text>
       </View>
       <View style={styles.container}>
         <Text style={styles.p}>{event?.createdBy?.username}</Text>
@@ -33,15 +32,20 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
   },
-  organizerLogo: {
-    width: 140,
-    height: 30,
-    marginTop: 10,
-  },
   p: {
     fontSize: 18,
     color: "#fff",
     paddingRight: 40,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
   },
 });
 

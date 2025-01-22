@@ -1,8 +1,8 @@
-import fromCategoryResponseToOption from "./fromCategoryResponseToOption";
 import CategoryResponse from "@/interfaces/responses/Category";
+import fromResponseToOption from "./fromResponseToOption";
 
 export default (categories: CategoryResponse[]) => {
   return categories.map((category: CategoryResponse) =>
-    fromCategoryResponseToOption(category)
+    fromResponseToOption(category)
   );
 };

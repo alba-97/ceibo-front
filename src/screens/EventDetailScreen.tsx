@@ -6,7 +6,6 @@ import EventEnded from "../components/Event/Ended";
 import EventInvite from "../components/Event/Invite";
 import EventEnroll from "../components/Event/Enroll";
 import EventEdit from "../components/Event/Edit";
-import descripcion from "../assets/descripcion.png";
 import { Navbar } from "../components/Navbar";
 import { RootState } from "@/state/store";
 import AppScrollView from "@/components/AppScrollView";
@@ -47,7 +46,7 @@ export default function EventDetailScreen() {
 
           <EventOrganizer event={event} rating={rating} />
 
-          <Image style={styles.descriptionLogo} source={descripcion} />
+          <Text style={styles.logoText}>Description</Text>
           <Text style={styles.description}>{event.description}</Text>
           {user._id && (
             <View>
@@ -92,5 +91,15 @@ const styles = StyleSheet.create({
   eventImage: {
     width: "100%",
     height: 200,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
   },
 });

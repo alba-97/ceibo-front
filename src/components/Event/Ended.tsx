@@ -20,10 +20,8 @@ const EventEnded = ({ event, user }: IEventEndedProps) => {
         El evento finalizó el {formattingDate} a a las {time} hs.
       </Text>
 
-      {user._id &&
-        user.history &&
-        user.history.some((item) => item._id == event._id) &&
-        event.organizer?._id !== user._id &&
+      {user.events?.some((item) => item._id == event._id) &&
+        event.createdBy?._id !== user._id &&
         event.ended && <Rating event={event} />}
     </View>
   );

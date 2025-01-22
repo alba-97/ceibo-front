@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import GenericInput from "@/components/GenericInput";
 import { useDispatch } from "react-redux";
-import { styles } from "@/styles/EventDetails";
 import addComment from "@/api/addComment";
 import { setComments } from "@/state/selectedEvent";
 import { Feather } from "@expo/vector-icons";
-import comentarios from "@/assets/comentarios.png";
 import EventResponse from "@/interfaces/responses/Event";
 import handleError from "@/utils/handleError";
 
@@ -32,7 +30,7 @@ const Comments = ({ event }: ICommentsProps) => {
 
   return (
     <View>
-      <Image style={styles.logo4} source={comentarios} />
+      <Text style={styles.logoText}>Comments</Text>
       <View
         style={{
           height: 280,
@@ -46,7 +44,7 @@ const Comments = ({ event }: ICommentsProps) => {
           event.comments.map((item, index) => {
             if (index < page * 4 && index >= (page - 1) * 4)
               return (
-                <View style={styles.commentContainer} key={index}>
+                <View style={styles.comment} key={index}>
                   <Text style={styles.username}>{item.user.username}:</Text>
                   <Text style={styles.comment}>{item.text}</Text>
                 </View>
@@ -89,9 +87,9 @@ const Comments = ({ event }: ICommentsProps) => {
           ""
         )}
       </View>
-      <View style={styles.inputCont}>
+      <View style={styles.input}>
         <GenericInput
-          placeholder="agrega un comentario"
+          placeholder="Add comment"
           value={comment}
           onChangeText={setComment}
           customStyle={{
@@ -112,3 +110,39 @@ const Comments = ({ event }: ICommentsProps) => {
 };
 
 export default Comments;
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 140,
+    height: 25,
+    marginTop: 10,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
+  },
+  username: {
+    fontSize: 18,
+    color: "#fff",
+    paddingHorizontal: 10,
+  },
+  comment: {
+    fontSize: 14,
+    color: "#fff",
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  input: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: "5%",
+  },
+});

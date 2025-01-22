@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { View, Image, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import GenericButton from "../GenericButton";
 import enrollUser from "../../api/enrollUser";
 import { useDispatch } from "react-redux";
 import discardUser from "../../api/discardUser";
-import fecha from "../../assets/fecha.png";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import { removeUserEvent } from "@/state/user";
@@ -46,7 +45,7 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.date}>
-        <Image style={styles.dateLogo} source={fecha} />
+        <Text style={styles.logoText}>Date</Text>
         <Text style={styles.text}>{formatDate(event.start_date)}</Text>
       </View>
       {user._id && event._id && (
@@ -87,10 +86,6 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
 const styles = StyleSheet.create({
   container: { flexDirection: "row", gap: 100 },
   date: { flexDirection: "row" },
-  dateLogo: {
-    width: 80,
-    height: 20,
-  },
   text: {
     fontWeight: "300",
     fontSize: 18,
@@ -103,6 +98,16 @@ const styles = StyleSheet.create({
     width: 60,
     height: 45,
     borderRadius: 5,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
   },
 });
 

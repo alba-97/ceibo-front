@@ -1,5 +1,5 @@
-import IOption from "@/interfaces/Option";
+import IOptionSelect from "@/interfaces/OptionSelect";
 
-export default (options: IOption[]) => {
-  return options.map((option) => option.value);
+export default (options: IOptionSelect[]) => {
+  return options.map((option) => option.name);
 };

@@ -4,7 +4,6 @@ import { Navbar } from "@/components/Navbar";
 import { SwiperComponent } from "@/components/Swiper";
 import { MainEvent } from "@/components/MainEvent";
 import getAllEvents from "@/api/getAllEvents";
-import getFilteredEvents from "@/api/getFilteredEvents";
 import getUser from "@/api/getUser";
 import getEvent from "@/api/getEvent";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,6 +24,7 @@ import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import getCreatedEvents from "@/api/getCreatedEvents";
 import getUserEvents from "@/api/getUserEvents";
+import getRecommendedEvents from "@/api/getRecommendedEvents";
 
 export default function HomeScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -73,7 +73,7 @@ export default function HomeScreen() {
       dispatch(setCreatedEvents(pastEvents));
 
       if (userData.preferences[0]) {
-        const { data: recommendedEvents } = await getFilteredEvents();
+        const { data: recommendedEvents } = await getRecommendedEvents();
         dispatch(setRecommendedEvents(recommendedEvents));
       }
     } catch (err) {

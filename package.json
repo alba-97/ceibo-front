@@ -60,6 +60,7 @@
     "react-native-masked-text": "^1.13.0",
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-modal-selector": "^2.1.2",
+    "react-native-multiple-select": "^0.5.12",
     "react-native-neomorph-shadows": "^1.1.2",
     "react-native-screens": "~4.4.0",
     "react-native-select-dropdown-search": "^0.0.2",

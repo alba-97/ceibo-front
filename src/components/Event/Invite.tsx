@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MultipleDropdown from "../MultipleDropdown";
 import RadioButton from "../RadioButton";
-import { styles } from "../../styles/EventDetails";
 import GenericButton from "../GenericButton";
 import getUserFriends from "../../api/getUserFriends";
 import EventResponse from "@/interfaces/responses/Event";
@@ -14,6 +13,7 @@ import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
 import handleError from "@/utils/handleError";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
 import { toast } from "react-toastify";
+import IOptionSelect from "@/interfaces/OptionSelect";
 
 interface IEventInviteProps {
   event: EventResponse;
@@ -27,8 +27,8 @@ const sendMethods: IOption[] = [
 const EventInvite = ({ event }: IEventInviteProps) => {
   const [sendMethod, setSendMethod] = useState<IOption>(sendMethods[0]);
   const [users, setUsers] = useState<UserResponse[]>([]);
-  const [friendsDropdown, setFriendsDropdown] = useState<IOption[]>([]);
-  const [invited, setInvited] = useState<IOption[]>([]);
+  const [friendsDropdown, setFriendsDropdown] = useState<IOptionSelect[]>([]);
+  const [invited, setInvited] = useState<IOptionSelect[]>([]);
 
   const handleChange = (option: IOption) => {
     try {
@@ -70,17 +70,12 @@ const EventInvite = ({ event }: IEventInviteProps) => {
     <View style={styles.input}>
       {friendsDropdown[0] && (
         <MultipleDropdown
-          setSelected={(val) => setInvited(val)}
           data={friendsDropdown}
-          save="value"
-          onSelect={() => {}}
-          label="Invite friends"
+          selectedValues={invited}
+          onSelect={(selectedItems) => {
+            setInvited(selectedItems);
+          }}
           placeholder="Invite friends"
-          search={false}
-          textStyles={styles.item}
-          boxStyles={styles.dropdown}
-          dropdownStyles={styles.dropdown}
-          badgeStyles={styles.item}
         />
       )}
       <RadioButton
@@ -100,3 +95,10 @@ const EventInvite = ({ event }: IEventInviteProps) => {
 };
 
 export default EventInvite;
+
+const styles = StyleSheet.create({
+  input: {
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+});

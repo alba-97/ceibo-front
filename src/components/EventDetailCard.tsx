@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import getUserEvents from "../api/getUserEvents";
-import { styles } from "../styles/EventDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserEvent, setUserEvents } from "../state/user";
 import Comments from "./Event/Comments";
@@ -11,9 +10,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import RadioButton from "./RadioButton";
 import { Entypo } from "@expo/vector-icons";
 import getUserFriends from "../api/getUserFriends";
-import fecha from "../assets/fecha.png";
-import descripcion from "../assets/descripcion.png";
-import organizador from "../assets/organizador.png";
 import { RootState } from "@/state/store";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
@@ -25,6 +21,7 @@ import enrollUser from "@/api/enrollUser";
 import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
 import handleError from "@/utils/handleError";
 import formatDate from "@/utils/formatDate";
+import IOptionSelect from "@/interfaces/OptionSelect";
 
 export const EventDetailCard = () => {
   const dispatch = useDispatch();
@@ -38,10 +35,10 @@ export const EventDetailCard = () => {
   const [sendMethod] = useState<IOption>(sendMethods[0]);
 
   const [_, setUsers] = useState<UserResponse[]>([]);
-  const [friends, setFriends] = useState<IOption[]>([]);
+  const [friends, setFriends] = useState<IOptionSelect[]>([]);
+  const [invited, setInvited] = useState<IOptionSelect[]>([]);
   const [canEdit, setCanEdit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [invited, setInvited] = useState<IOption[]>();
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -91,7 +88,7 @@ export const EventDetailCard = () => {
   };
 
   return (
-    <View style={styles.detailsContainer}>
+    <View style={styles.container}>
       <View>
         {event.ended ? (
           <EventEnded event={event} user={user} />
@@ -132,23 +129,22 @@ export const EventDetailCard = () => {
         )}
       </View>
 
-      <View style={styles.pContainer}>
-        <Text style={styles.p}>
+      <View style={styles.ratingContainer}>
+        <Text style={styles.rating}>
           {event?.createdBy?.rating?.toFixed(2)}/5.00
           <Entypo name="star" size={20} color={"#fdd835"} />
         </Text>
       </View>
-      <View style={styles.date}>
-        <Image style={styles.logo} source={fecha} />
-        <Text style={styles.text2}>{formattingDate}</Text>
+      <View style={styles.dateContainer}>
+        <Text style={styles.logoText}>Date</Text>
+        <Text style={styles.date}>{formattingDate}</Text>
       </View>
 
-      <View style={styles.orgCont}>
-        <Image style={styles.logo5} source={organizador} />
-      </View>
-      <Text style={styles.text6}>{event?.createdBy?.username}</Text>
-      <Image style={styles.logo3} source={descripcion} />
-      <Text style={styles.text3}>{event.description}</Text>
+      <Text style={styles.logoText}>Organizer</Text>
+      <Text style={styles.username}>{event?.createdBy?.username}</Text>
+      <Text style={styles.logoText}>Description</Text>
+
+      <Text style={styles.description}>{event.description}</Text>
       {user._id && <Comments event={event} />}
       {canEdit && user._id ? (
         <View>
@@ -168,17 +164,12 @@ export const EventDetailCard = () => {
         <>
           <View style={styles.input}>
             <MultipleDropdown
-              setSelected={(val: IOption[]) => setInvited(val)}
               data={friends}
-              save="value"
-              onSelect={() => {}}
-              label="Invitar personas"
-              placeholder="Invitar personas"
-              search={false}
-              textStyles={styles.item}
-              boxStyles={styles.dropdown}
-              dropdownStyles={styles.dropdown}
-              badgeStyles={styles.item}
+              onSelect={(selectedItems) => {
+                setInvited(selectedItems);
+              }}
+              selectedValues={invited}
+              placeholder="Invite people"
             />
             <RadioButton
               options={sendMethods}
@@ -186,15 +177,68 @@ export const EventDetailCard = () => {
               defaultValue={sendMethod}
             />
           </View>
-          {invited && (
-            <GenericButton
-              text={"Invitar"}
-              buttonStyle={{ marginHorizontal: 50 }}
-            />
-          )}
+          <GenericButton
+            text={"Invite"}
+            buttonStyle={{ marginHorizontal: 50 }}
+          />
         </>
       )}
       <View style={{ marginBottom: 10 }}></View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    marginTop: 5,
+    padding: 20,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
+  },
+  input: {
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  dateContainer: {
+    flexDirection: "row",
+  },
+  date: {
+    fontWeight: "300",
+    fontSize: 18,
+    color: "#fff",
+  },
+  username: {
+    top: -4,
+    fontSize: 18,
+    color: "#fff",
+  },
+  description: {
+    fontSize: 18,
+    color: "#fff",
+  },
+  rating: {
+    fontSize: 18,
+    color: "#fff",
+    paddingRight: 40,
+  },
+  ratingContainer: {
+    flexDirection: "row",
+  },
+  buttonContainer: {
+    top: -12,
+  },
+  btn: {
+    width: 60,
+    height: 45,
+    borderRadius: 5,
+  },
+});

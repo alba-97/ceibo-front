@@ -1,24 +1,28 @@
 import { useState, useEffect } from "react";
-import { Image, TouchableOpacity, View, ScrollView, Text } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { styles } from "@/styles/preferencesStyles";
+import {
+  TouchableOpacity,
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { Navbar } from "@/components/Navbar";
 import MultipleDropdown from "@/components/MultipleDropdown";
 import getCategories from "@/api/getCategories";
 import addPreferences from "@/api/addPreferences";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import actualizar from "@/assets/actualizar.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import IOption from "@/interfaces/Option";
-import fromCategoryResponsesToOptions from "@/utils/category/fromCategoryResponsesToOptions";
+import fromResponsesToOptionSelect from "@/utils/category/fromResponsesToOptionSelect";
 import handleError from "@/utils/handleError";
 import { setRefetch } from "@/state/common";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import AppGradient from "@/components/AppGradient";
+import IOptionSelect from "@/interfaces/OptionSelect";
 
 export default function PreferencesScreen() {
-  const [selected, setSelected] = useState<IOption[]>([]);
-  const [categories, setCategories] = useState<IOption[]>([]);
+  const [selected, setSelected] = useState<IOptionSelect[]>([]);
+  const [categories, setCategories] = useState<IOptionSelect[]>([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const { refetch } = useSelector((state: RootState) => state.common);
@@ -26,7 +30,7 @@ export default function PreferencesScreen() {
 
   const fetchCategories = async () => {
     const { data } = await getCategories();
-    setCategories(fromCategoryResponsesToOptions(data));
+    setCategories(fromResponsesToOptionSelect(data));
   };
 
   useEffect(() => {
@@ -35,7 +39,8 @@ export default function PreferencesScreen() {
 
   const handleSubmit = async () => {
     try {
-      await addPreferences([{ name: selected[0].value }]);
+      const categoryIds = selected.map((c) => c.id);
+      await addPreferences(categoryIds);
       dispatch(setRefetch());
       navigation.navigate("HomeScreen");
     } catch (err) {
@@ -44,12 +49,7 @@ export default function PreferencesScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
-    >
+    <AppGradient style={styles.container}>
       <Navbar />
       <ScrollView style={styles.scroll}>
         <Text style={styles.subtitle}>
@@ -57,26 +57,75 @@ export default function PreferencesScreen() {
         </Text>
         <View style={styles.container}>
           <MultipleDropdown
-            setSelected={(val) => setSelected(val)}
             data={categories}
-            save="value"
-            onSelect={() => {}}
-            label="preferences"
-            placeholder="Preferences"
-            search={false}
-            textStyles={styles.text}
-            boxStyles={styles.inputContainer}
-            dropdownStyles={styles.inputContainer}
-            badgeStyles={styles.badge}
+            selectedValues={selected}
+            onSelect={(selectedValues) => {
+              setSelected(selectedValues);
+            }}
           />
-
           <View style={styles.logoutContainer}>
             <TouchableOpacity onPress={handleSubmit}>
-              <Image style={styles.logo} source={actualizar} />
+              <Text style={styles.logoText}>Update Preferences</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    </LinearGradient>
+    </AppGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  inputContainer: {
+    color: "white",
+    backgroundColor: "rgba(225, 200, 200, 0.2)",
+    maxWidth: "80%",
+  },
+  badge: {
+    backgroundColor: "rgba(25, 20, 20, 0.3)",
+  },
+  scroll: {
+    flex: 1,
+    width: "100%",
+    paddingTop: "10%",
+  },
+  text: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+  },
+  subtitle: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 40,
+  },
+  logo: {
+    width: 120,
+    height: 35,
+  },
+  logoutContainer: {
+    paddingTop: 10,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+    width: "65%",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+});

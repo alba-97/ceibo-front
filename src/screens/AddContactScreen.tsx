@@ -1,21 +1,24 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import GenericInput from "../components/GenericInput";
-import { styles } from "../styles/stylesContact";
 import { Navbar } from "../components/Navbar";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { SingleContact } from "../components/SingleContact";
 import { setSelectedContact } from "../state/selectedContact";
 import getAllUsers from "../api/getAllUsers";
-import busqueElContacto from "../assets/busqueElContacto.png";
-import agregarAmigo from "../assets/agregarAmigo.png";
 import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UserResponse from "@/interfaces/responses/User";
 import handleError from "@/utils/handleError";
+import AppGradient from "@/components/AppGradient";
 
 export default function AddContactScreen() {
   const [contacts, setContacts] = useState<UserResponse[]>([]);
@@ -66,21 +69,16 @@ export default function AddContactScreen() {
   }, []);
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.containerr}
-    >
+    <AppGradient style={styles.container}>
       <Navbar />
       <View style={styles.container}>
-        <View style={styles.container3}>
+        <View style={styles.container2}>
           <TouchableOpacity onPress={handleBack}>
             <AntDesign
               name="back"
               size={30}
               color="white"
-              style={{ marginLeft: "4%" }}
+              style={styles.icon}
             />
           </TouchableOpacity>
           <GenericInput
@@ -93,20 +91,18 @@ export default function AddContactScreen() {
               name="arrow-right"
               size={30}
               color="white"
-              style={{ marginLeft: "5%" }}
+              style={styles.icon}
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.logoCont}>
-          <Image style={styles.logo2} source={agregarAmigo} />
-        </View>
+        <Text style={styles.logoText}>Add friends</Text>
 
         {filteredContacts[0] ? (
           <ScrollView>
             <View>
               {filteredContacts.map((contact, i) => (
                 <Text
-                  style={styles.text2}
+                  style={styles.text}
                   key={i}
                   onPress={() => handleContactPress(contact)}
                 >
@@ -117,20 +113,7 @@ export default function AddContactScreen() {
           </ScrollView>
         ) : (
           <>
-            <Text
-              style={[
-                styles.text2,
-                {
-                  flex: 1,
-                  justifyContent: "center",
-                  textAlign: "center",
-                  marginTop: "30%",
-                  fontSize: 20,
-                },
-              ]}
-            >
-              <Image style={styles.logo3} source={busqueElContacto} />
-            </Text>
+            <Text style={styles.logoText}>Search Contacts</Text>
             <View
               style={{
                 alignItems: "center",
@@ -141,6 +124,44 @@ export default function AddContactScreen() {
           </>
         )}
       </View>
-    </LinearGradient>
+    </AppGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+  },
+  container2: {
+    paddingTop: "5%",
+    paddingBottom: "4%",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  logoText: {
+    fontFamily: "Melts",
+    color: "white",
+    textShadowOffset: { width: 5, height: 5 },
+    textShadowColor: "#770022",
+    marginBottom: 20,
+    marginTop: 30,
+    fontSize: 40,
+    textAlign: "center",
+  },
+  text: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+    borderBottomWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+  },
+  icon: { marginLeft: "4%" },
+});
