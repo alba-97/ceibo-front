@@ -8,9 +8,20 @@ module.exports = function (api) {
         {
           moduleName: "@env",
           path: ".env",
+          blacklist: null,
+          whitelist: null,
+          safe: false,
+          allowUndefined: true,
         },
       ],
-      "transform-inline-environment-variables",
+      [
+        "module-resolver",
+        {
+          alias: {
+            "@": "./src",
+          },
+        },
+      ],
     ],
   };
 };

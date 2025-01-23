@@ -1,8 +1,10 @@
 {
   "expo": {
-    "name": "ceiboFront",
+    "name": "The Event Network",
     "slug": "ceiboFront",
-    "scheme": "clubdelplan",
+    "scheme": "theeventnetwork",
+    "icon": "./assets/appicon.png",
+    "newArchEnabled": true,
     "android": {
       "intentFilters": [
         {
@@ -10,7 +12,7 @@
           "autoVerify": true,
           "data": [
             {
-              "scheme": "clubdelplan",
+              "scheme": "theeventnetwork",
               "host": "*",
               "pathPrefix": "/"
             }
@@ -18,27 +20,36 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.auth.ceiboFront"
+      "package": "com.auth.ceiboFront",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/appicon.png",
+        "backgroundColor": "#0A0A0A"
+      }
+    },
+    "web": {
+      "bundler": "metro"
     },
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true,
-      "package": "com.auth.ceiboFront"
-    },
     "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/melts.ttf"]
+        }
+      ],
+      "expo-router"
     ],
     "extra": {
       "eas": {
-        "projectId": "92aab027-2598-49ec-83aa-71529daad89b"
+        "projectId": "5522a113-7eb0-410c-9860-359118306f85"
       }
     }
-  },
-  "name": "ceiboFront"
+  }
 }
