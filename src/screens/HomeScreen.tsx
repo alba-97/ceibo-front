@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Navbar } from "@/components/Navbar";
-import { SwiperComponent } from "@/components/Swiper";
+import { SwiperComponent } from "@/components/SwiperComponent";
 import { MainEvent } from "@/components/MainEvent";
 import getAllEvents from "@/api/getAllEvents";
 import getUser from "@/api/getUser";
@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    width: "100%",
+    width: "90%",
     marginVertical: 20,
+    alignItems: "center",
   },
   logoText: {
     fontFamily: "Melts",

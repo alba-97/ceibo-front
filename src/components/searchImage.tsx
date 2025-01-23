@@ -2,12 +2,12 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import EventResponse from "@/interfaces/responses/Event";
 
-interface ISearchImgProps {
+interface ISearchImageProps {
   event: EventResponse;
   onPress: (event: EventResponse) => void;
 }
 
-export const SearchImg = ({ event, onPress }: ISearchImgProps) => {
+export default ({ event, onPress }: ISearchImageProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={() => onPress(event)}>

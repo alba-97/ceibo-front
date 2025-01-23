@@ -27,15 +27,16 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   image: {
-    width: 250,
-    height: 110,
+    width: "100%",
+    height: 200,
   },
   overlay: {
     position: "absolute",
     height: "100%",
-    width: 250,
+    width: "100%",
     justifyContent: "flex-end",
     backgroundColor: "#0004",
+    padding: 5,
   },
   text: {
     color: "#FFF",

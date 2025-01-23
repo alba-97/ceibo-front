@@ -24,7 +24,7 @@ export default function App() {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <ToastContainer />
+        {Platform.OS === "web" && <ToastContainer />}
         <AppNavigator />
       </KeyboardAvoidingView>
     </Provider>

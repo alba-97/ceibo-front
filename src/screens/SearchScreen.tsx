@@ -6,7 +6,6 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedEvent, setAuthor } from "../state/selectedEvent";
 import getEvent from "../api/getEvent";
-import { SearchImg } from "../components/searchImage";
 import RadioButton from "../components/RadioButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import EventResponse from "@/interfaces/responses/Event";
@@ -18,6 +17,7 @@ import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import { StyleSheet } from "react-native";
 import { RootState } from "@/state/store";
+import SearchImage from "@/components/SearchImage";
 
 export default function SearchScreen() {
   const options = [
@@ -98,8 +98,8 @@ export default function SearchScreen() {
         </Formik>
         <View style={styles.eventContainer}>
           <AppScrollView style={styles.scrollView}>
-            {results?.map((item, index) => (
-              <SearchImg key={index} event={item} onPress={handlePress} />
+            {results.map((item, index) => (
+              <SearchImage key={index} event={item} onPress={handlePress} />
             )) ?? <Text>Loading data...</Text>}
           </AppScrollView>
         </View>

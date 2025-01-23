@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
+    textAlign: "center",
     fontFamily: "Melts",
     fontSize: 40,
     color: "white",

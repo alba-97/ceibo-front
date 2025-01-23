@@ -8,7 +8,7 @@ export default ({ onPress }: { onPress: () => void }) => {
         style={{ flexDirection: "row", padding: 10 }}
         onPress={onPress}
       >
-        <Feather name="arrow-left" size={30} color="white" />
+        <Feather name="arrow-right" size={30} color="white" />
       </TouchableOpacity>
     </View>
   );
