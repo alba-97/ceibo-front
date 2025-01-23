@@ -14,9 +14,9 @@ interface ISwiperProps {
 const width = Dimensions.get("window").width;
 
 let itemWidth: number;
-if (width <= 500) itemWidth = width;
-else if (width > 500 && width <= 800) itemWidth = width / 2;
-else itemWidth = width / 3;
+if (width <= 768) itemWidth = width;
+else if (width > 768 && width <= 1024) itemWidth = width / 3;
+else itemWidth = width / 4;
 
 export function SwiperComponent({ events, onPress }: ISwiperProps) {
   const ref = useRef<Carousel<EventResponse>>(null);

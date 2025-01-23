@@ -73,7 +73,7 @@ export default function LoginScreen() {
             />
             <View style={styles.container}>
               <Text style={styles.text} onPress={handleSignup}>
-                ¿No tienes cuenta? Crea una
+                Don't have an account? Create one
               </Text>
             </View>
           </AppScrollView>

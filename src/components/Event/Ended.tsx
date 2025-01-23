@@ -16,7 +16,7 @@ export default ({ event, user }: IEventEndedProps) => {
   return (
     <View>
       <Text style={styles.subtitle}>
-        El evento finalizó el {formattingDate} a a las {time} hs.
+        The event ended on {formattingDate} at {time}.
       </Text>
 
       {user.events?.some((item) => item._id == event._id) &&
