@@ -21,7 +21,7 @@ import AppGradient from "@/components/AppGradient";
 import IOptionSelect from "@/interfaces/OptionSelect";
 
 export default function PreferencesScreen() {
-  const [selected, setSelected] = useState<IOptionSelect[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [categories, setCategories] = useState<IOptionSelect[]>([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -39,8 +39,7 @@ export default function PreferencesScreen() {
 
   const handleSubmit = async () => {
     try {
-      const categoryIds = selected.map((c) => c.id);
-      await addPreferences(categoryIds);
+      await addPreferences(selected);
       dispatch(setRefetch());
       navigation.navigate("HomeScreen");
     } catch (err) {
@@ -59,7 +58,7 @@ export default function PreferencesScreen() {
           <MultipleDropdown
             data={categories}
             selectedValues={selected}
-            onSelect={(selectedValues) => {
+            onSelect={(selectedValues: string[]) => {
               setSelected(selectedValues);
             }}
           />

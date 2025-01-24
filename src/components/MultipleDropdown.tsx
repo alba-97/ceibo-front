@@ -1,13 +1,12 @@
 import { useState } from "react";
 import MultiSelect from "react-native-multiple-select";
-
 import { StyleSheet, View } from "react-native";
 import IOptionSelect from "@/interfaces/OptionSelect";
 
 interface IMultipleDropdownProps {
   data: IOptionSelect[];
-  selectedValues: IOptionSelect[];
-  onSelect: (selectedItems: IOptionSelect[]) => void;
+  selectedValues: string[];
+  onSelect: (selectedItems: string[]) => void;
   placeholder?: string;
 }
 
