@@ -2,7 +2,11 @@ import getEvent from "@/api/getEvent";
 import { setAuthor, setSelectedEvent } from "@/state/selectedEvent";
 import handleError from "@/utils/handleError";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import * as Linking from "expo-linking";
@@ -50,6 +54,24 @@ export default () => {
     };
   }, []);
 
+  const resetTabStacks = () => ({
+    blur: () => {
+      const state = navigation.getState();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: state.index,
+          routes: [{ name: state.routeNames[state.index] }],
+        })
+      );
+    },
+  });
+
+  const HomeScreen = () => <ScreenStack name={"Home"} />;
+  const SearchScreen = () => <ScreenStack name={"Search"} />;
+  const AddEventScreen = () => <ScreenStack name={"AddEvent1"} />;
+  const AddContactScreen = () => <ScreenStack name={"AddContact"} />;
+  const ProfileScreen = () => <ScreenStack name={"Profile"} />;
+
   return (
     <Navigator
       initialRouteName="Home"
@@ -62,51 +84,56 @@ export default () => {
     >
       <Screen
         name="Home"
-        component={() => <ScreenStack name={"HomeScreen"} />}
+        component={HomeScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Entypo name="home" size={30} color={"#fff"} />,
         }}
+        listeners={resetTabStacks}
       />
       <Screen
         name="Search"
-        component={() => <ScreenStack name={"Search"} />}
+        component={SearchScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => <Feather name="search" size={30} color={"#fff"} />,
         }}
+        listeners={resetTabStacks}
       />
       <Screen
-        name="AddEvent"
-        component={() => <ScreenStack name={"AddEventScreen1"} />}
+        name="AddEvent1"
+        component={AddEventScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
             <MaterialIcons name="add-to-photos" size={30} color={"#fff"} />
           ),
         }}
+        listeners={resetTabStacks}
       />
       {Platform.OS !== "web" && (
         <Screen
           name="Contacts"
-          component={() => <ScreenStack name={"AddContact"} />}
+          component={AddContactScreen}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: () => (
               <AntDesign name="contacts" size={30} color={"#fff"} />
             ),
           }}
+          listeners={resetTabStacks}
         />
       )}
       <Screen
         name="Profile"
-        component={() => <ScreenStack name={"Profile"} />}
+        component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
             <FontAwesome name="user-circle-o" size={30} color={"#fff"} />
           ),
         }}
+        listeners={resetTabStacks}
       />
     </Navigator>
   );

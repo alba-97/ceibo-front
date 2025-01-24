@@ -62,7 +62,7 @@ export default function AddEventScreen2({
   }, []);
 
   const handleBack = () => {
-    navigation.navigate("AddEventScreen1");
+    navigation.navigate("AddEvent1");
   };
 
   return (
