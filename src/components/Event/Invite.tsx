@@ -7,13 +7,13 @@ import getUserFriends from "../../api/getUserFriends";
 import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
-import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
 import inviteUsers from "@/api/inviteUsers";
 import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
 import handleError from "@/utils/handleError";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
 import { toast } from "react-toastify";
 import IOptionSelect from "@/interfaces/OptionSelect";
+import fromResponsesToOptionSelect from "@/utils/user/fromResponsesToOptionSelect";
 
 interface IEventInviteProps {
   event: EventResponse;
@@ -32,7 +32,7 @@ const EventInvite = ({ event }: IEventInviteProps) => {
 
   const handleChange = (option: IOption) => {
     try {
-      const friendsDropdown = fromUserResponsesToOptions(users);
+      const friendsDropdown = fromResponsesToOptionSelect(users);
       setSendMethod(option);
       setFriendsDropdown(friendsDropdown);
     } catch (err) {
@@ -55,7 +55,7 @@ const EventInvite = ({ event }: IEventInviteProps) => {
     try {
       const { data } = await getUserFriends();
       setUsers(data);
-      const friends = fromUserResponsesToOptions(data);
+      const friends = fromResponsesToOptionSelect(data);
       setFriendsDropdown(friends);
     } catch (err) {
       handleError(err);

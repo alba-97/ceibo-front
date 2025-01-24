@@ -21,8 +21,15 @@ import {
 import { Platform, StyleSheet } from "react-native";
 import ScreenStack from "./ScreenStack";
 
+const HomeScreen = () => <ScreenStack name={"Home"} />;
+const SearchScreen = () => <ScreenStack name={"Search"} />;
+const AddEventScreen = () => <ScreenStack name={"AddEvent1"} />;
+const AddContactScreen = () => <ScreenStack name={"AddContact"} />;
+const ProfileScreen = () => <ScreenStack name={"Profile"} />;
+
+const { Navigator, Screen } = createBottomTabNavigator();
+
 export default () => {
-  const { Navigator, Screen } = createBottomTabNavigator();
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -65,12 +72,6 @@ export default () => {
       );
     },
   });
-
-  const HomeScreen = () => <ScreenStack name={"Home"} />;
-  const SearchScreen = () => <ScreenStack name={"Search"} />;
-  const AddEventScreen = () => <ScreenStack name={"AddEvent1"} />;
-  const AddContactScreen = () => <ScreenStack name={"AddContact"} />;
-  const ProfileScreen = () => <ScreenStack name={"Profile"} />;
 
   return (
     <Navigator
