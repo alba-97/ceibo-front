@@ -63,6 +63,7 @@ export default function LoginScreen() {
                 placeholder="Password"
                 field="password"
                 secureTextEntry={true}
+                onSubmitEditing={handleSubmit}
               />
             </View>
 

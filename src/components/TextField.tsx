@@ -8,6 +8,7 @@ interface ITextFieldProps {
   placeholder: string;
   field: string;
   secureTextEntry?: boolean;
+  onSubmitEditing?: () => void;
 }
 
 const TextField = ({ placeholder, field, ...props }: ITextFieldProps) => {
