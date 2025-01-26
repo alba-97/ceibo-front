@@ -73,7 +73,7 @@ export default function ContactsScreen() {
 
   const handleContactPress = (contact: UserResponse) => {
     dispatch(setSelectedContact(contact));
-    navigation.navigate("ContactInfoScreen");
+    navigation.navigate("ContactInfo");
   };
 
   return (

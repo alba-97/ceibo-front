@@ -52,7 +52,7 @@ export default function AddContactScreen() {
 
   const handleContactPress = (contact: UserResponse) => {
     dispatch(setSelectedContact(contact));
-    navigation.navigate("ContactInfoScreen", { selectedContact });
+    navigation.navigate("ContactInfo", { selectedContact });
   };
 
   const fetchUsers = async () => {

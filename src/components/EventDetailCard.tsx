@@ -18,7 +18,7 @@ import discardUser from "@/api/discardUser";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import getEditableEvents from "@/api/getEditableEvents";
 import enrollUser from "@/api/enrollUser";
-import fromUserResponsesToOptions from "@/utils/user/fromUserResponsesToOptions";
+import fromUserResponsesToOptions from "@/utils/user/fromResponsesToOptions";
 import handleError from "@/utils/handleError";
 import formatDate from "@/utils/formatDate";
 import IOptionSelect from "@/interfaces/OptionSelect";
