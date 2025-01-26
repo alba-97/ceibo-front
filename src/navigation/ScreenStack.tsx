@@ -18,7 +18,7 @@ interface IScreenStackProps {
 }
 
 const screens = [
-  { name: "HomeScreen", component: HomeScreen },
+  { name: "Home", component: HomeScreen },
   { name: "Preferences", component: PreferencesScreen },
   { name: "EditEvent", component: EditEventScreen },
   { name: "Profile", component: ProfileScreen },

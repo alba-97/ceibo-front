@@ -41,7 +41,7 @@ export default function PreferencesScreen() {
     try {
       await addPreferences(selected);
       dispatch(setRefetch());
-      navigation.navigate("HomeScreen");
+      navigation.navigate("Home");
     } catch (err) {
       handleError(err);
     }

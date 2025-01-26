@@ -40,7 +40,7 @@ export default function LoginScreen() {
       dispatch(setCreatedEvents(pastEvents));
 
       dispatch(setRefresh());
-      navigation.navigate("HomeScreen");
+      navigation.navigate("Home");
     } catch (err) {
       handleError(err);
     }

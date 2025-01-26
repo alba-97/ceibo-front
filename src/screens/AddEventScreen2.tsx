@@ -41,7 +41,7 @@ export default function AddEventScreen2({
       }
       await createEvent(values);
       toast.success("Event added successfully");
-      navigation.navigate("HomeScreen");
+      navigation.navigate("Home");
     } catch (err) {
       handleError(err);
     }

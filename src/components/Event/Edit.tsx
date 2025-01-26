@@ -26,7 +26,7 @@ export default ({ event }: IEventEditProps) => {
       await deleteEvent(event._id);
       dispatch(removeEventFromUser(event._id));
       dispatch(removeEvent(event._id));
-      navigation.navigate("HomeScreen");
+      navigation.navigate("Home");
     } catch (err) {
       handleError(err);
     }

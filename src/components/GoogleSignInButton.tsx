@@ -106,7 +106,7 @@ const GoogleSignInButton = () => {
       dispatch(setUser(userData));
       const { data } = await getUserEvents();
       dispatch(setUserEvents(data));
-      navigation.navigate(userData.new_user ? "Preferences" : "HomeScreen");
+      navigation.navigate(userData.new_user ? "Preferences" : "Home");
     } catch (err) {
       handleError(err);
     }
