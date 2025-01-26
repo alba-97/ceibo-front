@@ -30,7 +30,7 @@ export default function EventDetailScreen() {
   return (
     <AppGradient style={styles.gradient}>
       <Navbar />
-      <AppScrollView>
+      <AppScrollView style={styles.scrollview}>
         <View>
           <Text style={styles.title}>{event?.title}</Text>
           <Image source={{ uri: event?.img }} style={styles.eventImage} />
@@ -67,6 +67,10 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  scrollview: {
+    flex: 1,
+    width: "100%",
+  },
   title: {
     textAlign: "center",
     fontSize: 24,
@@ -100,6 +104,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 30,
     fontSize: 40,
-    textAlign: "center",
   },
 });

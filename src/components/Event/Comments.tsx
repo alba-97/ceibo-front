@@ -12,7 +12,7 @@ interface ICommentsProps {
   event: EventResponse;
 }
 
-const Comments = ({ event }: ICommentsProps) => {
+export default ({ event }: ICommentsProps) => {
   const [page, setPage] = useState(1);
   const [comment, setComment] = useState("");
 
@@ -31,26 +31,16 @@ const Comments = ({ event }: ICommentsProps) => {
   return (
     <View>
       <Text style={styles.logoText}>Comments</Text>
-      <View
-        style={{
-          height: 280,
-          borderRadius: 15,
-          marginTop: 5,
-          padding: 10,
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-        }}
-      >
-        {event.comments &&
-          event.comments.map((item, index) => {
-            if (index < page * 4 && index >= (page - 1) * 4)
-              return (
-                <View style={styles.comment} key={index}>
-                  <Text style={styles.username}>{item.user.username}:</Text>
-                  <Text style={styles.comment}>{item.text}</Text>
-                </View>
-              );
-          })}
-        <View style={{ marginBottom: 30 }}></View>
+      <View style={styles.container}>
+        {event.comments.map((item, index) => {
+          if (index < page * 4 && index >= (page - 1) * 4)
+            return (
+              <View style={styles.comment} key={index}>
+                <Text style={styles.username}>{item.user.username}:</Text>
+                <Text style={styles.comment}>{item.text}</Text>
+              </View>
+            );
+        })}
       </View>
       <View
         style={{
@@ -59,7 +49,7 @@ const Comments = ({ event }: ICommentsProps) => {
           justifyContent: "space-between",
         }}
       >
-        {page > 1 ? (
+        {page > 1 && (
           <Text
             style={{ color: "#fff", fontSize: 40 }}
             onPress={() => {
@@ -68,8 +58,6 @@ const Comments = ({ event }: ICommentsProps) => {
           >
             {"<<"}
           </Text>
-        ) : (
-          <Text></Text>
         )}
         {event.comments.length - (page + 1) * 4 >= -4 ? (
           <Text
@@ -87,31 +75,28 @@ const Comments = ({ event }: ICommentsProps) => {
           ""
         )}
       </View>
-      <View style={styles.input}>
+      <View style={styles.inputContainer}>
         <GenericInput
           placeholder="Add comment"
           value={comment}
           onChangeText={setComment}
-          customStyle={{
-            borderRadius: 15,
-            fontSize: 16,
-            color: "white",
-            backgroundColor: "#22001b",
-            width: "80%",
-          }}
+          customStyle={styles.input}
         />
-
         <TouchableOpacity onPress={handleComment}>
-          <Feather name="arrow-right" size={30} color="white" style={{}} />
+          <Feather name="arrow-right" size={30} color="white" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default Comments;
-
 const styles = StyleSheet.create({
+  container: {
+    borderRadius: 15,
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
   logo: {
     width: 140,
     height: 25,
@@ -122,10 +107,8 @@ const styles = StyleSheet.create({
     color: "white",
     textShadowOffset: { width: 5, height: 5 },
     textShadowColor: "#770022",
-    marginBottom: 20,
     marginTop: 30,
     fontSize: 40,
-    textAlign: "center",
   },
   username: {
     fontSize: 18,
@@ -138,11 +121,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
   },
-  input: {
+  inputContainer: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: "5%",
+    columnGap: 5,
+    marginBottom: 20,
+  },
+  input: {
+    borderRadius: 15,
+    fontSize: 16,
+    color: "white",
+    backgroundColor: "#22001b",
+    width: "80%",
   },
 });

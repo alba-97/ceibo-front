@@ -8,7 +8,6 @@ import EventResponse from "@/interfaces/responses/Event";
 import UserResponse from "@/interfaces/responses/User";
 import IOption from "@/interfaces/Option";
 import inviteUsers from "@/api/inviteUsers";
-import fromOptionstoStringArray from "@/utils/fromOptionsToStringArray";
 import handleError from "@/utils/handleError";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
 import { toast } from "react-toastify";
@@ -28,7 +27,7 @@ const EventInvite = ({ event }: IEventInviteProps) => {
   const [sendMethod, setSendMethod] = useState<IOption>(sendMethods[0]);
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [friendsDropdown, setFriendsDropdown] = useState<IOptionSelect[]>([]);
-  const [invited, setInvited] = useState<IOptionSelect[]>([]);
+  const [invited, setInvited] = useState<string[]>([]);
 
   const handleChange = (option: IOption) => {
     try {
@@ -42,9 +41,8 @@ const EventInvite = ({ event }: IEventInviteProps) => {
 
   const handleInvite = async () => {
     try {
-      const users = fromOptionstoStringArray(invited);
       const form = fromResponseToForm(event);
-      await inviteUsers(users, form, sendMethod.value);
+      await inviteUsers(invited, form, sendMethod.value);
       toast.success("Invites sent successfully");
     } catch (err) {
       handleError(err);
@@ -69,20 +67,23 @@ const EventInvite = ({ event }: IEventInviteProps) => {
   return (
     <View style={styles.input}>
       {friendsDropdown[0] && (
-        <MultipleDropdown
-          data={friendsDropdown}
-          selectedValues={invited}
-          onSelect={(selectedItems) => {
-            setInvited(selectedItems);
-          }}
-          placeholder="Invite friends"
-        />
+        <>
+          <MultipleDropdown
+            data={friendsDropdown}
+            selectedValues={invited}
+            onSelect={(selectedItems: string[]) => {
+              setInvited(selectedItems);
+            }}
+            placeholder="Invite friends"
+          />
+          <RadioButton
+            options={sendMethods}
+            onSelect={handleChange}
+            defaultValue={sendMethod}
+          />
+        </>
       )}
-      <RadioButton
-        options={sendMethods}
-        onSelect={handleChange}
-        defaultValue={sendMethod}
-      />
+
       {invited[0] && (
         <GenericButton
           text={"Invite"}

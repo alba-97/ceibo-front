@@ -43,11 +43,7 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.date}>
-        <Text style={styles.logoText}>Date</Text>
-        <Text style={styles.text}>{formatDate(event.start_date)}</Text>
-      </View>
+    <View>
       {user._id && event._id && (
         <View style={styles.buttonContainer}>
           {!user.events?.some(
@@ -79,24 +75,25 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
           )}
         </View>
       )}
+      <View>
+        <Text style={styles.logoText}>Date</Text>
+        <Text style={styles.text}>{formatDate(event.start_date)}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flexDirection: "row", gap: 100 },
-  date: { flexDirection: "row" },
   text: {
-    fontWeight: "300",
+    fontWeight: 300,
     fontSize: 18,
     color: "#fff",
   },
   buttonContainer: {
-    top: -12,
+    flexDirection: "row",
+    alignItems: "center",
   },
   button: {
-    width: 60,
-    height: 45,
     borderRadius: 5,
   },
   logoText: {
@@ -104,10 +101,8 @@ const styles = StyleSheet.create({
     color: "white",
     textShadowOffset: { width: 5, height: 5 },
     textShadowColor: "#770022",
-    marginBottom: 20,
-    marginTop: 30,
     fontSize: 40,
-    textAlign: "center",
+    marginVertical: 20,
   },
 });
 
