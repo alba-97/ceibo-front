@@ -1,6 +1,6 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export const Navbar = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -16,7 +16,8 @@ export const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
+    paddingBottom: 20,
+    paddingTop: Platform.OS !== "web" ? 40 : 20,
     alignItems: "center",
     borderBottomColor: "white",
     borderBottomWidth: 1,
