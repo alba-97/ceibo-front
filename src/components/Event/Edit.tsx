@@ -26,7 +26,7 @@ export default ({ event }: IEventEditProps) => {
       await deleteEvent(event._id);
       dispatch(removeEventFromUser(event._id));
       dispatch(removeEvent(event._id));
-      navigation.navigate("Home");
+      navigation.navigate("home");
     } catch (err) {
       handleError(err);
     }
@@ -54,7 +54,7 @@ export default ({ event }: IEventEditProps) => {
             <GenericButton
               text={"Editar evento"}
               onPress={() => {
-                navigation.navigate("EditEvent");
+                navigation.navigate("edit-event");
               }}
             />
           </View>

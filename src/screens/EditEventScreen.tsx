@@ -118,7 +118,7 @@ export default function EditEventScreen() {
 
   const handleRedirect = () => {
     dispatch(setRefetch());
-    navigation.navigate("Home");
+    navigation.navigate("home");
   };
 
   return (

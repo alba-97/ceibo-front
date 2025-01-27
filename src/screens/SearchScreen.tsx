@@ -37,7 +37,7 @@ export default function SearchScreen() {
       const updatedEvent = await getEvent(event._id);
       dispatch(setSelectedEvent(updatedEvent));
       dispatch(setAuthor(updatedEvent.createdBy));
-      navigation.navigate("EventDetail");
+      navigation.navigate("event-detail");
     } catch (err) {
       handleError(err);
     }

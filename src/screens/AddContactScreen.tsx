@@ -31,7 +31,7 @@ export default function AddContactScreen() {
   );
 
   const handleBack = () => {
-    navigation.navigate("Contacts");
+    navigation.navigate("contacts");
   };
 
   const handleQueryChange = (text: string) => {
@@ -52,7 +52,7 @@ export default function AddContactScreen() {
 
   const handleContactPress = (contact: UserResponse) => {
     dispatch(setSelectedContact(contact));
-    navigation.navigate("ContactInfo", { selectedContact });
+    navigation.navigate("contact-info", { selectedContact });
   };
 
   const fetchUsers = async () => {

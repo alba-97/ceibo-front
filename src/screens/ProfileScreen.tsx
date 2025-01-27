@@ -32,7 +32,7 @@ export default function ProfileScreen() {
   };
 
   const handlePreferences = () => {
-    navigation.navigate("Preferences");
+    navigation.navigate("preferences");
   };
 
   const selectImage = async () => {

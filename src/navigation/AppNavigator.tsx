@@ -1,14 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
-import BottomNavbar from "./BottomNavbar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import ScreenStack from "./ScreenStack";
 
 export default function AppNavigator() {
   const { refresh } = useSelector((state: RootState) => state.common);
 
+  const linking = {
+    prefixes: [],
+    config: {
+      screens: {},
+    },
+  };
+
   return (
-    <NavigationContainer>
-      <BottomNavbar key={`${refresh}`} />
+    <NavigationContainer linking={linking}>
+      <ScreenStack key={`${refresh}`} />
     </NavigationContainer>
   );
 }

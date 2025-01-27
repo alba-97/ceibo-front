@@ -1,12 +1,7 @@
 import getEvent from "@/api/getEvent";
 import { setAuthor, setSelectedEvent } from "@/state/selectedEvent";
 import handleError from "@/utils/handleError";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  CommonActions,
-  ParamListBase,
-  useNavigation,
-} from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import * as Linking from "expo-linking";
@@ -18,16 +13,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import { Platform, StyleSheet } from "react-native";
-import ScreenStack from "./ScreenStack";
-
-const HomeScreen = () => <ScreenStack name={"Home"} />;
-const SearchScreen = () => <ScreenStack name={"Search"} />;
-const AddEventScreen = () => <ScreenStack name={"AddEvent1"} />;
-const AddContactScreen = () => <ScreenStack name={"AddContact"} />;
-const ProfileScreen = () => <ScreenStack name={"Profile"} />;
-
-const { Navigator, Screen } = createBottomTabNavigator();
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default () => {
   const dispatch = useDispatch();
@@ -45,7 +31,7 @@ export default () => {
       const updatedEvent = await getEvent(route);
       dispatch(setSelectedEvent(updatedEvent));
       dispatch(setAuthor(updatedEvent.createdBy));
-      navigation.navigate("EventDetail");
+      navigation.navigate("event-detail");
     } catch (err) {
       handleError(err);
     }
@@ -61,85 +47,51 @@ export default () => {
     };
   }, []);
 
-  const resetTabStacks = () => ({
-    blur: () => {
-      const state = navigation.getState();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: state.index,
-          routes: [{ name: state.routeNames[state.index] }],
-        })
-      );
-    },
-  });
-
   return (
-    <Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: styles.backgroundColor,
-        tabBarHideOnKeyboard: true,
-        tabBarIconStyle: { alignItems: "center", justifyContent: "center" },
-      }}
-    >
-      <Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => <Entypo name="home" size={30} color={"#fff"} />,
-        }}
-        listeners={resetTabStacks}
-      />
-      <Screen
-        name="Search"
-        component={SearchScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => <Feather name="search" size={30} color={"#fff"} />,
-        }}
-        listeners={resetTabStacks}
-      />
-      <Screen
-        name="AddEvent1"
-        component={AddEventScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <MaterialIcons name="add-to-photos" size={30} color={"#fff"} />
-          ),
-        }}
-        listeners={resetTabStacks}
-      />
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate("home")}
+      >
+        <Entypo name="home" size={30} color={"#fff"} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate("search")}
+      >
+        <Feather name="search" size={30} color={"#fff"} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate("add-event")}
+      >
+        <MaterialIcons name="add-to-photos" size={30} color={"#fff"} />
+      </TouchableOpacity>
       {Platform.OS !== "web" && (
-        <Screen
-          name="Contacts"
-          component={AddContactScreen}
-          options={{
-            tabBarShowLabel: false,
-            tabBarIcon: () => (
-              <AntDesign name="contacts" size={30} color={"#fff"} />
-            ),
-          }}
-          listeners={resetTabStacks}
-        />
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => navigation.navigate("AddContactScreen")}
+        >
+          <AntDesign name="contacts" size={30} color={"#fff"} />
+        </TouchableOpacity>
       )}
-      <Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <FontAwesome name="user-circle-o" size={30} color={"#fff"} />
-          ),
-        }}
-        listeners={resetTabStacks}
-      />
-    </Navigator>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate("profile")}
+      >
+        <FontAwesome name="user-circle-o" size={30} color={"#fff"} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundColor: { backgroundColor: "black" },
+  container: {
+    flexDirection: "row",
+    padding: 10,
+  },
+  item: {
+    flex: 1,
+    alignItems: "center",
+  },
 });

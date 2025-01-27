@@ -7,7 +7,7 @@ export const Navbar = () => {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate("Home")}
+      onPress={() => navigation.navigate("home")}
     >
       <Text style={styles.title}>The Event Network</Text>
     </TouchableOpacity>

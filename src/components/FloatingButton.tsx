@@ -10,7 +10,7 @@ export const FloatingButton = () => {
     <TouchableOpacity
       style={styles.button}
       onPress={() => {
-        navigation.navigate("AddContact");
+        navigation.navigate("add-contact");
       }}
     >
       <Octicons name="person-add" size={35} color="white" />

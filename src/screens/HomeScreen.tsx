@@ -41,7 +41,7 @@ export default function HomeScreen() {
       dispatch(setSelectedEvent(updatedEvent));
       dispatch(setAuthor(updatedEvent.createdBy));
 
-      navigation.navigate("EventDetail");
+      navigation.navigate("event-detail");
     } catch (err) {
       handleError(err);
     }

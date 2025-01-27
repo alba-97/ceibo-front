@@ -24,7 +24,7 @@ export default function LoginScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const handleSignup = () => {
-    navigation.navigate("Register");
+    navigation.navigate("register");
   };
 
   const handleLogin = async (values: LoginForm) => {
@@ -40,7 +40,7 @@ export default function LoginScreen() {
       dispatch(setCreatedEvents(pastEvents));
 
       dispatch(setRefresh());
-      navigation.navigate("Home");
+      navigation.navigate("home");
     } catch (err) {
       handleError(err);
     }

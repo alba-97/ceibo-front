@@ -28,7 +28,7 @@ export default function RegisterScreen() {
       }
       await createUser(values);
       toast.success("User added successfully");
-      navigation.navigate("Login");
+      navigation.navigate("login");
     } catch (err) {
       handleError(err);
     }

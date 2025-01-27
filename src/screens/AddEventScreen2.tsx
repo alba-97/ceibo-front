@@ -41,7 +41,7 @@ export default function AddEventScreen2({
       }
       await createEvent(values);
       toast.success("Event added successfully");
-      navigation.navigate("Home");
+      navigation.navigate("home");
     } catch (err) {
       handleError(err);
     }
@@ -62,7 +62,7 @@ export default function AddEventScreen2({
   }, []);
 
   const handleBack = () => {
-    navigation.navigate("AddEvent1");
+    navigation.navigate("add-event");
   };
 
   return (

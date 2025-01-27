@@ -17,7 +17,7 @@ import { StyleSheet, View } from "react-native";
 export default function AddEventScreen1() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const goToNextStep = (values: EventForm) => {
-    navigation.navigate("AddEvent2", values);
+    navigation.navigate("add-event-2", values);
   };
 
   return (

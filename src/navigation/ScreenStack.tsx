@@ -12,60 +12,46 @@ import ContactsScreen from "@/screens/ContactsScreen";
 import RegisterScreen from "@/screens/RegisterScreen";
 import EditEventScreen from "@/screens/EditEventScreen";
 import EventDetailScreen from "@/screens/EventDetailScreen";
-
-interface IScreenStackProps {
-  name: string;
-}
+import { View } from "react-native";
+import BottomNavbar from "./BottomNavbar";
 
 const screens = [
-  { name: "Home", component: HomeScreen },
-  { name: "Preferences", component: PreferencesScreen },
-  { name: "EditEvent", component: EditEventScreen },
-  { name: "Profile", component: ProfileScreen },
-  { name: "AddEvent1", component: AddEventScreen1 },
-  { name: "AddEvent2", component: AddEventScreen2 },
-  { name: "Search", component: SearchScreen },
-  { name: "EventDetail", component: EventDetailScreen },
-  { name: "ContactInfo", component: ContactInfoScreen },
-  { name: "AddContact", component: AddContactScreen },
-  { name: "Login", component: LoginScreen },
-  { name: "Register", component: RegisterScreen },
-  { name: "Contacts", component: ContactsScreen },
+  { name: "home", component: HomeScreen },
+  { name: "preferences", component: PreferencesScreen },
+  { name: "edit-event", component: EditEventScreen },
+  { name: "profile", component: ProfileScreen },
+  { name: "add-event", component: AddEventScreen1 },
+  { name: "add-event-2", component: AddEventScreen2 },
+  { name: "search", component: SearchScreen },
+  { name: "event-detail", component: EventDetailScreen },
+  { name: "contact-info", component: ContactInfoScreen },
+  { name: "add-contact", component: AddContactScreen },
+  { name: "login", component: LoginScreen },
+  { name: "register", component: RegisterScreen },
+  { name: "contacts", component: ContactsScreen },
 ];
 
-const orderedScreens = (name: string) => {
-  const mainScreen = screens.find((screen) => screen.name === name);
-
-  const filteredScreens = screens.filter((screen) => {
-    return screen.name !== name;
-  });
-
-  if (!mainScreen) {
-    return filteredScreens;
-  }
-
-  return [mainScreen, ...filteredScreens];
-};
-
-const ScreenStack = ({ name }: IScreenStackProps) => {
+const ScreenStack = () => {
   const { Navigator, Screen } = createNativeStackNavigator();
 
-  const screens = orderedScreens(name);
-
   return (
-    <Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      {screens.map((screen) => (
-        <Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-        />
-      ))}
-    </Navigator>
+    <View style={{ backgroundColor: "black", height: "100%" }}>
+      <Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName="home"
+      >
+        {screens.map((screen) => (
+          <Screen
+            key={screen.name}
+            name={screen.name}
+            component={screen.component}
+          />
+        ))}
+      </Navigator>
+      <BottomNavbar />
+    </View>
   );
 };
 

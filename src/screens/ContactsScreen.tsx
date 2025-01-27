@@ -73,7 +73,7 @@ export default function ContactsScreen() {
 
   const handleContactPress = (contact: UserResponse) => {
     dispatch(setSelectedContact(contact));
-    navigation.navigate("ContactInfo");
+    navigation.navigate("contact-info");
   };
 
   return (
@@ -121,7 +121,7 @@ export default function ContactsScreen() {
           <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
             <GenericButton
               text="Login"
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.navigate("login")}
               textStyle={{
                 fontFamily: "Melts",
                 fontSize: 30,
