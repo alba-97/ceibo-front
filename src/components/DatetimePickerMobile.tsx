@@ -14,6 +14,7 @@ interface IDatetimePickerProps {
 const DatetimePickerMobile = ({ field, readOnly }: IDatetimePickerProps) => {
   const { values, setFieldValue } = useFormikContext<EventForm>();
   const date = values[field as keyof EventForm] as string;
+  const formattedDate = date.slice(0, 16).replace("T", " ");
 
   const selectDate = (_: DateTimePickerEvent, selectedDate?: Date) => {
     DateTimePickerAndroid.open({
@@ -23,14 +24,14 @@ const DatetimePickerMobile = ({ field, readOnly }: IDatetimePickerProps) => {
         if (!selectedDate || !selectedDate2) return;
         const date = selectedDate.toISOString().split("T")[0];
         const time = selectedDate2.toISOString().split("T")[1];
-        setFieldValue(field, new Date(`${date}T${time}`));
+        setFieldValue(field, `${date}T${time}`);
       },
     });
   };
 
   return (
     <GenericButton
-      text={date.slice(0, 16).replace("T", " ")}
+      text={formattedDate || "Select date"}
       onPress={() => {
         !readOnly &&
           DateTimePickerAndroid.open({
