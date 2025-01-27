@@ -1,29 +1,27 @@
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import GenericButton from "../GenericButton";
-import enrollUser from "../../api/enrollUser";
-import { useDispatch } from "react-redux";
-import discardUser from "../../api/discardUser";
+import GenericButton from "@/components/GenericButton";
+import enroll from "@/api/enroll";
+import { useDispatch, useSelector } from "react-redux";
+import discardUser from "@/api/discardUser";
 import EventResponse from "@/interfaces/responses/Event";
-import UserResponse from "@/interfaces/responses/User";
-import { removeUserEvent } from "@/state/user";
+import { addUserEvent, removeUserEvent } from "@/state/user";
 import handleError from "@/utils/handleError";
 import formatDate from "@/utils/formatDate";
+import { RootState } from "@/state/store";
 
-interface IEventEnrollProps {
-  event: EventResponse;
-  user: UserResponse;
-}
-
-const EventEnroll = ({ event, user }: IEventEnrollProps) => {
+export default () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const event = useSelector((state: RootState) => state.selectedEvent);
+  const user = useSelector((state: RootState) => state.user);
+
   const handleEnroll = async () => {
-    if (!event._id) return;
     setLoading(true);
     try {
-      await enrollUser(event._id);
+      await enroll(event._id);
+      dispatch(addUserEvent(event));
     } catch (err) {
       handleError(err);
     }
@@ -31,7 +29,6 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
   };
 
   const handleStopParticipating = async () => {
-    if (!event._id) return;
     setLoading(true);
     try {
       await discardUser(event._id);
@@ -52,7 +49,7 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
             <View>
               {!loading ? (
                 <GenericButton
-                  text={"+"}
+                  text={"Join Event"}
                   onPress={handleEnroll}
                   buttonStyle={styles.button}
                 />
@@ -64,7 +61,7 @@ const EventEnroll = ({ event, user }: IEventEnrollProps) => {
             <View>
               {!loading ? (
                 <GenericButton
-                  text={"x"}
+                  text={"Stop participating"}
                   buttonStyle={styles.button}
                   onPress={handleStopParticipating}
                 />
@@ -105,5 +102,3 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
-
-export default EventEnroll;

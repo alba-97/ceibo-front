@@ -80,7 +80,6 @@ export default function SearchScreen() {
           {({ handleSubmit, setFieldValue, values }) => (
             <View style={styles.form}>
               <GenericInput
-                ref={inputRef}
                 value={values.searchTerm}
                 onSubmitEditing={handleSubmit}
                 onChangeText={(searchTerm: string) =>

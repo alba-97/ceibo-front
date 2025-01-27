@@ -4,7 +4,7 @@ import Comments from "../components/Event/Comments";
 import EventOrganizer from "../components/Event/Organizer";
 import EventEnded from "../components/Event/Ended";
 import EventInvite from "../components/Event/Invite";
-import EventEnroll from "../components/Event/Enroll";
+import Enroll from "../components/Event/Enroll";
 import EventEdit from "../components/Event/Edit";
 import { Navbar } from "../components/Navbar";
 import { RootState } from "@/state/store";
@@ -40,7 +40,7 @@ export default function EventDetailScreen() {
             {event.ended ? (
               <EventEnded event={event} user={user} />
             ) : (
-              <EventEnroll event={event} user={user} />
+              <Enroll />
             )}
           </View>
 
@@ -48,6 +48,7 @@ export default function EventDetailScreen() {
 
           <Text style={styles.logoText}>Description</Text>
           <Text style={styles.description}>{event.description}</Text>
+
           {user._id && (
             <View>
               <Comments event={event} />
