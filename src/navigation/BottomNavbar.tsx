@@ -25,7 +25,7 @@ export default () => {
     if (urlParts.length !== 2) return;
 
     const [scheme, route] = urlParts;
-    if (!(scheme === "clubdelplan:" && route)) return;
+    if (!(scheme === "theeventnetwork:" && route)) return;
 
     try {
       const updatedEvent = await getEvent(route);
