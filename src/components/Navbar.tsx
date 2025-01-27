@@ -1,10 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export const Navbar = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate("Home")}
+    >
       <Text style={styles.title}>The Event Network</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

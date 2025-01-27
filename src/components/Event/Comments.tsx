@@ -32,15 +32,19 @@ export default ({ event }: ICommentsProps) => {
     <View>
       <Text style={styles.logoText}>Comments</Text>
       <View style={styles.container}>
-        {event.comments.map((item, index) => {
-          if (index < page * 4 && index >= (page - 1) * 4)
-            return (
-              <View style={styles.comment} key={index}>
-                <Text style={styles.username}>{item.user.username}:</Text>
-                <Text style={styles.comment}>{item.text}</Text>
-              </View>
-            );
-        })}
+        {event.comments[0] ? (
+          event.comments.map((item, index) => {
+            if (index < page * 4 && index >= (page - 1) * 4)
+              return (
+                <View style={styles.comment} key={index}>
+                  <Text style={styles.username}>{item.user.username}:</Text>
+                  <Text style={styles.comment}>{item.text}</Text>
+                </View>
+              );
+          })
+        ) : (
+          <Text style={styles.noComments}>No comments...</Text>
+        )}
       </View>
       <View
         style={{
@@ -51,7 +55,7 @@ export default ({ event }: ICommentsProps) => {
       >
         {page > 1 && (
           <Text
-            style={{ color: "#fff", fontSize: 40 }}
+            style={styles.arrow}
             onPress={() => {
               setPage(page - 1);
             }}
@@ -59,20 +63,15 @@ export default ({ event }: ICommentsProps) => {
             {"<<"}
           </Text>
         )}
-        {event.comments.length - (page + 1) * 4 >= -4 ? (
+        {event.comments.length - (page + 1) * 4 >= -4 && (
           <Text
-            style={{
-              color: "#fff",
-              fontSize: 40,
-            }}
+            style={styles.arrow}
             onPress={() => {
               setPage(page + 1);
             }}
           >
             {">>"}
           </Text>
-        ) : (
-          ""
         )}
       </View>
       <View style={styles.inputContainer}>
@@ -136,4 +135,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#22001b",
     width: "80%",
   },
+  noComments: {
+    color: "white",
+  },
+  arrow: { color: "#fff", fontSize: 40 },
 });

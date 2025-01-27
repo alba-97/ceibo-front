@@ -13,6 +13,12 @@ export default Yup.object().shape({
       "Start date must be a valid date",
       (value) => value !== undefined && !isNaN(Date.parse(value))
     )
+    .test("is-future-date", "Start date must be in the future", (value) => {
+      if (value === undefined) return false;
+      const today = new Date();
+      const startDate = new Date(value);
+      return startDate >= today;
+    })
     .required("Start date is required"),
   end_date: Yup.string()
     .test(

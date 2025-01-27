@@ -54,7 +54,10 @@ export default () => {
                   buttonStyle={styles.button}
                 />
               ) : (
-                <GenericButton text={"..."} buttonStyle={styles.button} />
+                <GenericButton
+                  text={"Loading..."}
+                  buttonStyle={styles.button}
+                />
               )}
             </View>
           ) : (
@@ -66,7 +69,10 @@ export default () => {
                   onPress={handleStopParticipating}
                 />
               ) : (
-                <GenericButton text={"..."} buttonStyle={styles.button} />
+                <GenericButton
+                  text={"Loading..."}
+                  buttonStyle={styles.button}
+                />
               )}
             </View>
           )}

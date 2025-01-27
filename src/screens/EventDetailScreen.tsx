@@ -32,8 +32,10 @@ export default function EventDetailScreen() {
       <Navbar />
       <AppScrollView style={styles.scrollview}>
         <View>
-          <Text style={styles.title}>{event?.title}</Text>
-          <Image source={{ uri: event?.img }} style={styles.eventImage} />
+          <Text style={styles.title}>{event.title}</Text>
+          {event.img && (
+            <Image source={{ uri: event.img }} style={styles.eventImage} />
+          )}
         </View>
         <View style={styles.eventContainer}>
           <View>

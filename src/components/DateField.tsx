@@ -8,11 +8,11 @@ interface IDateFieldProps {
   dateOnly?: boolean;
 }
 
-export default ({ placeholder, field }: IDateFieldProps) => {
+export default ({ placeholder, field, dateOnly }: IDateFieldProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.placeholder}>{placeholder}</Text>
-      <DatetimePicker field={field} dateOnly />
+      <DatetimePicker field={field} dateOnly={dateOnly} />
       <ErrorMsg field={field} />
     </View>
   );
