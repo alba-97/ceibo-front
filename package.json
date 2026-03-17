@@ -11,6 +11,7 @@
     "android": "expo run:android"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.2.0",
@@ -18,7 +19,7 @@
     "@react-navigation/native-stack": "^7.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-native-dotenv": "^0.2.2",
-    "antd": "^5.22.7",
+    "antd": "^6.3.3",
     "axios": "^1.7.9",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "dayjs": "^1.11.13",
@@ -56,12 +57,13 @@
     "react-router-dom": "^6.11.1",
     "react-toastify": "^11.0.2",
     "redux": "^4.2.1",
+    "regenerator-runtime": "^0.14.1",
     "typescript": "^5.3.3",
     "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@babel/runtime": "^7.26.0",
+    "@babel/runtime": "^7.29.2",
     "@tsconfig/react-native": "^3.0.5",
     "@types/jest": "^29.5.14",
     "@types/react": "^18.3.18",
@@ -72,9 +74,7 @@
   },
   "overrides": {
     "node-fetch": "^2.7.0",
-    "tar": ">=7.5.11",
-    "@babel/runtime": "^7.26.0",
-    "regenerator-runtime": "^0.14.1"
+    "tar": ">=7.5.11"
   },
   "private": true,
   "expo": {
