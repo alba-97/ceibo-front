@@ -1,24 +1,25 @@
-import { StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
+import { View } from "react-native";
 import GenericButton from "@/components/GenericButton";
-import getEditableEvents from "@/api/getEditableEvents";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import deleteEvent from "@/api/deleteEvent";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import { removeEventFromUser } from "@/state/user";
 import { removeEvent } from "@/state/events";
+import { RootState } from "@/state/store";
 
 interface IEventEditProps {
   event: EventResponse;
 }
 
 export default ({ event }: IEventEditProps) => {
-  const [canEdit, setCanEdit] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+
+  const isOwner = !!user._id && user._id === event.createdBy._id;
 
   const handleDelete = async () => {
     if (!event._id) return;
@@ -32,51 +33,15 @@ export default ({ event }: IEventEditProps) => {
     }
   };
 
-  const fetchInfo = async () => {
-    if (!event._id) return;
-    try {
-      const canEdit = await getEditableEvents(event._id);
-      setCanEdit(canEdit);
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchInfo();
-  });
+  if (!isOwner) return null;
 
   return (
-    <View>
-      {canEdit && (
-        <View>
-          <View style={styles.input}>
-            <GenericButton
-              text={"Editar evento"}
-              onPress={() => {
-                navigation.navigate("edit-event");
-              }}
-            />
-          </View>
-          <View style={styles.input}>
-            <GenericButton text={"Borrar evento"} onPress={handleDelete} />
-          </View>
-        </View>
-      )}
+    <View style={{ gap: 10, marginVertical: 10 }}>
+      <GenericButton
+        text="Editar evento"
+        onPress={() => navigation.navigate("edit-event")}
+      />
+      <GenericButton text="Borrar evento" onPress={handleDelete} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    fontSize: 16,
-    color: "white",
-    backgroundColor: "#22001b",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "white",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    width: "80%",
-  },
-});

@@ -1,253 +1,136 @@
+import { StyleSheet, Switch, Text, View } from "react-native";
 import { useState, useEffect } from "react";
-import {
-  ScrollView,
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import LoginScreen from "./LoginScreen";
-import ChevronImg from "../assets/images/chevron.png";
-import ProfilePicture from "../components/ProfilePicture";
-import GenericButton from "../components/GenericButton";
-import { ChangeData } from "../components/ChangeData";
 import { Navbar } from "../components/Navbar";
-import * as ImagePicker from "expo-image-picker";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import getCategories from "../api/getCategories";
-import ModalSelector from "react-native-modal-selector";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CheckBox } from "react-native-elements";
-import axios from "axios";
-import { API_URL } from "@env";
-import { removeEvent } from "../state/events";
-import { RootState } from "@/state/store";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import IOption from "@/interfaces/Option";
 import fromResponsesToOptions from "@/utils/category/fromResponsesToOptions";
 import handleError from "@/utils/handleError";
+import editEvent from "@/api/editEvent";
+import { Formik } from "formik";
+import EventForm from "@/interfaces/forms/Event";
+import uploadImage from "@/api/uploadImage";
+import TextField from "@/components/TextField";
+import SelectField from "@/components/SelectField";
+import DateField from "@/components/DateField";
+import ImageField from "@/components/ImageField";
+import GenericButton from "@/components/GenericButton";
+import AppGradient from "@/components/AppGradient";
+import AppScrollView from "@/components/AppScrollView";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 import { setRefetch } from "@/state/common";
+import fromResponseToForm from "@/utils/event/fromResponseToForm";
+import { toast } from "react-toastify";
+import LoginScreen from "./LoginScreen";
 
 export default function EditEventScreen() {
   const event = useSelector((state: RootState) => state.selectedEvent);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
-
-  const [category, setCategory] = useState(event?.category?.name);
-  const [imageUrl, setImageUrl] = useState(event?.img);
   const [categories, setCategories] = useState<IOption[]>([]);
-  const [checked, setChecked] = useState(event?.private);
 
-  const handleCheckBoxToggle = async () => {
+  const fetchCategories = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        await axios.put(
-          `${API_URL}/events/${event._id}`,
-          {
-            private: !checked,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setChecked(!checked);
-        removeEvent(event._id);
-      }
+      const { data } = await getCategories();
+      setCategories(fromResponsesToOptions(data));
     } catch (err) {
       handleError(err);
     }
-  };
-  const fetchCategories = async () => {
-    const { data } = await getCategories();
-    const categories = fromResponsesToOptions(data);
-    setCategories(categories);
   };
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const selectImage = async () => {
+  const handleSubmit = async (values: EventForm) => {
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      const token = await AsyncStorage.getItem("token");
-      const path = result.assets?.[0].uri;
-      if (token && path) {
-        if (path !== "") {
-          const formData = new FormData();
-          const file = {
-            uri: path,
-            type: "image/jpeg",
-            name: "image.jpg",
-          };
-          const blob = await fetch(file.uri).then((response) =>
-            response.blob()
-          );
-          formData.append("image", blob, file.name);
-          const res = await axios.post(`${API_URL}/upload`, formData);
-          await axios.put(
-            `${API_URL}/events/${event._id}`,
-            {
-              img: res.data.imageUrl,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setImageUrl(res.data.imageUrl);
-        }
+      if (values.img && values.img !== event.img) {
+        const url = await uploadImage(values.img);
+        values.img = url;
       }
+      await editEvent(event._id, values);
+      toast.success("Evento actualizado");
+      dispatch(setRefetch());
+      navigation.navigate("home");
     } catch (err) {
       handleError(err);
     }
   };
 
-  const handleRedirect = () => {
-    dispatch(setRefetch());
-    navigation.navigate("home");
-  };
+  if (!event._id) return <LoginScreen />;
 
   return (
-    <View style={[styles.container, { backgroundColor: "#121212" }]}>
-      <Navbar />
-      {event._id ? (
-        <ScrollView>
-          <View style={styles.container}>
-            <ProfilePicture imageSource={"profile_img"} />
-            <ChangeData field="title" placeholder="Title" />
-            <ChangeData field="description" placeholder="Description" />
-            <ChangeData field="location" placeholder="Location" />
-            <ChangeData field="start_date" placeholder="Start date and time" />
-            <ChangeData field="start_date" placeholder="End date and time" />
-            <ChangeData field="min_age" placeholder="Min. age" />
-            <ChangeData field="max_age" placeholder="Max. age" />
-            <ChangeData field="min_to_pay" placeholder="Min. to pay" />
-            <ChangeData field="total_to_pay" placeholder="Total to pay" />
-
-            <ModalSelector
-              data={categories}
-              onChange={async (option: IOption) => {
-                const token = await AsyncStorage.getItem("token");
-                if (token) {
-                  await axios.put(
-                    `${API_URL}/events/${event._id}`,
-                    {
-                      category: option.label,
-                    },
-                    {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    }
-                  );
-                  setCategory(option.label);
-                }
-              }}
-              overlayStyle={{ backgroundColor: "rgba(0,0,0,0.6)" }}
-              optionContainerStyle={{
-                backgroundColor: "#1E1E1E",
-                borderWidth: 1,
-                borderRadius: 8,
-                borderColor: "#3A3A3A",
-              }}
-              optionTextStyle={{
-                fontWeight: "600",
-                color: "#F0F0F0",
-              }}
-              cancelStyle={{
-                backgroundColor: "#2D2D2D",
-              }}
-              cancelTextStyle={{
-                fontWeight: "600",
-                color: "#F0F0F0",
-              }}
-              cancelText="Cancelar"
-            >
-              <Text style={styles.categoryContainer}>
-                {category}{" "}
-                <Image
-                  source={ChevronImg}
-                  resizeMode="contain"
-                  style={{ width: 20, height: 20 }}
-                />
-              </Text>
-            </ModalSelector>
-
-            <View>
-              <CheckBox
-                title="¿Evento privado?"
-                checked={checked}
-                containerStyle={{
-                  backgroundColor: "transparent",
-                  borderWidth: 0,
-                }}
-                textStyle={{ color: "white" }}
-                checkedColor="white"
-                onPress={handleCheckBoxToggle}
-              />
-            </View>
-
-            <ChangeData field="link_to_pay" placeholder="Link to pay" />
-
-            <TouchableOpacity style={styles.container} onPress={selectImage}>
-              {imageUrl && (
-                <Image
-                  source={{
-                    uri: imageUrl,
-                  }}
-                  style={styles.image}
-                />
-              )}
-            </TouchableOpacity>
-
-            <View style={{ marginBottom: "5%" }} />
-            <GenericButton onPress={handleRedirect} text="Volver" />
-          </View>
-        </ScrollView>
-      ) : (
-        <LoginScreen />
-      )}
+    <View style={styles.container}>
+      <AppGradient style={styles.gradient}>
+        <Navbar />
+        <Formik
+          initialValues={fromResponseToForm(event) as EventForm}
+          onSubmit={handleSubmit}
+        >
+          {({ handleSubmit: submit, values, setFieldValue }) => (
+            <AppScrollView style={styles.scrollView}>
+              <View style={styles.form}>
+                <TextField placeholder="Title" field="title" />
+                <TextField placeholder="Description" field="description" />
+                <TextField placeholder="Location" field="location" />
+                <DateField placeholder="Start Date" field="start_date" />
+                <DateField placeholder="End Date" field="end_date" />
+                <ImageField placeholder="Image" field="img" />
+                <TextField placeholder="Minimum age" field="min_age" />
+                <TextField placeholder="Maximum age" field="max_age" />
+                <TextField placeholder="Minimum to pay" field="min_to_pay" />
+                <TextField placeholder="Total to pay" field="total_to_pay" />
+                <SelectField data={categories} field="category" />
+                <TextField placeholder="Link to pay" field="link_to_pay" />
+                <View style={styles.checkboxRow}>
+                  <Switch
+                    value={values.private}
+                    onValueChange={(v) => { setFieldValue("private", v); }}
+                    trackColor={{ false: "#3A3A3A", true: "#ffffff" }}
+                    thumbColor={values.private ? "#121212" : "#f4f3f4"}
+                  />
+                  <Text style={styles.checkboxLabel}>Private event?</Text>
+                </View>
+                <GenericButton onPress={submit} text="Guardar cambios" />
+              </View>
+            </AppScrollView>
+          )}
+        </Formik>
+      </AppGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 250,
-    height: 110,
-  },
-  categoryContainer: {
-    alignItems: "center",
-    marginTop: 15,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: "#2D2D2D",
-    borderColor: "#3A3A3A",
-    borderWidth: 1,
-    fontWeight: "600",
-    color: "#F0F0F0",
-    fontSize: 16,
-  },
   container: {
     flex: 1,
     width: "100%",
     height: "100%",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  gradient: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  scrollView: {
+    width: "100%",
+  },
+  form: {
+    width: "100%",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  checkboxRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 8,
+    gap: 10,
+  },
+  checkboxLabel: {
     color: "white",
+    fontSize: 16,
   },
 });
