@@ -1,5 +1,4 @@
 const { getDefaultConfig } = require("expo/metro-config");
-const path = require("path");
 
 const config = getDefaultConfig(__dirname);
 
@@ -11,13 +10,19 @@ config.transformer = {
   },
 };
 
+const regeneratorRuntimePath = require.resolve("regenerator-runtime/runtime");
+
 config.resolver = {
   ...config.resolver,
-  extraNodeModules: {
-    "regenerator-runtime": path.resolve(
-      __dirname,
-      "node_modules/regenerator-runtime"
-    ),
+  resolveRequest: (context, moduleName, platform) => {
+    if (
+      moduleName === "regenerator-runtime" ||
+      moduleName === "regenerator-runtime/runtime" ||
+      moduleName === "@babel/runtime/regenerator"
+    ) {
+      return { filePath: regeneratorRuntimePath, type: "sourceFile" };
+    }
+    return context.resolveRequest(context, moduleName, platform);
   },
 };
 
