@@ -1,4 +1,3 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { View, ScrollView, Dimensions, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import GenericButton from "../components/GenericButton";
@@ -64,14 +63,7 @@ export default function ContactInfoScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1, backgroundColor: "#121212" }}>
       <Navbar />
       <ScrollView style={{ marginTop: "15%" }}>
         <View style={styles.container}>
@@ -122,13 +114,13 @@ export default function ContactInfoScreen() {
             ) : (
               <GenericButton
                 text={"Cargando..."}
-                buttonStyle={{ marginTop: "4%", backgroundColor: "#7D0166" }}
+                buttonStyle={{ marginTop: "4%", backgroundColor: "#2D2D2D" }}
               />
             )}
           </View>
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -143,9 +135,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    color: "#FFF",
-    fontSize: 20,
-    fontWeight: "bold",
+    color: "#F0F0F0",
+    fontSize: 16,
+    fontWeight: "600",
     marginLeft: 20,
     textAlign: "center",
   },

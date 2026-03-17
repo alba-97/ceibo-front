@@ -28,7 +28,7 @@ const TextField = ({ placeholder, field, ...props }: ITextFieldProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: "100%", alignItems: "center" },
+  container: { width: "100%", alignItems: "center", marginBottom: 20 },
   placeholder: {
     color: "#FFF",
     fontSize: 24,

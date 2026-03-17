@@ -1,4 +1,10 @@
-import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import EventResponse from "@/interfaces/responses/Event";
 
@@ -8,51 +14,70 @@ interface IMainEventProps {
   title?: string;
 }
 
-export const MainEvent = ({ event, onPress }: IMainEventProps) => {
+export const MainEvent = ({ event, onPress, title }: IMainEventProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress(event)}>
-      <View>
-        <Image source={{ uri: event?.img }} style={styles.image} />
-        <View style={styles.overlay}>
-          <Text style={styles.text}>{event?.title}</Text>
-          <Text style={styles.subtitle}>
-            {event?.start_date && fromDateToDateDescription(event?.start_date)}
-          </Text>
-          <Text style={styles.subtitle}>{event?.category?.name}</Text>
-        </View>
-      </View>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onPress(event)}
+      activeOpacity={0.92}
+    >
+      <Image source={{ uri: event?.img }} style={styles.image} />
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.75)"]}
+        style={styles.overlay}
+      >
+        {title && <Text style={styles.badge}>{title}</Text>}
+        <Text style={styles.title}>{event?.title}</Text>
+        <Text style={styles.subtitle}>
+          {event?.start_date && fromDateToDateDescription(event?.start_date)}
+          {event?.category?.name ? `  ·  ${event.category.name}` : ""}
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: "10%",
+    width: "100%",
+    height: 280,
     position: "relative",
-    alignItems: "center",
+    overflow: "hidden",
   },
   image: {
-    width: 370,
-    height: 150,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   overlay: {
     position: "absolute",
-    height: 150,
-    width: 370,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 60,
     justifyContent: "flex-end",
-    backgroundColor: "#0004",
   },
-  text: {
+  badge: {
     color: "#FFF",
-    fontSize: 20,
-    fontWeight: "600",
-    marginLeft: 7,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 1.2,
+    textTransform: "uppercase",
+    marginBottom: 6,
+    opacity: 0.8,
+  },
+  title: {
+    color: "#FFF",
+    fontSize: 26,
+    fontWeight: "800",
+    lineHeight: 32,
+    marginBottom: 6,
   },
   subtitle: {
-    marginLeft: 7,
-    marginBottom: 10,
-    color: "#FFF",
-    fontSize: 16,
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 14,
     fontWeight: "500",
   },
 });

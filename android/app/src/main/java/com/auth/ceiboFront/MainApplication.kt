@@ -1,4 +1,4 @@
-package com.auth.ceiboFront
+package com.auth.eventnetwork
 
 import android.app.Application
 import android.content.res.Configuration

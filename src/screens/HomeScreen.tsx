@@ -20,7 +20,6 @@ import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
-import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import getCreatedEvents from "@/api/getCreatedEvents";
 import getUserEvents from "@/api/getUserEvents";
@@ -86,79 +85,79 @@ export default function HomeScreen() {
   }, [refetch]);
 
   return (
-    <AppGradient style={styles.gradient}>
+    <View style={styles.screen}>
       <Navbar />
-      <AppScrollView>
+      <AppScrollView contentContainerStyle={styles.scrollContent}>
         {events[0] && (
           <MainEvent
             event={events[0]}
-            title="Patrocinado"
+            title="Featured"
             onPress={handlePress}
           />
         )}
 
         {user._id ? (
           <View style={styles.container}>
-            <Text style={styles.logoText}>Recommended events</Text>
+            <Text style={styles.sectionTitle}>Recomendados</Text>
             {user.recommendedEvents?.[0] ? (
               <SwiperComponent
                 events={user.recommendedEvents}
                 onPress={handlePress}
               />
             ) : (
-              <Text style={styles.text}>No Events</Text>
+              <Text style={styles.emptyText}>Sin eventos</Text>
             )}
-            <Text style={styles.logoText}>My Events</Text>
+            <Text style={styles.sectionTitle}>Mis eventos</Text>
             {user.events?.[0] ? (
               <SwiperComponent events={user.events} onPress={handlePress} />
             ) : (
-              <Text style={styles.text}>No Events</Text>
+              <Text style={styles.emptyText}>Sin eventos</Text>
             )}
-            <Text style={styles.logoText}>Created Events</Text>
+            <Text style={styles.sectionTitle}>Eventos creados</Text>
             {user.createdEvents?.[0] ? (
               <SwiperComponent
                 events={user.createdEvents}
                 onPress={handlePress}
               />
             ) : (
-              <Text style={styles.text}>No Events Created</Text>
+              <Text style={styles.emptyText}>Sin eventos creados</Text>
             )}
           </View>
         ) : (
           <View style={styles.container}>
-            <Text style={styles.logoText}>Events</Text>
+            <Text style={styles.sectionTitle}>Eventos</Text>
             <SwiperComponent events={events} onPress={handlePress} />
           </View>
         )}
       </AppScrollView>
-    </AppGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: {
+  screen: {
     flex: 1,
     width: "100%",
+    backgroundColor: "#121212",
+  },
+  scrollContent: {
     alignItems: "center",
   },
   container: {
-    width: "90%",
-    marginVertical: 20,
-    alignItems: "center",
-  },
-  logoText: {
-    fontFamily: "Melts",
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
+    width: "100%",
+    paddingHorizontal: 20,
     marginBottom: 20,
-    marginTop: 30,
-    fontSize: 40,
-    textAlign: "center",
   },
-  text: {
-    color: "white",
-    fontSize: 25,
-    textAlign: "center",
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#F0F0F0",
+    marginTop: 28,
+    marginBottom: 14,
+  },
+  emptyText: {
+    color: "#666",
+    fontSize: 15,
+    marginBottom: 10,
   },
 });

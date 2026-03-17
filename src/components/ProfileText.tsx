@@ -15,7 +15,8 @@ export const ProfileText = ({ text }: IProfileTextProps) => {
           fontSize: 32,
           fontWeight: "bold",
           color: "white",
-          marginVertical: 10,
+          marginTop: 10,
+          marginBottom: 24,
         }}
       >
         {text}

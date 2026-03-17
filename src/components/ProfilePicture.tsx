@@ -1,5 +1,7 @@
 import { View, Image, StyleSheet } from "react-native";
 
+const defaultAvatar = require("../assets/images/profile-img.svg");
+
 interface IProfilePictureProps {
   imageSource: string;
 }
@@ -7,7 +9,10 @@ interface IProfilePictureProps {
 export default ({ imageSource }: IProfilePictureProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
+      <Image
+        source={imageSource ? { uri: imageSource } : defaultAvatar}
+        style={styles.image}
+      />
     </View>
   );
 };

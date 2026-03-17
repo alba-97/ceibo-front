@@ -16,19 +16,19 @@ export const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 20,
-    paddingTop: Platform.OS !== "web" ? 40 : 20,
-    alignItems: "center",
-    borderBottomColor: "white",
+    paddingBottom: 16,
+    paddingTop: Platform.OS !== "web" ? 44 : 20,
+    paddingHorizontal: 20,
+    alignItems: "flex-start",
+    borderBottomColor: "#2A2A2A",
     borderBottomWidth: 1,
     width: "100%",
+    backgroundColor: "#121212",
   },
   title: {
-    textAlign: "center",
-    fontFamily: "Melts",
-    fontSize: 40,
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
+    fontWeight: "800",
+    fontSize: 22,
+    color: "#F0F0F0",
+    letterSpacing: -0.5,
   },
 });

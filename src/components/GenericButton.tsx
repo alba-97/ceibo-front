@@ -18,13 +18,12 @@ const GenericButton = ({
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: "#22001b",
-        borderRadius: 20,
+        backgroundColor: "#2D2D2D",
+        borderRadius: 10,
         alignItems: "center",
         padding: 15,
-        borderWidth: 2,
-        borderColor: "#140311",
-        boxShadow: "0 4px 6px #2c0023",
+        borderWidth: 1,
+        borderColor: "#3A3A3A",
         ...buttonStyle,
       }}
       {...props}

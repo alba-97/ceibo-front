@@ -11,6 +11,7 @@ import AppGradient from "@/components/AppGradient";
 import { Formik } from "formik";
 import registerInitialValues from "@/common/registerInitialValues";
 import RegisterSchema from "@/utils/schema/RegisterSchema";
+import { ProfileText } from "@/components/ProfileText";
 import TextField from "@/components/TextField";
 import DateField from "@/components/DateField";
 import ImageField from "@/components/ImageField";
@@ -44,6 +45,7 @@ export default function RegisterScreen() {
       >
         {({ handleSubmit }) => (
           <AppScrollView style={styles.scrollview}>
+            <ProfileText text="Create an account" />
             <View style={styles.container}>
               <TextField field={"username"} placeholder="Username" />
               <TextField field={"email"} placeholder="Email" />
@@ -92,9 +94,7 @@ const styles = StyleSheet.create({
   },
   button: {
     color: "white",
-    fontSize: 30,
-    fontFamily: "Melts",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });

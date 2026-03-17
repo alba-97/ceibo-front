@@ -101,11 +101,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   loginButton: {
-    fontFamily: "Melts",
-    fontSize: 30,
+    fontSize: 16,
     color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
+    fontWeight: "700",
   },
   text: {
     paddingTop: 10,

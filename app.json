@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "The Event Network",
-    "slug": "ceiboFront",
+    "slug": "eventnetwork",
     "scheme": "theeventnetwork",
     "icon": "./assets/appicon.png",
     "newArchEnabled": true,
@@ -20,7 +20,7 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.auth.ceiboFront",
+      "package": "com.auth.eventnetwork",
       "adaptiveIcon": {
         "foregroundImage": "./assets/appicon.png",
         "backgroundColor": "#0A0A0A"

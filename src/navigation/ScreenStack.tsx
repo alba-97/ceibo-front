@@ -15,20 +15,22 @@ import EventDetailScreen from "@/screens/EventDetailScreen";
 import { View } from "react-native";
 import BottomNavbar from "./BottomNavbar";
 
+const APP_NAME = "The Event Network";
+
 const screens = [
-  { name: "home", component: HomeScreen },
-  { name: "preferences", component: PreferencesScreen },
-  { name: "edit-event", component: EditEventScreen },
-  { name: "profile", component: ProfileScreen },
-  { name: "add-event", component: AddEventScreen1 },
-  { name: "add-event-2", component: AddEventScreen2 },
-  { name: "search", component: SearchScreen },
-  { name: "event-detail", component: EventDetailScreen },
-  { name: "contact-info", component: ContactInfoScreen },
-  { name: "add-contact", component: AddContactScreen },
-  { name: "login", component: LoginScreen },
-  { name: "register", component: RegisterScreen },
-  { name: "contacts", component: ContactsScreen },
+  { name: "home", component: HomeScreen, title: "Home" },
+  { name: "preferences", component: PreferencesScreen, title: "Preferences" },
+  { name: "edit-event", component: EditEventScreen, title: "Edit Event" },
+  { name: "profile", component: ProfileScreen, title: "Profile" },
+  { name: "add-event", component: AddEventScreen1, title: "Create Event" },
+  { name: "add-event-2", component: AddEventScreen2, title: "Create Event" },
+  { name: "search", component: SearchScreen, title: "Search" },
+  { name: "event-detail", component: EventDetailScreen, title: "Event" },
+  { name: "contact-info", component: ContactInfoScreen, title: "Contact" },
+  { name: "add-contact", component: AddContactScreen, title: "Add Contact" },
+  { name: "login", component: LoginScreen, title: "Login" },
+  { name: "register", component: RegisterScreen, title: "Register" },
+  { name: "contacts", component: ContactsScreen, title: "Contacts" },
 ];
 
 const ScreenStack = () => {
@@ -47,6 +49,7 @@ const ScreenStack = () => {
             key={screen.name}
             name={screen.name}
             component={screen.component}
+            options={{ title: `${screen.title} - ${APP_NAME}` }}
           />
         ))}
       </Navigator>

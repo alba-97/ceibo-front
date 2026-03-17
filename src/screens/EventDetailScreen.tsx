@@ -1,4 +1,5 @@
 import { Text, Image, View, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useSelector } from "react-redux";
 import Comments from "../components/Event/Comments";
 import EventOrganizer from "../components/Event/Organizer";
@@ -30,13 +31,18 @@ export default function EventDetailScreen() {
   return (
     <AppGradient style={styles.gradient}>
       <Navbar />
-      <AppScrollView style={styles.scrollview}>
-        <View>
-          <Text style={styles.title}>{event.title}</Text>
-          {event.img && (
+      <AppScrollView style={styles.scrollview} contentContainerStyle={{ alignItems: "flex-start" }}>
+        {event.img && (
+          <View style={styles.heroContainer}>
             <Image source={{ uri: event.img }} style={styles.eventImage} />
-          )}
-        </View>
+            <LinearGradient
+              colors={["transparent", "rgba(0,0,0,0.75)"]}
+              style={styles.heroOverlay}
+            >
+              <Text style={styles.title}>{event.title}</Text>
+            </LinearGradient>
+          </View>
+        )}
         <View style={styles.eventContainer}>
           <View>
             {event.ended ? (
@@ -68,18 +74,31 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   scrollview: {
     flex: 1,
     width: "100%",
   },
+  heroContainer: {
+    width: "100%",
+    height: 280,
+    position: "relative",
+  },
+  heroOverlay: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 60,
+    justifyContent: "flex-end",
+  },
   title: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    padding: 10,
+    fontSize: 26,
+    fontWeight: "800",
     color: "#fff",
+    lineHeight: 32,
   },
   eventContainer: {
     justifyContent: "center",
@@ -97,15 +116,14 @@ const styles = StyleSheet.create({
   },
   eventImage: {
     width: "100%",
-    height: 200,
+    height: "100%",
+    resizeMode: "cover",
   },
   logoText: {
-    fontFamily: "Melts",
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
-    marginBottom: 20,
-    marginTop: 30,
-    fontSize: 40,
+    color: "#F0F0F0",
+    fontWeight: "700",
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 24,
   },
 });

@@ -1,4 +1,4 @@
-import { DatePicker, Space } from "antd";
+import { ConfigProvider, DatePicker, Space, theme } from "antd";
 import { useFormikContext } from "formik";
 import EventForm from "@/interfaces/forms/Event";
 
@@ -15,17 +15,19 @@ const DatetimePickerWeb = ({
 }: IDatetimePickerProps) => {
   const { setFieldValue } = useFormikContext<EventForm>();
   return (
-    <Space direction="vertical" size={12}>
-      <DatePicker
-        showTime={!dateOnly}
-        showSecond={false}
-        onChange={(date) => {
-          setFieldValue(field, date.toISOString());
-        }}
-        format={dateOnly ? "DD/MM/YYYY" : "DD/MM/YYYY HH:mm:ss"}
-        readOnly={readOnly}
-      />
-    </Space>
+    <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <Space direction="vertical" size={12}>
+        <DatePicker
+          showTime={!dateOnly}
+          showSecond={false}
+          onChange={(date) => {
+            setFieldValue(field, date.toISOString());
+          }}
+          format={dateOnly ? "DD/MM/YYYY" : "DD/MM/YYYY HH:mm:ss"}
+          readOnly={readOnly}
+        />
+      </Space>
+    </ConfigProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-package com.auth.ceiboFront
+package com.auth.eventnetwork
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

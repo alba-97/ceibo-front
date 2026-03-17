@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.auth.ceiboFront'
+    namespace 'com.auth.eventnetwork'
     defaultConfig {
-        applicationId 'com.auth.ceiboFront'
+        applicationId 'com.auth.eventnetwork'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

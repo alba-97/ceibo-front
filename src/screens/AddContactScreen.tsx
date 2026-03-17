@@ -144,13 +144,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   logoText: {
-    fontFamily: "Melts",
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
-    marginBottom: 20,
-    marginTop: 30,
-    fontSize: 40,
+    color: "#F0F0F0",
+    fontWeight: "700",
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 24,
     textAlign: "center",
   },
   text: {

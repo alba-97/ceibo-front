@@ -8,7 +8,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
 import LoginScreen from "./LoginScreen";
 import ChevronImg from "../assets/images/chevron.png";
 import ProfilePicture from "../components/ProfilePicture";
@@ -122,12 +121,7 @@ export default function EditEventScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#000", "#7D0166"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={styles.container}
-    >
+    <View style={[styles.container, { backgroundColor: "#121212" }]}>
       <Navbar />
       {event._id ? (
         <ScrollView>
@@ -162,23 +156,23 @@ export default function EditEventScreen() {
                   setCategory(option.label);
                 }
               }}
-              overlayStyle={{ backgroundColor: "transparent" }}
+              overlayStyle={{ backgroundColor: "rgba(0,0,0,0.6)" }}
               optionContainerStyle={{
-                backgroundColor: "#691359",
-                borderWidth: 8,
-                borderRadius: 4,
-                borderColor: "#59104c",
+                backgroundColor: "#1E1E1E",
+                borderWidth: 1,
+                borderRadius: 8,
+                borderColor: "#3A3A3A",
               }}
               optionTextStyle={{
-                fontWeight: "bold",
-                color: "white",
+                fontWeight: "600",
+                color: "#F0F0F0",
               }}
               cancelStyle={{
-                backgroundColor: "#781365",
+                backgroundColor: "#2D2D2D",
               }}
               cancelTextStyle={{
-                fontWeight: "bold",
-                color: "white",
+                fontWeight: "600",
+                color: "#F0F0F0",
               }}
               cancelText="Cancelar"
             >
@@ -226,7 +220,7 @@ export default function EditEventScreen() {
       ) : (
         <LoginScreen />
       )}
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -240,12 +234,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: "rgba(225, 200, 200, 0.3)",
-    borderColor: "rgba(10, 7, 7, 0.2)",
-    fontWeight: "bold",
-    color: "white",
-    fontSize: 18,
+    borderRadius: 8,
+    backgroundColor: "#2D2D2D",
+    borderColor: "#3A3A3A",
+    borderWidth: 1,
+    fontWeight: "600",
+    color: "#F0F0F0",
+    fontSize: 16,
   },
   container: {
     flex: 1,

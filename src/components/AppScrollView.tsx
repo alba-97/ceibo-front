@@ -5,12 +5,12 @@ interface IScrollViewProps extends ScrollViewProps {
   setIsStill?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default ({ children, setIsStill, ...props }: IScrollViewProps) => {
+export default ({ children, setIsStill, contentContainerStyle, ...props }: IScrollViewProps) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ alignItems: "center" }}
+      contentContainerStyle={[{ alignItems: "center" }, contentContainerStyle]}
       {...props}
     >
       {children}

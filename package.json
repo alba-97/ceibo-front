@@ -1,5 +1,5 @@
 {
-  "name": "ceibofront",
+  "name": "eventnetwork",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "react-native": "0.76.6",
     "react-native-contacts": "^7.0.5",
     "react-native-dotenv": "^3.4.11",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-elements": "^3.4.3",
     "react-native-image-picker": "^7.2.3",
     "react-native-modal-datetime-picker": "^18.0.0",
@@ -74,8 +75,8 @@
   },
   "private": true,
   "expo": {
-    "name": "ceibofront",
-    "slug": "ceibofront",
+    "name": "eventnetwork",
+    "slug": "eventnetwork",
     "version": "1.0.0",
     "sdkVersion": "40.0.0",
     "platforms": [

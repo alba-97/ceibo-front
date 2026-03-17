@@ -12,10 +12,12 @@ export default ({ event, onPress }: ISearchImageProps) => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={() => onPress(event)}>
         <Image source={{ uri: event?.img }} style={styles.image} />
-        <Text style={styles.bannerText}>{event?.title}</Text>
-        <Text style={styles.bannerTextDate}>
-          {event?.start_date && fromDateToDateDescription(event?.start_date)}
-        </Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.bannerText}>{event?.title}</Text>
+          <Text style={styles.bannerTextDate}>
+            {event?.start_date && fromDateToDateDescription(event?.start_date)}
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -23,30 +25,33 @@ export default ({ event, onPress }: ISearchImageProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     width: "100%",
   },
   button: {
-    width: 500,
-    height: 100,
-    margin: 5,
-    left: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#2a2a2a",
   },
   bannerText: {
-    width: 250,
-    top: -100,
-    left: 110,
-    color: "#FFF",
-    fontSize: 20,
-  },
-  bannerTextDate: {
-    left: 110,
-    top: -100,
     color: "#FFF",
     fontSize: 16,
+    fontWeight: "600",
+    flexShrink: 1,
+  },
+  bannerTextDate: {
+    color: "#aaa",
+    fontSize: 13,
+    marginTop: 4,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  textContainer: {
+    flex: 1,
   },
 });

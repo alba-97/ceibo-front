@@ -96,7 +96,7 @@ export default function SearchScreen() {
           )}
         </Formik>
         <View style={styles.eventContainer}>
-          <AppScrollView style={styles.scrollView}>
+          <AppScrollView style={styles.scrollView} contentContainerStyle={{ alignItems: "flex-start" }}>
             {results.map((item, index) => (
               <SearchImage key={index} event={item} onPress={handlePress} />
             )) ?? <Text>Loading data...</Text>}
@@ -111,23 +111,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   gradient: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   form: {
     width: "100%",
     paddingTop: "5%",
-    alignItems: "center",
+    paddingHorizontal: 20,
   },
   eventContainer: {
     flex: 1,
-    alignItems: "center",
     paddingHorizontal: 20,
-    marginLeft: 30,
     width: "100%",
   },
   scrollView: {

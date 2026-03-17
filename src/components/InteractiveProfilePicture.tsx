@@ -1,5 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
-import GenericButton from "./GenericButton";
+import { TouchableOpacity } from "react-native";
 import ProfilePicture from "./ProfilePicture";
 
 interface IInteractiveProfilePictureProps {
@@ -12,38 +11,10 @@ const InteractiveProfilePicture = ({
   onPress,
 }: IInteractiveProfilePictureProps) => {
   return (
-    <div>
-      {url ? (
-        <TouchableOpacity onPress={onPress}>
-          <ProfilePicture imageSource={url} />
-        </TouchableOpacity>
-      ) : (
-        <GenericButton
-          onPress={onPress}
-          buttonStyle={styles.button}
-          textStyle={styles.buttonText}
-          text={"Select image"}
-        />
-      )}
-    </div>
+    <TouchableOpacity onPress={onPress}>
+      <ProfilePicture imageSource={url} />
+    </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    borderWidth: 1,
-    borderColor: "white",
-    backgroundColor: "#7D0166",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 10,
-  },
-  buttonText: {
-    borderWidth: 1,
-    borderColor: "white",
-    color: "#fff",
-    textAlign: "center",
-  },
-});
 
 export default InteractiveProfilePicture;

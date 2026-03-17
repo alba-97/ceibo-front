@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     alignItems: "center",
+    marginBottom: 40,
   },
   placeholder: {
     color: "#FFF",

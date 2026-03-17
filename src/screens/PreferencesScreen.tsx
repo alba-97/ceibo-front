@@ -21,7 +21,10 @@ import AppGradient from "@/components/AppGradient";
 import IOptionSelect from "@/interfaces/OptionSelect";
 
 export default function PreferencesScreen() {
-  const [selected, setSelected] = useState<string[]>([]);
+  const user = useSelector((state: RootState) => state.user);
+  const [selected, setSelected] = useState<string[]>(
+    user.preferences?.map((p) => p._id) ?? []
+  );
   const [categories, setCategories] = useState<IOptionSelect[]>([]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
+    paddingHorizontal: 20,
   },
   inputContainer: {
     color: "white",
@@ -100,13 +104,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   logoText: {
-    fontFamily: "Melts",
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
-    marginBottom: 20,
-    marginTop: 30,
-    fontSize: 40,
+    color: "#F0F0F0",
+    fontWeight: "700",
+    fontSize: 18,
   },
   subtitle: {
     color: "#FFF",
@@ -120,11 +120,13 @@ const styles = StyleSheet.create({
     height: 35,
   },
   logoutContainer: {
-    paddingTop: 10,
-    borderRadius: 25,
+    padding: 15,
+    borderRadius: 10,
     alignItems: "center",
     marginBottom: 10,
     width: "65%",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "#2D2D2D",
+    borderWidth: 1,
+    borderColor: "#3A3A3A",
   },
 });
