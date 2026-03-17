@@ -27,7 +27,8 @@
       }
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "sourceMap": true
     },
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
