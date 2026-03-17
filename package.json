@@ -71,7 +71,9 @@
   },
   "overrides": {
     "node-fetch": "^2.7.0",
-    "tar": ">=7.5.11"
+    "tar": ">=7.5.11",
+    "@babel/runtime": "^7.26.0",
+    "regenerator-runtime": "^0.14.1"
   },
   "private": true,
   "expo": {
