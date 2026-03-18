@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderRadius: 10,
-    // @ts-ignore
     cursor: "pointer",
   },
   label: {
