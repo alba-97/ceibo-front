@@ -85,34 +85,34 @@ export default function HomeScreen() {
 
         {user._id ? (
           <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Recomendados</Text>
+            <Text style={styles.sectionTitle}>Recommended</Text>
             {user.recommendedEvents?.[0] ? (
               <SwiperComponent
                 events={user.recommendedEvents}
                 onPress={handlePress}
               />
             ) : (
-              <Text style={styles.emptyText}>Sin eventos</Text>
+              <Text style={styles.emptyText}>No events</Text>
             )}
-            <Text style={styles.sectionTitle}>Mis eventos</Text>
+            <Text style={styles.sectionTitle}>My events</Text>
             {user.events?.[0] ? (
               <SwiperComponent events={user.events} onPress={handlePress} />
             ) : (
-              <Text style={styles.emptyText}>Sin eventos</Text>
+              <Text style={styles.emptyText}>No events</Text>
             )}
-            <Text style={styles.sectionTitle}>Eventos creados</Text>
+            <Text style={styles.sectionTitle}>Created Events</Text>
             {user.createdEvents?.[0] ? (
               <SwiperComponent
                 events={user.createdEvents}
                 onPress={handlePress}
               />
             ) : (
-              <Text style={styles.emptyText}>Sin eventos creados</Text>
+              <Text style={styles.emptyText}>No created events</Text>
             )}
           </View>
         ) : (
           <View style={styles.container}>
-            <Text style={styles.sectionTitle}>Eventos</Text>
+            <Text style={styles.sectionTitle}>Events</Text>
             <SwiperComponent events={events} onPress={handlePress} />
           </View>
         )}
