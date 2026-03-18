@@ -12,8 +12,11 @@ import ContactsScreen from "@/screens/ContactsScreen";
 import RegisterScreen from "@/screens/RegisterScreen";
 import EditEventScreen from "@/screens/EditEventScreen";
 import EventDetailScreen from "@/screens/EventDetailScreen";
-import { View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import BottomNavbar from "./BottomNavbar";
+import SideNavbar from "./SideNavbar";
+
+const DESKTOP_BREAKPOINT = 768;
 
 const APP_NAME = "The Event Network";
 
@@ -35,25 +38,30 @@ const screens = [
 
 const ScreenStack = () => {
   const { Navigator, Screen } = createNativeStackNavigator();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= DESKTOP_BREAKPOINT;
 
   return (
-    <View style={{ backgroundColor: "black", height: "100%" }}>
-      <Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName="home"
-      >
-        {screens.map((screen) => (
-          <Screen
-            key={screen.name}
-            name={screen.name}
-            component={screen.component}
-            options={{ title: `${screen.title} - ${APP_NAME}` }}
-          />
-        ))}
-      </Navigator>
-      <BottomNavbar />
+    <View style={{ backgroundColor: "black", height: "100%", flexDirection: isDesktop ? "row" : "column" }}>
+      {isDesktop && <SideNavbar />}
+      <View style={{ flex: 1 }}>
+        <Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName="home"
+        >
+          {screens.map((screen) => (
+            <Screen
+              key={screen.name}
+              name={screen.name}
+              component={screen.component}
+              options={{ title: `${screen.title} - ${APP_NAME}` }}
+            />
+          ))}
+        </Navigator>
+      </View>
+      {!isDesktop && <BottomNavbar />}
     </View>
   );
 };

@@ -9,20 +9,13 @@ import getEvent from "@/api/getEvent";
 import { useSelector, useDispatch } from "react-redux";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { setSelectedEvent, setAuthor } from "@/state/selectedEvent";
-import {
-  setCreatedEvents,
-  setUserEvents,
-  setUser,
-  setRecommendedEvents,
-} from "@/state/user";
+import { setUser, setRecommendedEvents } from "@/state/user";
 import { setEvents } from "@/state/events";
 import { RootState } from "@/state/store";
 import EventResponse from "@/interfaces/responses/Event";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import AppScrollView from "@/components/AppScrollView";
-import getCreatedEvents from "@/api/getCreatedEvents";
-import getUserEvents from "@/api/getUserEvents";
 import getRecommendedEvents from "@/api/getRecommendedEvents";
 
 export default function HomeScreen() {
@@ -64,12 +57,6 @@ export default function HomeScreen() {
         return;
       }
       dispatch(setUser(userData));
-
-      const { data: userEvents } = await getUserEvents();
-      dispatch(setUserEvents(userEvents));
-
-      const { data: pastEvents } = await getCreatedEvents();
-      dispatch(setCreatedEvents(pastEvents));
 
       if (userData.preferences[0]) {
         const { data: recommendedEvents } = await getRecommendedEvents();

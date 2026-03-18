@@ -151,10 +151,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   button: {
-    fontFamily: "Melts",
-    fontSize: 30,
+    fontSize: 18,
+    fontWeight: "700",
     color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
   },
 });

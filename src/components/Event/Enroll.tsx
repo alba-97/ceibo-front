@@ -39,9 +39,11 @@ export default () => {
     setLoading(false);
   };
 
+  const isCreator = user._id && event.createdBy?._id === user._id;
+
   return (
     <View>
-      {user._id && event._id && (
+      {user._id && event._id && !isCreator && (
         <View style={styles.buttonContainer}>
           {!user.events?.some(
             (userEvent: EventResponse) => userEvent._id === event._id
@@ -100,11 +102,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   logoText: {
-    fontFamily: "Melts",
-    color: "white",
-    textShadowOffset: { width: 5, height: 5 },
-    textShadowColor: "#770022",
-    fontSize: 40,
-    marginVertical: 20,
+    color: "#aaa",
+    fontSize: 12,
+    fontWeight: "600",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    marginBottom: 4,
+    marginTop: 20,
   },
 });

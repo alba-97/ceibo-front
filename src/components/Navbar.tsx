@@ -1,9 +1,14 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Platform, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity, useWindowDimensions } from "react-native";
 
 export const Navbar = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+
+  if (isDesktop) return null;
+
   return (
     <TouchableOpacity
       style={styles.container}

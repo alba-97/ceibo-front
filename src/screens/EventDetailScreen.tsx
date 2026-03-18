@@ -12,20 +12,17 @@ import { RootState } from "@/state/store";
 import AppScrollView from "@/components/AppScrollView";
 import AppGradient from "@/components/AppGradient";
 import { useEffect, useState } from "react";
-import getRating from "@/api/getRating";
+import getOrganizerRating from "@/api/getOrganizerRating";
 
 export default function EventDetailScreen() {
   const event = useSelector((state: RootState) => state.selectedEvent);
   const user = useSelector((state: RootState) => state.user);
   const [rating, setRating] = useState<number>();
 
-  const fetchRating = async () => {
-    const { rating } = await getRating(event._id);
-    setRating(rating);
-  };
-
   useEffect(() => {
-    fetchRating();
+    getOrganizerRating(event._id)
+      .then(({ rating }) => setRating(rating))
+      .catch(() => {});
   }, []);
 
   return (

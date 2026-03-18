@@ -12,29 +12,19 @@ interface IRatingProps {
 }
 
 export default ({ event }: IRatingProps) => {
-  const [rating, setRating] = useState<number>();
-
-  const fetchRating = async () => {
-    try {
-      const { rating } = await getRating(event._id);
-      setRating(rating);
-      return rating;
-    } catch (err) {
-      handleError(err);
-    }
-  };
+  const [rating, setRating] = useState<number>(0);
 
   useEffect(() => {
-    fetchRating();
+    getRating(event._id)
+      .then(({ rating }) => setRating(rating ?? 0))
+      .catch(handleError);
   }, []);
 
-  const handleRating = async (rating: number) => {
+  const handleRating = async (newRating: number) => {
     if (!event._id) return;
-    const userRating = await fetchRating();
-    if (!userRating) return;
     try {
-      await rateEvent(rating, event._id);
-      setRating(rating);
+      await rateEvent(newRating, event._id);
+      setRating(newRating);
       toast.success("Event rated successfully");
     } catch (err) {
       handleError(err);
@@ -43,22 +33,21 @@ export default ({ event }: IRatingProps) => {
 
   return (
     <View style={styles.input}>
-      <Text style={styles.text}>Tu calificación:</Text>
-      <Text style={styles.text}>
-        {rating && <StarRating rating={rating} onChange={handleRating} />}
-      </Text>
+      <Text style={styles.text}>Your rating:</Text>
+      <StarRating rating={rating} onChange={handleRating} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    justifyContent: "center",
+    marginTop: 20,
     flexDirection: "row",
   },
   text: {
     fontWeight: "300",
     fontSize: 18,
     color: "#fff",
+    marginTop: 2,
   },
 });
