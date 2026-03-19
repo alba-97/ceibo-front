@@ -20,6 +20,7 @@ import fromResponseToForm from "@/utils/user/fromResponseToForm";
 import editUser from "@/api/editUser";
 import uploadImage from "@/api/uploadImage";
 import { toast } from "react-toastify";
+import { T } from "@/theme";
 
 export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
@@ -49,7 +50,6 @@ export default function ProfileScreen() {
 
       const profile_img = await uploadImage(path);
       await editUser({ profile_img });
-
       dispatch(updateUser({ profile_img }));
       toast.success("Profile image updated successfully");
     } catch (err) {
@@ -67,47 +67,61 @@ export default function ProfileScreen() {
   };
 
   return (
-    <AppGradient style={styles.container}>
+    <AppGradient style={styles.root}>
       {user._id ? (
-        <View style={styles.container}>
+        <View style={styles.root}>
           <Navbar />
           <Formik
             initialValues={fromResponseToForm(user)}
             onSubmit={handleEdit}
             validationSchema={RegisterSchema}
           >
-            <AppScrollView style={styles.scrollview}>
-              <View style={styles.imageContainer}>
+            <AppScrollView
+              style={styles.scrollview}
+              contentContainerStyle={styles.scrollContent}
+            >
+              <View style={styles.avatarSection}>
                 <InteractiveProfilePicture
                   onPress={selectImage}
                   url={user.profile_img}
                 />
+                <Text style={styles.username}>@{user.username}</Text>
               </View>
-              <ChangeData field={"username"} placeholder={"Username"} />
-              <ChangeData field={"first_name"} placeholder={"First name"} />
-              <ChangeData field={"last_name"} placeholder={"Last name"} />
-              <ChangeData field={"address"} placeholder={"Address"} />
-              <ChangeData field={"email"} placeholder={"Email"} />
-              <ChangeData field={"phone"} placeholder={"Phone"} />
-              <ChangeData
-                type="date"
-                field={"birthdate"}
-                placeholder={"Birthdate"}
-              />
 
-              <TouchableOpacity
-                onPress={handlePreferences}
-                style={styles.buttonContainer}
-              >
-                <Text style={styles.logoText}>Preferences</Text>
-              </TouchableOpacity>
+              <Text style={styles.sectionLabel}>Profile Info</Text>
+              <View style={styles.card}>
+                <ChangeData field="username" placeholder="Username" />
+                <ChangeData field="first_name" placeholder="First name" />
+                <ChangeData field="last_name" placeholder="Last name" />
+                <ChangeData field="address" placeholder="Address" />
+                <ChangeData field="email" placeholder="Email" />
+                <ChangeData field="phone" placeholder="Phone" />
+                <ChangeData
+                  type="date"
+                  field="birthdate"
+                  placeholder="Birthdate"
+                />
+              </View>
 
-              <TouchableOpacity
-                onPress={handleLogout}
-                style={styles.buttonContainer}
-              >
-                <Text style={styles.logoText}>Log Out</Text>
-              </TouchableOpacity>
+              <Text style={styles.sectionLabel}>Settings</Text>
+              <View style={styles.actionGroup}>
+                <TouchableOpacity
+                  onPress={handlePreferences}
+                  style={styles.actionRow}
+                >
+                  <Text style={styles.actionText}>Preferences</Text>
+                  <Text style={styles.actionChevron}>›</Text>
+                </TouchableOpacity>
+                <View style={styles.actionDivider} />
+                <TouchableOpacity
+                  onPress={handleLogout}
+                  style={styles.actionRow}
+                >
+                  <Text style={[styles.actionText, styles.logoutText]}>
+                    Log Out
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </AppScrollView>
           </Formik>
         </View>
@@ -119,34 +133,76 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
   },
-  scrollview: { width: "100%", paddingHorizontal: 30 },
-  imageContainer: {
+  scrollview: {
     width: "100%",
-    alignItems: "center",
-    marginTop: 20,
   },
-  logoText: {
-    color: "#F0F0F0",
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+  },
+  avatarSection: {
+    alignItems: "center",
+    paddingTop: 24,
+    paddingBottom: 32,
+  },
+  username: {
+    color: T.textMuted,
+    fontSize: 14,
+    fontWeight: "500",
+    marginTop: 10,
+    letterSpacing: 0.3,
+  },
+  sectionLabel: {
+    color: T.textMuted,
+    fontSize: 11,
     fontWeight: "700",
-    fontSize: 16,
-    marginBottom: 4,
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
+    marginBottom: 10,
+    marginTop: 8,
   },
-  buttonContainer: {
-    marginVertical: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    width: "75%",
-    backgroundColor: "#2D2D2D",
+  card: {
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.lg,
     borderWidth: 1,
-    borderColor: "#3A3A3A",
-    padding: 15,
+    borderColor: T.border,
+    marginBottom: 24,
+    overflow: "hidden",
+  },
+  actionGroup: {
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.lg,
+    borderWidth: 1,
+    borderColor: T.border,
+    overflow: "hidden",
+    marginBottom: 24,
+  },
+  actionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  actionDivider: {
+    height: 1,
+    backgroundColor: T.border,
+    marginHorizontal: 16,
+  },
+  actionText: {
+    color: T.text,
+    fontSize: 15,
+    fontWeight: "500",
+  },
+  actionChevron: {
+    color: T.textMuted,
+    fontSize: 20,
+  },
+  logoutText: {
+    color: "#FF5C5C",
   },
 });

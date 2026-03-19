@@ -1,17 +1,21 @@
-import { View, ScrollView, Dimensions, StyleSheet } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { useEffect, useState } from "react";
 import GenericButton from "../components/GenericButton";
 import { Navbar } from "../components/Navbar";
 import { useSelector } from "react-redux";
 import ProfilePicture from "../components/ProfilePicture";
-import { ProfileText } from "../components/ProfileText";
 import addFriend from "../api/addFriend";
 import removeFriend from "../api/removeFriend";
 import getUserFriends from "../api/getUserFriends";
 import { RootState } from "@/state/store";
 import handleError from "@/utils/handleError";
-
-const windowWidth = Dimensions.get("window").width;
+import { T } from "@/theme";
 
 export default function ContactInfoScreen() {
   const contact = useSelector((state: RootState) => state.selectedContact);
@@ -21,11 +25,10 @@ export default function ContactInfoScreen() {
   const [loading, setLoading] = useState<boolean>(false);
   const [isFriend, setIsFriend] = useState<boolean>(true);
 
-  const fullName = `${first_name}  ${last_name}`;
   const birthdate = contact?.birthdate?.split("-");
-  const formattedBirthdate = `${birthdate[2]?.split("T")[0]} / ${
-    birthdate[1]
-  } / ${birthdate[0]}`;
+  const formattedBirthdate = birthdate
+    ? `${birthdate[2]?.split("T")[0]} / ${birthdate[1]} / ${birthdate[0]}`
+    : null;
 
   const isAlreadyFriend = async () => {
     try {
@@ -45,9 +48,10 @@ export default function ContactInfoScreen() {
       setLoading(true);
       await addFriend(friendId);
       setIsFriend(true);
-      setLoading(false);
     } catch (err) {
       handleError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,90 +59,163 @@ export default function ContactInfoScreen() {
     try {
       setLoading(true);
       await removeFriend(user._id, friendId);
-      setLoading(false);
       setIsFriend(false);
     } catch (err) {
       handleError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#121212" }}>
+    <View style={styles.root}>
       <Navbar />
-      <ScrollView style={{ marginTop: "15%" }}>
-        <View style={styles.container}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={styles.avatarSection}>
           <ProfilePicture imageSource={contact.profile_img} />
-          <View style={{ marginTop: "5%" }}></View>
-          <ProfileText style={styles.text} text={username} />
-          <ProfileText style={styles.text} text={`Nombre: ${fullName}`} />
-          {birthdate ? (
-            <ProfileText
-              style={styles.text}
-              text={`Cumpleaños: ${formattedBirthdate}`}
+          <Text style={styles.name}>
+            {first_name} {last_name}
+          </Text>
+          <Text style={styles.username}>@{username}</Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          {formattedBirthdate && (
+            <InfoRow label="Birthday" value={formattedBirthdate} />
+          )}
+          {phone && <InfoRow label="Phone" value={phone} />}
+          {email && <InfoRow label="Email" value={email} />}
+          {address && <InfoRow label="Address" value={address} />}
+        </View>
+
+        <View style={styles.actions}>
+          {loading ? (
+            <GenericButton
+              text="Loading..."
+              buttonStyle={styles.ghostButton}
+              textStyle={{ color: T.textMuted }}
             />
+          ) : isFriend ? (
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => handleRemoveFriend(_id)}
+            >
+              <Text style={styles.removeButtonText}>Remove Friend</Text>
+            </TouchableOpacity>
           ) : (
-            ""
+            <GenericButton
+              text="Add Friend"
+              onPress={() => handleAddFriend(_id)}
+              buttonStyle={styles.addButton}
+            />
           )}
-          {phone ? (
-            <ProfileText style={styles.text} text={`Teléfono: ${phone}`} />
-          ) : (
-            ""
-          )}
-          {email ? (
-            <ProfileText style={styles.text} text={`Email: ${email}`} />
-          ) : (
-            ""
-          )}
-          {address ? (
-            <ProfileText style={styles.text} text={`Dirección: ${address}`} />
-          ) : (
-            ""
-          )}
-          <View style={{ alignItems: "center" }}>
-            {!loading ? (
-              <>
-                {!isFriend ? (
-                  <GenericButton
-                    text={"Agregar amigo"}
-                    onPress={() => handleAddFriend(_id)}
-                    buttonStyle={{ marginTop: "4%" }}
-                  />
-                ) : (
-                  <GenericButton
-                    text={"Eliminar amigo"}
-                    onPress={() => handleRemoveFriend(_id)}
-                    buttonStyle={{ marginTop: "4%" }}
-                  />
-                )}
-              </>
-            ) : (
-              <GenericButton
-                text={"Cargando..."}
-                buttonStyle={{ marginTop: "4%", backgroundColor: "#2D2D2D" }}
-              />
-            )}
-          </View>
         </View>
       </ScrollView>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 15,
-    paddingBottom: 15,
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <View style={infoRowStyles.row}>
+      <Text style={infoRowStyles.label}>{label}</Text>
+      <Text style={infoRowStyles.value}>{value}</Text>
+    </View>
+  );
+}
+
+const infoRowStyles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 13,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "white",
-    borderStyle: "solid",
-    width: windowWidth,
-    justifyContent: "center",
+    borderBottomColor: T.border,
   },
-  text: {
-    color: "#F0F0F0",
-    fontSize: 16,
+  label: {
+    color: T.textMuted,
+    fontSize: 13,
     fontWeight: "600",
-    marginLeft: 20,
-    textAlign: "center",
+    letterSpacing: 0.3,
+  },
+  value: {
+    color: T.text,
+    fontSize: 13,
+    fontWeight: "500",
+    maxWidth: "60%",
+    textAlign: "right",
+  },
+});
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: T.bg,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  avatarSection: {
+    alignItems: "center",
+    paddingTop: 28,
+    paddingBottom: 28,
+    paddingHorizontal: 24,
+  },
+  name: {
+    color: T.text,
+    fontSize: 24,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+    marginTop: 14,
+  },
+  username: {
+    color: T.textMuted,
+    fontSize: 14,
+    fontWeight: "500",
+    marginTop: 4,
+  },
+  infoCard: {
+    marginHorizontal: 20,
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.lg,
+    borderWidth: 1,
+    borderColor: T.border,
+    overflow: "hidden",
+    marginBottom: 24,
+  },
+  actions: {
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  addButton: {
+    width: "80%",
+    paddingVertical: 16,
+  },
+  ghostButton: {
+    width: "80%",
+    paddingVertical: 16,
+    backgroundColor: T.bgCard,
+    borderWidth: 1,
+    borderColor: T.border,
+  },
+  removeButton: {
+    width: "80%",
+    paddingVertical: 16,
+    borderRadius: T.radius.md,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FF5C5C",
+  },
+  removeButtonText: {
+    color: "#FF5C5C",
+    fontSize: 15,
+    fontWeight: "600",
   },
 });

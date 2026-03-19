@@ -56,7 +56,7 @@ const userSlice = createSlice({
     removeUserEvent: (state, action) => {
       let newState = { ...state };
       newState.events = newState.events.filter(
-        (item) => item._id !== action.payload
+        (item) => item._id !== action.payload,
       );
       return newState;
     },
@@ -68,10 +68,10 @@ const userSlice = createSlice({
     removeEventFromUser: (state, action) => {
       let newState = { ...state };
       newState.events = newState.events.filter(
-        (item) => item._id !== action.payload
+        (item) => item._id !== action.payload,
       );
       newState.createdEvents = newState.createdEvents.filter(
-        (item) => item._id !== action.payload
+        (item) => item._id !== action.payload,
       );
       return newState;
     },

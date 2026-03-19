@@ -22,7 +22,10 @@ const MultipleDropdown = ({
   useEffect(() => {
     setValue(selectedValues);
   }, [selectedValues]);
-  const items = useMemo(() => data.map((d) => ({ label: d.name, value: d.id })), [data]);
+  const items = useMemo(
+    () => data.map((d) => ({ label: d.name, value: d.id })),
+    [data],
+  );
 
   return (
     <View style={styles.container}>

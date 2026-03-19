@@ -5,7 +5,7 @@ import CategoryResponse from "@/interfaces/responses/Category";
 
 export default async () => {
   const { data } = await axios.get<Paginated<CategoryResponse>>(
-    `${API_URL}/categories/`
+    `${API_URL}/categories/`,
   );
   return data;
 };

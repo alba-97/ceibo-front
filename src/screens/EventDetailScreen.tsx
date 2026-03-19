@@ -13,6 +13,7 @@ import AppScrollView from "@/components/AppScrollView";
 import AppGradient from "@/components/AppGradient";
 import { useEffect, useState } from "react";
 import getOrganizerRating from "@/api/getOrganizerRating";
+import { T } from "@/theme";
 
 export default function EventDetailScreen() {
   const event = useSelector((state: RootState) => state.selectedEvent);
@@ -21,41 +22,42 @@ export default function EventDetailScreen() {
 
   useEffect(() => {
     getOrganizerRating(event._id)
-      .then(({ rating }) => setRating(rating))
+      .then(({ rating: r }) => setRating(r))
       .catch(() => {});
   }, []);
 
   return (
     <AppGradient style={styles.gradient}>
       <Navbar />
-      <AppScrollView style={styles.scrollview} contentContainerStyle={{ alignItems: "flex-start" }}>
+      <AppScrollView
+        style={styles.scrollview}
+        contentContainerStyle={{ alignItems: "flex-start" }}
+      >
         {event.img && (
           <View style={styles.heroContainer}>
             <Image source={{ uri: event.img }} style={styles.eventImage} />
             <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.75)"]}
+              colors={["transparent", "rgba(7, 9, 15, 0.92)"]}
               style={styles.heroOverlay}
             >
               <Text style={styles.title}>{event.title}</Text>
             </LinearGradient>
           </View>
         )}
+
         <View style={styles.eventContainer}>
-          <View>
-            {event.ended ? (
-              <EventEnded event={event} user={user} />
-            ) : (
-              <Enroll />
-            )}
-          </View>
+          {event.ended ? <EventEnded event={event} user={user} /> : <Enroll />}
 
           <EventOrganizer event={event} rating={rating} />
 
-          <Text style={styles.logoText}>Description</Text>
-          <Text style={styles.description}>{event.description}</Text>
+          <View style={styles.descriptionBlock}>
+            <Text style={styles.sectionLabel}>Description</Text>
+            <View style={styles.accentLine} />
+            <Text style={styles.description}>{event.description}</Text>
+          </View>
 
           {user._id && (
-            <View>
+            <View style={styles.actionsBlock}>
               <Comments event={event} />
               <EventEdit event={event} />
               <EventInvite event={event} />
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   },
   heroContainer: {
     width: "100%",
-    height: 280,
+    height: 300,
     position: "relative",
   },
   heroOverlay: {
@@ -87,40 +89,57 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingHorizontal: 20,
-    paddingBottom: 20,
-    paddingTop: 60,
+    paddingBottom: 24,
+    paddingTop: 80,
     justifyContent: "flex-end",
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "800",
-    color: "#fff",
-    lineHeight: 32,
-  },
-  eventContainer: {
-    justifyContent: "center",
-    marginTop: 5,
-    padding: 20,
-  },
-  descriptionLogo: {
-    width: 130,
-    height: 26,
-    marginTop: 10,
-  },
-  description: {
-    fontSize: 18,
-    color: "#fff",
+    color: T.text,
+    letterSpacing: -0.5,
+    lineHeight: 34,
   },
   eventImage: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
   },
-  logoText: {
-    color: "#F0F0F0",
-    fontWeight: "700",
-    fontSize: 18,
-    marginBottom: 10,
+  eventContainer: {
+    padding: 20,
+    paddingTop: 16,
+    width: "100%",
+  },
+  descriptionBlock: {
     marginTop: 24,
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.lg,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: T.border,
+  },
+  sectionLabel: {
+    color: T.textMuted,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
+    marginBottom: 8,
+  },
+  accentLine: {
+    width: 24,
+    height: 2,
+    backgroundColor: T.accent,
+    borderRadius: 1,
+    marginBottom: 12,
+  },
+  description: {
+    fontSize: 16,
+    color: T.text,
+    lineHeight: 24,
+  },
+  actionsBlock: {
+    marginTop: 20,
+    gap: 8,
   },
 });

@@ -7,7 +7,7 @@ export default async (friendId: string) => {
   const res = await axios.post(
     `${API_URL}/users/add-friend`,
     { friendId },
-    headers
+    headers,
   );
   return res.data;
 };

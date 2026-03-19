@@ -8,7 +8,7 @@ export default async () => {
   const headers = await getHeaders();
   const { data } = await axios.get<Paginated<EventResponse>>(
     `${API_URL}/events/my-events`,
-    headers
+    headers,
   );
   return data;
 };

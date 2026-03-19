@@ -12,7 +12,7 @@ export default Yup.object().shape({
   password: Yup.string()
     .matches(
       passwordRegExp,
-      "Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol"
+      "Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 symbol",
     )
     .required("Password is required"),
   email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -23,7 +23,7 @@ export default Yup.object().shape({
     .test(
       "is-date",
       "Birthdate must be a valid date",
-      (value) => value !== undefined && !isNaN(Date.parse(value))
+      (value) => value !== undefined && !isNaN(Date.parse(value)),
     )
     .test(
       "is-before-today",
@@ -31,7 +31,7 @@ export default Yup.object().shape({
       function (value) {
         const birthdate = value !== undefined ? Date.parse(value) : undefined;
         return birthdate === undefined || birthdate < Date.now();
-      }
+      },
     )
     .optional(),
   first_name: Yup.string().max(50).optional(),
@@ -41,7 +41,7 @@ export default Yup.object().shape({
     .test(
       "is-base64-image",
       "Must be a valid image",
-      (value?: string) => !value || base64ImageRegex.test(value)
+      (value?: string) => !value || base64ImageRegex.test(value),
     )
     .optional(),
 });

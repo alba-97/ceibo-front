@@ -8,7 +8,7 @@ export default async (query: EventQuery = {}) => {
   const params = new URLSearchParams({ ...query });
   const queryString = params.toString();
   const { data } = await axios.get<Paginated<EventResponse>>(
-    `${API_URL}/events?${queryString}`
+    `${API_URL}/events?${queryString}`,
   );
   return data;
 };

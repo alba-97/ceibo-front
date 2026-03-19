@@ -19,6 +19,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UserResponse from "@/interfaces/responses/User";
 import handleError from "@/utils/handleError";
 import AppGradient from "@/components/AppGradient";
+import { T } from "@/theme";
 
 export default function AddContactScreen() {
   const [contacts, setContacts] = useState<UserResponse[]>([]);
@@ -27,25 +28,21 @@ export default function AddContactScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const dispatch = useDispatch();
   const selectedContact = useSelector(
-    (state: RootState) => state.selectedContact
+    (state: RootState) => state.selectedContact,
   );
 
   const handleBack = () => {
     navigation.navigate("contacts");
   };
 
-  const handleQueryChange = (text: string) => {
-    setQuery(text);
-  };
-
   const filterContacts = () => {
     if (query) {
       setFilteredContacts(
-        contacts.filter((contact: UserResponse) =>
-          contact.username?.toLowerCase().includes(query.toLowerCase())
-        )
+        contacts.filter((c) =>
+          c.username?.toLowerCase().includes(query.toLowerCase()),
+        ),
       );
-    } else if (query === "") {
+    } else {
       setFilteredContacts([]);
     }
   };
@@ -69,59 +66,50 @@ export default function AddContactScreen() {
   }, []);
 
   return (
-    <AppGradient style={styles.container}>
+    <AppGradient style={styles.root}>
       <Navbar />
-      <View style={styles.container}>
-        <View style={styles.container2}>
-          <TouchableOpacity onPress={handleBack}>
-            <AntDesign
-              name="back"
-              size={30}
-              color="white"
-              style={styles.icon}
-            />
+      <View style={styles.content}>
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+            <AntDesign name="back" size={20} color={T.text} />
           </TouchableOpacity>
+          <Text style={styles.title}>Add Friends</Text>
+        </View>
+
+        <View style={styles.searchRow}>
           <GenericInput
             value={query}
-            onChangeText={handleQueryChange}
-            placeholder={"Buscar"}
+            onChangeText={setQuery}
+            placeholder="Search by username..."
+            customStyle={styles.searchInput}
           />
-          <TouchableOpacity onPress={() => filterContacts()}>
-            <Feather
-              name="arrow-right"
-              size={30}
-              color="white"
-              style={styles.icon}
-            />
+          <TouchableOpacity
+            onPress={filterContacts}
+            style={styles.searchButton}
+          >
+            <Feather name="arrow-right" size={18} color={T.bg} />
           </TouchableOpacity>
         </View>
-        <Text style={styles.logoText}>Add friends</Text>
 
-        {filteredContacts[0] ? (
-          <ScrollView>
-            <View>
-              {filteredContacts.map((contact, i) => (
-                <Text
-                  style={styles.text}
-                  key={i}
-                  onPress={() => handleContactPress(contact)}
-                >
-                  <SingleContact {...contact} />
-                </Text>
-              ))}
-            </View>
+        {filteredContacts.length > 0 ? (
+          <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+            {filteredContacts.map((contact, i) => (
+              <TouchableOpacity
+                key={i}
+                style={styles.contactRow}
+                onPress={() => handleContactPress(contact)}
+              >
+                <SingleContact {...contact} />
+              </TouchableOpacity>
+            ))}
           </ScrollView>
         ) : (
-          <>
-            <Text style={styles.logoText}>Search Contacts</Text>
-            <View
-              style={{
-                alignItems: "center",
-                paddingBottom: "1%",
-                paddingTop: "2%",
-              }}
-            ></View>
-          </>
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle}>Find someone</Text>
+            <Text style={styles.emptyText}>
+              Search by username and tap the arrow to see results
+            </Text>
+          </View>
         )}
       </View>
     </AppGradient>
@@ -129,37 +117,78 @@ export default function AddContactScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
-    height: "100%",
+  },
+  content: {
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    marginTop: 24,
+    marginBottom: 20,
+  },
+  backButton: {
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.sm,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: T.border,
+  },
+  title: {
+    color: T.text,
+    fontSize: 24,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+  },
+  searchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 20,
+  },
+  searchInput: {
+    flex: 1,
+    width: undefined,
+  },
+  searchButton: {
+    backgroundColor: T.accent,
+    borderRadius: T.radius.md,
+    padding: 14,
+    height: 48,
     alignItems: "center",
     justifyContent: "center",
-    color: "white",
   },
-  container2: {
-    paddingTop: "5%",
-    paddingBottom: "4%",
-    alignItems: "center",
-    flexDirection: "row",
+  list: {
+    flex: 1,
   },
-  logoText: {
-    color: "#F0F0F0",
-    fontWeight: "700",
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 24,
-    textAlign: "center",
-  },
-  text: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
+  contactRow: {
+    paddingVertical: 4,
     borderBottomWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderBottomColor: T.border,
   },
-  icon: { marginLeft: "4%" },
+  emptyState: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    paddingHorizontal: 24,
+  },
+  emptyTitle: {
+    color: T.text,
+    fontSize: 20,
+    fontWeight: "700",
+    letterSpacing: -0.3,
+  },
+  emptyText: {
+    color: T.textMuted,
+    fontSize: 14,
+    textAlign: "center",
+    lineHeight: 20,
+  },
 });

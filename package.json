@@ -8,7 +8,8 @@
     "build:web": "npx expo export --platform web",
     "ios": "npx expo run:ios --port 3000",
     "web": "npx expo start --web --port 3000",
-    "android": "expo run:android"
+    "android": "expo run:android",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
@@ -70,7 +71,8 @@
     "@types/react-native-snap-carousel": "^3.8.11",
     "@types/react-test-renderer": "^19.0.0",
     "babel-plugin-module-resolver": "^5.0.2",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4"
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "prettier": "^3.5.3"
   },
   "overrides": {
     "node-fetch": "^2.7.0",

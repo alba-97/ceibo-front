@@ -1,4 +1,5 @@
 import { KeyboardTypeOptions, TextInput, TextStyle } from "react-native";
+import { T } from "@/theme";
 
 interface IGenericInputProps {
   customStyle?: TextStyle;
@@ -26,21 +27,21 @@ export default ({
       placeholder={placeholder}
       style={[
         {
-          fontSize: 16,
-          color: "#F0F0F0",
-          backgroundColor: "#1E1E1E",
-          borderRadius: 8,
+          fontSize: 15,
+          color: T.text,
+          backgroundColor: T.bgCard,
+          borderRadius: T.radius.md,
           borderWidth: 1,
-          borderColor: "#3A3A3A",
-          paddingHorizontal: 12,
-          paddingVertical: 8,
+          borderColor: T.border,
+          paddingHorizontal: 14,
+          paddingVertical: 10,
           width: "80%",
           height: 48,
         },
         customStyle,
         { flexDirection: "row" },
       ]}
-      placeholderTextColor="#999"
+      placeholderTextColor={T.textMuted}
     />
   );
 };

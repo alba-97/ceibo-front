@@ -5,7 +5,12 @@ interface IScrollViewProps extends ScrollViewProps {
   setIsStill?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default ({ children, setIsStill, contentContainerStyle, ...props }: IScrollViewProps) => {
+export default ({
+  children,
+  setIsStill,
+  contentContainerStyle,
+  ...props
+}: IScrollViewProps) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

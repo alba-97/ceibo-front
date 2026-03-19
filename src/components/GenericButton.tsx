@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, TextStyle, ViewStyle } from "react-native";
+import { T } from "@/theme";
 
 interface IGenericButtonProps {
   text: string;
@@ -18,21 +19,21 @@ const GenericButton = ({
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: "#2D2D2D",
-        borderRadius: 10,
+        backgroundColor: T.accent,
+        borderRadius: T.radius.md,
         alignItems: "center",
-        padding: 15,
-        borderWidth: 1,
-        borderColor: "#3A3A3A",
+        paddingVertical: 14,
+        paddingHorizontal: 28,
         ...buttonStyle,
       }}
       {...props}
     >
       <Text
         style={{
-          color: "white",
-          fontSize: 16,
-          fontWeight: "bold",
+          color: T.bg,
+          fontSize: 15,
+          fontWeight: "700",
+          letterSpacing: 0.5,
           ...textStyle,
         }}
       >
@@ -41,4 +42,5 @@ const GenericButton = ({
     </TouchableOpacity>
   );
 };
+
 export default GenericButton;

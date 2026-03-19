@@ -42,7 +42,13 @@ const ScreenStack = () => {
   const isDesktop = width >= DESKTOP_BREAKPOINT;
 
   return (
-    <View style={{ backgroundColor: "black", height: "100%", flexDirection: isDesktop ? "row" : "column" }}>
+    <View
+      style={{
+        backgroundColor: "black",
+        height: "100%",
+        flexDirection: isDesktop ? "row" : "column",
+      }}
+    >
       {isDesktop && <SideNavbar />}
       <View style={{ flex: 1 }}>
         <Navigator

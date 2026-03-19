@@ -8,7 +8,7 @@ export default async () => {
   const headers = await getHeaders();
   const { data } = await axios.get<Paginated<UserResponse>>(
     `${API_URL}/users/friends`,
-    headers
+    headers,
   );
   return data;
 };

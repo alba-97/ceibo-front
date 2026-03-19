@@ -6,7 +6,7 @@ export default async (userId: string, friendId: string) => {
     `${API_URL}/users/remove-friend/${friendId}`,
     {
       userId: userId,
-    }
+    },
   );
   return data;
 };

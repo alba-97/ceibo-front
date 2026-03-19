@@ -24,6 +24,7 @@ import { setRefetch } from "@/state/common";
 import fromResponseToForm from "@/utils/event/fromResponseToForm";
 import { toast } from "react-toastify";
 import LoginScreen from "./LoginScreen";
+import { T } from "@/theme";
 
 export default function EditEventScreen() {
   const event = useSelector((state: RootState) => state.selectedEvent);
@@ -62,7 +63,7 @@ export default function EditEventScreen() {
   if (!event._id) return <LoginScreen />;
 
   return (
-    <View style={styles.container}>
+    <View style={styles.root}>
       <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
@@ -70,30 +71,62 @@ export default function EditEventScreen() {
           onSubmit={handleSubmit}
         >
           {({ handleSubmit: submit, values, setFieldValue }) => (
-            <AppScrollView style={styles.scrollView}>
+            <AppScrollView
+              style={styles.scrollView}
+              contentContainerStyle={styles.scrollContent}
+            >
+              <View style={styles.header}>
+                <Text style={styles.eyebrow}>Edit event</Text>
+                <Text style={styles.title}>Save Changes</Text>
+                <View style={styles.accentLine} />
+              </View>
+
               <View style={styles.form}>
                 <TextField placeholder="Title" field="title" />
                 <TextField placeholder="Description" field="description" />
                 <TextField placeholder="Location" field="location" />
                 <DateField placeholder="Start Date" field="start_date" />
                 <DateField placeholder="End Date" field="end_date" />
-                <ImageField placeholder="Image" field="img" />
-                <TextField placeholder="Minimum age" field="min_age" />
-                <TextField placeholder="Maximum age" field="max_age" />
-                <TextField placeholder="Minimum to pay" field="min_to_pay" />
-                <TextField placeholder="Total to pay" field="total_to_pay" />
+                <ImageField placeholder="Cover Image" field="img" />
+                <View style={styles.row}>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Min Age" field="min_age" />
+                  </View>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Max Age" field="max_age" />
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Min to Pay" field="min_to_pay" />
+                  </View>
+                  <View style={styles.halfField}>
+                    <TextField
+                      placeholder="Total to Pay"
+                      field="total_to_pay"
+                    />
+                  </View>
+                </View>
                 <SelectField data={categories} field="category" />
-                <TextField placeholder="Link to pay" field="link_to_pay" />
-                <View style={styles.checkboxRow}>
+                <TextField placeholder="Link to Pay" field="link_to_pay" />
+
+                <View style={styles.toggleRow}>
+                  <Text style={styles.toggleLabel}>Private event</Text>
                   <Switch
                     value={values.private}
-                    onValueChange={(v) => { setFieldValue("private", v); }}
-                    trackColor={{ false: "#3A3A3A", true: "#ffffff" }}
-                    thumbColor={values.private ? "#121212" : "#f4f3f4"}
+                    onValueChange={(v) => setFieldValue("private", v)}
+                    trackColor={{ false: T.border, true: T.accentDim }}
+                    thumbColor={values.private ? T.accent : T.textMuted}
                   />
-                  <Text style={styles.checkboxLabel}>Private event?</Text>
                 </View>
-                <GenericButton onPress={submit} text="Guardar cambios" />
+              </View>
+
+              <View style={styles.actions}>
+                <GenericButton
+                  onPress={submit}
+                  text="Save Changes"
+                  buttonStyle={styles.primaryButton}
+                />
               </View>
             </AppScrollView>
           )}
@@ -104,33 +137,82 @@ export default function EditEventScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
     height: "100%",
-    alignItems: "center",
   },
   gradient: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   scrollView: {
     width: "100%",
   },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+  },
+  header: {
+    marginTop: 24,
+    marginBottom: 28,
+  },
+  eyebrow: {
+    color: T.accent,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    marginBottom: 8,
+  },
+  title: {
+    color: T.text,
+    fontSize: 32,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+    marginBottom: 12,
+  },
+  accentLine: {
+    width: 40,
+    height: 3,
+    backgroundColor: T.accent,
+    borderRadius: 2,
+  },
   form: {
     width: "100%",
-    alignItems: "center",
-    marginVertical: 20,
   },
-  checkboxRow: {
+  row: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  halfField: {
+    flex: 1,
+  },
+  toggleRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 8,
-    gap: 10,
+    justifyContent: "space-between",
+    backgroundColor: T.bgCard,
+    borderRadius: T.radius.md,
+    borderWidth: 1,
+    borderColor: T.border,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 16,
+    width: "100%",
   },
-  checkboxLabel: {
-    color: "white",
-    fontSize: 16,
+  toggleLabel: {
+    color: T.text,
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  actions: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  primaryButton: {
+    width: "80%",
+    paddingVertical: 16,
   },
 });

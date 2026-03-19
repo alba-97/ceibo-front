@@ -19,7 +19,7 @@ export default async (uri: string) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
   return data.imageUrl;
 };

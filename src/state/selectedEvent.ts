@@ -37,7 +37,7 @@ const selectedEventSlice = createSlice({
     },
     updateSelectedEvent: (
       state,
-      action: { payload: Partial<EventResponse> }
+      action: { payload: Partial<EventResponse> },
     ) => {
       const newState = { ...state, ...action.payload };
       return newState;

@@ -1,4 +1,5 @@
 import { View, Text, ViewStyle, TextStyle } from "react-native";
+import { T } from "@/theme";
 
 interface IProfileTextProps {
   text: string;
@@ -7,17 +8,21 @@ interface IProfileTextProps {
   customStyleText?: TextStyle;
 }
 
-export const ProfileText = ({ text }: IProfileTextProps) => {
+export const ProfileText = ({ text, style }: IProfileTextProps) => {
   return (
     <View>
       <Text
-        style={{
-          fontSize: 32,
-          fontWeight: "bold",
-          color: "white",
-          marginTop: 10,
-          marginBottom: 24,
-        }}
+        style={[
+          {
+            fontSize: 28,
+            fontWeight: "800",
+            color: T.text,
+            letterSpacing: -0.5,
+            marginTop: 8,
+            marginBottom: 24,
+          },
+          style,
+        ]}
       >
         {text}
       </Text>

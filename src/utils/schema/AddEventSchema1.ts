@@ -11,7 +11,7 @@ export default Yup.object().shape({
     .test(
       "is-date",
       "Start date must be a valid date",
-      (value) => value !== undefined && !isNaN(Date.parse(value))
+      (value) => value !== undefined && !isNaN(Date.parse(value)),
     )
     .test("is-future-date", "Start date must be in the future", (value) => {
       if (value === undefined) return false;
@@ -24,7 +24,7 @@ export default Yup.object().shape({
     .test(
       "is-date",
       "End date must be a valid date",
-      (value) => value !== undefined && !isNaN(Date.parse(value))
+      (value) => value !== undefined && !isNaN(Date.parse(value)),
     )
     .test(
       "is-after-start-date",
@@ -33,7 +33,7 @@ export default Yup.object().shape({
         const startDate = parent.start_date;
         const endDate = value !== undefined ? Date.parse(value) : undefined;
         return endDate !== undefined && endDate >= Date.parse(startDate);
-      }
+      },
     )
     .required("End date is required"),
 
@@ -41,7 +41,7 @@ export default Yup.object().shape({
     .test(
       "is-base64-image",
       "Must be a valid image",
-      (value?: string) => !value || base64ImageRegex.test(value)
+      (value?: string) => !value || base64ImageRegex.test(value),
     )
     .optional(),
 });

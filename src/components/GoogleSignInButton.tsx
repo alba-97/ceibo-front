@@ -53,7 +53,7 @@ const GoogleSignInButton = () => {
         `${API_URL}/users/find-email`,
         {
           email: user.email,
-        }
+        },
       );
 
       if (!checkExistingUsers?.data) {

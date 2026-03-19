@@ -1,0 +1,20 @@
+export const T = {
+  bg: "#07090F",
+  bgCard: "#0E1522",
+  bgElevated: "#16202E",
+  border: "#1C2B40",
+  borderAccent: "rgba(232, 160, 32, 0.4)",
+  accent: "#E8A020",
+  accentDim: "rgba(232, 160, 32, 0.12)",
+  accentAlt: "#FF6B35",
+  text: "#E8EEF8",
+  textMuted: "#7A8599",
+  textAccent: "#E8A020",
+  white: "#FFFFFF",
+  radius: {
+    sm: 6,
+    md: 10,
+    lg: 16,
+    xl: 24,
+  },
+};

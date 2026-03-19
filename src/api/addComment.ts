@@ -7,7 +7,7 @@ export default async (text: string, eventId: string) => {
   const { data } = await axios.post(
     `${API_URL}/comments/${eventId}`,
     { text },
-    headers
+    headers,
   );
   return data;
 };

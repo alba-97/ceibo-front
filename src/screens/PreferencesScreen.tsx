@@ -19,11 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import AppGradient from "@/components/AppGradient";
 import IOptionSelect from "@/interfaces/OptionSelect";
+import { T } from "@/theme";
 
 export default function PreferencesScreen() {
   const user = useSelector((state: RootState) => state.user);
   const [selected, setSelected] = useState<string[]>(
-    user.preferences?.map((p) => p._id) ?? []
+    user.preferences?.map((p) => p._id) ?? [],
   );
   const [categories, setCategories] = useState<IOptionSelect[]>([]);
 
@@ -51,25 +52,33 @@ export default function PreferencesScreen() {
   };
 
   return (
-    <AppGradient style={styles.container}>
+    <AppGradient style={styles.root}>
       <Navbar />
-      <ScrollView style={styles.scroll}>
-        <Text style={styles.subtitle}>
-          We will show events that match your preferences
-        </Text>
-        <View style={styles.container}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={styles.header}>
+          <Text style={styles.eyebrow}>Personalize</Text>
+          <Text style={styles.title}>Preferences</Text>
+          <View style={styles.accentLine} />
+          <Text style={styles.subtitle}>
+            We'll surface events that match your interests
+          </Text>
+        </View>
+
+        <View style={styles.dropdownWrapper}>
           <MultipleDropdown
             data={categories}
             selectedValues={selected}
-            onSelect={(selectedValues: string[]) => {
-              setSelected(selectedValues);
-            }}
+            onSelect={(selectedValues: string[]) => setSelected(selectedValues)}
           />
-          <View style={styles.logoutContainer}>
-            <TouchableOpacity onPress={handleSubmit}>
-              <Text style={styles.logoText}>Update Preferences</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+
+        <View style={styles.actions}>
+          <TouchableOpacity onPress={handleSubmit} style={styles.primaryButton}>
+            <Text style={styles.primaryButtonText}>Save Preferences</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </AppGradient>
@@ -77,56 +86,68 @@ export default function PreferencesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  inputContainer: {
-    color: "white",
-    backgroundColor: "rgba(225, 200, 200, 0.2)",
-    maxWidth: "80%",
-  },
-  badge: {
-    backgroundColor: "rgba(25, 20, 20, 0.3)",
   },
   scroll: {
     flex: 1,
     width: "100%",
-    paddingTop: "10%",
   },
-  text: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
   },
-  logoText: {
-    color: "#F0F0F0",
+  header: {
+    marginTop: 28,
+    marginBottom: 28,
+  },
+  eyebrow: {
+    color: T.accent,
+    fontSize: 11,
     fontWeight: "700",
-    fontSize: 18,
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    marginBottom: 8,
+  },
+  title: {
+    color: T.text,
+    fontSize: 32,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+    marginBottom: 12,
+  },
+  accentLine: {
+    width: 40,
+    height: 3,
+    backgroundColor: T.accent,
+    borderRadius: 2,
+    marginBottom: 14,
   },
   subtitle: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 40,
+    color: T.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
   },
-  logo: {
-    width: 120,
-    height: 35,
+  dropdownWrapper: {
+    width: "100%",
+    marginBottom: 28,
   },
-  logoutContainer: {
-    padding: 15,
-    borderRadius: 10,
+  actions: {
     alignItems: "center",
-    marginBottom: 10,
-    width: "65%",
-    backgroundColor: "#2D2D2D",
-    borderWidth: 1,
-    borderColor: "#3A3A3A",
+  },
+  primaryButton: {
+    backgroundColor: T.accent,
+    borderRadius: T.radius.md,
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    width: "80%",
+    alignItems: "center",
+  },
+  primaryButtonText: {
+    color: T.bg,
+    fontSize: 15,
+    fontWeight: "700",
+    letterSpacing: 0.5,
   },
 });

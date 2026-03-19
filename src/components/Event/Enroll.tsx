@@ -46,7 +46,7 @@ export default () => {
       {user._id && event._id && !isCreator && (
         <View style={styles.buttonContainer}>
           {!user.events?.some(
-            (userEvent: EventResponse) => userEvent._id === event._id
+            (userEvent: EventResponse) => userEvent._id === event._id,
           ) ? (
             <View>
               {!loading ? (

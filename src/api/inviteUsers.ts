@@ -12,6 +12,6 @@ export default async (invited: string[], event: EventForm, method: string) => {
       event,
       method,
     },
-    headers
+    headers,
   );
 };

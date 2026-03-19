@@ -16,7 +16,10 @@ const SelectField = ({ data, field }: ISelectFieldProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(data[0]?.value ?? "");
   const initialized = useRef(false);
-  const items = useMemo(() => data.map((d) => ({ label: d.label, value: d.value })), [data]);
+  const items = useMemo(
+    () => data.map((d) => ({ label: d.label, value: d.value })),
+    [data],
+  );
 
   useEffect(() => {
     if (!initialized.current && data[0]?.value) {

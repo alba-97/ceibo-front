@@ -1,9 +1,4 @@
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import fromDateToDateDescription from "../utils/fromDateToDateDescription";
 import EventResponse from "@/interfaces/responses/Event";

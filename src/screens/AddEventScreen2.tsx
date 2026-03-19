@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
@@ -20,6 +20,7 @@ import GenericButton from "@/components/GenericButton";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
 import { toast } from "react-toastify";
+import { T } from "@/theme";
 
 interface IAddEventScreen2Props {
   route?: {
@@ -50,8 +51,7 @@ export default function AddEventScreen2({
   const fetchCategories = async () => {
     try {
       const { data } = await getCategories();
-      const categories = fromResponsesToOptions(data);
-      setCategories(categories);
+      setCategories(fromResponsesToOptions(data));
     } catch (err) {
       handleError(err);
     }
@@ -66,7 +66,7 @@ export default function AddEventScreen2({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.root}>
       <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
@@ -75,16 +75,47 @@ export default function AddEventScreen2({
           onSubmit={submitEvent}
         >
           {({ handleSubmit }) => (
-            <AppScrollView style={styles.scrollView}>
-              <BackArrow onPress={handleBack} />
+            <AppScrollView
+              style={styles.scrollView}
+              contentContainerStyle={styles.scrollContent}
+            >
+              <View style={styles.header}>
+                <BackArrow onPress={handleBack} />
+                <Text style={styles.step}>Step 2 of 2</Text>
+                <Text style={styles.title}>Event Details</Text>
+                <View style={styles.accentLine} />
+              </View>
+
               <View style={styles.form}>
-                <TextField placeholder="Minimum age" field="min_age" />
-                <TextField placeholder="Maximum age" field="max_age" />
-                <TextField placeholder="Minimum to pay" field="min_to_pay" />
-                <TextField placeholder="Total to pay" field="total_to_pay" />
+                <View style={styles.row}>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Min Age" field="min_age" />
+                  </View>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Max Age" field="max_age" />
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.halfField}>
+                    <TextField placeholder="Min to Pay" field="min_to_pay" />
+                  </View>
+                  <View style={styles.halfField}>
+                    <TextField
+                      placeholder="Total to Pay"
+                      field="total_to_pay"
+                    />
+                  </View>
+                </View>
                 <SelectField data={categories} field="category" />
-                <TextField placeholder="Link to pay" field="link_to_pay" />
-                <GenericButton onPress={handleSubmit} text="Submit" />
+                <TextField placeholder="Link to Pay" field="link_to_pay" />
+              </View>
+
+              <View style={styles.actions}>
+                <GenericButton
+                  onPress={handleSubmit}
+                  text="Publish Event"
+                  buttonStyle={styles.primaryButton}
+                />
               </View>
             </AppScrollView>
           )}
@@ -95,23 +126,66 @@ export default function AddEventScreen2({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
     height: "100%",
-    alignItems: "center",
   },
   gradient: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   scrollView: {
     width: "100%",
   },
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+  },
+  header: {
+    marginTop: 16,
+    marginBottom: 28,
+  },
+  step: {
+    color: T.accent,
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  title: {
+    color: T.text,
+    fontSize: 32,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+    marginBottom: 12,
+  },
+  accentLine: {
+    width: 40,
+    height: 3,
+    backgroundColor: T.accent,
+    borderRadius: 2,
+  },
   form: {
     width: "100%",
+  },
+  row: {
+    flexDirection: "row",
+    width: "100%",
+    gap: 0,
+  },
+  halfField: {
+    flex: 1,
+  },
+  actions: {
+    width: "100%",
     alignItems: "center",
-    marginVertical: 20,
+    marginTop: 16,
+  },
+  primaryButton: {
+    width: "80%",
+    paddingVertical: 16,
   },
 });

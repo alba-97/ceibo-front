@@ -1,4 +1,4 @@
-import { Text, View, TextInput } from "react-native";
+import { Text, View, TextInput, StyleSheet } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import GenericInput from "../components/GenericInput";
 import { Navbar } from "../components/Navbar";
@@ -15,9 +15,9 @@ import { Formik } from "formik";
 import EventQuery, { EventQueryType } from "@/interfaces/queries/Event";
 import AppGradient from "@/components/AppGradient";
 import AppScrollView from "@/components/AppScrollView";
-import { StyleSheet } from "react-native";
 import { RootState } from "@/state/store";
 import SearchImage from "@/components/SearchImage";
+import { T } from "@/theme";
 
 export default function SearchScreen() {
   const options = [
@@ -67,7 +67,7 @@ export default function SearchScreen() {
   }, [refetch]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.root}>
       <AppGradient style={styles.gradient}>
         <Navbar />
         <Formik
@@ -78,16 +78,17 @@ export default function SearchScreen() {
           onSubmit={handleSearch}
         >
           {({ handleSubmit, setFieldValue, values }) => (
-            <View style={styles.form}>
+            <View style={styles.searchSection}>
+              <Text style={styles.heading}>Discover</Text>
               <GenericInput
                 value={values.searchTerm}
                 onSubmitEditing={handleSubmit}
                 onChangeText={(searchTerm: string) =>
                   setFieldValue("searchTerm", searchTerm)
                 }
-                placeholder="Search event"
+                placeholder="Search events..."
+                customStyle={styles.searchInput}
               />
-
               <RadioButton
                 options={options}
                 onSelect={(option) => setFieldValue("search", option.value)}
@@ -95,11 +96,18 @@ export default function SearchScreen() {
             </View>
           )}
         </Formik>
-        <View style={styles.eventContainer}>
-          <AppScrollView style={styles.scrollView} contentContainerStyle={{ alignItems: "flex-start" }}>
+
+        <View style={styles.resultsSection}>
+          <Text style={styles.resultsLabel}>
+            {results.length > 0 ? `${results.length} results` : "No results"}
+          </Text>
+          <AppScrollView
+            style={styles.scrollView}
+            contentContainerStyle={{ alignItems: "flex-start" }}
+          >
             {results.map((item, index) => (
               <SearchImage key={index} event={item} onPress={handlePress} />
-            )) ?? <Text>Loading data...</Text>}
+            ))}
           </AppScrollView>
         </View>
       </AppGradient>
@@ -108,7 +116,7 @@ export default function SearchScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
   },
@@ -116,15 +124,36 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  form: {
-    width: "100%",
-    paddingTop: "5%",
+  searchSection: {
+    paddingTop: 24,
     paddingHorizontal: 20,
+    paddingBottom: 8,
   },
-  eventContainer: {
+  heading: {
+    color: T.text,
+    fontSize: 28,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+    marginBottom: 16,
+  },
+  searchInput: {
+    width: "100%",
+    backgroundColor: T.bgCard,
+    borderColor: T.border,
+    marginBottom: 12,
+  },
+  resultsSection: {
     flex: 1,
     paddingHorizontal: 20,
     width: "100%",
+  },
+  resultsLabel: {
+    color: T.textMuted,
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    marginBottom: 12,
   },
   scrollView: {
     width: "100%",

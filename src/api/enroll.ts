@@ -7,7 +7,7 @@ export default async (id: string) => {
   const { data } = await axios.post(
     `${API_URL}/events/enroll`,
     { eventId: id },
-    headers
+    headers,
   );
   return data;
 };

@@ -8,7 +8,7 @@ export default async (query: string) => {
   const headers = await getHeaders();
   const { data } = await axios.get<Paginated<EventResponse>>(
     `${API_URL}/events/search/category?query=${query}`,
-    headers
+    headers,
   );
   return data;
 };

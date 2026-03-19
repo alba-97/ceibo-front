@@ -15,7 +15,7 @@ interface IDatePickerProps {
 
 export const DatePicker = ({ value, onChange }: IDatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState(
-    typeof value === "string" ? new Date(value) : value
+    typeof value === "string" ? new Date(value) : value,
   );
   const [showPicker, setShowPicker] = useState(false);
   const [_, setIsEditing] = useState(false);

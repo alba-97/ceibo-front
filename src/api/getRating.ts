@@ -10,7 +10,7 @@ export default async (id: string) => {
   const headers = await getHeaders();
   const { data } = await axios.get<RatingResponse>(
     `${API_URL}/events/${id}/rating`,
-    headers
+    headers,
   );
   return data;
 };

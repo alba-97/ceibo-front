@@ -81,7 +81,7 @@ const Calendar = () => {
   const renderEventPreviews = () => {
     if (selectedDate) {
       const selectedEvents = calendarData.find(
-        (item) => item.date === selectedDate
+        (item) => item.date === selectedDate,
       )?.events;
 
       if (selectedEvents && selectedEvents.length > 0) {

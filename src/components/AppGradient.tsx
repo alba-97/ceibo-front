@@ -1,15 +1,16 @@
-import { View, ViewStyle } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { ViewStyle } from "react-native";
 
 interface IAppGradientProps {
-  className?: string;
   children?: React.ReactNode;
   style?: ViewStyle;
 }
 
-export default ({ className, children, style, ...props }: IAppGradientProps) => {
-  return (
-    <View style={[{ backgroundColor: "#121212" }, style]} {...props}>
-      {children}
-    </View>
-  );
-};
+export default ({ children, style }: IAppGradientProps) => (
+  <LinearGradient
+    colors={["#07090F", "#0C1220"]}
+    style={[{ flex: 1, width: "100%" }, style]}
+  >
+    {children}
+  </LinearGradient>
+);

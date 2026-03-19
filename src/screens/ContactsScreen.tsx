@@ -22,6 +22,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import handleError from "@/utils/handleError";
 import GenericButton from "@/components/GenericButton";
 import AppGradient from "@/components/AppGradient";
+import { T } from "@/theme";
 
 export default function ContactsScreen() {
   const [query, setQuery] = useState("");
@@ -41,17 +42,9 @@ export default function ContactsScreen() {
     }
   };
 
-  const handleFetch = async () => {
-    try {
-      await fetchFriends();
-    } catch (err) {
-      handleError(err);
-    }
-  };
-
   useEffect(() => {
     try {
-      handleFetch();
+      fetchFriends();
     } catch (err) {
       handleError(err);
     }
@@ -59,14 +52,9 @@ export default function ContactsScreen() {
 
   const handleQueryChange = (text: string) => {
     setQuery(text);
-    filterContacts(text);
-  };
-
-  const filterContacts = (text: string) => {
     const filtered = contacts?.filter(
-      (contact) =>
-        contact.username &&
-        contact.username.toLowerCase().includes(text.toLowerCase())
+      (c) =>
+        c.username && c.username.toLowerCase().includes(text.toLowerCase()),
     );
     setFilteredContacts(filtered);
   };
@@ -77,53 +65,59 @@ export default function ContactsScreen() {
   };
 
   return (
-    <AppGradient style={styles.container}>
+    <AppGradient style={styles.root}>
       <Navbar />
       {user?.username ? (
-        <View style={styles.container}>
-          <View style={styles.container2}>
+        <View style={styles.content}>
+          <View style={styles.headerRow}>
+            <View style={styles.titleBlock}>
+              <Text style={styles.title}>Friends</Text>
+              <Text style={styles.count}>{filteredContacts.length}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={fetchFriends}
+              style={styles.refreshButton}
+            >
+              <AntDesign name="reload1" size={18} color={T.accent} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.searchRow}>
             <GenericInput
               value={query}
               onChangeText={handleQueryChange}
-              placeholder={"Buscar"}
-              customStyle={styles.input}
+              placeholder="Search friends..."
+              customStyle={styles.searchInput}
             />
-            <TouchableOpacity onPress={fetchFriends}>
-              <AntDesign
-                name="reload1"
-                size={30}
-                color="white"
-                style={styles.reload}
-              />
-            </TouchableOpacity>
           </View>
-          <Text style={styles.logoText}>Amigos</Text>
-          <ScrollView>
-            <View>
-              {filteredContacts?.map((contact, i) => (
-                <Text
-                  style={styles.text}
-                  key={i}
-                  onPress={() => handleContactPress(contact)}
-                >
-                  <SingleContact {...contact} />
-                </Text>
-              ))}
-            </View>
+
+          <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+            {filteredContacts?.map((contact, i) => (
+              <TouchableOpacity
+                key={i}
+                style={styles.contactRow}
+                onPress={() => handleContactPress(contact)}
+              >
+                <SingleContact {...contact} />
+              </TouchableOpacity>
+            ))}
+            {filteredContacts.length === 0 && (
+              <Text style={styles.emptyText}>No friends found</Text>
+            )}
           </ScrollView>
           <FloatingButton />
         </View>
       ) : (
-        <View style={[styles.container, { flex: 1, justifyContent: "center" }]}>
-          <Text style={styles.loginText}>
-            Para ver contactos, inicie sesión
+        <View style={styles.guestState}>
+          <Text style={styles.guestTitle}>Sign in to see your friends</Text>
+          <Text style={styles.guestSub}>
+            Connect with people in your network
           </Text>
-          <View style={{ flex: 1, alignItems: "center", marginTop: "5%" }}>
-            <GenericButton
-              text="Login"
-              onPress={() => navigation.navigate("login")}
-            />
-          </View>
+          <GenericButton
+            text="Sign In"
+            onPress={() => navigation.navigate("login")}
+            buttonStyle={styles.guestButton}
+          />
         </View>
       )}
     </AppGradient>
@@ -131,50 +125,86 @@ export default function ContactsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
-    height: "100%",
+  },
+  content: {
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 28,
+    marginBottom: 16,
+  },
+  titleBlock: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    gap: 10,
+  },
+  title: {
+    color: T.text,
+    fontSize: 28,
+    fontWeight: "800",
+    letterSpacing: -0.5,
+  },
+  count: {
+    color: T.accent,
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  refreshButton: {
+    backgroundColor: T.accentDim,
+    borderRadius: T.radius.md,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: T.borderAccent,
+  },
+  searchRow: {
+    marginBottom: 16,
+  },
+  searchInput: {
+    width: "100%",
+  },
+  list: {
+    flex: 1,
+  },
+  contactRow: {
+    paddingVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: T.border,
+  },
+  emptyText: {
+    color: T.textMuted,
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 32,
+  },
+  guestState: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    color: "white",
+    paddingHorizontal: 32,
+    gap: 12,
   },
-  container2: {
-    paddingTop: "5%",
-    paddingBottom: "4%",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  text: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-    borderBottomWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-  },
-  logoText: {
-    color: "#F0F0F0",
+  guestTitle: {
+    color: T.text,
+    fontSize: 22,
     fontWeight: "700",
-    fontSize: 18,
-    marginBottom: 10,
-    marginTop: 24,
     textAlign: "center",
+    letterSpacing: -0.3,
   },
-  loginText: {
-    paddingBottom: "1%",
-    color: "#FFF",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: "5%",
+  guestSub: {
+    color: T.textMuted,
+    fontSize: 14,
     textAlign: "center",
+    marginBottom: 8,
   },
-  input: {
-    marginLeft: "5%",
-  },
-  reload: {
-    marginLeft: "15%",
+  guestButton: {
+    paddingHorizontal: 40,
   },
 });

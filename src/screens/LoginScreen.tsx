@@ -10,7 +10,6 @@ import AppScrollView from "@/components/AppScrollView";
 import login from "@/api/login";
 import AppGradient from "@/components/AppGradient";
 import { Formik } from "formik";
-import { ProfileText } from "@/components/ProfileText";
 import TextField from "@/components/TextField";
 import LoginSchema from "@/utils/schema/LoginSchema";
 import LoginForm from "@/interfaces/forms/Login";
@@ -18,6 +17,7 @@ import GenericButton from "@/components/GenericButton";
 import { setRefresh } from "@/state/common";
 import loginInitialValues from "@/common/loginInitialValues";
 import getPastEvents from "../api/getCreatedEvents";
+import { T } from "@/theme";
 
 export default function LoginScreen() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <AppGradient style={styles.container}>
+    <AppGradient style={styles.root}>
       <Navbar />
       <Formik
         initialValues={loginInitialValues}
@@ -55,8 +55,16 @@ export default function LoginScreen() {
         validationSchema={LoginSchema}
       >
         {({ handleSubmit }) => (
-          <AppScrollView style={styles.scrollView}>
-            <ProfileText text="Login" />
+          <AppScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.header}>
+              <Text style={styles.eyebrow}>Welcome back</Text>
+              <Text style={styles.title}>Sign In</Text>
+              <View style={styles.accentLine} />
+            </View>
+
             <View style={styles.form}>
               <TextField placeholder="Username" field="username" />
               <TextField
@@ -67,14 +75,15 @@ export default function LoginScreen() {
               />
             </View>
 
-            <GenericButton
-              text="Login"
-              onPress={() => handleSubmit()}
-              textStyle={styles.loginButton}
-            />
-            <View style={styles.container}>
-              <Text style={styles.text} onPress={handleSignup}>
-                Don't have an account? Create one
+            <View style={styles.actions}>
+              <GenericButton
+                text="Sign In"
+                onPress={() => handleSubmit()}
+                buttonStyle={styles.primaryButton}
+              />
+              <Text style={styles.switchText} onPress={handleSignup}>
+                No account yet?{" "}
+                <Text style={styles.switchLink}>Create one</Text>
               </Text>
             </View>
           </AppScrollView>
@@ -85,33 +94,63 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     width: "100%",
-    alignItems: "center",
   },
   scrollView: {
     flex: 1,
     width: "100%",
   },
-  form: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 20,
-    width: "100%",
+  scrollContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
   },
-  loginButton: {
-    fontSize: 16,
-    color: "white",
+  header: {
+    marginTop: 32,
+    marginBottom: 32,
+  },
+  eyebrow: {
+    color: T.accent,
+    fontSize: 11,
     fontWeight: "700",
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    marginBottom: 8,
   },
-  text: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
+  title: {
+    color: T.text,
+    fontSize: 36,
+    fontWeight: "800",
+    letterSpacing: -1,
+    marginBottom: 12,
+  },
+  accentLine: {
+    width: 40,
+    height: 3,
+    backgroundColor: T.accent,
+    borderRadius: 2,
+  },
+  form: {
+    width: "100%",
+    marginBottom: 8,
+  },
+  actions: {
+    width: "100%",
+    alignItems: "center",
+    gap: 16,
+    marginTop: 8,
+  },
+  primaryButton: {
+    width: "100%",
+    paddingVertical: 16,
+  },
+  switchText: {
+    color: T.textMuted,
+    fontSize: 14,
+  },
+  switchLink: {
+    color: T.accent,
+    fontWeight: "600",
   },
 });

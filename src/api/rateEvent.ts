@@ -8,7 +8,7 @@ export default async (rating: number, eventId: string) => {
     `${API_URL}/events/${eventId}/rate`,
     { rating },
 
-    headers
+    headers,
   );
   return data;
 };

@@ -7,7 +7,7 @@ export default async (preferences: string[]) => {
   const { status } = await axios.post(
     `${API_URL}/users/preferences/`,
     preferences,
-    headers
+    headers,
   );
   return status;
 };

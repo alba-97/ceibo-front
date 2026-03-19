@@ -5,7 +5,7 @@ import { fetchContacts } from "@/utils/fetchContacts";
 
 const findMissingContacts = (
   contacts: UserResponse[],
-  friends: UserResponse[]
+  friends: UserResponse[],
 ) => {
   const missingContacts = [];
   for (const contact of contacts) {

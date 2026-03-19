@@ -3,6 +3,7 @@ import GenericInput from "./GenericInput";
 import ErrorMsg from "./ErrorMsg";
 import { useFormikContext } from "formik";
 import EventForm from "@/interfaces/forms/Event";
+import { T } from "@/theme";
 
 interface ITextFieldProps {
   placeholder: string;
@@ -15,7 +16,7 @@ const TextField = ({ placeholder, field, ...props }: ITextFieldProps) => {
   const { handleChange, handleBlur, values } = useFormikContext<EventForm>();
   return (
     <View style={styles.container}>
-      <Text style={styles.placeholder}>{placeholder}</Text>
+      <Text style={styles.label}>{placeholder}</Text>
       <GenericInput
         onChangeText={handleChange(field)}
         onBlur={handleBlur(field)}
@@ -28,13 +29,16 @@ const TextField = ({ placeholder, field, ...props }: ITextFieldProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: "100%", alignItems: "center", marginBottom: 20 },
-  placeholder: {
-    color: "#FFF",
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
+  container: { width: "100%", alignItems: "center", marginBottom: 16 },
+  label: {
+    color: T.textMuted,
+    fontSize: 11,
+    fontWeight: "600",
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
+    textAlign: "left",
+    width: "80%",
+    marginBottom: 6,
   },
 });
 

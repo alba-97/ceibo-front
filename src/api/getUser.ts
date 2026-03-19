@@ -7,7 +7,7 @@ export default async () => {
   const headers = await getHeaders();
   const { data } = await axios.get<UserResponse>(
     `${API_URL}/users/me`,
-    headers
+    headers,
   );
   return data;
 };
