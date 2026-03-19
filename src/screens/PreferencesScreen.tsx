@@ -67,15 +67,12 @@ export default function PreferencesScreen() {
           </Text>
         </View>
 
-        <View style={styles.dropdownWrapper}>
+        <View style={styles.controlsBlock}>
           <MultipleDropdown
             data={categories}
             selectedValues={selected}
             onSelect={(selectedValues: string[]) => setSelected(selectedValues)}
           />
-        </View>
-
-        <View style={styles.actions}>
           <TouchableOpacity onPress={handleSubmit} style={styles.primaryButton}>
             <Text style={styles.primaryButtonText}>Save Preferences</Text>
           </TouchableOpacity>
@@ -129,19 +126,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  dropdownWrapper: {
-    width: "100%",
+  controlsBlock: {
+    width: "45%",
     marginBottom: 28,
-  },
-  actions: {
-    alignItems: "center",
   },
   primaryButton: {
     backgroundColor: T.accent,
     borderRadius: T.radius.md,
     paddingVertical: 16,
-    paddingHorizontal: 40,
-    width: "80%",
+    paddingHorizontal: 0,
+    width: "100%",
     alignItems: "center",
   },
   primaryButtonText: {

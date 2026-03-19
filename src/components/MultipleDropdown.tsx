@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { StyleSheet, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import IOptionSelect from "@/interfaces/OptionSelect";
 
 interface IMultipleDropdownProps {
@@ -62,6 +63,12 @@ const MultipleDropdown = ({
         badgeTextStyle={styles.badgeText}
         listItemLabelStyle={styles.text}
         selectedItemLabelStyle={styles.selectedText}
+        ArrowDownIconComponent={() => (
+          <Feather name="chevron-down" size={16} color="#F0F0F0" />
+        )}
+        ArrowUpIconComponent={() => (
+          <Feather name="chevron-up" size={16} color="#F0F0F0" />
+        )}
       />
     </View>
   );
@@ -69,7 +76,7 @@ const MultipleDropdown = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "25%",
+    width: "100%",
     marginBottom: 10,
     marginTop: 10,
     zIndex: 1000,

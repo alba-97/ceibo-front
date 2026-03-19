@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./LoginScreen";
@@ -26,6 +32,9 @@ export default function ProfileScreen() {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 768;
+  const boxWidth = isDesktop ? "80%" : "100%";
 
   const handleLogout = () => {
     AsyncStorage.removeItem("token");
@@ -89,7 +98,7 @@ export default function ProfileScreen() {
               </View>
 
               <Text style={styles.sectionLabel}>Profile Info</Text>
-              <View style={styles.card}>
+              <View style={[styles.card, { width: boxWidth }]}>
                 <ChangeData field="username" placeholder="Username" />
                 <ChangeData field="first_name" placeholder="First name" />
                 <ChangeData field="last_name" placeholder="Last name" />
@@ -104,7 +113,7 @@ export default function ProfileScreen() {
               </View>
 
               <Text style={styles.sectionLabel}>Settings</Text>
-              <View style={styles.actionGroup}>
+              <View style={[styles.actionGroup, { width: boxWidth }]}>
                 <TouchableOpacity
                   onPress={handlePreferences}
                   style={styles.actionRow}
@@ -172,6 +181,7 @@ const styles = StyleSheet.create({
     borderColor: T.border,
     marginBottom: 24,
     overflow: "hidden",
+    width: "100%",
   },
   actionGroup: {
     backgroundColor: T.bgCard,
@@ -180,6 +190,7 @@ const styles = StyleSheet.create({
     borderColor: T.border,
     overflow: "hidden",
     marginBottom: 24,
+    width: "100%",
   },
   actionRow: {
     flexDirection: "row",

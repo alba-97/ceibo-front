@@ -6,6 +6,7 @@ import {
   View,
 } from "react-native";
 import { EvilIcons, Feather } from "@expo/vector-icons";
+import { T } from "@/theme";
 import { useState } from "react";
 import handleError from "@/utils/handleError";
 import { useFormikContext } from "formik";
@@ -58,7 +59,7 @@ export const ChangeData = ({
         <Text style={styles.data}>{placeholder}:</Text>
       </View>
       {type === "date" ? (
-        <View>
+        <View style={styles.valueContainer}>
           {change ? (
             <DatetimePicker field={field} dateOnly />
           ) : (
@@ -66,7 +67,7 @@ export const ChangeData = ({
           )}
         </View>
       ) : (
-        <View>
+        <View style={styles.valueContainer}>
           {change ? (
             <TextInput
               onChangeText={handleChange(field)}
@@ -99,17 +100,24 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: T.border,
+  },
+  valueContainer: {
+    flex: 1,
+    paddingHorizontal: 12,
   },
   data: {
     color: "#FFF",
     fontSize: 13,
-    textAlign: "center",
   },
   text: {
     color: "#FFF",
-    fontSize: 17,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "600",
+    textAlign: "right",
   },
   input: {
     color: "#F0F0F0",
